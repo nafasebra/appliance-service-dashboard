@@ -1,13 +1,7 @@
 import { useState } from 'react';
 import { Link, Outlet } from '@tanstack/react-router';
 import {
-  LayoutDashboard,
-  ClipboardList,
-  CalendarDays,
   Wrench,
-  Users,
-  Wallet,
-  ChartNoAxesCombined,
   Bell,
   X,
   LifeBuoy,
@@ -16,6 +10,7 @@ import {
   ArrowUpLeft,
   Moon,
   Sun,
+  AlertTriangle,
 } from 'lucide-react';
 import { useDemo } from '@/features/operations/model/demo-store';
 import { useTheme } from '@/shared/lib/theme';
@@ -37,18 +32,22 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-  useSidebar,
 } from '@/shared/ui/sidebar';
 
-const navigation = [
-  { to: '/', label: 'نمای کلی', icon: LayoutDashboard },
-  { to: '/requests', label: 'درخواست‌های خدمات', icon: ClipboardList },
-  { to: '/dispatch', label: 'برنامه‌ریزی و اعزام', icon: CalendarDays },
-  { to: '/technicians', label: 'تعمیرکاران', icon: Wrench },
-  { to: '/customers', label: 'مشتریان', icon: Users },
-  { to: '/finance', label: 'امور مالی', icon: Wallet },
-  { to: '/reports', label: 'گزارش‌ها', icon: ChartNoAxesCombined },
-] as const;
+import { useDashboardSidebar } from '@/app/hooks/use-dashboard-sidebar';
+import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/shared/ui/alert-dialog';
+import { navigation } from '@/app/const';
 
 export function DashboardLayout() {
   return (
@@ -60,13 +59,9 @@ export function DashboardLayout() {
 
 function DashboardShell() {
   const [helpOpen, setHelpOpen] = useState(false);
-  const [resetOpen, setResetOpen] = useState(false);
   const { jobs, storageError, resetDemo } = useDemo();
   const { theme, toggleTheme } = useTheme();
-  const { isMobile, setOpen, setOpenMobile } = useSidebar();
-  const closeSidebarOnMobile = () => {
-    if (isMobile) setOpenMobile(false);
-  };
+  const { closeSidebar, closeSidebarOnMobile } = useDashboardSidebar();
   return (
     <>
       <a
@@ -96,7 +91,7 @@ function DashboardShell() {
             type="button"
             className="ms-auto grid h-[31px] w-[31px] shrink-0 place-items-center rounded-[6px] border border-transparent bg-transparent text-[#89998c] hover:border-[#e3ebe1] hover:bg-[#f0f5ef] dark:hover:border-[#35483f] dark:hover:bg-[#1c2a24]"
             aria-label="بستن منو"
-            onClick={() => (isMobile ? setOpenMobile(false) : setOpen(false))}
+            onClick={closeSidebar}
           >
             <X size={19} />
           </Button>
@@ -155,14 +150,32 @@ function DashboardShell() {
               راهنمای داشبورد <ArrowUpLeft size={16} />
             </Button>
           </div>
-          <Button
-            variant="ghost"
-            className="flex items-center gap-[9px] text-[#7a827d] p-[19px_9px] border-0 bg-transparent text-[10px] h-auto"
-            onClick={() => setResetOpen(true)}
-          >
-            <RotateCcw size={17} />
-            بازنشانی داده‌های نمونه
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="ghost"
+                className="flex h-auto items-center gap-[9px] border-0 bg-transparent p-[19px_9px] text-[10px] text-[#7a827d]"
+              >
+                <RotateCcw size={17} />
+                بازنشانی داده‌های نمونه
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent dir="rtl">
+              <AlertDialogHeader>
+                <AlertDialogTitle>بازنشانی اطلاعات نمونه؟</AlertDialogTitle>
+                <AlertDialogDescription>
+                  درخواست‌ها و تراکنش‌هایی که در این مرورگر اضافه یا ویرایش کرده‌اید با داده‌های
+                  اولیه جایگزین می‌شوند.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>انصراف</AlertDialogCancel>
+                <AlertDialogAction variant="destructive" onClick={resetDemo}>
+                  بازنشانی داده‌ها
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </SidebarFooter>
       </Sidebar>
       <SidebarInset className="dark:bg-background dark:text-foreground">
@@ -265,12 +278,13 @@ function DashboardShell() {
           <span>دوشنبه، ۲۵ آبان ۱۴۰۵ · تاریخ مرجع نمونه</span>
         </div>
         {storageError && (
-          <div
-            className="p-[12px_36px] bg-[#fff0da] text-[#9d772e] text-[11px] dark:bg-[#3a301e] dark:text-[#e4bd72]"
-            role="alert"
-          >
-            ذخیره‌سازی مرورگر در دسترس نیست؛ تغییرات پس از بستن صفحه حفظ نمی‌شوند.
-          </div>
+          <Alert className="mx-9 mt-4 w-auto border-[#e9c77d] bg-[#fff8e8] text-[#795719] dark:border-[#65512c] dark:bg-[#302817] dark:text-[#e4bd72] max-[761px]:mx-[18px]">
+            <AlertTriangle />
+            <AlertTitle>ذخیره‌سازی مرورگر در دسترس نیست</AlertTitle>
+            <AlertDescription className="text-inherit/80">
+              تغییرات پس از بستن صفحه حفظ نمی‌شوند.
+            </AlertDescription>
+          </Alert>
         )}
         <main
           id="main-content"
@@ -298,35 +312,6 @@ function DashboardShell() {
               این نسخه بک‌اند ندارد. اطلاعات فقط در همین مرورگر ذخیره می‌شوند. تومان، وضعیت‌ها و
               جریان پرداخت، انتخاب‌های موقت برای نمایش‌اند.
             </p>
-          </div>
-        </Modal>
-      )}
-      {resetOpen && (
-        <Modal title="بازنشانی اطلاعات نمونه؟" onClose={() => setResetOpen(false)}>
-          <div className="p-6 [&_p]:text-[12px] [&_p]:text-[#6c7f63] [&_p]:leading-[2.3] [&_p]:mb-[15px]">
-            <p>
-              درخواست‌ها و تراکنش‌هایی که در این مرورگر اضافه یا ویرایش کرده‌اید با داده‌های اولیه
-              جایگزین می‌شوند.
-            </p>
-            <div className="flex gap-[9px] mt-[5px]">
-              <Button
-                variant="destructive"
-                className="inline-flex justify-center items-center gap-2 bg-white border border-[#dfe6e1] rounded-[7px] p-[10px_15px] text-[#56625a] text-[11px] leading-[1.7] whitespace-nowrap [&:hover]:bg-[#f0f4f1] dark:bg-[#1c2823] dark:border-[#33453d] dark:text-[#dce7e1] bg-[#b34d4d] border-[#b34d4d] text-white"
-                onClick={() => {
-                  resetDemo();
-                  setResetOpen(false);
-                }}
-              >
-                بازنشانی داده‌ها
-              </Button>
-              <Button
-                variant="outline"
-                className="inline-flex justify-center items-center gap-2 bg-white border border-[#dfe6e1] rounded-[7px] p-[10px_15px] text-[#56625a] text-[11px] leading-[1.7] whitespace-nowrap [&:hover]:bg-[#f0f4f1] dark:bg-[#1c2823] dark:border-[#33453d] dark:text-[#dce7e1]"
-                onClick={() => setResetOpen(false)}
-              >
-                انصراف
-              </Button>
-            </div>
           </div>
         </Modal>
       )}
