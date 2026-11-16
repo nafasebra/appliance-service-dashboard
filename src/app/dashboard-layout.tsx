@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, Outlet } from '@tanstack/react-router';
+import { Link, Outlet, useRouterState } from '@tanstack/react-router';
 import {
   Wrench,
   Bell,
@@ -48,6 +48,14 @@ import {
   AlertDialogTrigger,
 } from '@/shared/ui/alert-dialog';
 import { navigation } from '@/app/const';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/shared/ui/breadcrumb';
 
 export function DashboardLayout() {
   return (
@@ -62,6 +70,8 @@ function DashboardShell() {
   const { jobs, storageError, resetDemo } = useDemo();
   const { theme, toggleTheme } = useTheme();
   const { closeSidebar, closeSidebarOnMobile } = useDashboardSidebar();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const currentPage = navigation.find((item) => item.to === pathname)?.label ?? 'داشبورد';
   return (
     <>
       <a
@@ -185,9 +195,27 @@ function DashboardShell() {
               aria-controls="dashboard-sidebar"
               className="grid h-[31px] w-[31px] shrink-0 place-items-center rounded-[6px] border border-transparent bg-transparent text-[#89998c] hover:border-[#e3ebe1] hover:bg-[#f0f5ef] dark:hover:border-[#35483f] dark:hover:bg-[#1c2a24]"
             />
-            <span className="text-[12px] text-[#555f59] max-[761px]:text-[10px]">
-              مدیریت یکپارچه خدمات
-            </span>
+            <Breadcrumb>
+              <BreadcrumbList className="text-[11px] max-[761px]:text-[10px]">
+                {pathname === '/' ? (
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>داشبورد</BreadcrumbPage>
+                  </BreadcrumbItem>
+                ) : (
+                  <>
+                    <BreadcrumbItem className="max-[480px]:hidden">
+                      <BreadcrumbLink asChild>
+                        <Link to="/">داشبورد</Link>
+                      </BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator className="max-[480px]:hidden" />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>{currentPage}</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </>
+                )}
+              </BreadcrumbList>
+            </Breadcrumb>
             <span className="h-[25px] w-[1px] bg-border" />
             <span className="flex items-center gap-[7px] text-[#7c867f] text-[10px] [&_i]:inline-block [&_i]:h-[6px] [&_i]:w-[6px] [&_i]:rounded-full [&_i]:bg-[#5ea88a] max-[1201px]:hidden">
               <i />
