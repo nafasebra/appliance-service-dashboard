@@ -9,7 +9,14 @@ import { number } from '@/shared/lib/format';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
-import { NativeSelect } from '@/shared/ui/native-select';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/shared/ui/select';
 
 export function RequestsPage() {
   const { jobs, customers } = useDemo();
@@ -50,21 +57,24 @@ export function RequestsPage() {
               placeholder="جستجوی مشتری، دستگاه یا کد درخواست…"
             />
           </Label>
-          <Label className="flex items-center gap-1.75 text-muted-foreground [&_select]:p-2 [&_select]:text-2xs">
-            <SlidersHorizontal size={17} />
-            <NativeSelect
-              aria-label="فیلتر وضعیت"
-              value={status}
-              onChange={(event) => setStatus(event.target.value)}
-            >
-              <option value="all">همه وضعیت‌ها</option>
-              {Object.entries(statusLabels).map(([key, label]) => (
-                <option key={key} value={key}>
-                  {label}
-                </option>
-              ))}
-            </NativeSelect>
-          </Label>
+          <div className="flex items-center gap-1.75 text-muted-foreground">
+            <SlidersHorizontal aria-hidden="true" size={17} />
+            <Select value={status} onValueChange={setStatus} dir="rtl">
+              <SelectTrigger aria-label="فیلتر وضعیت" size="sm" className="min-w-36 text-2xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="all">همه وضعیت‌ها</SelectItem>
+                  {Object.entries(statusLabels).map(([key, label]) => (
+                    <SelectItem key={key} value={key}>
+                      {label}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         <JobTable jobs={filtered} onSelect={setEditor} />
       </Panel>
