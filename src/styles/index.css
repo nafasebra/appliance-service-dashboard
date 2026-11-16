@@ -23,6 +23,11 @@
   --color-border: var(--shadcn-border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
   --color-status-new: var(--status-new);
   --color-status-new-foreground: var(--status-new-foreground);
   --color-status-scheduled: var(--status-scheduled);
@@ -52,6 +57,11 @@
   --shadcn-border: #e2e9e5;
   --input: #d9e3dd;
   --ring: #4f9075;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #24302d;
+  --sidebar-accent: #eaf4ee;
+  --sidebar-accent-foreground: #225d48;
+  --sidebar-border: #e2e9e5;
   --primary: #246b55;
   --primary-dark: #164c3c;
   --ink: #24302d;
@@ -87,6 +97,11 @@
   --shadcn-border: #293832;
   --input: #35483f;
   --ring: #74b99b;
+  --sidebar: #17211d;
+  --sidebar-foreground: #e7eee9;
+  --sidebar-accent: #263b31;
+  --sidebar-accent-foreground: #d8ebe1;
+  --sidebar-border: #293832;
   --primary: #74b99b;
   --primary-dark: #91ccb1;
   --ink: #e7eee9;
