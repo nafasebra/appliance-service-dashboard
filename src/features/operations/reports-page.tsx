@@ -4,6 +4,15 @@ import { summarizeFinance } from './model/finance';
 import { CashChart } from './components/cash-chart';
 import { PageHeading, Panel } from '@/shared/ui/primitives';
 import { money, number } from '@/shared/lib/format';
+import { Progress } from '@/components/ui/progress';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 export function ReportsPage() {
   const { jobs, technicians, transactions } = useDemo();
@@ -27,9 +36,10 @@ export function ReportsPage() {
                     <span>{appliance}</span>
                     <strong>{number(count)} درخواست</strong>
                   </div>
-                  <div className="progress-track">
-                    <span style={{ width: `${jobs.length ? (count / jobs.length) * 100 : 0}%` }} />
-                  </div>
+                  <Progress
+                    className="progress-track"
+                    value={jobs.length ? (count / jobs.length) * 100 : 0}
+                  />
                 </div>
               );
             })}
@@ -40,41 +50,41 @@ export function ReportsPage() {
         title="عملکرد و حساب تعمیرکاران"
         subtitle="کمیسیون و سهم تعمیرکار بر اساس خدمات تکمیل‌شده"
       >
-        <div className="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>تعمیرکار</th>
-                <th>کل درخواست‌ها</th>
-                <th>تکمیل‌شده</th>
-                <th>ارزش خدمات تکمیل‌شده</th>
-                <th>کمیسیون شرکت</th>
-                <th>مانده تعمیرکار</th>
-              </tr>
-            </thead>
-            <tbody>
-              {technicians.map((tech) => {
-                const assigned = jobs.filter((job) => job.technicianId === tech.id);
-                const summary = summarizeFinance(
-                  assigned,
-                  transactions.filter((item) => assigned.some((job) => job.id === item.jobId)),
-                );
-                return (
-                  <tr key={tech.id}>
-                    <td>
-                      <strong>{tech.name}</strong>
-                    </td>
-                    <td>{number(assigned.length)}</td>
-                    <td>{number(assigned.filter((job) => job.status === 'completed').length)}</td>
-                    <td>{money(summary.serviceValue)}</td>
-                    <td>{money(summary.commission)}</td>
-                    <td>{money(summary.payable)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <Table className="table-scroll">
+          <TableHeader>
+            <TableRow>
+              <TableHead>تعمیرکار</TableHead>
+              <TableHead>کل درخواست‌ها</TableHead>
+              <TableHead>تکمیل‌شده</TableHead>
+              <TableHead>ارزش خدمات تکمیل‌شده</TableHead>
+              <TableHead>کمیسیون شرکت</TableHead>
+              <TableHead>مانده تعمیرکار</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {technicians.map((tech) => {
+              const assigned = jobs.filter((job) => job.technicianId === tech.id);
+              const summary = summarizeFinance(
+                assigned,
+                transactions.filter((item) => assigned.some((job) => job.id === item.jobId)),
+              );
+              return (
+                <TableRow key={tech.id}>
+                  <TableCell>
+                    <strong>{tech.name}</strong>
+                  </TableCell>
+                  <TableCell>{number(assigned.length)}</TableCell>
+                  <TableCell>
+                    {number(assigned.filter((job) => job.status === 'completed').length)}
+                  </TableCell>
+                  <TableCell>{money(summary.serviceValue)}</TableCell>
+                  <TableCell>{money(summary.commission)}</TableCell>
+                  <TableCell>{money(summary.payable)}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       </Panel>
     </>
   );

@@ -56,7 +56,11 @@ export function DispatchPage() {
               key={tech.id}
               title={tech.name}
               subtitle={tech.specialty}
-              action={<span className="count-badge">{number(assigned.length)}</span>}
+              action={
+                <Badge variant="secondary" className="count-badge">
+                  {number(assigned.length)}
+                </Badge>
+              }
             >
               <div className="dispatch-column">
                 {assigned.length ? (

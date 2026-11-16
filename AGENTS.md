@@ -120,6 +120,11 @@ Persian RTL UI -> feature hooks/use cases -> API adapters -> backend -> database
   element, persist locally, and must preserve readable contrast and visible focus.
 - Use Tailwind utilities and shared design tokens. Introduce reusable UI primitives
   when a pattern is reused, and keep feature-specific behavior inside its feature.
+- Use the locally owned shadcn/ui components in `src/components/ui/` for standard
+  buttons, cards, dialogs, labels, inputs, selects, badges, tables, and progress.
+  Compose those components in feature code instead of recreating standard controls.
+  Keep `components.json` aliases aligned with the project. The UI source is maintained
+  in the repository; do not run the shadcn CLI unless the user explicitly asks.
 
 ## Formatting and newlines
 

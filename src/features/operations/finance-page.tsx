@@ -5,6 +5,19 @@ import { summarizeFinance } from './model/finance';
 import type { Transaction } from './model/types';
 import { PageHeading, Panel, StatCard, Modal, EmptyState } from '@/shared/ui/primitives';
 import { money, dateLabel } from '@/shared/lib/format';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { NativeSelect } from '@/components/ui/native-select';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 const kindLabels = {
   receipt: 'دریافت از مشتری',
@@ -81,7 +94,7 @@ export function FinancePage() {
         title="امور مالی"
         description="شفافیت در دریافت‌ها، پرداخت‌ها و سهم شرکت از هر خدمت."
         action={
-          <button
+          <Button
             className="button button-primary"
             onClick={() => {
               setOpen(true);
@@ -90,7 +103,7 @@ export function FinancePage() {
           >
             <Plus size={18} />
             ثبت تراکنش
-          </button>
+          </Button>
         }
       />
       <div className="stats-grid">
@@ -135,10 +148,10 @@ export function FinancePage() {
         title="دفتر گردش مالی"
         subtitle="همه تراکنش‌های نمونه · بدون مانده افتتاحیه"
         action={
-          <button className="button button-small" onClick={exportCsv}>
+          <Button variant="outline" size="sm" className="button button-small" onClick={exportCsv}>
             <Download size={16} />
             خروجی CSV
-          </button>
+          </Button>
         }
       >
         <div className="table-toolbar">
@@ -149,53 +162,53 @@ export function FinancePage() {
               ['payout', 'تسویه‌ها'],
               ['expense', 'هزینه‌ها'],
             ].map(([value, label]) => (
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 className={filter === value ? 'selected' : ''}
                 key={value}
                 onClick={() => setFilter(value)}
               >
                 {label}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
         {filtered.length ? (
-          <div className="table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>شرح تراکنش</th>
-                  <th>نوع</th>
-                  <th>درخواست مرتبط</th>
-                  <th>تاریخ</th>
-                  <th>مبلغ</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((item) => (
-                  <tr key={item.id}>
-                    <td>
-                      <strong>{item.description}</strong>
-                    </td>
-                    <td>
-                      <span
-                        className={`badge ${item.kind === 'receipt' ? 'status-completed' : 'status-scheduled'}`}
-                      >
-                        {kindLabels[item.kind]}
-                      </span>
-                    </td>
-                    <td>
-                      <bdi>{item.jobId || '—'}</bdi>
-                    </td>
-                    <td>{dateLabel(item.date)}</td>
-                    <td className={item.kind === 'receipt' ? 'text-green' : 'text-red'}>
-                      {item.kind === 'receipt' ? '+' : '−'} {money(item.amount)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <Table className="table-scroll">
+            <TableHeader>
+              <TableRow>
+                <TableHead>شرح تراکنش</TableHead>
+                <TableHead>نوع</TableHead>
+                <TableHead>درخواست مرتبط</TableHead>
+                <TableHead>تاریخ</TableHead>
+                <TableHead>مبلغ</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filtered.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell>
+                    <strong>{item.description}</strong>
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      className={`badge ${item.kind === 'receipt' ? 'status-completed' : 'status-scheduled'}`}
+                    >
+                      {kindLabels[item.kind]}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <bdi>{item.jobId || '—'}</bdi>
+                  </TableCell>
+                  <TableCell>{dateLabel(item.date)}</TableCell>
+                  <TableCell className={item.kind === 'receipt' ? 'text-green' : 'text-red'}>
+                    {item.kind === 'receipt' ? '+' : '−'} {money(item.amount)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         ) : (
           <EmptyState />
         )}
@@ -203,9 +216,9 @@ export function FinancePage() {
       {open && (
         <Modal title="ثبت تراکنش نمونه" onClose={() => setOpen(false)}>
           <form onSubmit={submit} className="form-grid">
-            <label>
+            <Label className="form-field">
               نوع تراکنش
-              <select
+              <NativeSelect
                 value={kind}
                 onChange={(event) => setKind(event.target.value as Transaction['kind'])}
               >
@@ -214,16 +227,16 @@ export function FinancePage() {
                     {label}
                   </option>
                 ))}
-              </select>
-            </label>
-            <label>
+              </NativeSelect>
+            </Label>
+            <Label className="form-field">
               مبلغ (تومان نمونه)
-              <input name="amount" type="number" min="1" step="1" required />
-            </label>
+              <Input name="amount" type="number" min="1" step="1" required />
+            </Label>
             {kind !== 'expense' && (
-              <label className="full-width">
+              <Label className="form-field full-width">
                 درخواست مرتبط
-                <select name="jobId" required>
+                <NativeSelect name="jobId" required>
                   <option value="">انتخاب درخواست</option>
                   {jobs
                     .filter((job) => kind !== 'payout' || job.status === 'completed')
@@ -232,17 +245,17 @@ export function FinancePage() {
                         {job.id} · {job.appliance} {job.brand}
                       </option>
                     ))}
-                </select>
-              </label>
+                </NativeSelect>
+              </Label>
             )}
-            <label>
+            <Label className="form-field">
               تاریخ (میلادی)
-              <input type="date" name="date" defaultValue="2026-11-16" required />
-            </label>
-            <label>
+              <Input type="date" name="date" defaultValue="2026-11-16" required />
+            </Label>
+            <Label className="form-field">
               شرح
-              <input name="description" required maxLength={150} />
-            </label>
+              <Input name="description" required maxLength={150} />
+            </Label>
             <p className="form-note full-width">
               این عملیات فقط دفتر نمونه مرورگر را تغییر می‌دهد و پرداخت بانکی انجام نمی‌دهد.
             </p>
@@ -252,12 +265,17 @@ export function FinancePage() {
               </p>
             )}
             <div className="form-actions full-width">
-              <button className="button button-primary" type="submit">
+              <Button className="button button-primary" type="submit">
                 ثبت تراکنش
-              </button>
-              <button className="button" type="button" onClick={() => setOpen(false)}>
+              </Button>
+              <Button
+                variant="outline"
+                className="button"
+                type="button"
+                onClick={() => setOpen(false)}
+              >
                 انصراف
-              </button>
+              </Button>
             </div>
           </form>
         </Modal>

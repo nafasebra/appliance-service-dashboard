@@ -46,7 +46,11 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
       <form onSubmit={submit} className="form-grid">
         <Label className="form-field">
           مشتری
-          <NativeSelect name="customerId" defaultValue={job?.customerId ?? customers[0]?.id} required>
+          <NativeSelect
+            name="customerId"
+            defaultValue={job?.customerId ?? customers[0]?.id}
+            required
+          >
             {customers.map((item) => (
               <option key={item.id} value={item.id}>
                 {item.name}

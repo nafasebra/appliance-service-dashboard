@@ -7,6 +7,19 @@ import { JobEditor } from './components/job-editor';
 import type { Job } from './model/types';
 import { PageHeading, Panel, EmptyState, Modal } from '@/shared/ui/primitives';
 import { money, number } from '@/shared/lib/format';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 export function TechniciansPage() {
   const { jobs, transactions, technicians } = useDemo();
@@ -22,7 +35,7 @@ export function TechniciansPage() {
             transactions.filter((item) => assigned.some((job) => job.id === item.jobId)),
           );
           return (
-            <section className="technician-card" key={tech.id}>
+            <Card className="technician-card gap-0 py-0" key={tech.id}>
               <div className="technician-top">
                 <span className={`avatar avatar-${index % 4}`}>
                   {tech.name
@@ -30,9 +43,9 @@ export function TechniciansPage() {
                     .map((part) => part[0])
                     .join('')}
                 </span>
-                <span className={`badge ${active.length ? 'status-working' : 'status-completed'}`}>
+                <Badge className={`badge ${active.length ? 'status-working' : 'status-completed'}`}>
                   {active.length ? `${number(active.length)} درخواست باز` : 'بدون درخواست باز'}
-                </span>
+                </Badge>
               </div>
               <h2>{tech.name}</h2>
               <p>
@@ -62,7 +75,7 @@ export function TechniciansPage() {
                   <strong>{money(finance.payable)}</strong>
                 </div>
               </div>
-            </section>
+            </Card>
           );
         })}
       </div>
@@ -90,53 +103,56 @@ export function CustomersPage() {
       />
       <Panel title="دفتر مشتریان" subtitle={`${number(customers.length)} مشتری نمونه`}>
         <div className="table-toolbar">
-          <label className="search-field">
+          <Label className="search-field">
             <Search size={18} />
-            <input
+            <Input
+              className="border-0 shadow-none focus-visible:ring-0"
               aria-label="جستجوی مشتری"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="جستجوی نام، تلفن یا آدرس…"
             />
-          </label>
+          </Label>
         </div>
         {filtered.length ? (
-          <div className="table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>نام مشتری</th>
-                  <th>تلفن</th>
-                  <th>آدرس</th>
-                  <th>تعداد درخواست</th>
-                  <th>سوابق</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((customer) => (
-                  <tr key={customer.id}>
-                    <td>
-                      <strong>{customer.name}</strong>
-                    </td>
-                    <td>
-                      <bdi>{customer.phone}</bdi>
-                    </td>
-                    <td>{customer.address}</td>
-                    <td>{number(jobs.filter((job) => job.customerId === customer.id).length)}</td>
-                    <td>
-                      <button
-                        className="icon-button"
-                        onClick={() => setSelected(customer.id)}
-                        aria-label={`سوابق ${customer.name}`}
-                      >
-                        <ArrowUpLeft size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <Table className="table-scroll">
+            <TableHeader>
+              <TableRow>
+                <TableHead>نام مشتری</TableHead>
+                <TableHead>تلفن</TableHead>
+                <TableHead>آدرس</TableHead>
+                <TableHead>تعداد درخواست</TableHead>
+                <TableHead>سوابق</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filtered.map((customer) => (
+                <TableRow key={customer.id}>
+                  <TableCell>
+                    <strong>{customer.name}</strong>
+                  </TableCell>
+                  <TableCell>
+                    <bdi>{customer.phone}</bdi>
+                  </TableCell>
+                  <TableCell>{customer.address}</TableCell>
+                  <TableCell>
+                    {number(jobs.filter((job) => job.customerId === customer.id).length)}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      className="icon-button"
+                      onClick={() => setSelected(customer.id)}
+                      aria-label={`سوابق ${customer.name}`}
+                    >
+                      <ArrowUpLeft size={18} />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         ) : (
           <EmptyState />
         )}
