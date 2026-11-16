@@ -30,7 +30,7 @@ export function RequestsPage() {
         description="از اولین تماس تا پایان تعمیر، جریان کار را دنبال کنید."
         action={
           <Button
-            className="inline-flex justify-center items-center gap-2 bg-white border border-[#dfe6e1] rounded-[7px] p-[10px_15px] text-[#56625a] text-[11px] leading-[1.7] whitespace-nowrap [&:hover]:bg-[#f0f4f1] dark:bg-[#1c2823] dark:border-[#33453d] dark:text-[#dce7e1] bg-primary text-white border-primary shadow-[0_3px_5px_#246b5510] [&:hover]:bg-(--primary-dark) dark:bg-[#3d8c6d] dark:border-[#3d8c6d] dark:text-[#ffffff] dark:[&:hover]:bg-[#4c9d7d]"
+            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:border-border dark:text-primary-foreground dark:[&:hover]:bg-primary"
             onClick={() => setEditor('new')}
           >
             <Plus size={18} />
@@ -39,8 +39,8 @@ export function RequestsPage() {
         }
       />
       <Panel title="لیست درخواست‌ها" subtitle={`${number(filtered.length)} درخواست در این نمایش`}>
-        <div className="flex items-center gap-3 p-[0_22px_20px] flex-wrap max-[761px]:px-4.5">
-          <Label className="flex w-[340px] max-w-full items-center gap-2.5 rounded-[7px] border border-[#e5eae3] p-[0_11px] text-[#99a295] focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[#73977b] [&_input]:w-full [&_input]:border-0 [&_input]:bg-transparent [&_input]:p-[11px_0] [&_input]:text-[10px] [&_input]:outline-hidden dark:border-[#33453d] dark:bg-[#1c2823] dark:text-[#dce7e1]">
+        <div className="flex items-center gap-3 pt-0 px-5.5 pb-5 flex-wrap max-mobile:px-4.5">
+          <Label className="flex w-85 max-w-full items-center gap-2.5 rounded-md border border-border py-0 px-2.75 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring [&_input]:w-full [&_input]:border-0 [&_input]:bg-transparent [&_input]:py-2.75 [&_input]:px-0 [&_input]:text-2xs [&_input]:outline-hidden dark:border-border dark:bg-muted dark:text-primary-foreground">
             <Search size={18} />
             <Input
               className="border-0 shadow-none focus-visible:ring-0"
@@ -50,7 +50,7 @@ export function RequestsPage() {
               placeholder="جستجوی مشتری، دستگاه یا کد درخواست…"
             />
           </Label>
-          <Label className="flex items-center gap-[7px] text-[#81917d] [&_select]:p-2 [&_select]:text-[10px]">
+          <Label className="flex items-center gap-1.75 text-muted-foreground [&_select]:p-2 [&_select]:text-2xs">
             <SlidersHorizontal size={17} />
             <NativeSelect
               aria-label="فیلتر وضعیت"

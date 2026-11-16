@@ -48,9 +48,9 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
     <Modal title={job ? `جزئیات درخواست ${job.id}` : 'ثبت درخواست جدید'} onClose={onClose}>
       <form
         onSubmit={submit}
-        className="grid grid-cols-2 gap-4.5 p-[23px] [&_label]:flex [&_label]:flex-col [&_label]:gap-[9px] [&_label]:text-[11px] [&_input]:border [&_input]:border-[#dce5d6] [&_input]:rounded-[7px] [&_input]:p-2.5 [&_input]:text-[12px] [&_input]:w-full [&_input]:bg-white [&_select]:border [&_select]:border-[#dce5d6] [&_select]:rounded-[7px] [&_select]:p-2.5 [&_select]:text-[12px] [&_select]:w-full [&_select]:bg-white [&_textarea]:border [&_textarea]:border-[#dce5d6] [&_textarea]:rounded-[7px] [&_textarea]:p-2.5 [&_textarea]:text-[12px] [&_textarea]:w-full [&_textarea]:bg-white [&_input[type='date']]:direction-ltr [&_input[type='time']]:direction-ltr [&_textarea]:min-h-[78px] [&_textarea]:resize-y max-[761px]:gap-3.5 max-[761px]:p-4.5 max-[401px]:grid-cols-1 dark:[&_input]:bg-[#1c2823] dark:[&_input]:border-[#33453d] dark:[&_input]:text-[#dce7e1] dark:[&_select]:bg-[#1c2823] dark:[&_select]:border-[#33453d] dark:[&_select]:text-[#dce7e1] dark:[&_textarea]:bg-[#1c2823] dark:[&_textarea]:border-[#33453d] dark:[&_textarea]:text-[#dce7e1]"
+        className="grid grid-cols-2 gap-4.5 p-5.75 [&_label]:flex [&_label]:flex-col [&_label]:gap-2.25 [&_label]:text-ui [&_input]:border [&_input]:border-border [&_input]:rounded-md [&_input]:p-2.5 [&_input]:text-xs [&_input]:w-full [&_input]:bg-white [&_select]:border [&_select]:border-border [&_select]:rounded-md [&_select]:p-2.5 [&_select]:text-xs [&_select]:w-full [&_select]:bg-white [&_textarea]:border [&_textarea]:border-border [&_textarea]:rounded-md [&_textarea]:p-2.5 [&_textarea]:text-xs [&_textarea]:w-full [&_textarea]:bg-white [&_input[type='date']]:direction-ltr [&_input[type='time']]:direction-ltr [&_textarea]:min-h-19.5 [&_textarea]:resize-y max-mobile:gap-3.5 max-mobile:p-4.5 max-compact:grid-cols-1 dark:[&_input]:bg-muted dark:[&_input]:border-border dark:[&_input]:text-primary-foreground dark:[&_select]:bg-muted dark:[&_select]:border-border dark:[&_select]:text-primary-foreground dark:[&_textarea]:bg-muted dark:[&_textarea]:border-border dark:[&_textarea]:text-primary-foreground"
       >
-        <Label className="flex flex-col gap-2 text-[11px]">
+        <Label className="flex flex-col gap-2 text-ui">
           مشتری
           <NativeSelect
             name="customerId"
@@ -64,7 +64,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             ))}
           </NativeSelect>
         </Label>
-        <Label className="flex flex-col gap-2 text-[11px]">
+        <Label className="flex flex-col gap-2 text-ui">
           نوع دستگاه
           <NativeSelect name="appliance" defaultValue={job?.appliance}>
             {appliances.map((item) => (
@@ -72,7 +72,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             ))}
           </NativeSelect>
         </Label>
-        <Label className="flex flex-col gap-2 text-[11px]">
+        <Label className="flex flex-col gap-2 text-ui">
           برند دستگاه
           <Input
             name="brand"
@@ -82,14 +82,14 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             placeholder="مثلاً سامسونگ"
           />
         </Label>
-        <Label className="flex flex-col gap-2 text-[11px]">
+        <Label className="flex flex-col gap-2 text-ui">
           اولویت
           <NativeSelect name="priority" defaultValue={job?.priority ?? 'normal'}>
             <option value="normal">عادی</option>
             <option value="urgent">فوری</option>
           </NativeSelect>
         </Label>
-        <Label className="col-span-full flex flex-col gap-2 text-[11px]">
+        <Label className="col-span-full flex flex-col gap-2 text-ui">
           شرح مشکل
           <Textarea
             name="issue"
@@ -99,7 +99,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             placeholder="مشکل دستگاه را توضیح دهید…"
           />
         </Label>
-        <Label className="flex flex-col gap-2 text-[11px]">
+        <Label className="flex flex-col gap-2 text-ui">
           تاریخ مراجعه (جلالی)
           <JalaliDatePicker
             name="date"
@@ -109,11 +109,11 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             required
           />
         </Label>
-        <Label className="flex flex-col gap-2 text-[11px]">
+        <Label className="flex flex-col gap-2 text-ui">
           ساعت مراجعه
           <TimePicker name="time" defaultValue={job?.time ?? '09:00'} required />
         </Label>
-        <Label className="flex flex-col gap-2 text-[11px]">
+        <Label className="flex flex-col gap-2 text-ui">
           تعمیرکار
           <NativeSelect name="technicianId" defaultValue={job?.technicianId ?? ''}>
             <option value="">بدون تخصیص</option>
@@ -124,7 +124,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             ))}
           </NativeSelect>
         </Label>
-        <Label className="flex flex-col gap-2 text-[11px]">
+        <Label className="flex flex-col gap-2 text-ui">
           وضعیت
           <NativeSelect name="status" defaultValue={job?.status ?? 'new'}>
             {Object.entries(statusLabels).map(([value, label]) => (
@@ -134,7 +134,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             ))}
           </NativeSelect>
         </Label>
-        <Label className="flex flex-col gap-2 text-[11px]">
+        <Label className="flex flex-col gap-2 text-ui">
           مبلغ خدمت (تومان نمونه)
           <Input
             name="total"
@@ -145,7 +145,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             required
           />
         </Label>
-        <Label className="flex flex-col gap-2 text-[11px]">
+        <Label className="flex flex-col gap-2 text-ui">
           سهم شرکت (تومان نمونه)
           <Input
             name="commission"
@@ -156,20 +156,20 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             required
           />
         </Label>
-        <p className="text-[10px] text-[#919d89] leading-[2] col-span-full">
+        <p className="text-2xs text-muted-foreground leading-loose col-span-full">
           تغییر وضعیت به معنی دریافت پول نیست. دریافت و پرداخت در بخش مالی ثبت می‌شود.
         </p>
         {error && (
           <p
             role="alert"
-            className="bg-[#fff0ee] text-[#aa5445] p-2.5 rounded-[7px] text-[11px] leading-[1.9] dark:bg-[#412929] dark:text-[#e2a5a5] col-span-full"
+            className="bg-status-cancelled text-destructive p-2.5 rounded-md text-ui leading-loose dark:bg-status-cancelled dark:text-destructive col-span-full"
           >
             {error}
           </p>
         )}
-        <div className="flex gap-[9px] mt-[5px] col-span-full">
+        <div className="flex gap-2.25 mt-1.25 col-span-full">
           <Button
-            className="inline-flex justify-center items-center gap-2 bg-white border border-[#dfe6e1] rounded-[7px] p-[10px_15px] text-[#56625a] text-[11px] leading-[1.7] whitespace-nowrap [&:hover]:bg-[#f0f4f1] dark:bg-[#1c2823] dark:border-[#33453d] dark:text-[#dce7e1] bg-primary text-white border-primary shadow-[0_3px_5px_#246b5510] [&:hover]:bg-(--primary-dark) dark:bg-[#3d8c6d] dark:border-[#3d8c6d] dark:text-[#ffffff] dark:[&:hover]:bg-[#4c9d7d]"
+            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:border-border dark:text-primary-foreground dark:[&:hover]:bg-primary"
             type="submit"
           >
             ذخیره درخواست
@@ -177,7 +177,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           <Button
             type="button"
             variant="outline"
-            className="inline-flex justify-center items-center gap-2 bg-white border border-[#dfe6e1] rounded-[7px] p-[10px_15px] text-[#56625a] text-[11px] leading-[1.7] whitespace-nowrap [&:hover]:bg-[#f0f4f1] dark:bg-[#1c2823] dark:border-[#33453d] dark:text-[#dce7e1]"
+            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground"
             onClick={onClose}
           >
             انصراف

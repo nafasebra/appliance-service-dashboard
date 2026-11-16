@@ -45,22 +45,22 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
       id="dashboard-sidebar"
       side="right"
       dir="rtl"
-      className="p-[31px_18px_16px] max-[1201px]:px-3.5"
+      className="pt-7.75 px-4.5 pb-4 max-desktop:px-3.5"
     >
-      <SidebarHeader className="flex-row items-center gap-2 p-[0_9px_28px] [&_>_a]:flex [&_>_a]:items-center [&_>_a]:gap-[11px] [&_strong]:text-[19px] [&_strong]:tracking-[-0.6px] [&_strong_span]:mt-[7px] [&_strong_span]:block [&_strong_span]:font-[Arial,_sans-serif] [&_strong_span]:text-[8px] [&_strong_span]:tracking-[2.1px] [&_strong_span]:text-[#84908a]">
+      <SidebarHeader className="flex flex-row items-center gap-2 pt-0 px-2.25 pb-7 [&_>_a]:flex [&_>_a]:items-center [&_>_a]:gap-2.75 [&_strong]:text-lg [&_strong]:tracking-tight [&_strong_span]:mt-1.75 [&_strong_span]:block [&_strong_span]:font-latin [&_strong_span]:text-4xs [&_strong_span]:tracking-widest [&_strong_span]:text-muted-foreground">
         <Link to="/" onClick={closeSidebarOnMobile}>
-          <span className="grid h-[43px] w-[43px] -rotate-[7deg] place-items-center rounded-[13px] bg-primary text-white">
+          <span className="grid h-10.75 w-10.75 -rotate-7 place-items-center rounded-lg bg-primary text-white">
             <Wrench size={24} />
           </span>
           <strong>
-            همیار سرویس<span>HAMYAR SERVICE</span>
+            <span>HAMYAR SERVICE</span>
           </strong>
         </Link>
         <Button
           variant="ghost"
           size="icon-sm"
           type="button"
-          className="grid h-[31px] w-[31px] shrink-0 place-items-center rounded-[6px] border border-transparent bg-transparent text-[#89998c] hover:border-[#e3ebe1] hover:bg-[#f0f5ef] dark:hover:border-[#35483f] dark:hover:bg-[#1c2a24]"
+          className="grid h-7.75 w-7.75 shrink-0 place-items-center rounded-md border border-transparent bg-transparent text-muted-foreground hover:border-border hover:bg-accent dark:hover:border-border dark:hover:bg-accent"
           aria-label="بستن منو"
           onClick={closeSidebar}
         >
@@ -70,7 +70,7 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="m-[4px_14px_12px] h-auto text-[10px] text-[#a1a9a6]">
+          <SidebarGroupLabel className="mt-1 mx-3.5 mb-3 h-auto text-2xs text-muted-foreground">
             مدیریت کسب‌وکار
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -83,18 +83,18 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
                       activeOptions={{ exact: to === '/' }}
                       activeProps={{
                         className:
-                          "relative flex min-h-[46px] items-center gap-3 rounded-[9px] bg-sidebar-accent p-[11px_14px] text-[12px] font-bold text-sidebar-accent-foreground before:absolute before:start-[-18px] before:h-[24px] before:w-[3px] before:rounded-[3px] before:bg-primary before:content-['']",
+                          "relative flex min-h-11.5 items-center gap-3 rounded-md bg-sidebar-accent py-2.75 px-3.5 text-xs font-bold text-sidebar-accent-foreground before:absolute before:-start-4.5 before:h-6 before:w-0.75 before:rounded-xs before:bg-primary before:content-['']",
                       }}
                       inactiveProps={{
                         className:
-                          'flex min-h-[46px] items-center gap-3 rounded-[9px] p-[11px_14px] text-[12px] text-[#69746e] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+                          'flex min-h-11.5 items-center gap-3 rounded-md py-2.75 px-3.5 text-xs text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
                       }}
                       onClick={closeSidebarOnMobile}
                     >
                       <Icon size={20} strokeWidth={1.7} />
                       <span>{label}</span>
                       {to === '/requests' ? (
-                        <SidebarMenuBadge className="end-2 top-1/2 -translate-y-1/2 rounded-[5px] bg-[#deebe2] p-[2px_7px] text-[10px] text-primary dark:bg-[#263b31] dark:text-[#8fc4a9]">
+                        <SidebarMenuBadge className="end-2 top-1/2 -translate-y-1/2 rounded-md bg-muted py-0.5 px-1.75 text-2xs text-primary dark:bg-accent dark:text-primary">
                           {persianNumber.format(newJobCount)}
                         </SidebarMenuBadge>
                       ) : null}
@@ -107,9 +107,9 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="pt-[45px]">
-        <div className="relative rounded-[12px] border border-[#e4ece6] bg-[linear-gradient(130deg,_#f2f7f3,_#fff)] p-[20px_14px_14px] [&_button]:flex [&_button]:w-full [&_button]:items-center [&_button]:justify-between [&_button]:rounded-[6px] [&_button]:border [&_button]:border-[#d9e3dc] [&_button]:bg-white [&_button]:p-[9px] [&_button]:text-[10px] [&_p]:m-[8px_0_16px] [&_p]:text-[10px] [&_p]:text-muted-foreground [&_strong]:text-[12px] dark:border-[#33453d] dark:bg-[#1c2823] dark:text-[#dce7e1] dark:[&_button]:border-[#3a5e4d] dark:[&_button]:bg-[#294538] dark:[&_button]:text-[#d3ebdf] dark:[&_button:hover]:border-[#4a725f] dark:[&_button:hover]:bg-[#345846] dark:[&_button:hover]:text-white dark:[&_strong]:text-[#f1f7f3]">
-          <span className="mb-[13px] mt-[-39px] grid h-[39px] w-[39px] place-items-center rounded-[12px] border-[5px] border-white bg-[#e5eee6] text-primary dark:bg-[#263b31] dark:text-[#8fc4a9]">
+      <SidebarFooter className="pt-11.25">
+        <div className="relative rounded-lg border border-border bg-linear-130 from-accent to-card pt-5 px-3.5 pb-3.5 [&_button]:flex [&_button]:w-full [&_button]:items-center [&_button]:justify-between [&_button]:rounded-md [&_button]:border [&_button]:border-border [&_button]:bg-white [&_button]:p-2.25 [&_button]:text-2xs [&_p]:mt-2 [&_p]:mx-0 [&_p]:mb-4 [&_p]:text-2xs [&_p]:text-muted-foreground [&_strong]:text-xs dark:bg-none dark:border-border dark:bg-muted dark:text-primary-foreground dark:[&_button]:border-border dark:[&_button]:bg-muted dark:[&_button]:text-primary-foreground dark:[&_button:hover]:border-border dark:[&_button:hover]:bg-muted dark:[&_button:hover]:text-white dark:[&_strong]:text-primary-foreground">
+          <span className="mb-3.25 -mt-9.75 grid h-9.75 w-9.75 place-items-center rounded-lg border-1.25 border-white bg-muted text-primary dark:bg-accent dark:text-primary">
             <LifeBuoy size={23} />
           </span>
           <strong>یک قدم جلوتر از کارها</strong>
@@ -123,7 +123,7 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
           <AlertDialogTrigger asChild>
             <Button
               variant="ghost"
-              className="flex h-auto items-center gap-[9px] border-0 bg-transparent p-[19px_9px] text-[10px] text-[#7a827d]"
+              className="flex h-auto items-center gap-2.25 border-0 bg-transparent py-4.75 px-2.25 text-2xs text-muted-foreground"
             >
               <RotateCcw size={17} />
               بازنشانی داده‌های نمونه

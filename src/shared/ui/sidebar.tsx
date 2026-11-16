@@ -104,15 +104,15 @@ function Sidebar({
         <button
           type="button"
           aria-label="بستن منو"
-          className="fixed inset-0 z-40 bg-[#1e342b66]"
+          className="fixed inset-0 z-40 bg-foreground/40"
           onClick={() => setOpenMobile(false)}
         />
       )}
       {!isMobile && (
         <div
           className={cn(
-            'w-(--sidebar-width) shrink-0 transition-[width] max-[1201px]:w-(--sidebar-width-tablet)',
-            !open && 'w-0! max-[1201px]:w-0!',
+            'w-(--sidebar-width) shrink-0 transition-[width] max-desktop:w-(--sidebar-width-tablet)',
+            !open && 'w-0! max-desktop:w-0!',
           )}
         />
       )}
@@ -122,7 +122,7 @@ function Sidebar({
         data-state={visible ? 'expanded' : 'collapsed'}
         dir={dir}
         className={cn(
-          'fixed inset-y-0 z-50 flex w-(--sidebar-width) flex-col border-sidebar-border bg-sidebar text-sidebar-foreground transition-transform duration-200 max-[1201px]:w-(--sidebar-width-tablet) max-[761px]:w-(--sidebar-width-mobile)',
+          'fixed inset-y-0 z-50 flex w-(--sidebar-width) flex-col border-sidebar-border bg-sidebar text-sidebar-foreground transition-transform duration-200 max-desktop:w-(--sidebar-width-tablet) max-mobile:w-(--sidebar-width-mobile)',
           side === 'right' ? 'right-0 border-l' : 'left-0 border-r',
           !visible && closedTransform,
           className,

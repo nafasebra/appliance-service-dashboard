@@ -15,12 +15,12 @@ export function ReportsPage() {
         title="گزارش‌های عملکرد"
         description="تصویری از خدمات، عملکرد تیم و گردش مالی تمام داده‌های نمونه."
       />
-      <div className="grid grid-cols-[1.2fr_1fr] gap-5 mb-[23px] max-[981px]:grid-cols-1">
+      <div className="grid grid-cols-[1.2fr_1fr] gap-5 mb-5.75 max-tablet:grid-cols-1">
         <Panel title="گردش دریافت و پرداخت" subtitle="روزهای دارای تراکنش · میلیون تومان">
           <CashChart />
         </Panel>
         <Panel title="درخواست‌ها به تفکیک دستگاه" subtitle="همه وضعیت‌ها">
-          <div className="p-[8px_24px_25px] flex flex-col gap-[21px] [&_>_div_>_div:first-child]:flex [&_>_div_>_div:first-child]:justify-between [&_>_div_>_div:first-child]:text-[10px] [&_>_div_>_div:first-child]:text-[#8c9b80] [&_>_div_>_div:first-child]:mb-2.5 [&_strong]:font-normal">
+          <div className="pt-2 px-6 pb-6.25 flex flex-col gap-5.25 [&_>_div_>_div:first-child]:flex [&_>_div_>_div:first-child]:justify-between [&_>_div_>_div:first-child]:text-2xs [&_>_div_>_div:first-child]:text-muted-foreground [&_>_div_>_div:first-child]:mb-2.5 [&_strong]:font-normal">
             {appliances.map((appliance) => {
               const count = jobs.filter((job) => job.appliance === appliance).length;
               return (
@@ -30,7 +30,7 @@ export function ReportsPage() {
                     <strong>{number(count)} درخواست</strong>
                   </div>
                   <Progress
-                    className="h-[7px] bg-[#f1f5ec] rounded-[5px] overflow-hidden [&_span]:h-full [&_span]:block [&_span]:bg-[#8aa976] [&_span]:rounded-[5px] dark:bg-[#202e28] dark:border-[#31433a] dark:text-[#8eb19d]"
+                    className="h-1.75 bg-muted rounded-md overflow-hidden [&_span]:h-full [&_span]:block [&_span]:bg-primary [&_span]:rounded-md dark:bg-muted dark:border-border dark:text-muted-foreground"
                     value={jobs.length ? (count / jobs.length) * 100 : 0}
                   />
                 </div>

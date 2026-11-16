@@ -35,7 +35,7 @@ export function OverviewPage() {
         description="همه‌چیز برای یک روز کاری منظم، در یک نگاه."
         action={
           <Button
-            className="inline-flex justify-center items-center gap-2 bg-white border border-[#dfe6e1] rounded-[7px] p-[10px_15px] text-[#56625a] text-[11px] leading-[1.7] whitespace-nowrap [&:hover]:bg-[#f0f4f1] dark:bg-[#1c2823] dark:border-[#33453d] dark:text-[#dce7e1] bg-primary text-white border-primary shadow-[0_3px_5px_#246b5510] [&:hover]:bg-(--primary-dark) dark:bg-[#3d8c6d] dark:border-[#3d8c6d] dark:text-[#ffffff] dark:[&:hover]:bg-[#4c9d7d]"
+            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:border-border dark:text-primary-foreground dark:[&:hover]:bg-primary"
             onClick={() => setEditor('new')}
           >
             <Plus size={18} />
@@ -43,39 +43,39 @@ export function OverviewPage() {
           </Button>
         }
       />
-      <div className="flex items-center justify-between overflow-hidden relative min-h-[188px] bg-[#eaf0e9] border border-[#e1e8de] rounded-[12px] p-[25px_31px] mb-5.5 [&:before]:content-[''] [&:before]:absolute [&:before]:w-[380px] [&:before]:h-[380px] [&:before]:border [&:before]:border-[#d9e4d5] [&:before]:rounded-full [&:before]:end-[-62px] [&:before]:top-[-90px] [&_h2]:text-[#35573e] [&_h2]:text-[24px] [&_h2]:mt-[15px] [&_h2]:tracking-[-0.7px] [&_p]:text-[11px] [&_p]:text-[#798a78] [&_p]:mt-3 max-[981px]:p-6 max-[981px]:[&_h2]:text-[21px] max-[761px]:min-h-[165px] max-[761px]:[&_h2]:text-[18px] max-[761px]:[&_p]:max-w-[230px] max-[761px]:[&_p]:text-[10px] max-[761px]:[&_p]:leading-[2] dark:bg-[#1b2b23] dark:border-[#2a4035] dark:[&::before]:border-[#355044] dark:[&_h2]:text-[#b8d8c7] dark:[&_p]:text-[#98aaa0]">
+      <div className="flex items-center justify-between overflow-hidden relative min-h-47 bg-accent border border-border rounded-lg py-6.25 px-7.75 mb-5.5 [&:before]:content-[''] [&:before]:absolute [&:before]:w-95 [&:before]:h-95 [&:before]:border [&:before]:border-border [&:before]:rounded-full [&:before]:-end-15.5 [&:before]:-top-22.5 [&_h2]:text-primary [&_h2]:text-2xl [&_h2]:mt-3.75 [&_h2]:tracking-tight [&_p]:text-ui [&_p]:text-muted-foreground [&_p]:mt-3 max-tablet:p-6 max-tablet:[&_h2]:text-xl max-mobile:min-h-41.25 max-mobile:[&_h2]:text-lg max-mobile:[&_p]:max-w-57.5 max-mobile:[&_p]:text-2xs max-mobile:[&_p]:leading-loose dark:bg-accent dark:border-border dark:[&::before]:border-border dark:[&_h2]:text-primary dark:[&_p]:text-muted-foreground">
         <div>
-          <span className="flex items-center gap-[7px] text-[#6e866f] text-[9px] dark:text-[#98aaa0]">
-            <span className="inline-block h-[6px] w-[6px] rounded-full bg-[#5ea88a]" />
+          <span className="flex items-center gap-1.75 text-muted-foreground text-3xs dark:text-muted-foreground">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
             مرکز عملیات خدمات
           </span>
           <h2>خدمات بهتر، با مدیریت دقیق‌تر.</h2>
           <p>{number(active.length)} درخواست باز دارید؛ تیم شما برای رسیدگی آماده است.</p>
           <Link
             to="/dispatch"
-            className="flex gap-[9px] items-center text-[10px] text-[#3f6c4b] mt-5 font-bold dark:text-[#b8d8c7]"
+            className="flex gap-2.25 items-center text-2xs text-primary mt-5 font-bold dark:text-primary"
           >
             مشاهده برنامه اعزام <ArrowLeft size={16} />
           </Link>
         </div>
         <div
-          className="relative w-[230px] h-[140px] me-[50px] shrink-0 max-[1201px]:me-[5px] max-[981px]:w-[170px] max-[981px]:scale-[0.85] max-[981px]:origin-[center] max-[761px]:hidden"
+          className="relative w-57.5 h-35 me-12.5 shrink-0 max-desktop:me-1.25 max-tablet:w-42.5 max-tablet:scale-85 max-tablet:origin-center max-mobile:hidden"
           aria-hidden="true"
         >
-          <div className="absolute w-[200px] h-[200px] border border-dashed border-[#c4d3c0] rounded-full top-[-31px] left-[7px] rotate-[20deg] dark:border-[#355044]" />
-          <div className="absolute w-[94px] h-[94px] rounded-[23px] grid place-items-center top-[4px] left-[16px] bg-[#d0deca] text-[#8da387] rotate-[-13deg] dark:bg-[#2b4437] dark:text-[#90aa9a]">
+          <div className="absolute w-50 h-50 border border-dashed border-border rounded-full -top-7.75 left-1.75 rotate-20 dark:border-border" />
+          <div className="absolute w-23.5 h-23.5 rounded-2xl grid place-items-center top-1 left-4 bg-muted text-muted-foreground -rotate-13 dark:bg-accent dark:text-muted-foreground">
             <CalendarDays size={31} />
           </div>
-          <div className="absolute w-[94px] h-[94px] rounded-[23px] grid place-items-center top-[30px] left-[87px] bg-[linear-gradient(120deg,_#52815b,_#3b6544)] text-[#e9f1e7] shadow-[10px_15px_22px_#5d7a5526] rotate-[12deg] border-[5px] border-[#e8eee2] dark:border-[#263b32]">
+          <div className="absolute w-23.5 h-23.5 rounded-2xl grid place-items-center top-7.5 left-21.75 bg-linear-120 from-primary to-accent-foreground text-primary-foreground shadow-lg rotate-12 border-1.25 border-border dark:border-border">
             <Wrench size={43} strokeWidth={1.4} />
           </div>
-          <span className="absolute top-0 left-[162px] bg-[#fff] p-[9px] rounded-[12px] text-[#52865c] rotate-[8deg] dark:bg-[#17211d]">
+          <span className="absolute top-0 left-40.5 bg-card p-2.25 rounded-lg text-primary rotate-8 dark:bg-card">
             <CircleCheck size={24} />
           </span>
-          <span className="absolute top-[125px] left-[37px] w-[11px] h-[11px] border-[3px] border-[#8ba77b] rounded-full" />
+          <span className="absolute top-31.25 left-9.25 w-2.75 h-2.75 border-0.75 border-border rounded-full" />
         </div>
       </div>
-      <div className="grid grid-cols-4 gap-[17px] mb-[23px] max-[981px]:grid-cols-2 max-[761px]:gap-[11px] max-[401px]:gap-2">
+      <div className="grid grid-cols-4 gap-4.25 mb-5.75 max-tablet:grid-cols-2 max-mobile:gap-2.75 max-compact:gap-2">
         <StatCard
           title="درخواست‌های باز"
           value={number(active.length)}
@@ -102,13 +102,13 @@ export function OverviewPage() {
           icon={<ArrowDownLeft size={20} />}
         />
       </div>
-      <div className="grid grid-cols-[1.45fr_1fr] gap-[21px] mb-[23px] max-[981px]:grid-cols-1">
+      <div className="grid grid-cols-[1.45fr_1fr] gap-5.25 mb-5.75 max-tablet:grid-cols-1">
         <Panel
           title="گردش مالی"
           subtitle="آخرین روزهای دارای تراکنش"
           action={
             <Link
-              className="inline-flex gap-[7px] items-center text-[#5d8167] text-[10px] border-0 bg-none whitespace-nowrap"
+              className="inline-flex gap-1.75 items-center text-primary text-2xs border-0 bg-none whitespace-nowrap"
               to="/finance"
             >
               جزئیات مالی <ArrowLeft size={15} />
@@ -118,25 +118,25 @@ export function OverviewPage() {
           <CashChart />
         </Panel>
         <Panel title="وضعیت درخواست‌ها" subtitle="از ثبت تا پایان خدمت">
-          <div className="flex items-center justify-evenly gap-6 p-[24px_24px_20px] min-h-[193px] max-[1201px]:gap-4 max-[1201px]:px-4.5 max-[981px]:justify-center max-[981px]:gap-[45px] max-[761px]:gap-6 max-[401px]:gap-4.5">
+          <div className="flex items-center justify-evenly gap-6 pt-6 px-6 pb-5 min-h-48.25 max-desktop:gap-4 max-desktop:px-4.5 max-tablet:justify-center max-tablet:gap-11.25 max-mobile:gap-6 max-compact:gap-4.5">
             <div
-              className="w-[130px] h-[130px] rounded-full grid place-items-center shrink-0 [&_>_div]:w-[107px] [&_>_div]:h-[107px] [&_>_div]:rounded-full [&_>_div]:bg-white [&_>_div]:flex [&_>_div]:items-center [&_>_div]:justify-center [&_>_div]:flex-col [&_strong]:text-[27px] [&_strong]:text-[#405e49] [&_span]:text-[8px] [&_span]:text-[#98a399] [&_span]:mt-[7px] max-[1201px]:w-[105px] max-[1201px]:h-[105px] max-[1201px]:[&_>_div]:w-[85px] max-[1201px]:[&_>_div]:h-[85px] max-[981px]:w-[130px] max-[981px]:h-[130px] max-[981px]:[&_>_div]:w-[107px] max-[981px]:[&_>_div]:h-[107px] max-[401px]:w-[103px] max-[401px]:h-[103px] max-[401px]:[&_>_div]:w-[83px] max-[401px]:[&_>_div]:h-[83px] dark:[&_strong]:text-[#b8d8c7] dark:[&_>_div]:bg-[#17211d]"
+              className="w-32.5 h-32.5 rounded-full grid place-items-center shrink-0 [&_>_div]:w-26.75 [&_>_div]:h-26.75 [&_>_div]:rounded-full [&_>_div]:bg-white [&_>_div]:flex [&_>_div]:items-center [&_>_div]:justify-center [&_>_div]:flex-col [&_strong]:text-3xl [&_strong]:text-primary [&_span]:text-4xs [&_span]:text-muted-foreground [&_span]:mt-1.75 max-desktop:w-26.25 max-desktop:h-26.25 max-desktop:[&_>_div]:w-21.25 max-desktop:[&_>_div]:h-21.25 max-tablet:w-32.5 max-tablet:h-32.5 max-tablet:[&_>_div]:w-26.75 max-tablet:[&_>_div]:h-26.75 max-compact:w-25.75 max-compact:h-25.75 max-compact:[&_>_div]:w-20.75 max-compact:[&_>_div]:h-20.75 dark:[&_strong]:text-primary dark:[&_>_div]:bg-card"
               style={{
                 background: `conic-gradient(var(--primary) ${jobs.length ? (jobs.filter((job) => job.status === 'completed').length / jobs.length) * 100 : 0}%, #edf0f4 0)`,
               }}
             >
               <div>
-                <strong>{number(jobs.length)}</strong>
+                <strong>{jobs.length}</strong>
                 <span>کل درخواست‌ها</span>
               </div>
             </div>
-            <div className="flex flex-1 flex-col gap-[17px] min-w-[135px] max-w-[210px] [&_>_div]:flex [&_>_div]:justify-between [&_>_div]:items-center [&_>_div]:gap-4 [&_>_div]:text-[10px] [&_>_div_>_span]:flex [&_>_div_>_span]:items-center [&_>_div_>_span]:gap-[7px] [&_>_div_>_span]:text-[#819087] [&_strong]:text-[#53645a] [&_strong]:text-[12px] max-[1201px]:min-w-[110px] max-[1201px]:[&_>_div_>_span]:text-[9px] max-[981px]:min-w-[160px] max-[761px]:min-w-[135px]">
+            <div className="flex flex-1 flex-col gap-4.25 min-w-33.75 max-w-52.5 [&_>_div]:flex [&_>_div]:justify-between [&_>_div]:items-center [&_>_div]:gap-4 [&_>_div]:text-2xs [&_>_div_>_span]:flex [&_>_div_>_span]:items-center [&_>_div_>_span]:gap-1.75 [&_>_div_>_span]:text-muted-foreground [&_strong]:text-muted-foreground [&_strong]:text-xs max-desktop:min-w-27.5 max-desktop:[&_>_div_>_span]:text-3xs max-tablet:min-w-40 max-mobile:min-w-33.75">
               {(['completed', 'working', 'scheduled', 'new'] as const).map((status) => (
                 <div key={status}>
                   <span>
                     <i
                       className={cn(
-                        'size-[7px] rounded-sm bg-muted',
+                        'size-1.75 rounded-sm bg-muted',
                         status === 'completed' && 'bg-status-completed-foreground',
                         status === 'working' && 'bg-status-new-foreground',
                         status === 'scheduled' && 'bg-status-scheduled-foreground',
@@ -150,7 +150,7 @@ export function OverviewPage() {
             </div>
           </div>
           <Link
-            className="flex items-center justify-center gap-2 border-t border-t-[#f0f3f0] mt-5.5 p-[13px] text-[10px] text-[#819186] dark:border-[#27362f]"
+            className="flex items-center justify-center gap-2 border-t border-t-border mt-5.5 p-3.25 text-2xs text-muted-foreground dark:border-border"
             to="/requests"
           >
             مدیریت همه درخواست‌ها <ArrowLeft size={16} />
@@ -163,7 +163,7 @@ export function OverviewPage() {
         action={
           <Link
             to="/requests"
-            className="inline-flex gap-[7px] items-center text-[#5d8167] text-[10px] border-0 bg-none whitespace-nowrap"
+            className="inline-flex gap-1.75 items-center text-primary text-2xs border-0 bg-none whitespace-nowrap"
           >
             همه درخواست‌ها <ArrowLeft size={15} />
           </Link>
@@ -171,13 +171,18 @@ export function OverviewPage() {
       >
         <JobTable jobs={jobs.slice(0, 5)} onSelect={setEditor} />
       </Panel>
-      <div className="grid grid-cols-[1.65fr_1fr] gap-5.5 mt-[23px] max-[981px]:grid-cols-1 max-[761px]:gap-4">
+      <div className="grid grid-cols-[1.65fr_1fr] gap-5.5 mt-5.75 max-tablet:grid-cols-1 max-mobile:gap-4">
         <Panel title="در صف رسیدگی" subtitle="درخواست‌هایی که به توجه شما نیاز دارند">
-          <div className="[&_>_button]:flex [&_>_button]:items-center [&_>_button]:gap-3 [&_>_button]:w-full [&_>_button]:bg-white [&_>_button]:border-0 [&_>_button]:border-t [&_>_button]:border-t-[#f2f4f0] [&_>_button]:p-[16px_22px] [&_>_button]:text-start [&_>_button]:h-auto [&_>_button:hover]:bg-[#fafcf8] [&_strong]:text-[10px] [&_strong]:text-[#68736a] [&_strong]:font-medium [&_small]:block [&_small]:text-[9px] [&_small]:text-[#9aa399] [&_small]:mt-1.5 [&_.badge]:ms-auto max-[761px]:[&_>_button]:px-[17px] max-[761px]:[&_>_button]:gap-[9px] max-[761px]:[&_strong]:text-[9px] dark:[&_>_button]:bg-[#17211d] dark:[&_>_button]:border-border dark:[&_>_button]:text-foreground dark:[&_>_button:hover]:bg-[#1c2a24] dark:[&_>_button:hover]:border-[#35483f] dark:[&_>_button]:border-[#27362f]">
+          <div className="[&_>_button]:flex [&_>_button]:items-center [&_>_button]:gap-3 [&_>_button]:w-full [&_>_button]:bg-white [&_>_button]:border-0 [&_>_button]:border-t [&_>_button]:border-t-border [&_>_button]:py-4 [&_>_button]:px-5.5 [&_>_button]:text-start [&_>_button]:h-auto [&_>_button:hover]:bg-muted [&_strong]:text-2xs [&_strong]:text-muted-foreground [&_strong]:font-medium [&_small]:block [&_small]:text-3xs [&_small]:text-muted-foreground [&_small]:mt-1.5 [&_.badge]:ms-auto max-mobile:[&_>_button]:px-4.25 max-mobile:[&_>_button]:gap-2.25 max-mobile:[&_strong]:text-3xs dark:[&_>_button]:bg-card dark:[&_>_button]:border-border dark:[&_>_button]:text-foreground dark:[&_>_button:hover]:bg-accent dark:[&_>_button:hover]:border-border dark:[&_>_button]:border-border">
             {active.length ? (
               active.slice(0, 3).map((job) => (
-                <Button variant="ghost" key={job.id} onClick={() => setEditor(job)}>
-                  <span className="grid place-items-center text-[#ae966f] bg-[#f8f4ea] h-[35px] w-[35px] rounded-[9px] shrink-0 dark:bg-[#202e28] dark:border-[#31433a] dark:text-[#8eb19d]">
+                <Button
+                  variant="ghost"
+                  key={job.id}
+                  onClick={() => setEditor(job)}
+                  className="justify-start"
+                >
+                  <span className="grid place-items-center text-muted-foreground bg-muted h-8.75 w-8.75 rounded-md shrink-0 dark:bg-muted dark:border-border dark:text-muted-foreground">
                     <Clock3 size={19} />
                   </span>
                   <div>
@@ -189,7 +194,7 @@ export function OverviewPage() {
                   </div>
                   <Badge
                     className={cn(
-                      'inline-flex items-center gap-1 rounded-md px-2 py-1 text-[9px] whitespace-nowrap',
+                      'inline-flex items-center gap-1 rounded-md px-2 py-1 text-3xs whitespace-nowrap',
                       job.status === 'new' && 'bg-status-new text-status-new-foreground',
                       job.status === 'scheduled' &&
                         'bg-status-scheduled text-status-scheduled-foreground',
@@ -206,12 +211,12 @@ export function OverviewPage() {
                 </Button>
               ))
             ) : (
-              <p className="p-6 text-[#9ba49e]">همه درخواست‌ها رسیدگی شده‌اند.</p>
+              <p className="p-6 text-muted-foreground">همه درخواست‌ها رسیدگی شده‌اند.</p>
             )}
           </div>
         </Panel>
-        <div className="bg-[#e8ede2] border border-[#e0e7d8] rounded-[11px] p-[27px] flex flex-col justify-center [&_h2]:text-[#536749] [&_h2]:text-[19px] [&_h2]:m-[6px_0_14px] [&_p]:text-[#8b967f] [&_p]:text-[11px] [&_p]:leading-[2.1] [&_a]:text-[#5e7751] [&_a]:text-[10px] [&_a]:flex [&_a]:items-center [&_a]:gap-2 [&_a]:mt-6 max-[761px]:p-[23px] dark:[&_h2]:text-[#b8d8c7] dark:[&_a]:text-[#b8d8c7] dark:[&_p]:text-[#98aaa0] dark:bg-[#1d2d25] dark:border-[#2c4136]">
-          <span className="text-[#8d9890] text-[9px] mb-2.5">شفافیت مالی</span>
+        <div className="bg-accent border border-border rounded-lg p-6.75 flex flex-col justify-center [&_h2]:text-primary [&_h2]:text-lg [&_h2]:mt-1.5 [&_h2]:mx-0 [&_h2]:mb-3.5 [&_p]:text-muted-foreground [&_p]:text-ui [&_p]:leading-loose [&_a]:text-primary [&_a]:text-2xs [&_a]:flex [&_a]:items-center [&_a]:gap-2 [&_a]:mt-6 max-mobile:p-5.75 dark:[&_h2]:text-primary dark:[&_a]:text-primary dark:[&_p]:text-muted-foreground dark:bg-accent dark:border-border">
+          <span className="text-muted-foreground text-3xs mb-2.5">شفافیت مالی</span>
           <h2>هر خدمت، یک حساب روشن.</h2>
           <p>سهم شرکت، مانده تعمیرکار و پول جابه‌جا شده را جداگانه دنبال کنید.</p>
           <Link to="/finance">

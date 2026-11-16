@@ -47,7 +47,7 @@ function JalaliDatePicker({
         <PopoverContent align="start" className="w-auto p-0" dir="rtl">
           <Suspense
             fallback={
-              <div className="grid h-[300px] w-[280px] place-items-center text-xs text-muted-foreground">
+              <div className="grid h-75 w-70 place-items-center text-xs text-muted-foreground">
                 در حال بارگذاری تقویم…
               </div>
             }

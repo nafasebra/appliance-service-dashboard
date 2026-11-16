@@ -20,7 +20,7 @@ export function TechniciansPage() {
   return (
     <>
       <PageHeading title="تعمیرکاران" description="تخصص، محدوده فعالیت و حساب خدمات هر عضو تیم." />
-      <div className="grid grid-cols-3 gap-5 max-[1201px]:grid-cols-2 max-[761px]:grid-cols-1">
+      <div className="grid grid-cols-3 gap-5 max-desktop:grid-cols-2 max-mobile:grid-cols-1">
         {technicians.map((tech, index) => {
           const assigned = jobs.filter((job) => job.technicianId === tech.id);
           const active = assigned.filter((job) => !['completed', 'cancelled'].includes(job.status));
@@ -30,7 +30,7 @@ export function TechniciansPage() {
           );
           return (
             <Card
-              className="bg-white border border-border rounded-[12px] p-[25px] dark:bg-[#17211d] dark:border-border dark:text-foreground gap-0 py-0"
+              className="bg-white border border-border rounded-lg p-6.25 dark:bg-card dark:border-border dark:text-foreground gap-0 py-0"
               key={tech.id}
             >
               <div className="mb-5 flex items-center justify-between gap-3">
@@ -49,7 +49,7 @@ export function TechniciansPage() {
                 </span>
                 <Badge
                   className={cn(
-                    'inline-flex items-center gap-1 rounded-md px-2 py-1 text-[9px] whitespace-nowrap',
+                    'inline-flex items-center gap-1 rounded-md px-2 py-1 text-3xs whitespace-nowrap',
                     active.length
                       ? 'bg-status-working text-status-working-foreground'
                       : 'bg-status-completed text-status-completed-foreground',
@@ -74,7 +74,7 @@ export function TechniciansPage() {
                 <Phone size={15} />
                 <bdi>{tech.phone}</bdi>
               </a>
-              <div className="mt-6 grid grid-cols-2 gap-4 border-t pt-4 [&_small]:text-[10px] [&_small]:text-muted-foreground [&_strong]:mt-2 [&_strong]:block [&_strong]:text-sm [&_strong]:text-primary">
+              <div className="mt-6 grid grid-cols-2 gap-4 border-t pt-4 [&_small]:text-2xs [&_small]:text-muted-foreground [&_strong]:mt-2 [&_strong]:block [&_strong]:text-sm [&_strong]:text-primary">
                 <div>
                   <small>خدمات تکمیل‌شده</small>
                   <strong>
@@ -90,7 +90,7 @@ export function TechniciansPage() {
           );
         })}
       </div>
-      <p className="mt-5 text-[10px] leading-8 text-muted-foreground">
+      <p className="mt-5 text-2xs leading-8 text-muted-foreground">
         مانده تعمیرکار فقط از خدمات تکمیل‌شده و پرداخت‌های ثبت‌شده محاسبه می‌شود؛ این صفحه وضعیت
         زنده حضور یا موقعیت مکانی نیست.
       </p>
@@ -113,8 +113,8 @@ export function CustomersPage() {
         description="اطلاعات تماس، آدرس و سوابق خدمات مشتریان در یک جا."
       />
       <Panel title="دفتر مشتریان" subtitle={`${number(customers.length)} مشتری نمونه`}>
-        <div className="flex items-center gap-3 p-[0_22px_20px] flex-wrap max-[761px]:px-4.5">
-          <Label className="flex w-[340px] max-w-full items-center gap-2.5 rounded-[7px] border border-[#e5eae3] p-[0_11px] text-[#99a295] focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[#73977b] [&_input]:w-full [&_input]:border-0 [&_input]:bg-transparent [&_input]:p-[11px_0] [&_input]:text-[10px] [&_input]:outline-hidden dark:border-[#33453d] dark:bg-[#1c2823] dark:text-[#dce7e1]">
+        <div className="flex items-center gap-3 pt-0 px-5.5 pb-5 flex-wrap max-mobile:px-4.5">
+          <Label className="flex w-85 max-w-full items-center gap-2.5 rounded-md border border-border py-0 px-2.75 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring [&_input]:w-full [&_input]:border-0 [&_input]:bg-transparent [&_input]:py-2.75 [&_input]:px-0 [&_input]:text-2xs [&_input]:outline-hidden dark:border-border dark:bg-muted dark:text-primary-foreground">
             <Search size={18} />
             <Input
               className="border-0 shadow-none focus-visible:ring-0"
@@ -153,7 +153,7 @@ export function CustomersPage() {
                     <Button
                       variant="ghost"
                       size="icon-sm"
-                      className="grid place-items-center h-[31px] w-[31px] border border-transparent rounded-[6px] text-[#89998c] bg-transparent shrink-0 [&:hover]:bg-[#f0f5ef] [&:hover]:border-[#e3ebe1] dark:[&:hover]:bg-[#1c2a24] dark:[&:hover]:border-[#35483f]"
+                      className="grid place-items-center h-7.75 w-7.75 border border-transparent rounded-md text-muted-foreground bg-transparent shrink-0 [&:hover]:bg-accent [&:hover]:border-border dark:[&:hover]:bg-accent dark:[&:hover]:border-border"
                       onClick={() => setSelected(customer.id)}
                       aria-label={`سوابق ${customer.name}`}
                     >

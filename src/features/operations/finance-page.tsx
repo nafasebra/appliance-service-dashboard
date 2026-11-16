@@ -91,7 +91,7 @@ export function FinancePage() {
         description="شفافیت در دریافت‌ها، پرداخت‌ها و سهم شرکت از هر خدمت."
         action={
           <Button
-            className="inline-flex justify-center items-center gap-2 bg-white border border-[#dfe6e1] rounded-[7px] p-[10px_15px] text-[#56625a] text-[11px] leading-[1.7] whitespace-nowrap [&:hover]:bg-[#f0f4f1] dark:bg-[#1c2823] dark:border-[#33453d] dark:text-[#dce7e1] bg-primary text-white border-primary shadow-[0_3px_5px_#246b5510] [&:hover]:bg-(--primary-dark) dark:bg-[#3d8c6d] dark:border-[#3d8c6d] dark:text-[#ffffff] dark:[&:hover]:bg-[#4c9d7d]"
+            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:border-border dark:text-primary-foreground dark:[&:hover]:bg-primary"
             onClick={() => {
               setOpen(true);
               setError('');
@@ -102,7 +102,7 @@ export function FinancePage() {
           </Button>
         }
       />
-      <div className="grid grid-cols-4 gap-[17px] mb-[23px] max-[981px]:grid-cols-2 max-[761px]:gap-[11px] max-[401px]:gap-2">
+      <div className="grid grid-cols-4 gap-4.25 mb-5.75 max-tablet:grid-cols-2 max-mobile:gap-2.75 max-compact:gap-2">
         <StatCard
           title="کل دریافت ثبت‌شده"
           value={money(finance.receipts)}
@@ -129,7 +129,7 @@ export function FinancePage() {
           icon={<HandCoins size={20} />}
         />
       </div>
-      <div className="flex items-center gap-[30px] p-5.5 bg-[#eef3e7] border border-[#e0e8d6] rounded-[10px] mb-5.5 [&_>_div]:shrink-0 [&_span]:block [&_span]:text-[#8a977e] [&_span]:text-[10px] [&_strong]:block [&_strong]:mt-[11px] [&_strong]:text-[#5b734a] [&_strong]:text-[16px] [&_p]:text-[10px] [&_p]:text-[#8e9c80] [&_p]:leading-[2] [&_p]:border-s [&_p]:border-s-[#d7e2cb] [&_p]:ps-[25px] max-[981px]:flex-wrap max-[981px]:gap-5 max-[981px]:[&_p]:border-0 max-[981px]:[&_p]:p-0 max-[761px]:[&_strong]:text-[14px] dark:[&_strong]:text-[#b8d8c7] dark:[&_p]:text-[#98aaa0] dark:[&_span]:text-[#98aaa0] dark:bg-[#1d2d25] dark:border-[#2c4136]">
+      <div className="flex items-center gap-7.5 p-5.5 bg-accent border border-border rounded-lg mb-5.5 [&_>_div]:shrink-0 [&_span]:block [&_span]:text-muted-foreground [&_span]:text-2xs [&_strong]:block [&_strong]:mt-2.75 [&_strong]:text-primary [&_strong]:text-base [&_p]:text-2xs [&_p]:text-muted-foreground [&_p]:leading-loose [&_p]:border-s [&_p]:border-s-border [&_p]:ps-6.25 max-tablet:flex-wrap max-tablet:gap-5 max-tablet:[&_p]:border-0 max-tablet:[&_p]:p-0 max-mobile:[&_strong]:text-sm dark:[&_strong]:text-primary dark:[&_p]:text-muted-foreground dark:[&_span]:text-muted-foreground dark:bg-accent dark:border-border">
         <div>
           <span>ارزش خدمات تکمیل‌شده</span>
           <strong>{money(finance.serviceValue)}</strong>
@@ -147,7 +147,7 @@ export function FinancePage() {
           <Button
             variant="outline"
             size="sm"
-            className="inline-flex justify-center items-center gap-2 bg-white border border-[#dfe6e1] rounded-[7px] p-[10px_15px] text-[#56625a] text-[11px] leading-[1.7] whitespace-nowrap [&:hover]:bg-[#f0f4f1] dark:bg-[#1c2823] dark:border-[#33453d] dark:text-[#dce7e1] text-[10px] p-[6px_10px]"
+            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground text-2xs py-1.5 px-2.5"
             onClick={exportCsv}
           >
             <Download size={16} />
@@ -155,8 +155,8 @@ export function FinancePage() {
           </Button>
         }
       >
-        <div className="flex items-center gap-3 p-[0_22px_20px] flex-wrap max-[761px]:px-4.5">
-          <div className="flex bg-[#f4f7ef] p-1 rounded-[7px] gap-[3px] [&_button]:border-0 [&_button]:bg-transparent [&_button]:text-[10px] [&_button]:p-[8px_14px] [&_button]:rounded-[5px] [&_button]:text-[#9aa68e] [&_.selected]:bg-white [&_.selected]:shadow-[0_1px_3px_#3545270f] [&_.selected]:text-[#627b50] max-[401px]:[&_button]:px-2.5 dark:[&_.selected]:bg-[#1c2823] dark:[&_.selected]:border-[#33453d] dark:[&_.selected]:text-[#dce7e1] dark:bg-[#202e28] dark:border-[#31433a] dark:text-[#8eb19d]">
+        <div className="flex items-center gap-3 pt-0 px-5.5 pb-5 flex-wrap max-mobile:px-4.5">
+          <div className="flex bg-muted p-1 rounded-md gap-0.75 [&_button]:border-0 [&_button]:bg-transparent [&_button]:text-2xs [&_button]:py-2 [&_button]:px-3.5 [&_button]:rounded-md [&_button]:text-muted-foreground [&_.selected]:bg-white [&_.selected]:shadow-xs [&_.selected]:text-primary max-compact:[&_button]:px-2.5 dark:[&_.selected]:bg-muted dark:[&_.selected]:border-border dark:[&_.selected]:text-primary-foreground dark:bg-muted dark:border-border dark:text-muted-foreground">
             {[
               ['all', 'همه'],
               ['receipt', 'دریافت‌ها'],
@@ -167,7 +167,7 @@ export function FinancePage() {
                 variant="ghost"
                 size="sm"
                 className={cn(
-                  'rounded-md text-[10px] text-muted-foreground',
+                  'rounded-md text-2xs text-muted-foreground',
                   filter === value && 'bg-card text-primary shadow-xs',
                 )}
                 key={value}
@@ -198,7 +198,7 @@ export function FinancePage() {
                   <TableCell>
                     <Badge
                       className={cn(
-                        'inline-flex items-center gap-1 rounded-md px-2 py-1 text-[9px] whitespace-nowrap',
+                        'inline-flex items-center gap-1 rounded-md px-2 py-1 text-3xs whitespace-nowrap',
                         item.kind === 'receipt'
                           ? 'bg-status-completed text-status-completed-foreground'
                           : 'bg-status-scheduled text-status-scheduled-foreground',
@@ -231,9 +231,9 @@ export function FinancePage() {
         <Modal title="ثبت تراکنش نمونه" onClose={() => setOpen(false)}>
           <form
             onSubmit={submit}
-            className="grid grid-cols-2 gap-4.5 p-[23px] [&_label]:flex [&_label]:flex-col [&_label]:gap-[9px] [&_label]:text-[11px] [&_input]:border [&_input]:border-[#dce5d6] [&_input]:rounded-[7px] [&_input]:p-2.5 [&_input]:text-[12px] [&_input]:w-full [&_input]:bg-white [&_select]:border [&_select]:border-[#dce5d6] [&_select]:rounded-[7px] [&_select]:p-2.5 [&_select]:text-[12px] [&_select]:w-full [&_select]:bg-white [&_textarea]:border [&_textarea]:border-[#dce5d6] [&_textarea]:rounded-[7px] [&_textarea]:p-2.5 [&_textarea]:text-[12px] [&_textarea]:w-full [&_textarea]:bg-white [&_input[type='date']]:direction-ltr [&_input[type='time']]:direction-ltr [&_textarea]:min-h-[78px] [&_textarea]:resize-y max-[761px]:gap-3.5 max-[761px]:p-4.5 max-[401px]:grid-cols-1 dark:[&_input]:bg-[#1c2823] dark:[&_input]:border-[#33453d] dark:[&_input]:text-[#dce7e1] dark:[&_select]:bg-[#1c2823] dark:[&_select]:border-[#33453d] dark:[&_select]:text-[#dce7e1] dark:[&_textarea]:bg-[#1c2823] dark:[&_textarea]:border-[#33453d] dark:[&_textarea]:text-[#dce7e1]"
+            className="grid grid-cols-2 gap-4.5 p-5.75 [&_label]:flex [&_label]:flex-col [&_label]:gap-2.25 [&_label]:text-ui [&_input]:border [&_input]:border-border [&_input]:rounded-md [&_input]:p-2.5 [&_input]:text-xs [&_input]:w-full [&_input]:bg-white [&_select]:border [&_select]:border-border [&_select]:rounded-md [&_select]:p-2.5 [&_select]:text-xs [&_select]:w-full [&_select]:bg-white [&_textarea]:border [&_textarea]:border-border [&_textarea]:rounded-md [&_textarea]:p-2.5 [&_textarea]:text-xs [&_textarea]:w-full [&_textarea]:bg-white [&_input[type='date']]:direction-ltr [&_input[type='time']]:direction-ltr [&_textarea]:min-h-19.5 [&_textarea]:resize-y max-mobile:gap-3.5 max-mobile:p-4.5 max-compact:grid-cols-1 dark:[&_input]:bg-muted dark:[&_input]:border-border dark:[&_input]:text-primary-foreground dark:[&_select]:bg-muted dark:[&_select]:border-border dark:[&_select]:text-primary-foreground dark:[&_textarea]:bg-muted dark:[&_textarea]:border-border dark:[&_textarea]:text-primary-foreground"
           >
-            <Label className="flex flex-col gap-2 text-[11px]">
+            <Label className="flex flex-col gap-2 text-ui">
               نوع تراکنش
               <NativeSelect
                 value={kind}
@@ -246,12 +246,12 @@ export function FinancePage() {
                 ))}
               </NativeSelect>
             </Label>
-            <Label className="flex flex-col gap-2 text-[11px]">
+            <Label className="flex flex-col gap-2 text-ui">
               مبلغ (تومان نمونه)
               <Input name="amount" type="number" min="1" step="1" required />
             </Label>
             {kind !== 'expense' && (
-              <Label className="col-span-full flex flex-col gap-2 text-[11px]">
+              <Label className="col-span-full flex flex-col gap-2 text-ui">
                 درخواست مرتبط
                 <NativeSelect name="jobId" required>
                   <option value="">انتخاب درخواست</option>
@@ -265,7 +265,7 @@ export function FinancePage() {
                 </NativeSelect>
               </Label>
             )}
-            <Label className="flex flex-col gap-2 text-[11px]">
+            <Label className="flex flex-col gap-2 text-ui">
               تاریخ (جلالی)
               <JalaliDatePicker
                 name="date"
@@ -275,31 +275,31 @@ export function FinancePage() {
                 required
               />
             </Label>
-            <Label className="flex flex-col gap-2 text-[11px]">
+            <Label className="flex flex-col gap-2 text-ui">
               شرح
               <Input name="description" required maxLength={150} />
             </Label>
-            <p className="text-[10px] text-[#919d89] leading-[2] col-span-full">
+            <p className="text-2xs text-muted-foreground leading-loose col-span-full">
               این عملیات فقط دفتر نمونه مرورگر را تغییر می‌دهد و پرداخت بانکی انجام نمی‌دهد.
             </p>
             {error && (
               <p
-                className="bg-[#fff0ee] text-[#aa5445] p-2.5 rounded-[7px] text-[11px] leading-[1.9] dark:bg-[#412929] dark:text-[#e2a5a5] col-span-full"
+                className="bg-status-cancelled text-destructive p-2.5 rounded-md text-ui leading-loose dark:bg-status-cancelled dark:text-destructive col-span-full"
                 role="alert"
               >
                 {error}
               </p>
             )}
-            <div className="flex gap-[9px] mt-[5px] col-span-full">
+            <div className="flex gap-2.25 mt-1.25 col-span-full">
               <Button
-                className="inline-flex justify-center items-center gap-2 bg-white border border-[#dfe6e1] rounded-[7px] p-[10px_15px] text-[#56625a] text-[11px] leading-[1.7] whitespace-nowrap [&:hover]:bg-[#f0f4f1] dark:bg-[#1c2823] dark:border-[#33453d] dark:text-[#dce7e1] bg-primary text-white border-primary shadow-[0_3px_5px_#246b5510] [&:hover]:bg-(--primary-dark) dark:bg-[#3d8c6d] dark:border-[#3d8c6d] dark:text-[#ffffff] dark:[&:hover]:bg-[#4c9d7d]"
+                className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:border-border dark:text-primary-foreground dark:[&:hover]:bg-primary"
                 type="submit"
               >
                 ثبت تراکنش
               </Button>
               <Button
                 variant="outline"
-                className="inline-flex justify-center items-center gap-2 bg-white border border-[#dfe6e1] rounded-[7px] p-[10px_15px] text-[#56625a] text-[11px] leading-[1.7] whitespace-nowrap [&:hover]:bg-[#f0f4f1] dark:bg-[#1c2823] dark:border-[#33453d] dark:text-[#dce7e1]"
+                className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground"
                 type="button"
                 onClick={() => setOpen(false)}
               >

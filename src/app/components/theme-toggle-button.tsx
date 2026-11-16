@@ -10,7 +10,7 @@ export function ThemeToggleButton() {
     <Button
       variant="outline"
       size="icon-sm"
-      className="grid h-[31px] w-[31px] shrink-0 place-items-center rounded-[6px] border-border bg-background text-primary hover:bg-accent"
+      className="grid h-7.75 w-7.75 shrink-0 place-items-center rounded-md border-border bg-background text-primary hover:bg-accent"
       type="button"
       onClick={toggleTheme}
       aria-label={isDark ? 'فعال‌کردن پوسته روشن' : 'فعال‌کردن پوسته تاریک'}

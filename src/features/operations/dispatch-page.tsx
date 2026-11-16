@@ -22,7 +22,7 @@ export function DispatchPage() {
         title="برنامه‌ریزی و اعزام"
         description="برنامه مراجعه هر تعمیرکار را ببینید و درخواست‌ها را تخصیص دهید."
         action={
-          <Label className="flex flex-col gap-[7px] text-[10px] text-[#8b9785]">
+          <Label className="flex flex-col gap-1.75 text-2xs text-muted-foreground">
             تاریخ برنامه
             <JalaliDatePicker
               aria-label="تاریخ برنامه اعزام"
@@ -32,7 +32,7 @@ export function DispatchPage() {
           </Label>
         }
       />
-      <div className="flex gap-2.5 items-center p-[16px_19px] border border-[#dfe8d8] rounded-[9px] text-[#7a8e6e] bg-[#f1f6ec] text-[11px] mb-6 [&_button]:ms-auto max-[761px]:flex-wrap max-[761px]:leading-[2] max-[761px]:[&_>_span]:flex-1 max-[761px]:[&_button]:ms-[30px] dark:bg-[#1d2d25] dark:border-[#2c4136]">
+      <div className="flex gap-2.5 items-center py-4 px-4.75 border border-border rounded-md text-muted-foreground bg-accent text-ui mb-6 [&_button]:ms-auto max-mobile:flex-wrap max-mobile:leading-loose max-mobile:[&_>_span]:flex-1 max-mobile:[&_button]:ms-7.5 dark:bg-accent dark:border-border">
         <Clock3 size={20} />
         <span>
           نمای برنامه روزانه · {number(visits.length)} مراجعه · ساعت‌ها بر اساس زمان محلی تهران در
@@ -40,14 +40,14 @@ export function DispatchPage() {
         </span>
         <Button
           variant="link"
-          className="inline-flex gap-[7px] items-center text-[#5d8167] text-[10px] border-0 bg-none whitespace-nowrap"
+          className="inline-flex gap-1.75 items-center text-primary text-2xs border-0 bg-none whitespace-nowrap"
           onClick={() => setEditor('new')}
         >
           <Plus size={16} />
           درخواست جدید
         </Button>
       </div>
-      <div className="grid grid-cols-3 gap-4.5 items-start max-[1201px]:grid-cols-2 max-[761px]:grid-cols-1">
+      <div className="grid grid-cols-3 gap-4.5 items-start max-desktop:grid-cols-2 max-mobile:grid-cols-1">
         {[
           { id: '', name: 'بدون تخصیص', specialty: 'برای این درخواست‌ها تعمیرکار انتخاب کنید' },
           ...technicians,
@@ -63,32 +63,32 @@ export function DispatchPage() {
               action={
                 <Badge
                   variant="secondary"
-                  className="text-[10px] bg-[#edf3e8] p-[4px_8px] rounded-[6px] text-[#819171] dark:bg-[#263b31] dark:text-[#8fc4a9]"
+                  className="text-2xs bg-accent py-1 px-2 rounded-md text-muted-foreground dark:bg-accent dark:text-primary"
                 >
                   {number(assigned.length)}
                 </Badge>
               }
             >
-              <div className="p-[0_15px_15px] min-h-[150px]">
+              <div className="pt-0 px-3.75 pb-3.75 min-h-37.5">
                 {assigned.length ? (
                   assigned.map((job) => (
                     <Button
                       variant="outline"
                       key={job.id}
                       className={cn(
-                        'mt-3 block h-auto w-full rounded-[9px] border border-[#e0e8d9] bg-[#fcfdf9] p-4 text-start whitespace-normal hover:bg-[#f3f7ed] [&_h3]:m-[17px_0_8px] [&_h3]:text-[13px] [&_h3]:text-[#536d47] [&_p]:text-[11px] [&_p]:text-[#8b9981] [&_small]:mt-3 [&_small]:flex [&_small]:items-start [&_small]:gap-[5px] [&_small]:text-[9px] [&_small]:leading-[2] [&_small]:text-[#9ca68f] [&_small_svg]:mt-[2px] [&_small_svg]:shrink-0 dark:border-[#2c4036] dark:bg-[#19251f] dark:text-[#d5e2db] dark:hover:bg-[#203129] dark:[&_h3]:text-[#b8d8c7]',
-                        job.priority === 'urgent' && 'border-s-[3px] border-s-[#c4a36c]',
+                        'mt-3 block h-auto w-full rounded-md border border-border bg-muted p-4 text-start whitespace-normal hover:bg-accent [&_h3]:mt-4.25 [&_h3]:mx-0 [&_h3]:mb-2 [&_h3]:text-body [&_h3]:text-primary [&_p]:text-ui [&_p]:text-muted-foreground [&_small]:mt-3 [&_small]:flex [&_small]:items-start [&_small]:gap-1.25 [&_small]:text-3xs [&_small]:leading-loose [&_small]:text-muted-foreground [&_small_svg]:mt-0.5 [&_small_svg]:shrink-0 dark:border-border dark:bg-muted dark:text-primary-foreground dark:hover:bg-accent dark:[&_h3]:text-primary',
+                        job.priority === 'urgent' && 'border-s-0.75 border-s-border',
                       )}
                       onClick={() => setEditor(job)}
                     >
-                      <div className="flex items-center gap-[7px] text-[11px] text-[#9aa68f] [&_.badge]:ms-auto [&_.badge]:text-[8px]">
+                      <div className="flex items-center gap-1.75 text-ui text-muted-foreground [&_.badge]:ms-auto [&_.badge]:text-4xs">
                         <Clock3 size={15} />
-                        <span className="direction-ltr text-start font-[Arial,_sans-serif] tracking-[0.3px]">
+                        <span className="direction-ltr text-start font-latin tracking-normal">
                           {job.time}
                         </span>
                         <Badge
                           className={cn(
-                            'inline-flex items-center gap-1 rounded-md px-2 py-1 text-[9px] whitespace-nowrap',
+                            'inline-flex items-center gap-1 rounded-md px-2 py-1 text-3xs whitespace-nowrap',
                             job.status === 'new' && 'bg-status-new text-status-new-foreground',
                             job.status === 'scheduled' &&
                               'bg-status-scheduled text-status-scheduled-foreground',
@@ -111,7 +111,7 @@ export function DispatchPage() {
                         <MapPin size={14} />
                         {customers.find((item) => item.id === job.customerId)?.address}
                       </small>
-                      <div className="text-[10px] text-[#7e8b71] mt-3.5 pt-[11px] border-t border-dashed border-t-[#dee6d3] dark:border-border">
+                      <div className="text-2xs text-muted-foreground mt-3.5 pt-2.75 border-t border-dashed border-t-border dark:border-border">
                         {job.issue}
                       </div>
                     </Button>

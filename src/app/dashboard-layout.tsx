@@ -24,7 +24,7 @@ function DashboardShell() {
   return (
     <>
       <Link
-        className="fixed top-[-100px] right-5 z-[100] rounded-md bg-primary p-3 text-white focus:top-2.5"
+        className="fixed -top-25 right-5 z-100 rounded-md bg-primary p-3 text-white focus:top-2.5"
         to="."
         hash="main-content"
       >
@@ -37,7 +37,7 @@ function DashboardShell() {
         <DashboardHeader />
 
         {storageError ? (
-          <Alert className="mx-9 mt-4 w-auto border-[#e9c77d] bg-[#fff8e8] text-[#795719] max-[761px]:mx-[18px] dark:border-[#65512c] dark:bg-[#302817] dark:text-[#e4bd72]">
+          <Alert className="mx-9 mt-4 w-auto border-border bg-status-new text-muted-foreground max-mobile:mx-4.5 dark:border-border dark:bg-status-new dark:text-muted-foreground">
             <AlertTriangle />
             <AlertTitle>ذخیره‌سازی مرورگر در دسترس نیست</AlertTitle>
             <AlertDescription className="text-inherit/80">
@@ -48,7 +48,7 @@ function DashboardShell() {
 
         <main
           id="main-content"
-          className="mx-auto max-w-[1700px] p-[30px_36px_35px] min-[1600px]:px-12 max-[1201px]:p-[26px_24px] max-[761px]:p-[24px_18px]"
+          className="mx-auto max-w-425 pt-7.5 px-9 pb-8.75 wide:px-12 max-desktop:py-6.5 px-6 max-mobile:py-6 px-4.5"
         >
           <Outlet />
         </main>
@@ -58,7 +58,7 @@ function DashboardShell() {
 
       {helpOpen ? (
         <Modal title="راهنمای نسخه نمایشی" onClose={() => setHelpOpen(false)}>
-          <div className="p-6 text-[12px] leading-[2.3] text-muted-foreground [&_p]:mb-[15px]">
+          <div className="p-6 text-xs leading-loose text-muted-foreground [&_p]:mb-3.75">
             <p>
               از «درخواست جدید» یک خدمت برای مشتریان نمونه ثبت کنید. با بازکردن ردیف درخواست،
               تعمیرکار، زمان مراجعه و وضعیت را تغییر دهید.
