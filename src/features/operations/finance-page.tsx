@@ -1,3 +1,4 @@
+import { cn } from '@/shared/lib/utils';
 import { useState, type FormEvent } from 'react';
 import { Plus, ArrowDownLeft, ArrowUpRight, Wallet, HandCoins, Download } from 'lucide-react';
 import { useDemo } from './model/demo-store';
@@ -5,19 +6,12 @@ import { summarizeFinance } from './model/finance';
 import type { Transaction } from './model/types';
 import { PageHeading, Panel, StatCard, Modal, EmptyState } from '@/shared/ui/primitives';
 import { money, dateLabel } from '@/shared/lib/format';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { NativeSelect } from '@/components/ui/native-select';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { Badge } from '@/shared/ui/badge';
+import { Button } from '@/shared/ui/button';
+import { Input } from '@/shared/ui/input';
+import { Label } from '@/shared/ui/label';
+import { NativeSelect } from '@/shared/ui/native-select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
 
 const kindLabels = {
   receipt: 'دریافت از مشتری',
@@ -95,7 +89,7 @@ export function FinancePage() {
         description="شفافیت در دریافت‌ها، پرداخت‌ها و سهم شرکت از هر خدمت."
         action={
           <Button
-            className="button button-primary"
+            className="inline-flex justify-center items-center gap-2 bg-white border border-[#dfe6e1] rounded-[7px] p-[10px_15px] text-[#56625a] text-[11px] leading-[1.7] whitespace-nowrap [&:hover]:bg-[#f0f4f1] dark:bg-[#1c2823] dark:border-[#33453d] dark:text-[#dce7e1] bg-primary text-white border-primary shadow-[0_3px_5px_#246b5510] [&:hover]:bg-(--primary-dark) dark:bg-[#3d8c6d] dark:border-[#3d8c6d] dark:text-[#ffffff] dark:[&:hover]:bg-[#4c9d7d]"
             onClick={() => {
               setOpen(true);
               setError('');
@@ -106,7 +100,9 @@ export function FinancePage() {
           </Button>
         }
       />
-      <div className="stats-grid">
+      <div
+        className="grid grid-cols-4 gap-[17px] mb-[23px] max-[981px]:grid-cols-2 max-[761px]:gap-[11px] max-[401px]:gap-2"
+      >
         <StatCard
           title="کل دریافت ثبت‌شده"
           value={money(finance.receipts)}
@@ -133,7 +129,9 @@ export function FinancePage() {
           icon={<HandCoins size={20} />}
         />
       </div>
-      <div className="finance-summary">
+      <div
+        className="flex items-center gap-[30px] p-5.5 bg-[#eef3e7] border border-[#e0e8d6] rounded-[10px] mb-5.5 [&_>_div]:shrink-0 [&_span]:block [&_span]:text-[#8a977e] [&_span]:text-[10px] [&_strong]:block [&_strong]:mt-[11px] [&_strong]:text-[#5b734a] [&_strong]:text-[16px] [&_p]:text-[10px] [&_p]:text-[#8e9c80] [&_p]:leading-[2] [&_p]:border-s [&_p]:border-s-[#d7e2cb] [&_p]:ps-[25px] max-[981px]:flex-wrap max-[981px]:gap-5 max-[981px]:[&_p]:border-0 max-[981px]:[&_p]:p-0 max-[761px]:[&_strong]:text-[14px] dark:[&_strong]:text-[#b8d8c7] dark:[&_p]:text-[#98aaa0] dark:[&_span]:text-[#98aaa0] dark:bg-[#1d2d25] dark:border-[#2c4136]"
+      >
         <div>
           <span>ارزش خدمات تکمیل‌شده</span>
           <strong>{money(finance.serviceValue)}</strong>
@@ -148,14 +146,21 @@ export function FinancePage() {
         title="دفتر گردش مالی"
         subtitle="همه تراکنش‌های نمونه · بدون مانده افتتاحیه"
         action={
-          <Button variant="outline" size="sm" className="button button-small" onClick={exportCsv}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="inline-flex justify-center items-center gap-2 bg-white border border-[#dfe6e1] rounded-[7px] p-[10px_15px] text-[#56625a] text-[11px] leading-[1.7] whitespace-nowrap [&:hover]:bg-[#f0f4f1] dark:bg-[#1c2823] dark:border-[#33453d] dark:text-[#dce7e1] text-[10px] p-[6px_10px]"
+            onClick={exportCsv}
+          >
             <Download size={16} />
             خروجی CSV
           </Button>
         }
       >
-        <div className="table-toolbar">
-          <div className="segmented">
+        <div className="flex items-center gap-3 p-[0_22px_20px] flex-wrap max-[761px]:px-4.5">
+          <div
+            className="flex bg-[#f4f7ef] p-1 rounded-[7px] gap-[3px] [&_button]:border-0 [&_button]:bg-transparent [&_button]:text-[10px] [&_button]:p-[8px_14px] [&_button]:rounded-[5px] [&_button]:text-[#9aa68e] [&_.selected]:bg-white [&_.selected]:shadow-[0_1px_3px_#3545270f] [&_.selected]:text-[#627b50] max-[401px]:[&_button]:px-2.5 dark:[&_.selected]:bg-[#1c2823] dark:[&_.selected]:border-[#33453d] dark:[&_.selected]:text-[#dce7e1] dark:bg-[#202e28] dark:border-[#31433a] dark:text-[#8eb19d]"
+          >
             {[
               ['all', 'همه'],
               ['receipt', 'دریافت‌ها'],
@@ -165,7 +170,10 @@ export function FinancePage() {
               <Button
                 variant="ghost"
                 size="sm"
-                className={filter === value ? 'selected' : ''}
+                className={cn(
+                  'rounded-md text-[10px] text-muted-foreground',
+                  filter === value && 'bg-card text-primary shadow-xs',
+                )}
                 key={value}
                 onClick={() => setFilter(value)}
               >
@@ -175,7 +183,7 @@ export function FinancePage() {
           </div>
         </div>
         {filtered.length ? (
-          <Table className="table-scroll">
+          <Table className="overflow-auto">
             <TableHeader>
               <TableRow>
                 <TableHead>شرح تراکنش</TableHead>
@@ -193,7 +201,12 @@ export function FinancePage() {
                   </TableCell>
                   <TableCell>
                     <Badge
-                      className={`badge ${item.kind === 'receipt' ? 'status-completed' : 'status-scheduled'}`}
+                      className={cn(
+                        'inline-flex items-center gap-1 rounded-md px-2 py-1 text-[9px] whitespace-nowrap',
+                        item.kind === 'receipt'
+                          ? 'bg-status-completed text-status-completed-foreground'
+                          : 'bg-status-scheduled text-status-scheduled-foreground',
+                      )}
                     >
                       {kindLabels[item.kind]}
                     </Badge>
@@ -202,7 +215,12 @@ export function FinancePage() {
                     <bdi>{item.jobId || '—'}</bdi>
                   </TableCell>
                   <TableCell>{dateLabel(item.date)}</TableCell>
-                  <TableCell className={item.kind === 'receipt' ? 'text-green' : 'text-red'}>
+                  <TableCell
+                    className={cn(
+                      'whitespace-nowrap',
+                      item.kind === 'receipt' ? 'text-primary' : 'text-destructive',
+                    )}
+                  >
                     {item.kind === 'receipt' ? '+' : '−'} {money(item.amount)}
                   </TableCell>
                 </TableRow>
@@ -215,8 +233,11 @@ export function FinancePage() {
       </Panel>
       {open && (
         <Modal title="ثبت تراکنش نمونه" onClose={() => setOpen(false)}>
-          <form onSubmit={submit} className="form-grid">
-            <Label className="form-field">
+          <form
+            onSubmit={submit}
+            className="grid grid-cols-2 gap-4.5 p-[23px] [&_label]:flex [&_label]:flex-col [&_label]:gap-[9px] [&_label]:text-[11px] [&_input]:border [&_input]:border-[#dce5d6] [&_input]:rounded-[7px] [&_input]:p-2.5 [&_input]:text-[12px] [&_input]:w-full [&_input]:bg-white [&_select]:border [&_select]:border-[#dce5d6] [&_select]:rounded-[7px] [&_select]:p-2.5 [&_select]:text-[12px] [&_select]:w-full [&_select]:bg-white [&_textarea]:border [&_textarea]:border-[#dce5d6] [&_textarea]:rounded-[7px] [&_textarea]:p-2.5 [&_textarea]:text-[12px] [&_textarea]:w-full [&_textarea]:bg-white [&_input[type='date']]:direction-ltr [&_input[type='time']]:direction-ltr [&_textarea]:min-h-[78px] [&_textarea]:resize-y max-[761px]:gap-3.5 max-[761px]:p-4.5 max-[401px]:grid-cols-1 dark:[&_input]:bg-[#1c2823] dark:[&_input]:border-[#33453d] dark:[&_input]:text-[#dce7e1] dark:[&_select]:bg-[#1c2823] dark:[&_select]:border-[#33453d] dark:[&_select]:text-[#dce7e1] dark:[&_textarea]:bg-[#1c2823] dark:[&_textarea]:border-[#33453d] dark:[&_textarea]:text-[#dce7e1]"
+          >
+            <Label className="flex flex-col gap-2 text-[11px]">
               نوع تراکنش
               <NativeSelect
                 value={kind}
@@ -229,12 +250,12 @@ export function FinancePage() {
                 ))}
               </NativeSelect>
             </Label>
-            <Label className="form-field">
+            <Label className="flex flex-col gap-2 text-[11px]">
               مبلغ (تومان نمونه)
               <Input name="amount" type="number" min="1" step="1" required />
             </Label>
             {kind !== 'expense' && (
-              <Label className="form-field full-width">
+              <Label className="col-span-full flex flex-col gap-2 text-[11px]">
                 درخواست مرتبط
                 <NativeSelect name="jobId" required>
                   <option value="">انتخاب درخواست</option>
@@ -248,29 +269,35 @@ export function FinancePage() {
                 </NativeSelect>
               </Label>
             )}
-            <Label className="form-field">
+            <Label className="flex flex-col gap-2 text-[11px]">
               تاریخ (میلادی)
               <Input type="date" name="date" defaultValue="2026-11-16" required />
             </Label>
-            <Label className="form-field">
+            <Label className="flex flex-col gap-2 text-[11px]">
               شرح
               <Input name="description" required maxLength={150} />
             </Label>
-            <p className="form-note full-width">
+            <p className="text-[10px] text-[#919d89] leading-[2] col-span-full">
               این عملیات فقط دفتر نمونه مرورگر را تغییر می‌دهد و پرداخت بانکی انجام نمی‌دهد.
             </p>
             {error && (
-              <p className="form-error full-width" role="alert">
+              <p
+                className="bg-[#fff0ee] text-[#aa5445] p-2.5 rounded-[7px] text-[11px] leading-[1.9] dark:bg-[#412929] dark:text-[#e2a5a5] col-span-full"
+                role="alert"
+              >
                 {error}
               </p>
             )}
-            <div className="form-actions full-width">
-              <Button className="button button-primary" type="submit">
+            <div className="flex gap-[9px] mt-[5px] col-span-full">
+              <Button
+                className="inline-flex justify-center items-center gap-2 bg-white border border-[#dfe6e1] rounded-[7px] p-[10px_15px] text-[#56625a] text-[11px] leading-[1.7] whitespace-nowrap [&:hover]:bg-[#f0f4f1] dark:bg-[#1c2823] dark:border-[#33453d] dark:text-[#dce7e1] bg-primary text-white border-primary shadow-[0_3px_5px_#246b5510] [&:hover]:bg-(--primary-dark) dark:bg-[#3d8c6d] dark:border-[#3d8c6d] dark:text-[#ffffff] dark:[&:hover]:bg-[#4c9d7d]"
+                type="submit"
+              >
                 ثبت تراکنش
               </Button>
               <Button
                 variant="outline"
-                className="button"
+                className="inline-flex justify-center items-center gap-2 bg-white border border-[#dfe6e1] rounded-[7px] p-[10px_15px] text-[#56625a] text-[11px] leading-[1.7] whitespace-nowrap [&:hover]:bg-[#f0f4f1] dark:bg-[#1c2823] dark:border-[#33453d] dark:text-[#dce7e1]"
                 type="button"
                 onClick={() => setOpen(false)}
               >

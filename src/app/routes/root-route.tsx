@@ -1,8 +1,8 @@
 import { createRootRoute, Link } from '@tanstack/react-router';
 import { DashboardLayout } from '@/app/dashboard-layout';
 import { DemoProvider } from '@/features/operations/model/demo-store';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/shared/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 
 export const rootRoute = createRootRoute({
   component: RootLayout,

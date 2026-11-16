@@ -1,10 +1,11 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import { initialData } from './demo-data';
 import type { DemoData, Job, Transaction } from './types';
+import { isDemoData, validateJobUpdate } from './validation';
 
 const storageKey = 'hamyar-service-demo-v1';
 interface DemoContextValue extends DemoData {
-  saveJob: (job: Job) => void;
+  saveJob: (job: Job) => string | null;
   addTransaction: (transaction: Transaction) => void;
   resetDemo: () => void;
   storageError: boolean;
@@ -16,21 +17,7 @@ function readDemo(): DemoData {
     const stored = localStorage.getItem(storageKey);
     if (stored) {
       const parsed: unknown = JSON.parse(stored);
-      // Only accept a previously saved copy with the expected top-level structure.
-      if (
-        typeof parsed === 'object' &&
-        parsed !== null &&
-        'jobs' in parsed &&
-        'customers' in parsed &&
-        'technicians' in parsed &&
-        'transactions' in parsed &&
-        Array.isArray(parsed.jobs) &&
-        Array.isArray(parsed.customers) &&
-        Array.isArray(parsed.technicians) &&
-        Array.isArray(parsed.transactions)
-      ) {
-        return parsed as DemoData;
-      }
+      if (isDemoData(parsed)) return parsed;
     }
   } catch {
     /* A blocked or damaged browser store falls back to the demo seed. */
@@ -55,13 +42,21 @@ export function DemoProvider({ children }: { children: ReactNode }) {
       value={{
         ...data,
         storageError,
-        saveJob: (job) =>
+        saveJob: (job) => {
+          const validationError = validateJobUpdate(
+            data.jobs.find((item) => item.id === job.id),
+            job,
+            data.transactions,
+          );
+          if (validationError) return validationError;
           update({
             ...data,
             jobs: data.jobs.some((item) => item.id === job.id)
               ? data.jobs.map((item) => (item.id === job.id ? job : item))
               : [job, ...data.jobs],
-          }),
+          });
+          return null;
+        },
         addTransaction: (transaction) =>
           update({ ...data, transactions: [...data.transactions, transaction] }),
         resetDemo: () => update(structuredClone(initialData)),

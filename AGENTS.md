@@ -26,7 +26,20 @@ statuses, assignment rules, commission calculation, collection responsibilities,
 refunds, settlements, and reporting definitions remain undecided. Do not invent
 them or treat example values as confirmed requirements.
 
-## Frontend architecture
+## Project-local skills
+
+Read the relevant local skill before related work:
+
+- React: `.skills/react/SKILL.md`
+- Tailwind CSS v4: `.skills/tailwind/SKILL.md`
+- shadcn/ui: `.skills/shadcn/SKILL.md`
+- Frontend architecture: `.skills/frontend-architecture/SKILL.md`
+
+Sources and project-specific compatibility notes are in `.skills/README.md`.
+User instructions and this project's constraints take precedence over skill defaults.
+Do not run the shadcn CLI; use official component source directly.
+
+## Frontend implementation
 
 Use React 19, TypeScript in strict mode, Vite, and Tailwind CSS v4 through
 `@tailwindcss/vite`. Use the existing `@/`
@@ -46,7 +59,7 @@ src/
       model/             Domain types, validation, and pure business rules
   shared/
     ui/                  Local shadcn components and dashboard compositions
-    lib/                 Formatting, theme, cn(), and Tailwind utility recipes
+    lib/                 Formatting, theme, and shared utilities such as cn()
     api/                 Shared transport configuration and error handling
   styles/                Tailwind entry, global styles, and design tokens
 ```
@@ -148,19 +161,18 @@ Persian RTL UI -> feature hooks/use cases -> API adapters -> backend -> database
   element, persist locally, and must preserve readable contrast and visible focus.
 - Use Tailwind utilities and shared design tokens. Introduce reusable UI primitives
   when a pattern is reused, and keep feature-specific behavior inside its feature.
-- Keep component styling in Tailwind v4 utilities. Shared dashboard utility recipes
-  live in `src/shared/lib/ui.ts`; global CSS contains theme tokens and base rules.
-- Prefer readable standard utilities for new code; use arbitrary values and variants
-  only when needed. Keep complete utility strings visible to Tailwind's scanner.
-  Use `ui()` for existing dashboard recipes and `cn()` to merge component variants.
-  Preserve recipe marker names used by descendant selectors. Avoid recreating a
-  large component stylesheet or duplicating recipes across pages.
+- Keep component styling in Tailwind v4 utilities directly on the rendered elements;
+  global CSS contains only theme tokens and base rules. Do not introduce a central
+  class-recipe dictionary that hides utility strings from their components.
+- Prefer readable standard utilities and semantic theme tokens; use arbitrary values
+  and variants only when the design needs a value Tailwind does not provide. Keep
+  complete utility strings visible to Tailwind's scanner and use `cn()` for
+  conditional classes. Use `cva` only for genuine reusable component variants.
 - Use the locally owned shadcn/ui components in `src/shared/ui/` for standard
   buttons, cards, dialogs, labels, inputs, selects, badges, tables, and progress.
   Compose those components in feature code instead of recreating standard controls.
-  The source files currently live in `shared/ui`; `components.json` still points to
-  the earlier `components/ui` location. When maintaining that configuration, align
-  it with actual source paths rather than creating a second component library.
+  The source files and the `components.json` UI alias both point to `shared/ui`;
+  keep them aligned rather than creating a second component library.
   Obtain additional component source from the official shadcn website/registry and
   adapt imports and RTL alignment locally. Do not run the shadcn CLI unless the user
   explicitly changes this instruction.
