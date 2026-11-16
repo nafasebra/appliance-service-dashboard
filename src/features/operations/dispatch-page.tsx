@@ -8,8 +8,8 @@ import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';
 import { number } from '@/shared/lib/format';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
-import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
+import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 
 export function DispatchPage() {
   const { jobs, customers, technicians } = useDemo();
@@ -22,13 +22,12 @@ export function DispatchPage() {
         title="برنامه‌ریزی و اعزام"
         description="برنامه مراجعه هر تعمیرکار را ببینید و درخواست‌ها را تخصیص دهید."
         action={
-          <Label className="flex flex-col gap-[7px] text-[#8b9785] text-[10px] [&_input]:p-2.5 [&_input]:border [&_input]:border-[#dce4d5] [&_input]:rounded-[7px] [&_input]:bg-white max-[761px]:[&_input]:w-[140px] dark:[&_input]:bg-[#1c2823] dark:[&_input]:border-[#33453d] dark:[&_input]:text-[#dce7e1]">
+          <Label className="flex flex-col gap-[7px] text-[10px] text-[#8b9785]">
             تاریخ برنامه
-            <Input
+            <JalaliDatePicker
               aria-label="تاریخ برنامه اعزام"
-              type="date"
               value={date}
-              onChange={(event) => setDate(event.target.value)}
+              onValueChange={setDate}
             />
           </Label>
         }

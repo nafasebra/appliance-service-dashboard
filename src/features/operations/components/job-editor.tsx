@@ -8,10 +8,12 @@ import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { NativeSelect } from '@/shared/ui/native-select';
 import { Textarea } from '@/shared/ui/textarea';
+import { JalaliDatePicker, TimePicker } from '@/shared/ui/date-time-picker';
 
 export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) {
   const { customers, technicians, saveJob } = useDemo();
   const [error, setError] = useState('');
+  const [date, setDate] = useState(job?.date ?? '2026-11-16');
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -98,12 +100,18 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           />
         </Label>
         <Label className="flex flex-col gap-2 text-[11px]">
-          تاریخ مراجعه (میلادی)
-          <Input type="date" name="date" defaultValue={job?.date ?? '2026-11-16'} required />
+          تاریخ مراجعه (جلالی)
+          <JalaliDatePicker
+            name="date"
+            value={date}
+            onValueChange={setDate}
+            aria-label="تاریخ مراجعه"
+            required
+          />
         </Label>
         <Label className="flex flex-col gap-2 text-[11px]">
           ساعت مراجعه
-          <Input type="time" name="time" defaultValue={job?.time ?? '09:00'} required />
+          <TimePicker name="time" defaultValue={job?.time ?? '09:00'} required />
         </Label>
         <Label className="flex flex-col gap-2 text-[11px]">
           تعمیرکار

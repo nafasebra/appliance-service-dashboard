@@ -12,6 +12,7 @@ import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { NativeSelect } from '@/shared/ui/native-select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
+import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 
 const kindLabels = {
   receipt: 'دریافت از مشتری',
@@ -24,6 +25,7 @@ export function FinancePage() {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState('all');
   const [kind, setKind] = useState<Transaction['kind']>('receipt');
+  const [transactionDate, setTransactionDate] = useState('2026-11-16');
   const [error, setError] = useState('');
   const finance = summarizeFinance(jobs, transactions);
   const filtered = transactions
@@ -264,8 +266,14 @@ export function FinancePage() {
               </Label>
             )}
             <Label className="flex flex-col gap-2 text-[11px]">
-              تاریخ (میلادی)
-              <Input type="date" name="date" defaultValue="2026-11-16" required />
+              تاریخ (جلالی)
+              <JalaliDatePicker
+                name="date"
+                value={transactionDate}
+                onValueChange={setTransactionDate}
+                aria-label="تاریخ تراکنش"
+                required
+              />
             </Label>
             <Label className="flex flex-col gap-2 text-[11px]">
               شرح
