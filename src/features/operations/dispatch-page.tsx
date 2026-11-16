@@ -22,9 +22,7 @@ export function DispatchPage() {
         title="برنامه‌ریزی و اعزام"
         description="برنامه مراجعه هر تعمیرکار را ببینید و درخواست‌ها را تخصیص دهید."
         action={
-          <Label
-            className="flex flex-col gap-[7px] text-[#8b9785] text-[10px] [&_input]:p-2.5 [&_input]:border [&_input]:border-[#dce4d5] [&_input]:rounded-[7px] [&_input]:bg-white max-[761px]:[&_input]:w-[140px] dark:[&_input]:bg-[#1c2823] dark:[&_input]:border-[#33453d] dark:[&_input]:text-[#dce7e1]"
-          >
+          <Label className="flex flex-col gap-[7px] text-[#8b9785] text-[10px] [&_input]:p-2.5 [&_input]:border [&_input]:border-[#dce4d5] [&_input]:rounded-[7px] [&_input]:bg-white max-[761px]:[&_input]:w-[140px] dark:[&_input]:bg-[#1c2823] dark:[&_input]:border-[#33453d] dark:[&_input]:text-[#dce7e1]">
             تاریخ برنامه
             <Input
               aria-label="تاریخ برنامه اعزام"
@@ -35,9 +33,7 @@ export function DispatchPage() {
           </Label>
         }
       />
-      <div
-        className="flex gap-2.5 items-center p-[16px_19px] border border-[#dfe8d8] rounded-[9px] text-[#7a8e6e] bg-[#f1f6ec] text-[11px] mb-6 [&_button]:ms-auto max-[761px]:flex-wrap max-[761px]:leading-[2] max-[761px]:[&_>_span]:flex-1 max-[761px]:[&_button]:ms-[30px] dark:bg-[#1d2d25] dark:border-[#2c4136]"
-      >
+      <div className="flex gap-2.5 items-center p-[16px_19px] border border-[#dfe8d8] rounded-[9px] text-[#7a8e6e] bg-[#f1f6ec] text-[11px] mb-6 [&_button]:ms-auto max-[761px]:flex-wrap max-[761px]:leading-[2] max-[761px]:[&_>_span]:flex-1 max-[761px]:[&_button]:ms-[30px] dark:bg-[#1d2d25] dark:border-[#2c4136]">
         <Clock3 size={20} />
         <span>
           نمای برنامه روزانه · {number(visits.length)} مراجعه · ساعت‌ها بر اساس زمان محلی تهران در
@@ -52,9 +48,7 @@ export function DispatchPage() {
           درخواست جدید
         </Button>
       </div>
-      <div
-        className="grid grid-cols-3 gap-4.5 items-start max-[1201px]:grid-cols-2 max-[761px]:grid-cols-1"
-      >
+      <div className="grid grid-cols-3 gap-4.5 items-start max-[1201px]:grid-cols-2 max-[761px]:grid-cols-1">
         {[
           { id: '', name: 'بدون تخصیص', specialty: 'برای این درخواست‌ها تعمیرکار انتخاب کنید' },
           ...technicians,
@@ -88,13 +82,9 @@ export function DispatchPage() {
                       )}
                       onClick={() => setEditor(job)}
                     >
-                      <div
-                        className="flex items-center gap-[7px] text-[11px] text-[#9aa68f] [&_.badge]:ms-auto [&_.badge]:text-[8px]"
-                      >
+                      <div className="flex items-center gap-[7px] text-[11px] text-[#9aa68f] [&_.badge]:ms-auto [&_.badge]:text-[8px]">
                         <Clock3 size={15} />
-                        <span
-                          className="direction-ltr text-start font-[Arial,_sans-serif] tracking-[0.3px]"
-                        >
+                        <span className="direction-ltr text-start font-[Arial,_sans-serif] tracking-[0.3px]">
                           {job.time}
                         </span>
                         <Badge
@@ -122,9 +112,7 @@ export function DispatchPage() {
                         <MapPin size={14} />
                         {customers.find((item) => item.id === job.customerId)?.address}
                       </small>
-                      <div
-                        className="text-[10px] text-[#7e8b71] mt-3.5 pt-[11px] border-t border-dashed border-t-[#dee6d3] dark:border-border"
-                      >
+                      <div className="text-[10px] text-[#7e8b71] mt-3.5 pt-[11px] border-t border-dashed border-t-[#dee6d3] dark:border-border">
                         {job.issue}
                       </div>
                     </Button>

@@ -100,9 +100,7 @@ export function FinancePage() {
           </Button>
         }
       />
-      <div
-        className="grid grid-cols-4 gap-[17px] mb-[23px] max-[981px]:grid-cols-2 max-[761px]:gap-[11px] max-[401px]:gap-2"
-      >
+      <div className="grid grid-cols-4 gap-[17px] mb-[23px] max-[981px]:grid-cols-2 max-[761px]:gap-[11px] max-[401px]:gap-2">
         <StatCard
           title="کل دریافت ثبت‌شده"
           value={money(finance.receipts)}
@@ -129,9 +127,7 @@ export function FinancePage() {
           icon={<HandCoins size={20} />}
         />
       </div>
-      <div
-        className="flex items-center gap-[30px] p-5.5 bg-[#eef3e7] border border-[#e0e8d6] rounded-[10px] mb-5.5 [&_>_div]:shrink-0 [&_span]:block [&_span]:text-[#8a977e] [&_span]:text-[10px] [&_strong]:block [&_strong]:mt-[11px] [&_strong]:text-[#5b734a] [&_strong]:text-[16px] [&_p]:text-[10px] [&_p]:text-[#8e9c80] [&_p]:leading-[2] [&_p]:border-s [&_p]:border-s-[#d7e2cb] [&_p]:ps-[25px] max-[981px]:flex-wrap max-[981px]:gap-5 max-[981px]:[&_p]:border-0 max-[981px]:[&_p]:p-0 max-[761px]:[&_strong]:text-[14px] dark:[&_strong]:text-[#b8d8c7] dark:[&_p]:text-[#98aaa0] dark:[&_span]:text-[#98aaa0] dark:bg-[#1d2d25] dark:border-[#2c4136]"
-      >
+      <div className="flex items-center gap-[30px] p-5.5 bg-[#eef3e7] border border-[#e0e8d6] rounded-[10px] mb-5.5 [&_>_div]:shrink-0 [&_span]:block [&_span]:text-[#8a977e] [&_span]:text-[10px] [&_strong]:block [&_strong]:mt-[11px] [&_strong]:text-[#5b734a] [&_strong]:text-[16px] [&_p]:text-[10px] [&_p]:text-[#8e9c80] [&_p]:leading-[2] [&_p]:border-s [&_p]:border-s-[#d7e2cb] [&_p]:ps-[25px] max-[981px]:flex-wrap max-[981px]:gap-5 max-[981px]:[&_p]:border-0 max-[981px]:[&_p]:p-0 max-[761px]:[&_strong]:text-[14px] dark:[&_strong]:text-[#b8d8c7] dark:[&_p]:text-[#98aaa0] dark:[&_span]:text-[#98aaa0] dark:bg-[#1d2d25] dark:border-[#2c4136]">
         <div>
           <span>ارزش خدمات تکمیل‌شده</span>
           <strong>{money(finance.serviceValue)}</strong>
@@ -158,9 +154,7 @@ export function FinancePage() {
         }
       >
         <div className="flex items-center gap-3 p-[0_22px_20px] flex-wrap max-[761px]:px-4.5">
-          <div
-            className="flex bg-[#f4f7ef] p-1 rounded-[7px] gap-[3px] [&_button]:border-0 [&_button]:bg-transparent [&_button]:text-[10px] [&_button]:p-[8px_14px] [&_button]:rounded-[5px] [&_button]:text-[#9aa68e] [&_.selected]:bg-white [&_.selected]:shadow-[0_1px_3px_#3545270f] [&_.selected]:text-[#627b50] max-[401px]:[&_button]:px-2.5 dark:[&_.selected]:bg-[#1c2823] dark:[&_.selected]:border-[#33453d] dark:[&_.selected]:text-[#dce7e1] dark:bg-[#202e28] dark:border-[#31433a] dark:text-[#8eb19d]"
-          >
+          <div className="flex bg-[#f4f7ef] p-1 rounded-[7px] gap-[3px] [&_button]:border-0 [&_button]:bg-transparent [&_button]:text-[10px] [&_button]:p-[8px_14px] [&_button]:rounded-[5px] [&_button]:text-[#9aa68e] [&_.selected]:bg-white [&_.selected]:shadow-[0_1px_3px_#3545270f] [&_.selected]:text-[#627b50] max-[401px]:[&_button]:px-2.5 dark:[&_.selected]:bg-[#1c2823] dark:[&_.selected]:border-[#33453d] dark:[&_.selected]:text-[#dce7e1] dark:bg-[#202e28] dark:border-[#31433a] dark:text-[#8eb19d]">
             {[
               ['all', 'همه'],
               ['receipt', 'دریافت‌ها'],

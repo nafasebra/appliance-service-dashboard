@@ -20,9 +20,7 @@ export function ReportsPage() {
           <CashChart />
         </Panel>
         <Panel title="درخواست‌ها به تفکیک دستگاه" subtitle="همه وضعیت‌ها">
-          <div
-            className="p-[8px_24px_25px] flex flex-col gap-[21px] [&_>_div_>_div:first-child]:flex [&_>_div_>_div:first-child]:justify-between [&_>_div_>_div:first-child]:text-[10px] [&_>_div_>_div:first-child]:text-[#8c9b80] [&_>_div_>_div:first-child]:mb-2.5 [&_strong]:font-normal"
-          >
+          <div className="p-[8px_24px_25px] flex flex-col gap-[21px] [&_>_div_>_div:first-child]:flex [&_>_div_>_div:first-child]:justify-between [&_>_div_>_div:first-child]:text-[10px] [&_>_div_>_div:first-child]:text-[#8c9b80] [&_>_div_>_div:first-child]:mb-2.5 [&_strong]:font-normal">
             {appliances.map((appliance) => {
               const count = jobs.filter((job) => job.appliance === appliance).length;
               return (

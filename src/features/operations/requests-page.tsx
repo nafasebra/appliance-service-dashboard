@@ -40,9 +40,7 @@ export function RequestsPage() {
       />
       <Panel title="لیست درخواست‌ها" subtitle={`${number(filtered.length)} درخواست در این نمایش`}>
         <div className="flex items-center gap-3 p-[0_22px_20px] flex-wrap max-[761px]:px-4.5">
-          <Label
-            className="flex w-[340px] max-w-full items-center gap-2.5 rounded-[7px] border border-[#e5eae3] p-[0_11px] text-[#99a295] focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[#73977b] [&_input]:w-full [&_input]:border-0 [&_input]:bg-transparent [&_input]:p-[11px_0] [&_input]:text-[10px] [&_input]:outline-hidden dark:border-[#33453d] dark:bg-[#1c2823] dark:text-[#dce7e1]"
-          >
+          <Label className="flex w-[340px] max-w-full items-center gap-2.5 rounded-[7px] border border-[#e5eae3] p-[0_11px] text-[#99a295] focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[#73977b] [&_input]:w-full [&_input]:border-0 [&_input]:bg-transparent [&_input]:p-[11px_0] [&_input]:text-[10px] [&_input]:outline-hidden dark:border-[#33453d] dark:bg-[#1c2823] dark:text-[#dce7e1]">
             <Search size={18} />
             <Input
               className="border-0 shadow-none focus-visible:ring-0"
@@ -52,9 +50,7 @@ export function RequestsPage() {
               placeholder="جستجوی مشتری، دستگاه یا کد درخواست…"
             />
           </Label>
-          <Label
-            className="flex items-center gap-[7px] text-[#81917d] [&_select]:p-2 [&_select]:text-[10px]"
-          >
+          <Label className="flex items-center gap-[7px] text-[#81917d] [&_select]:p-2 [&_select]:text-[10px]">
             <SlidersHorizontal size={17} />
             <NativeSelect
               aria-label="فیلتر وضعیت"

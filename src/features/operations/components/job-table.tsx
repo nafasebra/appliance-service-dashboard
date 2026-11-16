@@ -43,18 +43,14 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
           <TableRow key={job.id}>
             <TableCell>
               <div className="flex gap-2.5 items-center min-w-[135px]">
-                <span
-                  className="w-[34px] h-[36px] border border-[#eaf0e8] rounded-[8px] bg-[#f7f9f5] grid place-items-center text-[#84957d] shrink-0 dark:bg-[#202e28] dark:border-[#31433a] dark:text-[#8eb19d]"
-                >
+                <span className="w-[34px] h-[36px] border border-[#eaf0e8] rounded-[8px] bg-[#f7f9f5] grid place-items-center text-[#84957d] shrink-0 dark:bg-[#202e28] dark:border-[#31433a] dark:text-[#8eb19d]">
                   <ApplianceIcon appliance={job.appliance} />
                 </span>
                 <div>
                   <strong>
                     {job.appliance} {job.brand}
                   </strong>
-                  <small
-                    className="direction-ltr text-start font-[Arial,_sans-serif] tracking-[0.3px]"
-                  >
+                  <small className="direction-ltr text-start font-[Arial,_sans-serif] tracking-[0.3px]">
                     {job.id}
                   </small>
                 </div>
@@ -76,9 +72,7 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
             </TableCell>
             <TableCell>
               {dateLabel(job.date)}
-              <small
-                className="direction-ltr text-start font-[Arial,_sans-serif] tracking-[0.3px]"
-              >
+              <small className="direction-ltr text-start font-[Arial,_sans-serif] tracking-[0.3px]">
                 {job.time}
               </small>
             </TableCell>

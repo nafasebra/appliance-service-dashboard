@@ -20,9 +20,7 @@ export function TechniciansPage() {
   return (
     <>
       <PageHeading title="تعمیرکاران" description="تخصص، محدوده فعالیت و حساب خدمات هر عضو تیم." />
-      <div
-        className="grid grid-cols-3 gap-5 max-[1201px]:grid-cols-2 max-[761px]:grid-cols-1"
-      >
+      <div className="grid grid-cols-3 gap-5 max-[1201px]:grid-cols-2 max-[761px]:grid-cols-1">
         {technicians.map((tech, index) => {
           const assigned = jobs.filter((job) => job.technicianId === tech.id);
           const active = assigned.filter((job) => !['completed', 'cancelled'].includes(job.status));
@@ -116,9 +114,7 @@ export function CustomersPage() {
       />
       <Panel title="دفتر مشتریان" subtitle={`${number(customers.length)} مشتری نمونه`}>
         <div className="flex items-center gap-3 p-[0_22px_20px] flex-wrap max-[761px]:px-4.5">
-          <Label
-            className="flex w-[340px] max-w-full items-center gap-2.5 rounded-[7px] border border-[#e5eae3] p-[0_11px] text-[#99a295] focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[#73977b] [&_input]:w-full [&_input]:border-0 [&_input]:bg-transparent [&_input]:p-[11px_0] [&_input]:text-[10px] [&_input]:outline-hidden dark:border-[#33453d] dark:bg-[#1c2823] dark:text-[#dce7e1]"
-          >
+          <Label className="flex w-[340px] max-w-full items-center gap-2.5 rounded-[7px] border border-[#e5eae3] p-[0_11px] text-[#99a295] focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[#73977b] [&_input]:w-full [&_input]:border-0 [&_input]:bg-transparent [&_input]:p-[11px_0] [&_input]:text-[10px] [&_input]:outline-hidden dark:border-[#33453d] dark:bg-[#1c2823] dark:text-[#dce7e1]">
             <Search size={18} />
             <Input
               className="border-0 shadow-none focus-visible:ring-0"
