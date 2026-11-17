@@ -10,7 +10,14 @@ import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
-import { NativeSelect } from '@/shared/ui/native-select';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from '@/shared/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 
@@ -235,16 +242,24 @@ export function FinancePage() {
           >
             <Label className="flex flex-col gap-2 text-ui">
               نوع تراکنش
-              <NativeSelect
+              <Select
+                dir="rtl"
                 value={kind}
-                onChange={(event) => setKind(event.target.value as Transaction['kind'])}
+                onValueChange={(value) => setKind(value as Transaction['kind'])}
               >
-                {Object.entries(kindLabels).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </NativeSelect>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="انتخاب کنید" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {Object.entries(kindLabels).map(([value, label]) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </Label>
             <Label className="flex flex-col gap-2 text-ui">
               مبلغ (تومان نمونه)
@@ -253,16 +268,22 @@ export function FinancePage() {
             {kind !== 'expense' && (
               <Label className="col-span-full flex flex-col gap-2 text-ui">
                 درخواست مرتبط
-                <NativeSelect name="jobId" required>
-                  <option value="">انتخاب درخواست</option>
-                  {jobs
-                    .filter((job) => kind !== 'payout' || job.status === 'completed')
-                    .map((job) => (
-                      <option key={job.id} value={job.id}>
-                        {job.id} · {job.appliance} {job.brand}
-                      </option>
-                    ))}
-                </NativeSelect>
+                <Select dir="rtl" name="jobId" required>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="انتخاب درخواست" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {jobs
+                        .filter((job) => kind !== 'payout' || job.status === 'completed')
+                        .map((job) => (
+                          <SelectItem key={job.id} value={job.id}>
+                            {job.id} · {job.appliance} {job.brand}
+                          </SelectItem>
+                        ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </Label>
             )}
             <Label className="flex flex-col gap-2 text-ui">

@@ -4,7 +4,14 @@ import type { Job } from './model/types';
 import { JobTable } from './components/job-table';
 import { JobEditor } from './components/job-editor';
 import { PageHeading, Panel } from '@/shared/ui/primitives';
-import { NativeSelect } from '@/shared/ui/native-select';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from '@/shared/ui/select';
 import { number } from '@/shared/lib/format';
 
 export function TechnicianJobsPage() {
@@ -26,28 +33,34 @@ export function TechnicianJobsPage() {
         description="پیگیری سفارش‌های باز تخصیص‌یافته، زمان مراجعه و وضعیت رسیدگی."
       />
       <div className="mb-4 flex flex-wrap gap-3">
-        <NativeSelect
-          aria-label="فیلتر تعمیرکار"
-          value={technicianId}
-          onChange={(event) => setTechnicianId(event.target.value)}
-        >
-          <option value="all">همه تعمیرکاران</option>
-          {technicians.map((tech) => (
-            <option value={tech.id} key={tech.id}>
-              {tech.name}
-            </option>
-          ))}
-        </NativeSelect>
-        <NativeSelect
-          aria-label="فیلتر وضعیت سفارش"
-          value={status}
-          onChange={(event) => setStatus(event.target.value)}
-        >
-          <option value="all">همه سفارش‌های باز</option>
-          <option value="new">در انتظار اعزام</option>
-          <option value="scheduled">برنامه‌ریزی‌شده</option>
-          <option value="working">در حال انجام</option>
-        </NativeSelect>
+        <Select dir="rtl" value={technicianId} onValueChange={(value) => setTechnicianId(value)}>
+          <SelectTrigger className="w-full" aria-label="فیلتر تعمیرکار">
+            <SelectValue placeholder="انتخاب کنید" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="all">همه تعمیرکاران</SelectItem>
+              {technicians.map((tech) => (
+                <SelectItem value={tech.id} key={tech.id}>
+                  {tech.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Select dir="rtl" value={status} onValueChange={(value) => setStatus(value)}>
+          <SelectTrigger className="w-full" aria-label="فیلتر وضعیت سفارش">
+            <SelectValue placeholder="انتخاب کنید" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="all">همه سفارش‌های باز</SelectItem>
+              <SelectItem value="new">در انتظار اعزام</SelectItem>
+              <SelectItem value="scheduled">برنامه‌ریزی‌شده</SelectItem>
+              <SelectItem value="working">در حال انجام</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
       <Panel title="سفارش‌های تخصیص‌یافته" subtitle={`${number(active.length)} سفارش باز`}>
         <JobTable jobs={active} onSelect={setSelected} />

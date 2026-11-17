@@ -4,7 +4,14 @@ import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
-import { NativeSelect } from '@/shared/ui/native-select';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from '@/shared/ui/select';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from '@/shared/ui/table';
 import { number } from '@/shared/lib/format';
@@ -12,6 +19,7 @@ import { number } from '@/shared/lib/format';
 export function TechnicianSpecialtiesPage() {
   const { technicians, saveTechnician } = useDemo();
   const [query, setQuery] = useState('');
+  const [specialty, setSpecialty] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const specialties = [...new Set(technicians.map((tech) => tech.specialty))].filter((name) =>
@@ -42,29 +50,45 @@ export function TechnicianSpecialtiesPage() {
         <form onSubmit={submit} className="flex flex-wrap items-end gap-4 p-6">
           <Label className="flex flex-col gap-2">
             تعمیرکار
-            <NativeSelect name="technicianId" required>
-              <option value="">انتخاب تعمیرکار</option>
-              {technicians.map((tech) => (
-                <option value={tech.id} key={tech.id}>
-                  {tech.name}
-                </option>
-              ))}
-            </NativeSelect>
+            <Select dir="rtl" name="technicianId" required>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="انتخاب تعمیرکار" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {technicians.map((tech) => (
+                    <SelectItem value={tech.id} key={tech.id}>
+                      {tech.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </Label>
           <Label className="flex flex-col gap-2">
             عنوان تخصص
             <Input
               name="specialty"
-              list="team-specialties"
+              value={specialty}
+              onChange={(event) => setSpecialty(event.target.value)}
               required
               maxLength={150}
               placeholder="انتخاب یا ورود تخصص جدید"
             />
-            <datalist id="team-specialties">
-              {[...new Set(technicians.map((tech) => tech.specialty))].map((name) => (
-                <option key={name} value={name} />
-              ))}
-            </datalist>
+            <Select dir="rtl" value={specialty || undefined} onValueChange={setSpecialty}>
+              <SelectTrigger aria-label="انتخاب از تخصص‌های موجود" className="w-full">
+                <SelectValue placeholder="تخصص‌های موجود" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {[...new Set(technicians.map((tech) => tech.specialty))].map((name) => (
+                    <SelectItem key={name} value={name}>
+                      {name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </Label>
           <Button type="submit">ثبت تخصص</Button>
         </form>

@@ -6,7 +6,14 @@ import { PageHeading, Panel, StatCard, Modal, EmptyState } from '@/shared/ui/pri
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
-import { NativeSelect } from '@/shared/ui/native-select';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from '@/shared/ui/select';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from '@/shared/ui/table';
@@ -63,19 +70,26 @@ export function TechnicianFinancePage() {
         title="امور مالی تعمیرکاران"
         description="سهم خدمات تکمیل‌شده، پرداخت‌های ثبت‌شده و مانده قابل تسویه هر تعمیرکار."
       />
-      <NativeSelect
-        aria-label="انتخاب تعمیرکار"
-        className="mb-4"
+      <Select
+        dir="rtl"
+
         value={technicianId}
-        onChange={(event) => setTechnicianId(event.target.value)}
+        onValueChange={(value) => setTechnicianId(value)}
       >
-        <option value="all">همه تعمیرکاران</option>
-        {technicians.map((tech) => (
-          <option key={tech.id} value={tech.id}>
-            {tech.name}
-          </option>
-        ))}
-      </NativeSelect>
+        <SelectTrigger aria-label="انتخاب تعمیرکار" className="mb-4">
+          <SelectValue placeholder="انتخاب کنید" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectItem value="all">همه تعمیرکاران</SelectItem>
+            {technicians.map((tech) => (
+              <SelectItem key={tech.id} value={tech.id}>
+                {tech.name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
       <div className="mb-6 grid gap-4 md:grid-cols-3">
         <StatCard
           title="سهم تعمیرکاران"

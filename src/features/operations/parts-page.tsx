@@ -17,7 +17,14 @@ import { PageHeading, Panel, EmptyState, Modal, StatCard } from '@/shared/ui/pri
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
-import { NativeSelect } from '@/shared/ui/native-select';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from '@/shared/ui/select';
 import { Badge } from '@/shared/ui/badge';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
@@ -256,38 +263,46 @@ export function PartsPage({ section }: { section: Section }) {
           onChange={(event) => setSearch(event.target.value)}
           className="max-w-sm"
         />
-        <NativeSelect
-          aria-label="نوع دستگاه"
-          value={appliance}
-          onChange={(event) => setAppliance(event.target.value)}
-        >
-          <option value="all">همه دستگاه‌ها</option>
-          {appliances.map((item) => (
-            <option key={item}>{item}</option>
-          ))}
-        </NativeSelect>
-        <NativeSelect
-          aria-label="وضعیت"
-          value={status}
-          onChange={(event) => setStatus(event.target.value)}
-        >
-          <option value="all">همه وضعیت‌ها</option>
-          {section === 'inventory' ? (
-            <>
-              <option value="low">کم‌موجود</option>
-              <option value="empty">ناموجود</option>
-              <option value="inactive">غیرفعال</option>
-            </>
-          ) : (
-            Object.entries(section === 'purchases' ? purchaseLabels : needLabels).map(
-              ([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ),
-            )
-          )}
-        </NativeSelect>
+        <Select dir="rtl" value={appliance} onValueChange={(value) => setAppliance(value)}>
+          <SelectTrigger className="w-full" aria-label="نوع دستگاه">
+            <SelectValue placeholder="انتخاب کنید" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="all">همه دستگاه‌ها</SelectItem>
+              {appliances.map((item) => (
+                <SelectItem key={item} value={item}>
+                  {item}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Select dir="rtl" value={status} onValueChange={(value) => setStatus(value)}>
+          <SelectTrigger className="w-full" aria-label="وضعیت">
+            <SelectValue placeholder="انتخاب کنید" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="all">همه وضعیت‌ها</SelectItem>
+              {section === 'inventory' ? (
+                <>
+                  <SelectItem value="low">کم‌موجود</SelectItem>
+                  <SelectItem value="empty">ناموجود</SelectItem>
+                  <SelectItem value="inactive">غیرفعال</SelectItem>
+                </>
+              ) : (
+                Object.entries(section === 'purchases' ? purchaseLabels : needLabels).map(
+                  ([value, label]) => (
+                    <SelectItem key={value} value={value}>
+                      {label}
+                    </SelectItem>
+                  ),
+                )
+              )}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
       <Panel
         title={title}
@@ -601,11 +616,24 @@ export function PartsPage({ section }: { section: Section }) {
                 </Label>
                 <Label className="flex flex-col gap-2">
                   نوع دستگاه
-                  <NativeSelect name="appliance" defaultValue={editing?.appliance}>
-                    {appliances.map((item) => (
-                      <option key={item}>{item}</option>
-                    ))}
-                  </NativeSelect>
+                  <Select
+                    dir="rtl"
+                    name="appliance"
+                    defaultValue={editing?.appliance ?? appliances[0]}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="انتخاب کنید" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {appliances.map((item) => (
+                          <SelectItem key={item} value={item}>
+                            {item}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                 </Label>
                 <Label className="flex flex-col gap-2">
                   برند و مدل سازگار
@@ -637,15 +665,22 @@ export function PartsPage({ section }: { section: Section }) {
               <>
                 <Label className="flex flex-col gap-2">
                   قطعه
-                  <NativeSelect name="partId" required>
-                    {data.parts
-                      .filter((p) => p.active)
-                      .map((part) => (
-                        <option key={part.id} value={part.id}>
-                          {part.name} · {part.appliance}
-                        </option>
-                      ))}
-                  </NativeSelect>
+                  <Select dir="rtl" name="partId" required>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="انتخاب کنید" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {data.parts
+                          .filter((p) => p.active)
+                          .map((part) => (
+                            <SelectItem key={part.id} value={part.id}>
+                              {part.name} · {part.appliance}
+                            </SelectItem>
+                          ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                 </Label>
                 <Label className="flex flex-col gap-2">
                   تعداد
@@ -654,16 +689,22 @@ export function PartsPage({ section }: { section: Section }) {
                 {form === 'need' ? (
                   <Label className="col-span-full flex flex-col gap-2">
                     سفارش مشتری
-                    <NativeSelect name="jobId" required>
-                      <option value="">انتخاب سفارش باز</option>
-                      {jobs
-                        .filter((job) => !['completed', 'cancelled'].includes(job.status))
-                        .map((job) => (
-                          <option key={job.id} value={job.id}>
-                            {jobLabel(job.id)}
-                          </option>
-                        ))}
-                    </NativeSelect>
+                    <Select dir="rtl" name="jobId" required>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="انتخاب سفارش باز" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {jobs
+                            .filter((job) => !['completed', 'cancelled'].includes(job.status))
+                            .map((job) => (
+                              <SelectItem key={job.id} value={job.id}>
+                                {jobLabel(job.id)}
+                              </SelectItem>
+                            ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </Label>
                 ) : (
                   <Label className="flex flex-col gap-2">
@@ -700,14 +741,20 @@ export function PartsPage({ section }: { section: Section }) {
           >
             <Label className="flex flex-col gap-2">
               دریافت‌کننده
-              <NativeSelect name="technicianId" required>
-                <option value="">انتخاب تعمیرکار</option>
-                {technicians.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.name}
-                  </option>
-                ))}
-              </NativeSelect>
+              <Select dir="rtl" name="technicianId" required>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="انتخاب تعمیرکار" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {technicians.map((t) => (
+                      <SelectItem key={t.id} value={t.id}>
+                        {t.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </Label>
             {error ? <p role="alert">{error}</p> : null}
             <Button type="submit">ثبت تحویل</Button>

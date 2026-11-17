@@ -6,7 +6,14 @@ import { Modal } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
-import { NativeSelect } from '@/shared/ui/native-select';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+} from '@/shared/ui/select';
 import { Textarea } from '@/shared/ui/textarea';
 import { JalaliDatePicker, TimePicker } from '@/shared/ui/date-time-picker';
 
@@ -20,7 +27,8 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
     const total = Number(form.get('total'));
     const commission = Number(form.get('commission'));
     const status = String(form.get('status')) as JobStatus;
-    const technicianId = String(form.get('technicianId'));
+    const selectedTechnician = String(form.get('technicianId') ?? '');
+    const technicianId = selectedTechnician === '__unassigned' ? '' : selectedTechnician;
     if (!validateAmounts(total, commission))
       return setError('مبلغ‌ها باید عدد صحیح و نامنفی باشند و کمیسیون از مبلغ خدمت بیشتر نباشد.');
     if (['scheduled', 'working', 'completed'].includes(status) && !technicianId)
@@ -52,25 +60,42 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
       >
         <Label className="flex flex-col gap-2 text-ui">
           مشتری
-          <NativeSelect
+          <Select
+            dir="rtl"
             name="customerId"
             defaultValue={job?.customerId ?? customers[0]?.id}
             required
           >
-            {customers.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </NativeSelect>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="انتخاب کنید" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {customers.map((item) => (
+                  <SelectItem key={item.id} value={item.id}>
+                    {item.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
           نوع دستگاه
-          <NativeSelect name="appliance" defaultValue={job?.appliance}>
-            {appliances.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
-          </NativeSelect>
+          <Select dir="rtl" name="appliance" defaultValue={job?.appliance ?? appliances[0]}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="انتخاب کنید" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {appliances.map((item) => (
+                  <SelectItem key={item} value={item}>
+                    {item}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
           برند دستگاه
@@ -84,10 +109,17 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
           اولویت
-          <NativeSelect name="priority" defaultValue={job?.priority ?? 'normal'}>
-            <option value="normal">عادی</option>
-            <option value="urgent">فوری</option>
-          </NativeSelect>
+          <Select dir="rtl" name="priority" defaultValue={job?.priority ?? 'normal'}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="انتخاب کنید" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="normal">عادی</SelectItem>
+                <SelectItem value="urgent">فوری</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </Label>
         <Label className="col-span-full flex flex-col gap-2 text-ui">
           شرح مشکل
@@ -115,24 +147,39 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
           تعمیرکار
-          <NativeSelect name="technicianId" defaultValue={job?.technicianId ?? ''}>
-            <option value="">بدون تخصیص</option>
-            {technicians.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </NativeSelect>
+          <Select dir="rtl" name="technicianId" defaultValue={job?.technicianId || '__unassigned'}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="بدون تخصیص" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="__unassigned">بدون تخصیص</SelectItem>
+
+                {technicians.map((item) => (
+                  <SelectItem key={item.id} value={item.id}>
+                    {item.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
           وضعیت
-          <NativeSelect name="status" defaultValue={job?.status ?? 'new'}>
-            {Object.entries(statusLabels).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </NativeSelect>
+          <Select dir="rtl" name="status" defaultValue={job?.status ?? 'new'}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="انتخاب کنید" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {Object.entries(statusLabels).map(([value, label]) => (
+                  <SelectItem key={value} value={value}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
           مبلغ خدمت (تومان نمونه)
