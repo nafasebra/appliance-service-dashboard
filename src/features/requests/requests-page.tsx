@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Plus, Search, SlidersHorizontal } from 'lucide-react';
-import { useDemo } from './model/demo-store';
-import { statusLabels, type Job } from './model/types';
-import { JobEditor } from './components/job-editor';
-import { JobTable } from './components/job-table';
+import { useDemo } from '@/entities/service/model/demo-store';
+import { statusLabels, type Job } from '@/entities/service/model/types';
+import { JobEditor } from '@/features/requests/components/job-editor';
+import { JobTable } from '@/features/requests/components/job-table';
 import { PageHeading, Panel } from '@/shared/ui/primitives';
 import { number } from '@/shared/lib/format';
 import { Button } from '@/shared/ui/button';

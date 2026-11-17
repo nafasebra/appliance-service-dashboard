@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { Bell } from 'lucide-react';
-import { useDemo } from '@/features/operations/model/demo-store';
+import { useDemo } from '@/entities/service/model/demo-store';
 import { Button } from '@/shared/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
 

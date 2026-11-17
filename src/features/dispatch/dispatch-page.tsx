@@ -1,9 +1,9 @@
 import { cn } from '@/shared/lib/utils';
 import { useState } from 'react';
 import { Clock3, MapPin, Plus } from 'lucide-react';
-import { useDemo } from './model/demo-store';
-import { statusLabels, type Job } from './model/types';
-import { JobEditor } from './components/job-editor';
+import { useDemo } from '@/entities/service/model/demo-store';
+import { statusLabels, type Job } from '@/entities/service/model/types';
+import { JobEditor } from '@/features/requests/job-components';
 import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';
 import { number } from '@/shared/lib/format';
 import { Badge } from '@/shared/ui/badge';

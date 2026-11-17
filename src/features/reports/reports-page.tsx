@@ -1,7 +1,7 @@
-import { useDemo } from './model/demo-store';
-import { appliances } from './model/types';
-import { summarizeFinance } from './model/finance';
-import { CashChart } from './components/cash-chart';
+import { useDemo } from '@/entities/service/model/demo-store';
+import { appliances } from '@/entities/service/model/types';
+import { summarizeFinance } from '@/entities/service/model/finance';
+import { CashChart } from '@/features/finance/cash-chart';
 import { PageHeading, Panel } from '@/shared/ui/primitives';
 import { money, number } from '@/shared/lib/format';
 import { Progress } from '@/shared/ui/progress';

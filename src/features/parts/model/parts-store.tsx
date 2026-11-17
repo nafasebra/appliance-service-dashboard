@@ -1,5 +1,5 @@
 import { createContext, useContext, useRef, useState, type ReactNode } from 'react';
-import { initialPartsData, isPartsData, type PartsData } from './parts';
+import { initialPartsData, isPartsData, type PartsData } from '@/features/parts/model/parts';
 
 const storageKey = 'hamyar-parts-v1';
 interface PartsContextValue {

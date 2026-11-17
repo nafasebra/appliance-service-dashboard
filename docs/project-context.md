@@ -1,5 +1,12 @@
 # زمینه و محدوده پروژه
 
+## مرز حوزه‌ها
+
+صفحات در `src/features/` به حوزه‌های `requests`، `dispatch`، `customers`، `technicians`، `finance`، `parts`، `overview` و `reports` تفکیک شده‌اند.
+مدل و store مشترک دمو در `src/entities/service/model/` قرار دارد؛ قطعات مدل و store مستقل خود را در feature مربوطه دارد.
+کامپوننت‌های عمومی رابط در `shared/ui` باقی می‌مانند. استفاده بین حوزه‌ای از ویرایشگر و جدول سفارش‌ها از `features/requests/job-components` و نمودار مالی از `features/finance/cash-chart` انجام می‌شود.
+این جابه‌جایی ساختاری کلیدهای localStorage و قرارداد داده‌ها را تغییر نمی‌دهد.
+
 ## مدیریت قطعات
 
 چهار صفحه مدیریت تعمیرکاران (`/technicians`)، تخصص‌ها (`/technician-specialties`)، سفارش‌های باز تخصیص‌یافته (`/technician-jobs`) و امور مالی (`/technician-finance`) در گروه مستقل منو قرار دارند.
@@ -32,7 +39,7 @@ React Context نگهداری و با کلید `hamyar-service-demo-v1` در loca
 ## تصمیم‌های فنی
 
 - مسیرها در `src/app/routes/` تعریف و در `src/app/router.ts` ثبت می‌شوند.
-- وابستگی لایه‌ها `app -> features -> shared` است و منطق مالی خالص در model قرار دارد.
+- وابستگی لایه‌ها `app -> features -> entities -> shared` است و منطق مالی خالص در model قرار دارد.
 - کامپوننت‌های محلی shadcn/ui در `src/shared/ui/` هستند. CLI مربوط به shadcn اجرا نمی‌شود.
 - Tailwind v4 با افزونه Vite و پیکربندی CSS-first استفاده می‌شود. utilityها مستقیماً روی
   عناصر JSX قرار می‌گیرند، `cn()` کلاس‌های شرطی را ادغام می‌کند و توکن‌های معنایی در

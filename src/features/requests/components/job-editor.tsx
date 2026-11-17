@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
-import { useDemo } from '../model/demo-store';
-import { appliances, statusLabels, type Job, type JobStatus } from '../model/types';
-import { validateAmounts } from '../model/finance';
+import { useDemo } from '@/entities/service/model/demo-store';
+import { appliances, statusLabels, type Job, type JobStatus } from '@/entities/service/model/types';
+import { validateAmounts } from '@/entities/service/model/finance';
 import { Modal } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';

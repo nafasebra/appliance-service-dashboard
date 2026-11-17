@@ -52,11 +52,16 @@ Current organization and intended extension points:
 src/
   app/                   Application entry, providers, routing, and page composition
   features/
-    operations/          Connected demo pages for service operations and finance
-      components/        Feature-specific UI
-      hooks/             Feature-specific React behavior
-      api/               Feature API adapters and transport mapping
-      model/             Domain types, validation, and pure business rules
+    requests/            Request pages, editor and job table
+    dispatch/            Scheduling and dispatch
+    customers/           Customer directory and history
+    technicians/         Team management, specialties, jobs and balances
+    finance/             Finance page and cash chart
+    parts/               Inventory, inquiries, procurement and allocations
+    overview/            Dashboard overview composition
+    reports/             Performance reports
+  entities/
+    service/model/       Shared demo records, types, validation and finance rules
   shared/
     ui/                  Local shadcn components and dashboard compositions
     lib/                 Formatting, theme, and shared utilities such as cn()
@@ -65,8 +70,8 @@ src/
 ```
 
 Create directories when they contain real code. Do not generate empty modules or
-speculative abstractions. Operations currently share one feature and demo store;
-split feature boundaries only when requirements justify the separation.
+speculative abstractions. Features own their pages and behavior. Shared service
+records retain one demo store in entities/service/model; parts owns its separate store.
 
 | URL            | Page                                                      |
 | -------------- | --------------------------------------------------------- |
@@ -78,7 +83,7 @@ split feature boundaries only when requirements justify the separation.
 | `/finance`     | Receipts, payouts, expenses, and CSV export               |
 | `/reports`     | Service distribution, team performance, and cash movement |
 
-Dependency direction is `app -> features -> shared`. Shared code must not import
+Dependency direction is `app -> features -> entities -> shared`. Shared code must not import
 features or application composition. Avoid reaching into another feature's internals;
 expose an intentional public entry point when cross-feature use becomes necessary.
 Keep transport, business calculations, and rendering separate.
@@ -95,7 +100,7 @@ instead of synchronizing duplicate state with effects.
 
 ## System design
 
-The application is client-only. `features/operations/model/demo-store.tsx` owns
+The application is client-only. `entities/service/model/demo-store.tsx` owns
 shared demo records through React context; `demo-data.ts` contains seed records,
 `types.ts` defines domain types, and `finance.ts` contains pure financial summaries.
 Demo changes persist under `hamyar-service-demo-v1` in localStorage. Reset requires

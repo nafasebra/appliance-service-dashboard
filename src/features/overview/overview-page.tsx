@@ -12,12 +12,11 @@ import {
   CircleCheck,
   Clock3,
 } from 'lucide-react';
-import { useDemo } from './model/demo-store';
-import { summarizeFinance } from './model/finance';
-import { statusLabels, type Job } from './model/types';
-import { JobTable } from './components/job-table';
-import { JobEditor } from './components/job-editor';
-import { CashChart } from './components/cash-chart';
+import { useDemo } from '@/entities/service/model/demo-store';
+import { summarizeFinance } from '@/entities/service/model/finance';
+import { statusLabels, type Job } from '@/entities/service/model/types';
+import { JobTable, JobEditor } from '@/features/requests/job-components';
+import { CashChart } from '@/features/finance/cash-chart';
 import { PageHeading, Panel, StatCard } from '@/shared/ui/primitives';
 import { money, number } from '@/shared/lib/format';
 import { Button } from '@/shared/ui/button';

@@ -1,7 +1,7 @@
 import { createRootRoute, Link } from '@tanstack/react-router';
 import { DashboardLayout } from '@/app/dashboard-layout';
-import { DemoProvider } from '@/features/operations/model/demo-store';
-import { PartsProvider } from '@/features/operations/model/parts-store';
+import { DemoProvider } from '@/entities/service/model/demo-store';
+import { PartsProvider } from '@/features/parts/model/parts-store';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 

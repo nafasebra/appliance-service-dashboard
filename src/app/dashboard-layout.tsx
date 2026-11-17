@@ -4,7 +4,7 @@ import { AlertTriangle } from 'lucide-react';
 import { DashboardHeader } from '@/app/components/dashboard-header';
 import { DashboardSidebar } from '@/app/components/dashboard-sidebar';
 import { DashboardFooter } from '@/app/components/dashboard-footer';
-import { useDemo } from '@/features/operations/model/demo-store';
+import { useDemo } from '@/entities/service/model/demo-store';
 import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
 import { Modal } from '@/shared/ui/primitives';
 import { SidebarInset, SidebarProvider } from '@/shared/ui/sidebar';

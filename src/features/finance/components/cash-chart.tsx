@@ -1,4 +1,4 @@
-import { useDemo } from '../model/demo-store';
+import { useDemo } from '@/entities/service/model/demo-store';
 import { number, dateLabel } from '@/shared/lib/format';
 
 export function CashChart() {

@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Plus } from 'lucide-react';
-import { useDemo } from './model/demo-store';
-import type { Technician } from './model/types';
+import { useDemo } from '@/entities/service/model/demo-store';
+import type { Technician } from '@/entities/service/model/types';
 import { PageHeading, Panel, Modal, EmptyState } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';

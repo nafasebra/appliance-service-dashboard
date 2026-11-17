@@ -1,9 +1,9 @@
 import { cn } from '@/shared/lib/utils';
 import { useState, type FormEvent } from 'react';
 import { Plus, ArrowDownLeft, ArrowUpRight, Wallet, HandCoins, Download } from 'lucide-react';
-import { useDemo } from './model/demo-store';
-import { summarizeFinance } from './model/finance';
-import type { Transaction } from './model/types';
+import { useDemo } from '@/entities/service/model/demo-store';
+import { summarizeFinance } from '@/entities/service/model/finance';
+import type { Transaction } from '@/entities/service/model/types';
 import { PageHeading, Panel, StatCard, Modal, EmptyState } from '@/shared/ui/primitives';
 import { money, dateLabel } from '@/shared/lib/format';
 import { Badge } from '@/shared/ui/badge';

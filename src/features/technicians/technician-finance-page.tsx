@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Wallet } from 'lucide-react';
-import { useDemo } from './model/demo-store';
-import { summarizeFinance } from './model/finance';
+import { useDemo } from '@/entities/service/model/demo-store';
+import { summarizeFinance } from '@/entities/service/model/finance';
 import { PageHeading, Panel, StatCard, Modal, EmptyState } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';

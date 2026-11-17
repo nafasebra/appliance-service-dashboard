@@ -1,8 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { Package, Plus } from 'lucide-react';
-import { useDemo } from './model/demo-store';
-import { useParts } from './model/parts-store';
-import { appliances } from './model/types';
+import { useDemo } from '@/entities/service/model/demo-store';
+import { useParts } from '@/features/parts/model/parts-store';
+import { appliances } from '@/entities/service/model/types';
 import {
   availableQuantity,
   reservedQuantity,
@@ -12,7 +12,7 @@ import {
   receivePurchase,
   type NeedStatus,
   type Part,
-} from './model/parts';
+} from '@/features/parts/model/parts';
 import { PageHeading, Panel, EmptyState, Modal, StatCard } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';

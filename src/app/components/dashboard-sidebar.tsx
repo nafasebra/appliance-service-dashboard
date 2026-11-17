@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { ArrowUpLeft, LifeBuoy, RotateCcw, Wrench, X } from 'lucide-react';
 import { navigation } from '@/app/const';
 import { useDashboardSidebar } from '@/app/hooks/use-dashboard-sidebar';
-import { useDemo } from '@/features/operations/model/demo-store';
+import { useDemo } from '@/entities/service/model/demo-store';
 import {
   AlertDialog,
   AlertDialogAction,

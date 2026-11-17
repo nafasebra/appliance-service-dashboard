@@ -1,4 +1,4 @@
-import type { Appliance } from './types.ts';
+import type { Appliance } from '@/entities/service/model/types';
 
 export interface Part {
   id: string;

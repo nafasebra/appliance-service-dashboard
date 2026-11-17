@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { useDemo } from './model/demo-store';
-import type { Job } from './model/types';
-import { JobTable } from './components/job-table';
-import { JobEditor } from './components/job-editor';
+import { useDemo } from '@/entities/service/model/demo-store';
+import type { Job } from '@/entities/service/model/types';
+import { JobTable, JobEditor } from '@/features/requests/job-components';
 import { PageHeading, Panel } from '@/shared/ui/primitives';
 import {
   Select,
