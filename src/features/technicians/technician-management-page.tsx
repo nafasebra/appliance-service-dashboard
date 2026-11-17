@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { getFormText } from '@/shared/utils/form';
 import { Plus } from 'lucide-react';
 import { useDemo } from '@/entities/service/model/demo-store';
 import type { Technician } from '@/entities/service/model/types';
@@ -23,13 +24,12 @@ export function TechnicianManagementPage() {
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const value = (name: string) => String(form.get(name) ?? '').trim();
     const failure = saveTechnician({
       id: editing?.id ?? crypto.randomUUID(),
-      name: value('name'),
-      phone: value('phone'),
-      specialty: value('specialty'),
-      area: value('area'),
+      name: getFormText(form, 'name'),
+      phone: getFormText(form, 'phone'),
+      specialty: getFormText(form, 'specialty'),
+      area: getFormText(form, 'area'),
     });
     setError(failure ?? '');
     if (!failure) setEditor(null);

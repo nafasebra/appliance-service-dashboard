@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { ArrowUpLeft, LifeBuoy, RotateCcw, Wrench, X } from 'lucide-react';
-import { navigation } from '@/app/const';
+import { getNavigationGroups } from '@/app/utils/navigation';
 import { useDashboardSidebar } from '@/app/hooks/use-dashboard-sidebar';
 import { useDemo } from '@/entities/service/model/demo-store';
 import {
@@ -30,17 +30,7 @@ import {
 } from '@/shared/ui/sidebar';
 
 const persianNumber = new Intl.NumberFormat('fa');
-const isPartsRoute = (path: string) => path === '/parts' || path.startsWith('/part-');
-const isTechnicianRoute = (path: string) =>
-  path === '/technicians' || path.startsWith('/technician-');
-const navigationGroups = [
-  {
-    label: 'مدیریت کسب‌وکار',
-    items: navigation.filter((item) => !isPartsRoute(item.to) && !isTechnicianRoute(item.to)),
-  },
-  { label: 'مدیریت تعمیرکاران', items: navigation.filter((item) => isTechnicianRoute(item.to)) },
-  { label: 'مدیریت قطعات', items: navigation.filter((item) => isPartsRoute(item.to)) },
-];
+const navigationGroups = getNavigationGroups();
 
 export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
   const { jobs, resetDemo } = useDemo();

@@ -1,19 +1,10 @@
 import { useDemo } from '@/entities/service/model/demo-store';
+import { getCashChartData } from '../utils/cash-chart';
 import { number, dateLabel } from '@/shared/lib/format';
 
 export function CashChart() {
   const { transactions } = useDemo();
-  const dates = [...new Set(transactions.map((item) => item.date))].sort().slice(-7);
-  const points = dates.map((date) => ({
-    date,
-    incoming: transactions
-      .filter((item) => item.date === date && item.kind === 'receipt')
-      .reduce((sum, item) => sum + item.amount, 0),
-    outgoing: transactions
-      .filter((item) => item.date === date && item.kind !== 'receipt')
-      .reduce((sum, item) => sum + item.amount, 0),
-  }));
-  const max = Math.max(...points.flatMap((item) => [item.incoming, item.outgoing]), 1);
+  const { points, max } = getCashChartData(transactions);
   return (
     <div>
       <div className="flex gap-4 items-center pt-0 px-6 pb-3 text-3xs text-muted-foreground [&_>_span]:flex [&_>_span]:gap-1.25 [&_>_span]:items-center [&_i]:h-1.75 [&_i]:w-1.75 [&_i]:rounded-xs [&_small]:ms-auto [&_small]:text-4xs">

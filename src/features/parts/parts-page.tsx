@@ -1,4 +1,6 @@
 import { useState, type FormEvent } from 'react';
+import { getPartJobLabel, matchesPart } from './utils/part-filters';
+import { getFormText } from '@/shared/utils/form';
 import { Package, Plus } from 'lucide-react';
 import { useDemo } from '@/entities/service/model/demo-store';
 import { useParts } from '@/features/parts/model/parts-store';
@@ -58,23 +60,9 @@ export function PartsPage({ section }: { section: Section }) {
     setMessage(failure ? '' : 'اطلاعات با موفقیت ثبت شد.');
     return !failure;
   }
-  const jobLabel = (id: string) => {
-    const job = jobs.find((item) => item.id === id);
-    return job
-      ? `${job.id} · ${customers.find((c) => c.id === job.customerId)?.name ?? ''} · ${job.appliance}`
-      : `${id} · سفارش در دسترس نیست`;
-  };
-  const matches = (partId: string) => {
-    const part = data.parts.find((item) => item.id === partId);
-    return (
-      part &&
-      (appliance === 'all' || part.appliance === appliance) &&
-      `${part.name} ${part.code} ${part.compatibility}`.toLowerCase().includes(search.toLowerCase())
-    );
-  };
   const inventory = data.parts.filter(
     (part) =>
-      matches(part.id) &&
+      matchesPart(part.id, data.parts, appliance, search) &&
       (status === 'all' ||
         (status === 'inactive'
           ? !part.active
@@ -84,27 +72,28 @@ export function PartsPage({ section }: { section: Section }) {
   );
   const needs = data.needs.filter(
     (need) =>
-      matches(need.partId) &&
+      matchesPart(need.partId, data.parts, appliance, search) &&
       (status === 'all' || need.status === status) &&
       (section !== 'allocations' ||
         ['reserved', 'delivered', 'used', 'returned'].includes(need.status)),
   );
   const purchases = data.purchases.filter(
-    (purchase) => matches(purchase.partId) && (status === 'all' || purchase.status === status),
+    (purchase) =>
+      matchesPart(purchase.partId, data.parts, appliance, search) &&
+      (status === 'all' || purchase.status === status),
   );
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const fields = new FormData(event.currentTarget);
-    const text = (key: string) => String(fields.get(key) ?? '').trim();
     const quantity = Number(fields.get('quantity'));
     if (form === 'part') {
       const part: Part = {
         id: editing?.id ?? crypto.randomUUID(),
-        code: text('code'),
-        name: text('name'),
-        appliance: text('appliance') as Part['appliance'],
-        compatibility: text('compatibility'),
-        location: text('location'),
+        code: getFormText(fields, 'code'),
+        name: getFormText(fields, 'name'),
+        appliance: getFormText(fields, 'appliance') as Part['appliance'],
+        compatibility: getFormText(fields, 'compatibility'),
+        location: getFormText(fields, 'location'),
         stock: editing?.stock ?? Number(fields.get('stock')),
         minimum: Number(fields.get('minimum')),
         active: editing?.active ?? true,
@@ -124,9 +113,9 @@ export function PartsPage({ section }: { section: Section }) {
       setError('تعداد باید عدد صحیح مثبت باشد.');
       return;
     }
-    const partId = text('partId');
+    const partId = getFormText(fields, 'partId');
     if (form === 'need') {
-      const job = jobs.find((item) => item.id === text('jobId'));
+      const job = jobs.find((item) => item.id === getFormText(fields, 'jobId'));
       const part = data.parts.find((item) => item.id === partId);
       if (
         !job ||
@@ -166,7 +155,7 @@ export function PartsPage({ section }: { section: Section }) {
               needId: '',
               quantity,
               received: 0,
-              supplier: text('supplier'),
+              supplier: getFormText(fields, 'supplier'),
               status: 'pending',
             },
           ],
@@ -410,7 +399,7 @@ export function PartsPage({ section }: { section: Section }) {
               ? needs.map((need) => (
                   <TableRow key={need.id}>
                     <TableCell>{data.parts.find((p) => p.id === need.partId)?.name}</TableCell>
-                    <TableCell>{jobLabel(need.jobId)}</TableCell>
+                    <TableCell>{getPartJobLabel(need.jobId, jobs, customers)}</TableCell>
                     <TableCell>{number(need.quantity)}</TableCell>
                     <TableCell>{number(availableQuantity(data, need.partId))}</TableCell>
                     <TableCell>
@@ -519,7 +508,11 @@ export function PartsPage({ section }: { section: Section }) {
                     <TableCell>{data.parts.find((p) => p.id === purchase.partId)?.name}</TableCell>
                     <TableCell>
                       {purchase.needId
-                        ? jobLabel(data.needs.find((n) => n.id === purchase.needId)?.jobId ?? '')
+                        ? getPartJobLabel(
+                            data.needs.find((n) => n.id === purchase.needId)?.jobId ?? '',
+                            jobs,
+                            customers,
+                          )
                         : 'تکمیل موجودی انبار'}
                     </TableCell>
                     <TableCell>{purchase.supplier || 'تعیین نشده'}</TableCell>
@@ -699,7 +692,7 @@ export function PartsPage({ section }: { section: Section }) {
                             .filter((job) => !['completed', 'cancelled'].includes(job.status))
                             .map((job) => (
                               <SelectItem key={job.id} value={job.id}>
-                                {jobLabel(job.id)}
+                                {getPartJobLabel(job.id, jobs, customers)}
                               </SelectItem>
                             ))}
                         </SelectGroup>

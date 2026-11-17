@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { getJobPayable } from './utils/technician-finance';
 import { Wallet } from 'lucide-react';
 import { useDemo } from '@/entities/service/model/demo-store';
 import { summarizeFinance } from '@/entities/service/model/finance';
@@ -32,17 +33,6 @@ export function TechnicianFinancePage() {
     assigned.some((job) => job.id === transaction.jobId),
   );
   const finance = summarizeFinance(assigned, related);
-  const payable = (id: string) => {
-    const job = jobs.find((item) => item.id === id);
-    return job?.status === 'completed'
-      ? job.total -
-          job.commission -
-          transactions.reduce(
-            (sum, item) => sum + (item.jobId === id && item.kind === 'payout' ? item.amount : 0),
-            0,
-          )
-      : 0;
-  };
   const payouts = related
     .filter((item) => item.kind === 'payout')
     .sort((a, b) => b.date.localeCompare(a.date));
@@ -50,7 +40,11 @@ export function TechnicianFinancePage() {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const amount = Number(form.get('amount'));
-    if (!Number.isSafeInteger(amount) || amount <= 0 || amount > payable(jobId)) {
+    if (
+      !Number.isSafeInteger(amount) ||
+      amount <= 0 ||
+      amount > getJobPayable(jobId, jobs, transactions)
+    ) {
       setError('مبلغ باید عدد صحیح مثبت و حداکثر برابر مانده سفارش باشد.');
       return;
     }
@@ -161,7 +155,7 @@ export function TechnicianFinancePage() {
             </TableHeader>
             <TableBody>
               {assigned
-                .filter((job) => payable(job.id) > 0)
+                .filter((job) => getJobPayable(job.id, jobs, transactions) > 0)
                 .map((job) => (
                   <TableRow key={job.id}>
                     <TableCell>
@@ -170,7 +164,7 @@ export function TechnicianFinancePage() {
                     <TableCell>
                       {technicians.find((tech) => tech.id === job.technicianId)?.name}
                     </TableCell>
-                    <TableCell>{money(payable(job.id))}</TableCell>
+                    <TableCell>{money(getJobPayable(job.id, jobs, transactions))}</TableCell>
                     <TableCell>
                       <Button
                         size="sm"
@@ -188,7 +182,7 @@ export function TechnicianFinancePage() {
                 ))}
             </TableBody>
           </Table>
-          {!assigned.some((job) => payable(job.id) > 0) ? (
+          {!assigned.some((job) => getJobPayable(job.id, jobs, transactions) > 0) ? (
             <EmptyState text="سفارش تکمیل‌شده‌ای با مانده قابل پرداخت وجود ندارد." />
           ) : null}
         </Panel>
@@ -232,10 +226,17 @@ export function TechnicianFinancePage() {
       {jobId ? (
         <Modal title="ثبت پرداخت به تعمیرکار" onClose={() => setJobId('')}>
           <form onSubmit={submit} className="flex flex-col gap-4 p-6">
-            <p>مانده سفارش: {money(payable(jobId))}</p>
+            <p>مانده سفارش: {money(getJobPayable(jobId, jobs, transactions))}</p>
             <Label className="flex flex-col gap-2">
               مبلغ (تومان)
-              <Input name="amount" type="number" min="1" max={payable(jobId)} step="1" required />
+              <Input
+                name="amount"
+                type="number"
+                min="1"
+                max={getJobPayable(jobId, jobs, transactions)}
+                step="1"
+                required
+              />
             </Label>
             <Label className="flex flex-col gap-2">
               تاریخ پرداخت

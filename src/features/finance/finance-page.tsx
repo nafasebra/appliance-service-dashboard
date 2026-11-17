@@ -1,4 +1,5 @@
 import { cn } from '@/shared/lib/utils';
+import { downloadTransactionsCsv } from './utils/transaction-csv';
 import { useState, type FormEvent } from 'react';
 import { Plus, ArrowDownLeft, ArrowUpRight, Wallet, HandCoins, Download } from 'lucide-react';
 import { useDemo } from '@/entities/service/model/demo-store';
@@ -67,29 +68,7 @@ export function FinancePage() {
     setError('');
   }
   function exportCsv() {
-    // Prefix spreadsheet control characters to prevent CSV formulas in free text.
-    const cell = (value: string) =>
-      `"${(/^[=+@\-\t\r]/.test(value) ? `'${value}` : value).replaceAll('"', '""')}"`;
-    const rows = [
-      ['تاریخ', 'نوع', 'شرح', 'درخواست', 'مبلغ تومان'],
-      ...filtered.map((item) => [
-        item.date,
-        kindLabels[item.kind],
-        item.description,
-        item.jobId,
-        String(item.amount),
-      ]),
-    ];
-    const url = URL.createObjectURL(
-      new Blob(['\uFEFF' + rows.map((row) => row.map(cell).join(',')).join('\n')], {
-        type: 'text/csv;charset=utf-8;',
-      }),
-    );
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'demo-transactions.csv';
-    link.click();
-    URL.revokeObjectURL(url);
+    downloadTransactionsCsv(filtered, kindLabels);
   }
   return (
     <>
