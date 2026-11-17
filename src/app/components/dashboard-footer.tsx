@@ -1,4 +1,4 @@
-import { useCompanySettings } from '@/entities/company/model/settings-store';
+import { useCompanySettings } from '@/shared/store/settings-store';
 
 export function DashboardFooter() {
   const settings = useCompanySettings((state) => state.settings);

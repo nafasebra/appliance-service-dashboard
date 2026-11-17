@@ -1,7 +1,7 @@
 import { cn } from '@/shared/lib/utils';
 import { useState } from 'react';
 import { Clock3, MapPin, Plus } from 'lucide-react';
-import { useDemo } from '@/entities/service/model/demo-store';
+import { useDemo } from '@/shared/store/demo-store';
 import { statusLabels, type Job } from '@/entities/service/model/types';
 import { JobEditor } from '@/features/requests/job-components';
 import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';

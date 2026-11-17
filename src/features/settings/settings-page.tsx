@@ -1,8 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { Building2, Save } from 'lucide-react';
-import { useCompanySettings } from '@/entities/company/model/settings-store';
+import { useCompanySettings } from '@/shared/store/settings-store';
 import { defaultCompanySettings, type CompanySettings } from '@/entities/company/model/settings';
-import { useTheme } from '@/shared/lib/theme';
+import { useTheme } from '@/shared/store/theme-store';
 import { PageHeading } from '@/shared/ui/primitives';
 import {
   Card,

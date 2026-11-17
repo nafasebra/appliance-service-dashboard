@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { useDemo } from '@/entities/service/model/demo-store';
+import { useDemo } from '@/shared/store/demo-store';
 import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';

@@ -9,6 +9,7 @@ its upstream `SKILL.md` and supporting files. These are project-local copies.
 | `tailwind/`              | [brpaz Tailwind v4](https://github.com/brpaz/agent-skills/tree/main/skills/tailwind-v4)                            |
 | `shadcn/`                | [Official shadcn skill](https://github.com/shadcn-ui/ui/tree/main/skills/shadcn)                                   |
 | `frontend-architecture/` | [Singular frontend architecture](https://github.com/we-are-singular/skills/tree/main/skills/frontend-architecture) |
+| `zustand/` | [Microsoft Zustand store skill](https://github.com/microsoft/skills/tree/main/.github/plugins/azure-sdk-typescript/skills/zustand-store-ts) |
 
 Read the relevant skill before related implementation work. User instructions and
 the project `AGENTS.md` take precedence over upstream defaults. In particular:
@@ -18,6 +19,10 @@ the project `AGENTS.md` take precedence over upstream defaults. In particular:
 - Obtain shadcn component source from the official website/registry without running
   the shadcn CLI. Preserve the local `src/shared/ui/` component library.
 - Preserve feature boundaries and the current frontend demonstration scope.
+- Zustand was installed on 2026-11-17. Use `src/shared/store/` and direct module
+  imports instead of the upstream example directory and barrel. Keep legacy storage
+  formats and validation, including the existing storage-failure behavior; middleware
+  is added only when it supports that contract.
 
 Installing a skill does not authorize running bundled scripts, deploying, or
 changing dependencies. Apply only the guidance needed for the user's task.

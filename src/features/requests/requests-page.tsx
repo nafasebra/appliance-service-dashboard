@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Plus, Search, SlidersHorizontal } from 'lucide-react';
-import { useDemo } from '@/entities/service/model/demo-store';
+import { useDemo } from '@/shared/store/demo-store';
 import { statusLabels, type Job } from '@/entities/service/model/types';
 import { JobEditor } from '@/features/requests/components/job-editor';
 import { JobTable } from '@/features/requests/components/job-table';

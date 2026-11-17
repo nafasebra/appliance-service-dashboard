@@ -12,7 +12,7 @@ import {
   BreadcrumbSeparator,
 } from '@/shared/ui/breadcrumb';
 import { SidebarTrigger } from '@/shared/ui/sidebar';
-import { useCompanySettings } from '@/entities/company/model/settings-store';
+import { useCompanySettings } from '@/shared/store/settings-store';
 
 export function DashboardHeader() {
   const settings = useCompanySettings((state) => state.settings);

@@ -1,5 +1,5 @@
 import { useRef, useState, type FormEvent } from 'react';
-import { useDemo } from '@/entities/service/model/demo-store';
+import { useDemo } from '@/shared/store/demo-store';
 import type { Transaction } from '@/entities/service/model/types';
 import { paymentMethodLabels, getOrderAccount } from '@/entities/service/model/customer-account';
 import { Modal } from '@/shared/ui/primitives';

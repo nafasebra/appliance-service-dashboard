@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Wallet } from 'lucide-react';
-import { useDemo } from '@/entities/service/model/demo-store';
+import { useDemo } from '@/shared/store/demo-store';
 import { getCustomerAccount } from '@/entities/service/model/customer-account';
 import { PageHeading, Panel, EmptyState, StatCard } from '@/shared/ui/primitives';
 import { Input } from '@/shared/ui/input';

@@ -1,6 +1,6 @@
 import { cn } from '@/shared/lib/utils';
 import { ArrowUpLeft, WashingMachine, Refrigerator, Wind, CookingPot } from 'lucide-react';
-import { useDemo } from '@/entities/service/model/demo-store';
+import { useDemo } from '@/shared/store/demo-store';
 import { statusLabels, type Job } from '@/entities/service/model/types';
 import { dateLabel, money } from '@/shared/lib/format';
 import { EmptyState } from '@/shared/ui/primitives';

@@ -1,4 +1,4 @@
-import { useDemo } from '@/entities/service/model/demo-store';
+import { useDemo } from '@/shared/store/demo-store';
 import { getCashChartData } from '../utils/cash-chart';
 import { number, dateLabel } from '@/shared/lib/format';
 

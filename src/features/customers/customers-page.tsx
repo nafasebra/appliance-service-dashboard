@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Search, ArrowUpLeft } from 'lucide-react';
-import { useDemo } from '@/entities/service/model/demo-store';
+import { useDemo } from '@/shared/store/demo-store';
 import { JobTable, JobEditor } from '@/features/requests/job-components';
 import type { Job } from '@/entities/service/model/types';
 import { PageHeading, Panel, EmptyState, Modal } from '@/shared/ui/primitives';

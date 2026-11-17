@@ -1,4 +1,4 @@
-import { useDemo } from '@/entities/service/model/demo-store';
+import { useDemo } from '@/shared/store/demo-store';
 import { appliances } from '@/entities/service/model/types';
 import { summarizeFinance } from '@/entities/service/model/finance';
 import { CashChart } from '@/features/finance/cash-chart';

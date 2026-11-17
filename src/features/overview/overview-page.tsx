@@ -12,7 +12,7 @@ import {
   CircleCheck,
   Clock3,
 } from 'lucide-react';
-import { useDemo } from '@/entities/service/model/demo-store';
+import { useDemo } from '@/shared/store/demo-store';
 import { summarizeFinance } from '@/entities/service/model/finance';
 import { statusLabels, type Job } from '@/entities/service/model/types';
 import { JobTable, JobEditor } from '@/features/requests/job-components';

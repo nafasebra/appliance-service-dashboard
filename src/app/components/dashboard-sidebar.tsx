@@ -1,9 +1,9 @@
 import { Link } from '@tanstack/react-router';
 import { ArrowUpLeft, LifeBuoy, RotateCcw, Wrench, X } from 'lucide-react';
 import { getNavigationGroups } from '@/app/utils/navigation';
-import { useCompanySettings } from '@/entities/company/model/settings-store';
+import { useCompanySettings } from '@/shared/store/settings-store';
 import { useDashboardSidebar } from '@/app/hooks/use-dashboard-sidebar';
-import { useDemo } from '@/entities/service/model/demo-store';
+import { useDemo } from '@/shared/store/demo-store';
 import {
   AlertDialog,
   AlertDialogAction,

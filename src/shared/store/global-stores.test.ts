@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { useDemo } from './demo-store.ts';
-import { initialData } from './demo-data.ts';
-import { useParts } from '../../../features/parts/model/parts-store.ts';
-import { initialPartsData } from '../../../features/parts/model/parts.ts';
-import { useCompanySettings } from '../../company/model/settings-store.ts';
-import { defaultCompanySettings } from '../../company/model/settings.ts';
+import { initialData } from '../../entities/service/model/demo-data.ts';
+import { useParts } from './parts-store.ts';
+import { initialPartsData } from '../../features/parts/model/parts.ts';
+import { useCompanySettings } from './settings-store.ts';
+import { defaultCompanySettings } from '../../entities/company/model/settings.ts';
 
 const saved = new Map<string, string>();
 let blocked = false;
@@ -18,6 +18,51 @@ Object.defineProperty(globalThis, 'localStorage', {
       saved.set(key, value);
     },
   },
+});
+
+test('rejected and throwing inventory callbacks leave state and storage untouched', () => {
+  useParts.setState({ data: structuredClone(initialPartsData), storageError: false });
+  const before = useParts.getState().data;
+  const persisted = saved.get('hamyar-parts-v1');
+  let notifications = 0;
+  const unsubscribe = useParts.subscribe(
+    (state) => state.data,
+    () => notifications++,
+  );
+  try {
+    assert.ok(
+      useParts.getState().change((data) => {
+        data.parts[0].stock = -1;
+        return data;
+      }),
+    );
+    assert.ok(
+      useParts.getState().change((data) => {
+        data.parts[0].stock++;
+        throw new Error('operation failed');
+      }),
+    );
+    assert.equal(useParts.getState().data, before);
+    assert.equal(before.parts[0].stock, initialPartsData.parts[0].stock);
+    assert.equal(saved.get('hamyar-parts-v1'), persisted);
+    assert.equal(notifications, 0);
+  } finally {
+    unsubscribe();
+  }
+});
+
+test('accepted records are isolated from subsequent caller mutations', () => {
+  useDemo.setState({ ...structuredClone(initialData), storageError: false });
+  const technician = structuredClone(useDemo.getState().technicians[0]);
+  const name = technician.name;
+  assert.equal(useDemo.getState().saveTechnician(technician), null);
+  technician.name = 'mutated outside the store';
+  assert.equal(useDemo.getState().technicians[0].name, name);
+
+  const settings = { ...defaultCompanySettings, companyName: 'saved name' };
+  assert.equal(useCompanySettings.getState().saveSettings(settings), null);
+  settings.companyName = 'unsaved name';
+  assert.equal(useCompanySettings.getState().settings.companyName, 'saved name');
 });
 
 test('shared stores use latest state, preserve subscriptions and retain legacy storage keys', () => {

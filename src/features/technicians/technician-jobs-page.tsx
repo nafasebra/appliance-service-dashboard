@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDemo } from '@/entities/service/model/demo-store';
+import { useDemo } from '@/shared/store/demo-store';
 import type { Job } from '@/entities/service/model/types';
 import { JobTable, JobEditor } from '@/features/requests/job-components';
 import { PageHeading, Panel } from '@/shared/ui/primitives';

@@ -34,6 +34,7 @@ Read the relevant local skill before related work:
 - Tailwind CSS v4: `.skills/tailwind/SKILL.md`
 - shadcn/ui: `.skills/shadcn/SKILL.md`
 - Frontend architecture: `.skills/frontend-architecture/SKILL.md`
+- Zustand stores, selectors and persistence: `.skills/zustand/SKILL.md`
 
 Sources and project-specific compatibility notes are in `.skills/README.md`.
 User instructions and this project's constraints take precedence over skill defaults.
@@ -63,6 +64,7 @@ src/
   entities/
     service/model/       Shared demo records, types, validation and finance rules
   shared/
+    store/               Global Zustand stores and their integration tests
     ui/                  Local shadcn components and dashboard compositions
     lib/                 Formatting, theme, and shared utilities such as cn()
     api/                 Shared transport configuration and error handling
@@ -71,7 +73,7 @@ src/
 
 Create directories when they contain real code. Do not generate empty modules or
 speculative abstractions. Features own their pages and behavior. Shared service
-records retain one demo store in entities/service/model; parts owns its separate store.
+records retain one demo store in shared/store; parts has a separate store there.
 
 | URL            | Page                                                      |
 | -------------- | --------------------------------------------------------- |
@@ -83,7 +85,10 @@ records retain one demo store in entities/service/model; parts owns its separate
 | `/finance`     | Receipts, payouts, expenses, and CSV export               |
 | `/reports`     | Service distribution, team performance, and cash movement |
 
-Dependency direction is `app -> features -> entities -> shared`. Shared code must not import
+Dependency direction is `app -> features -> entities -> shared`. By explicit project
+convention, `shared/store` is the composition exception: stores may import pure
+entity and parts models. Keep models independent of stores to avoid cycles.
+Other shared code must not import
 features or application composition. Avoid reaching into another feature's internals;
 expose an intentional public entry point when cross-feature use becomes necessary.
 Keep transport, business calculations, and rendering separate.
@@ -101,7 +106,7 @@ instead of synchronizing duplicate state with effects.
 
 ## System design
 
-The application is client-only. `entities/service/model/demo-store.ts` owns
+The application is client-only. `shared/store/demo-store.ts` owns
 shared demo records through Zustand; `demo-data.ts` contains seed records,
 `types.ts` defines domain types, and `finance.ts` contains pure financial summaries.
 Demo changes persist under `hamyar-service-demo-v1` in localStorage. Reset requires
@@ -184,8 +189,8 @@ Persian RTL UI -> feature hooks/use cases -> API adapters -> backend -> database
   explicitly changes this instruction.
 - Preserve the removed sidebar copy `فضای آزمایشی شما`; do not reintroduce it.
   Keep the dashboard-guide button readable in dark mode.
-- Theme initialization runs in `index.html` before React mounts; the provider in
-  `shared/lib/theme.ts` persists the toggle under `hamyar-service-theme`. First
+- Theme initialization runs in `index.html` before React mounts; the Zustand store in
+  `shared/store/theme-store.ts` persists the toggle under `hamyar-service-theme`. First
   visit uses the system preference; subsequent visits use the saved choice.
 
 ## Formatting and newlines

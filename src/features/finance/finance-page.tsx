@@ -2,7 +2,7 @@ import { cn } from '@/shared/lib/utils';
 import { downloadTransactionsCsv } from './utils/transaction-csv';
 import { useState, type FormEvent } from 'react';
 import { Plus, ArrowDownLeft, ArrowUpRight, Wallet, HandCoins, Download } from 'lucide-react';
-import { useDemo } from '@/entities/service/model/demo-store';
+import { useDemo } from '@/shared/store/demo-store';
 import { summarizeFinance } from '@/entities/service/model/finance';
 import type { Transaction } from '@/entities/service/model/types';
 import { PageHeading, Panel, StatCard, Modal, EmptyState } from '@/shared/ui/primitives';

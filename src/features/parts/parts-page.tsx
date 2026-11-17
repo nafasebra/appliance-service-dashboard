@@ -2,8 +2,8 @@ import { useState, type FormEvent } from 'react';
 import { getPartJobLabel, matchesPart } from './utils/part-filters';
 import { getFormText } from '@/shared/utils/form';
 import { Package, Plus } from 'lucide-react';
-import { useDemo } from '@/entities/service/model/demo-store';
-import { useParts } from '@/features/parts/model/parts-store';
+import { useDemo } from '@/shared/store/demo-store';
+import { useParts } from '@/shared/store/parts-store';
 import { appliances } from '@/entities/service/model/types';
 import {
   availableQuantity,
