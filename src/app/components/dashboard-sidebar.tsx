@@ -30,6 +30,11 @@ import {
 } from '@/shared/ui/sidebar';
 
 const persianNumber = new Intl.NumberFormat('fa');
+const isPartsRoute = (path: string) => path === '/parts' || path.startsWith('/part-');
+const navigationGroups = [
+  { label: 'مدیریت کسب‌وکار', items: navigation.filter((item) => !isPartsRoute(item.to)) },
+  { label: 'مدیریت قطعات', items: navigation.filter((item) => isPartsRoute(item.to)) },
+];
 
 export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
   const { jobs, resetDemo } = useDemo();
@@ -69,42 +74,44 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel className="mt-1 mx-3.5 mb-3 h-auto text-2xs text-muted-foreground">
-            مدیریت کسب‌وکار
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu aria-label="منوی اصلی">
-              {navigation.map(({ to, label, icon: Icon }) => (
-                <SidebarMenuItem key={to}>
-                  <SidebarMenuButton asChild>
-                    <Link
-                      to={to}
-                      activeOptions={{ exact: to === '/' }}
-                      activeProps={{
-                        className:
-                          "relative flex min-h-11.5 items-center gap-3 rounded-md bg-sidebar-accent py-2.75 px-3.5 text-xs font-bold text-sidebar-accent-foreground before:absolute before:-start-4.5 before:h-6 before:w-0.75 before:rounded-xs before:bg-primary before:content-['']",
-                      }}
-                      inactiveProps={{
-                        className:
-                          'flex min-h-11.5 items-center gap-3 rounded-md py-2.75 px-3.5 text-xs text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
-                      }}
-                      onClick={closeSidebarOnMobile}
-                    >
-                      <Icon size={20} strokeWidth={1.7} />
-                      <span>{label}</span>
-                      {to === '/requests' ? (
-                        <SidebarMenuBadge className="end-2 top-1/2 -translate-y-1/2 rounded-md bg-muted py-0.5 px-1.75 text-2xs text-primary dark:bg-accent dark:text-primary">
-                          {persianNumber.format(newJobCount)}
-                        </SidebarMenuBadge>
-                      ) : null}
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {navigationGroups.map((group) => (
+          <SidebarGroup key={group.label}>
+            <SidebarGroupLabel className="mt-1 mx-3.5 mb-3 h-auto text-2xs text-muted-foreground">
+              {group.label}
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu aria-label={group.label}>
+                {group.items.map(({ to, label, icon: Icon }) => (
+                  <SidebarMenuItem key={to}>
+                    <SidebarMenuButton asChild>
+                      <Link
+                        to={to}
+                        activeOptions={{ exact: to === '/' }}
+                        activeProps={{
+                          className:
+                            "relative flex min-h-11.5 items-center gap-3 rounded-md bg-sidebar-accent py-2.75 px-3.5 text-xs font-bold text-sidebar-accent-foreground before:absolute before:-start-4.5 before:h-6 before:w-0.75 before:rounded-xs before:bg-primary before:content-['']",
+                        }}
+                        inactiveProps={{
+                          className:
+                            'flex min-h-11.5 items-center gap-3 rounded-md py-2.75 px-3.5 text-xs text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+                        }}
+                        onClick={closeSidebarOnMobile}
+                      >
+                        <Icon size={20} strokeWidth={1.7} />
+                        <span>{label}</span>
+                        {to === '/requests' ? (
+                          <SidebarMenuBadge className="end-2 top-1/2 -translate-y-1/2 rounded-md bg-muted py-0.5 px-1.75 text-2xs text-primary dark:bg-accent dark:text-primary">
+                            {persianNumber.format(newJobCount)}
+                          </SidebarMenuBadge>
+                        ) : null}
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
 
       <SidebarFooter className="pt-11.25">

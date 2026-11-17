@@ -1,5 +1,4 @@
 import { useState, type FormEvent } from 'react';
-import { Link } from '@tanstack/react-router';
 import { Package, Plus } from 'lucide-react';
 import { useDemo } from './model/demo-store';
 import { useParts } from './model/parts-store';
@@ -204,17 +203,6 @@ export function PartsPage({ section }: { section: Section }) {
           ) : undefined
         }
       />
-      <nav aria-label="مدیریت قطعات" className="mb-6 flex flex-wrap gap-2">
-        {sections.map((item) => (
-          <Button
-            key={item.to}
-            variant={item.section === section ? 'secondary' : 'outline'}
-            asChild
-          >
-            <Link to={item.to}>{item.label}</Link>
-          </Button>
-        ))}
-      </nav>
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           title="انواع قطعه"
