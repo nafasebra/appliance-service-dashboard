@@ -1,9 +1,5 @@
-import i18next from 'i18next'
-const jalaliDateFormatter = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-});
+import i18next from 'i18next';
+import { getLocale } from '../i18n/index.ts';
 
 export function parseIsoDate(value: string): Date | undefined {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
@@ -31,5 +27,11 @@ export function toIsoDate(date: Date): string {
 
 export function formatJalaliDate(value: string): string {
   const date = parseIsoDate(value);
-  return date ? jalaliDateFormatter.format(date) : i18next.t('key13', 'انتخاب تاریخ');
+  return date
+    ? new Intl.DateTimeFormat(`${getLocale()}-u-ca-persian`, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }).format(date)
+    : i18next.t('ui.selectDate');
 }

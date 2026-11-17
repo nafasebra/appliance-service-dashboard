@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
@@ -12,10 +13,10 @@ import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money, dateLabel } from '@/shared/lib/format';
 import { downloadCsv } from '@/shared/utils/csv';
 import { TransactionDialog } from './components/transaction-dialog';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const transactions = useDemo((state) => state.transactions);
@@ -42,7 +43,7 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
             ),
         )
         .sort((a, b) => b.item.date.localeCompare(a.item.date)),
-    [transactions, kind, jobs, customers, invalidRange, from, to, query],
+    [transactions, kind, jobs, customers, invalidRange, from, to, query, t],
   );
   const transactionColumns = useMemo<DataTableColumn<(typeof rows)[number]>[]>(
     () => [
@@ -87,7 +88,8 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
       {
         id: 'روش',
         header: 'روش',
-        accessorFn: ({ item }) => (item.method ? paymentMethodLabels[item.method] : t('key198', 'ثبت قدیمی')),
+        accessorFn: ({ item }) =>
+          item.method ? translateLabel(paymentMethodLabels[item.method]) : t('ui.legacyRecord'),
       },
       {
         id: 'شماره سند',
@@ -112,40 +114,40 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
     ],
     [kind, t],
   );
-  const title = kind === 'receipt' ? t('key199', 'دریافت‌های مشتریان') : t('key200', 'هزینه‌های شرکت');
+  const title = kind === 'receipt' ? t('ui.customerReceipts') : t('ui.companyExpenses');
   return (
     <>
       <PageHeading
         title={title}
         description={
           kind === 'receipt'
-            ? t('key201', 'ثبت دریافت کامل یا جزئی و پیگیری شماره سند و روش پرداخت.')
-            : t('key202', 'ثبت مخارج عملیاتی شرکت و پیگیری اسناد پرداخت.')
+            ? t('ui.recordFullOrPartialReceiptsAndTrackPayment')
+            : t('ui.recordCompanyOperatingExpensesAndTrackPaymentDocuments')
         }
         action={
           <Button onClick={() => setOpen(true)}>
             <Plus />
-            {kind === 'receipt' ? t('key203', 'ثبت دریافت') : t('key204', 'ثبت هزینه')}
+            {kind === 'receipt' ? t('ui.recordReceipt') : t('ui.recordExpense')}
           </Button>
         }
       />
       <div className="mb-4 flex flex-wrap items-end gap-3">
         <div className="flex flex-col gap-2">
-          <Label htmlFor="register-query">{t('key205', 'جستجو')}</Label>
+          <Label htmlFor="register-query">{t('ui.search')}</Label>
           <Input
             id="register-query"
-            placeholder={t('key206', 'شرح، شماره سند یا مشتری…')}
+            placeholder={t('ui.descriptionDocumentReferenceOrCustomer')}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Label>{t('key207', 'از تاریخ')}</Label>
-          <JalaliDatePicker value={from} onValueChange={setFrom} aria-label={t('key207', 'از تاریخ')} />
+          <Label>{t('ui.fromDate')}</Label>
+          <JalaliDatePicker value={from} onValueChange={setFrom} aria-label={t('ui.fromDate')} />
         </div>
         <div className="flex flex-col gap-2">
-          <Label>{t('key208', 'تا تاریخ')}</Label>
-          <JalaliDatePicker value={to} onValueChange={setTo} aria-label={t('key208', 'تا تاریخ')} />
+          <Label>{t('ui.toDate')}</Label>
+          <JalaliDatePicker value={to} onValueChange={setTo} aria-label={t('ui.toDate')} />
         </div>
         <Button
           variant="outline"
@@ -155,17 +157,19 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
             setTo('');
           }}
         >
-          {t('key209', 'پاک‌کردن فیلترها')}
+          {t('ui.clearFilters')}
         </Button>
       </div>
       {invalidRange ? (
         <Alert variant="destructive" className="mb-4">
-          <AlertDescription>{t('key210', 'تاریخ پایان نباید قبل از تاریخ شروع باشد.')}</AlertDescription>
+          <AlertDescription>{t('ui.theEndDateCannotBeBeforeTheStart')}</AlertDescription>
         </Alert>
       ) : null}
       <Panel
         title={title}
-        subtitle={t('reduce', 'مجموع نمایش‌داده‌شده: {{reduce}}', { reduce: money(rows.reduce((sum, row) => sum + row.item.amount, 0)) })}
+        subtitle={t('ui.displayedTotalReduce', {
+          reduce: money(rows.reduce((sum, row) => sum + row.item.amount, 0)),
+        })}
         action={
           <Button
             variant="outline"
@@ -173,13 +177,21 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
             onClick={() =>
               downloadCsv(
                 [
-                  ['تاریخ', t('key211', 'مشتری'), t('key212', 'سفارش'), 'شرح', 'روش', 'شماره سند', t('key213', 'مبلغ تومان')],
+                  [
+                    'تاریخ',
+                    t('ui.customer'),
+                    t('ui.order'),
+                    'شرح',
+                    'روش',
+                    'شماره سند',
+                    t('ui.amountToman'),
+                  ],
                   ...rows.map(({ item, customer }) => [
                     item.date,
                     customer?.name ?? '',
                     item.jobId,
                     item.description,
-                    item.method ? paymentMethodLabels[item.method] : '',
+                    item.method ? translateLabel(paymentMethodLabels[item.method]) : '',
                     item.reference ?? '',
                     String(item.amount),
                   ]),
@@ -188,7 +200,7 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
               )
             }
           >
-            {t('csv', 'خروجی CSV')}
+            {t('ui.exportCsv')}
           </Button>
         }
       >
@@ -198,7 +210,7 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
           columns={transactionColumns}
           emptyMessage={null}
         />
-        {!rows.length ? <EmptyState text="تراکنشی با این شرایط ثبت نشده است." /> : null}
+        {!rows.length ? <EmptyState text={t('labels.noTransactionsMatchTheseFilters')} /> : null}
       </Panel>
       {open ? <TransactionDialog kind={kind} onClose={() => setOpen(false)} /> : null}
     </>

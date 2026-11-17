@@ -1,6 +1,6 @@
 # Hamyar Service Dashboard
 
-A Persian, right-to-left dashboard for a home appliance repair company. The company
+A Persian/English dashboard for a home appliance repair company. The company
 dispatches technicians to customers’ homes, earns a commission, and tracks service
 requests, parts, customer accounts, and cash flow.
 
@@ -173,5 +173,14 @@ remains future work.
   Zustand, and TanStack Table guidance.
 
 Source files use UTF-8, LF line endings, two-space indentation, and a final newline.
-Prettier is the formatting authority. Preserve Persian copy, RTL behavior, and both
-themes when extending the interface.
+Prettier is the formatting authority. Preserve both languages, RTL/LTR behavior,
+and both themes when extending the interface.
+
+## Localization
+
+Persian and English are available from the header language selector, with automatic
+RTL/LTR layout and a saved browser preference. Translations live in standard nested
+JSON files under `src/shared/i18n/locales/{fa,en}/translation.json` and are managed
+with i18next/react-i18next. The Jalali calendar and existing business records are
+preserved in both languages. See [localization conventions](docs/localization.md)
+for adding messages and running extraction and validation.

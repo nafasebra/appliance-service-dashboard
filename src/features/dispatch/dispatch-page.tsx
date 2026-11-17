@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { JobStatusBadge } from '@/entities/service/ui/job-status-badge';
 import { cn } from '@/shared/lib/utils';
 import { useState } from 'react';
@@ -6,15 +7,15 @@ import { useDemo } from '@/shared/store/demo-store';
 import { type Job } from '@/entities/service/model/types';
 import { JobEditor } from '@/features/requests/job-components';
 import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';
-import { number } from '@/shared/lib/format';
+
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Label } from '@/shared/ui/label';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 export function DispatchPage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const technicians = useDemo((state) => state.technicians);
@@ -24,13 +25,13 @@ export function DispatchPage() {
   return (
     <>
       <PageHeading
-        title={t('key262', 'برنامه‌ریزی و اعزام')}
-        description={t('key263', 'برنامه مراجعه هر تعمیرکار را ببینید و درخواست‌ها را تخصیص دهید.')}
+        title={t('ui.schedulingAndDispatch')}
+        description={t('ui.viewEachTechnicianSVisitScheduleAndAssign')}
         action={
           <Label className="flex flex-col gap-1.75 text-2xs text-muted-foreground">
-            {t('key264', 'تاریخ برنامه')}
+            {t('ui.scheduleDate')}
             <JalaliDatePicker
-              aria-label={t('key265', 'تاریخ برنامه اعزام')}
+              aria-label={t('ui.dispatchScheduleDate')}
               value={date}
               onValueChange={setDate}
             />
@@ -39,21 +40,23 @@ export function DispatchPage() {
       />
       <div className="flex gap-2.5 items-center py-4 px-4.75 border border-border rounded-md text-muted-foreground bg-accent text-ui mb-6 [&_button]:ms-auto max-mobile:flex-wrap max-mobile:leading-loose max-mobile:[&_>_span]:flex-1 max-mobile:[&_button]:ms-7.5 dark:bg-accent dark:border-border">
         <Clock3 size={20} />
-        <span>
-          {t('key266', 'نمای برنامه روزانه ·')} {number(visits.length)} {t('key267', 'مراجعه · ساعت‌ها بر اساس زمان محلی تهران در این نمونه')}
-        </span>
+        <span>{t('dispatch.summary', { count: visits.length })}</span>
         <Button
           variant="link"
           className="inline-flex gap-1.75 items-center text-primary text-2xs border-0 bg-none whitespace-nowrap"
           onClick={() => setEditor('new')}
         >
           <Plus size={16} />
-          {t('key176', 'درخواست جدید')}
+          {t('ui.newRequest')}
         </Button>
       </div>
       <div className="grid grid-cols-3 gap-4.5 items-start max-desktop:grid-cols-2 max-mobile:grid-cols-1">
         {[
-          { id: '', name: t('key268', 'بدون تخصیص'), specialty: t('key269', 'برای این درخواست‌ها تعمیرکار انتخاب کنید') },
+          {
+            id: '',
+            name: t('ui.unassigned'),
+            specialty: t('ui.chooseATechnicianForTheseRequests'),
+          },
           ...technicians,
         ].map((tech) => {
           const assigned = visits
@@ -69,7 +72,7 @@ export function DispatchPage() {
                   variant="secondary"
                   className="text-2xs bg-accent py-1 px-2 rounded-md text-muted-foreground dark:bg-accent dark:text-primary"
                 >
-                  {number(assigned.length)}
+                  {assigned.length}
                 </Badge>
               }
             >
@@ -93,7 +96,7 @@ export function DispatchPage() {
                         <JobStatusBadge status={job.status} />
                       </div>
                       <h3>
-                        {job.appliance} {job.brand}
+                        {translateLabel(job.appliance)} {job.brand}
                       </h3>
                       <p>{customers.find((item) => item.id === job.customerId)?.name}</p>
                       <small>
@@ -106,7 +109,7 @@ export function DispatchPage() {
                     </Button>
                   ))
                 ) : (
-                  <EmptyState text="مراجعه‌ای برای این روز ثبت نشده است." />
+                  <EmptyState text={t('labels.noVisitsScheduledForThisDay')} />
                 )}
               </div>
             </Panel>

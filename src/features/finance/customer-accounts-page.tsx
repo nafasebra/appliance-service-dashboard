@@ -17,10 +17,10 @@ import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money } from '@/shared/lib/format';
 import { CustomerStatement } from './components/customer-statement';
 import { TransactionDialog } from './components/transaction-dialog';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 export function CustomerAccountsPage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const customers = useDemo((state) => state.customers);
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
@@ -34,7 +34,7 @@ export function CustomerAccountsPage() {
         customer,
         ...getCustomerAccount(customer.id, jobs, transactions),
       })),
-    [customers, jobs, transactions],
+    [customers, jobs, transactions, t],
   );
   const filtered = useMemo(
     () =>
@@ -48,7 +48,7 @@ export function CustomerAccountsPage() {
                 ? row.credit > 0
                 : row.outstanding === 0 && row.credit === 0)),
       ),
-    [accounts, query, status],
+    [accounts, query, status, t],
   );
   const accountColumns = useMemo<DataTableColumn<(typeof filtered)[number]>[]>(
     () => [
@@ -93,7 +93,7 @@ export function CustomerAccountsPage() {
         enableSorting: false,
         cell: ({ row: { original: row } }) => (
           <Button variant="outline" size="sm" onClick={() => setSelected(row.customer.id)}>
-            {t('key244', 'مشاهده ریز حساب')}
+            {t('ui.viewStatement')}
           </Button>
         ),
       },
@@ -103,52 +103,52 @@ export function CustomerAccountsPage() {
   return (
     <>
       <PageHeading
-        title={t('key245', 'حساب مشتریان')}
-        description={t('key246', 'صورت‌حساب تفصیلی مشتری، دریافت‌ها و مانده هر سفارش؛ مطالبات فقط از خدمات تکمیل‌شده محاسبه می‌شوند.')}
+        title={t('ui.customerAccounts')}
+        description={t('ui.detailedStatementsReceiptsAndBalancesForEachCustomer')}
       />
       <div className="mb-6 grid gap-4 md:grid-cols-3">
         <StatCard
-          title={t('key247', 'خدمات قطعی')}
+          title={t('ui.finalizedServices')}
           value={money(accounts.reduce((sum, row) => sum + row.charge, 0))}
-          detail="مجموع سفارش‌های تکمیل‌شده"
+          detail={t('labels.totalCompletedOrders')}
           icon={<Wallet />}
         />
         <StatCard
-          title={t('key214', 'مطالبات مشتریان')}
+          title={t('ui.customerReceivables')}
           value={money(accounts.reduce((sum, row) => sum + row.outstanding, 0))}
-          detail="مانده بدهی به تفکیک سفارش"
+          detail={t('labels.outstandingBalanceByOrder')}
           icon={<Wallet />}
         />
         <StatCard
-          title={t('key248', 'پیش‌دریافت / بستانکاری')}
+          title={t('ui.advanceCredit')}
           value={money(accounts.reduce((sum, row) => sum + row.credit, 0))}
-          detail="دریافت مازاد بر خدمات قطعی هر سفارش"
+          detail={t('labels.receiptsExceedingEachOrderSFinalizedServiceAmount')}
           icon={<Wallet />}
         />
       </div>
       <div className="mb-4 flex flex-wrap gap-3">
         <Input
-          aria-label={t('key249', 'جستجوی حساب مشتری')}
+          aria-label={t('ui.searchCustomerAccounts')}
           className="max-w-sm"
-          placeholder={t('key250', 'نام یا تلفن مشتری…')}
+          placeholder={t('ui.customerNameOrPhone')}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
-        <Select dir="rtl" value={status} onValueChange={setStatus}>
-          <SelectTrigger aria-label={t('key251', 'وضعیت حساب')}>
+        <Select value={status} onValueChange={setStatus}>
+          <SelectTrigger aria-label={t('ui.accountStatus')}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="all">{t('key252', 'همه حساب‌ها')}</SelectItem>
-              <SelectItem value="debtor">{t('key253', 'دارای بدهی')}</SelectItem>
-              <SelectItem value="credit">{t('key254', 'دارای پیش‌دریافت / بستانکاری')}</SelectItem>
-              <SelectItem value="clear">{t('key255', 'بدون مانده')}</SelectItem>
+              <SelectItem value="all">{t('ui.allAccounts')}</SelectItem>
+              <SelectItem value="debtor">{t('ui.outstandingBalance')}</SelectItem>
+              <SelectItem value="credit">{t('ui.advanceCreditBalance')}</SelectItem>
+              <SelectItem value="clear">{t('ui.noOutstandingBalance')}</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
       </div>
-      <Panel title={t('key256', 'دفتر حساب مشتریان')}>
+      <Panel title={t('ui.customerAccountLedger')}>
         <DataTable
           data={filtered}
           getRowId={(row) => String(row.customer.id)}

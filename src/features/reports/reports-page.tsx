@@ -1,16 +1,17 @@
+import { translateLabel } from '@/shared/i18n';
 import { useMemo } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
 import { appliances } from '@/entities/service/model/types';
 import { summarizeFinance } from '@/entities/service/model/finance';
 import { CashChart } from '@/features/finance/cash-chart';
 import { PageHeading, Panel } from '@/shared/ui/primitives';
-import { money, number } from '@/shared/lib/format';
+import { money } from '@/shared/lib/format';
 import { Progress } from '@/shared/ui/progress';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 export function ReportsPage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const jobs = useDemo((state) => state.jobs);
   const technicians = useDemo((state) => state.technicians);
   const transactions = useDemo((state) => state.transactions);
@@ -24,7 +25,7 @@ export function ReportsPage() {
         );
         return { tech, assigned, summary };
       }),
-    [technicians, jobs, transactions],
+    [technicians, jobs, transactions, t],
   );
   const performanceColumns = useMemo<DataTableColumn<(typeof performanceRows)[number]>[]>(
     () => [
@@ -46,7 +47,7 @@ export function ReportsPage() {
           row: {
             original: { assigned },
           },
-        }) => number(assigned.length),
+        }) => assigned.length,
       },
       {
         id: 'تکمیل‌شده',
@@ -56,7 +57,7 @@ export function ReportsPage() {
           row: {
             original: { assigned },
           },
-        }) => number(assigned.filter((job) => job.status === 'completed').length),
+        }) => assigned.filter((job) => job.status === 'completed').length,
       },
       {
         id: 'ارزش خدمات تکمیل‌شده',
@@ -89,27 +90,30 @@ export function ReportsPage() {
         }) => money(summary.payable),
       },
     ],
-    [],
+    [t],
   );
   return (
     <>
       <PageHeading
-        title={t('key168', 'گزارش‌های عملکرد')}
-        description={t('key169', 'تصویری از خدمات، عملکرد تیم و گردش مالی تمام داده‌های نمونه.')}
+        title={t('ui.performanceReports')}
+        description={t('ui.anOverviewOfServicesTeamPerformanceAndCash')}
       />
       <div className="grid grid-cols-[1.2fr_1fr] gap-5 mb-5.75 max-tablet:grid-cols-1">
-        <Panel title={t('key170', 'گردش دریافت و پرداخت')} subtitle="روزهای دارای تراکنش · میلیون تومان">
+        <Panel
+          title={t('ui.receiptsAndPayments')}
+          subtitle={t('labels.daysWithTransactionsMillionToman')}
+        >
           <CashChart />
         </Panel>
-        <Panel title={t('key171', 'درخواست‌ها به تفکیک دستگاه')} subtitle="همه وضعیت‌ها">
+        <Panel title={t('ui.requestsByAppliance')} subtitle={t('ui.allStatuses')}>
           <div className="pt-2 px-6 pb-6.25 flex flex-col gap-5.25 [&_>_div_>_div:first-child]:flex [&_>_div_>_div:first-child]:justify-between [&_>_div_>_div:first-child]:text-2xs [&_>_div_>_div:first-child]:text-muted-foreground [&_>_div_>_div:first-child]:mb-2.5 [&_strong]:font-normal">
             {appliances.map((appliance) => {
               const count = jobs.filter((job) => job.appliance === appliance).length;
               return (
                 <div key={appliance}>
                   <div>
-                    <span>{appliance}</span>
-                    <strong>{number(count)} {t('key172', 'درخواست')}</strong>
+                    <span>{translateLabel(appliance)}</span>
+                    <strong>{t('requests.count', { count })}</strong>
                   </div>
                   <Progress
                     className="h-1.75 bg-muted rounded-md overflow-hidden [&_span]:h-full [&_span]:block [&_span]:bg-primary [&_span]:rounded-md dark:bg-muted dark:border-border dark:text-muted-foreground"
@@ -122,8 +126,8 @@ export function ReportsPage() {
         </Panel>
       </div>
       <Panel
-        title={t('key173', 'عملکرد و حساب تعمیرکاران')}
-        subtitle="کمیسیون و سهم تعمیرکار بر اساس خدمات تکمیل‌شده"
+        title={t('ui.technicianPerformanceAndAccounts')}
+        subtitle={t('labels.commissionAndTechnicianSharesAreBasedOnCompleted')}
       >
         <DataTable
           data={performanceRows}

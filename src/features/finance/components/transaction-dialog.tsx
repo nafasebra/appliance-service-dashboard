@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { useRef, useState, type FormEvent } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
 import type { Transaction } from '@/entities/service/model/types';
@@ -19,7 +20,7 @@ import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 import { toIsoDate } from '@/shared/lib/date';
 import { money } from '@/shared/lib/format';
 import { getFormText } from '@/shared/utils/form';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 export function TransactionDialog({
   kind,
@@ -30,7 +31,7 @@ export function TransactionDialog({
   initialJobId?: string;
   onClose: () => void;
 }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const transactions = useDemo((state) => state.transactions);
@@ -73,14 +74,17 @@ export function TransactionDialog({
   }
 
   return (
-    <Modal title={kind === 'receipt' ? t('key326', 'ثبت دریافت از مشتری') : t('key327', 'ثبت هزینه شرکت')} onClose={onClose}>
+    <Modal
+      title={kind === 'receipt' ? t('ui.recordCustomerReceipt') : t('ui.recordCompanyExpense')}
+      onClose={onClose}
+    >
       <form onSubmit={submit} className="grid gap-4 p-6 sm:grid-cols-2">
         {kind === 'receipt' ? (
           <div className="col-span-full flex flex-col gap-2">
-            <Label htmlFor="receipt-job">{t('key158', 'سفارش مشتری')}</Label>
-            <Select dir="rtl" value={jobId} onValueChange={setJobId} required>
+            <Label htmlFor="receipt-job">{t('ui.customerOrder')}</Label>
+            <Select value={jobId} onValueChange={setJobId} required>
               <SelectTrigger id="receipt-job" className="w-full">
-                <SelectValue placeholder={t('key328', 'انتخاب سفارش دارای مانده')} />
+                <SelectValue placeholder={t('ui.selectAnOrderWithARemainingBalance')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -88,22 +92,22 @@ export function TransactionDialog({
                     <SelectItem key={job.id} value={job.id}>
                       {job.id} ·{' '}
                       {customers.find((customer) => customer.id === job.customerId)?.name} ·{' '}
-                      {job.appliance}
+                      {translateLabel(job.appliance)}
                     </SelectItem>
                   ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
-              {t('key329', 'مانده قابل دریافت:')} {money(remaining)}
+              {t('ui.collectibleBalance')} {money(remaining)}
               {selectedJob && selectedJob.status !== 'completed'
-                ? t('key330', ' · این دریافت به‌عنوان پیش‌دریافت نمایش داده می‌شود.')
+                ? t('ui.thisReceiptWillBeShownAsAnAdvance')
                 : ''}
             </p>
           </div>
         ) : null}
         <div className="flex flex-col gap-2">
-          <Label htmlFor="transaction-amount">{t('key83', 'مبلغ (تومان)')}</Label>
+          <Label htmlFor="transaction-amount">{t('ui.amountToman2')}</Label>
           <Input
             id="transaction-amount"
             name="amount"
@@ -115,18 +119,17 @@ export function TransactionDialog({
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Label>{t('key324', 'تاریخ')}</Label>
+          <Label>{t('ui.date')}</Label>
           <JalaliDatePicker
             value={date}
             onValueChange={setDate}
             required
-            aria-label={t('key242', 'تاریخ تراکنش')}
+            aria-label={t('ui.transactionDate')}
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="transaction-method">{t('key331', 'روش پرداخت')}</Label>
+          <Label htmlFor="transaction-method">{t('ui.paymentMethod')}</Label>
           <Select
-            dir="rtl"
             value={method}
             onValueChange={(value) => {
               if (value === 'cash' || value === 'card' || value === 'bank') setMethod(value);
@@ -139,7 +142,7 @@ export function TransactionDialog({
               <SelectGroup>
                 {Object.entries(paymentMethodLabels).map(([value, label]) => (
                   <SelectItem key={value} value={value}>
-                    {label}
+                    {translateLabel(label)}
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -147,24 +150,24 @@ export function TransactionDialog({
           </Select>
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="transaction-reference">{t('key332', 'شماره پیگیری / سند (اختیاری)')}</Label>
+          <Label htmlFor="transaction-reference">{t('ui.trackingDocumentReferenceOptional')}</Label>
           <Input id="transaction-reference" name="reference" maxLength={100} />
         </div>
         <div className="col-span-full flex flex-col gap-2">
-          <Label htmlFor="transaction-description">{t('key333', 'شرح تراکنش')}</Label>
+          <Label htmlFor="transaction-description">{t('ui.transactionDescription')}</Label>
           <Input id="transaction-description" name="description" required maxLength={150} />
         </div>
         {error ? (
           <Alert variant="destructive" className="col-span-full">
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription>{translateLabel(error)}</AlertDescription>
           </Alert>
         ) : null}
         <div className="col-span-full flex gap-2">
           <Button type="submit" disabled={kind === 'receipt' && remaining <= 0}>
-            {t('key225', 'ثبت تراکنش')}
+            {t('ui.recordTransaction')}
           </Button>
           <Button type="button" variant="outline" onClick={onClose}>
-            {t('key59', 'انصراف')}
+            {t('ui.cancel2')}
           </Button>
         </div>
       </form>

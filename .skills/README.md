@@ -5,6 +5,7 @@ its upstream `SKILL.md` and supporting files. These are project-local copies.
 
 | Directory                | Upstream source                                                                                                    |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `i18n/` | [Official i18next localization skill](https://github.com/i18next/i18next-cli/tree/main/skills/i18next-localization), installed on 2026-11-17 |
 | `react/`                 | [Vercel React best practices](https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices)   |
 | `tailwind/`              | [brpaz Tailwind v4](https://github.com/brpaz/agent-skills/tree/main/skills/tailwind-v4)                            |
 | `shadcn/`                | [Official shadcn skill](https://github.com/shadcn-ui/ui/tree/main/skills/shadcn)                                   |

@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
 import { getOrderAccount, paymentStatusLabels } from '@/entities/service/model/customer-account';
@@ -9,10 +10,10 @@ import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money, dateLabel } from '@/shared/lib/format';
 import { downloadCsv } from '@/shared/utils/csv';
 import { TransactionDialog } from './components/transaction-dialog';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 export function ReceivablesPage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const transactions = useDemo((state) => state.transactions);
@@ -32,7 +33,7 @@ export function ReceivablesPage() {
             row.account.outstanding > 0 &&
             `${row.job.id} ${row.customer?.name ?? ''}`.includes(query.trim()),
         ),
-    [jobs, customers, transactions, query],
+    [jobs, customers, transactions, query, t],
   );
   const receivableColumns = useMemo<DataTableColumn<(typeof rows)[number]>[]>(
     () => [
@@ -94,12 +95,14 @@ export function ReceivablesPage() {
       {
         id: 'وضعیت',
         header: 'وضعیت',
-        accessorFn: ({ account }) => paymentStatusLabels[account.status],
+        accessorFn: ({ account }) => translateLabel(paymentStatusLabels[account.status]),
         cell: ({
           row: {
             original: { account },
           },
-        }) => <Badge variant="secondary">{paymentStatusLabels[account.status]}</Badge>,
+        }) => (
+          <Badge variant="secondary">{translateLabel(paymentStatusLabels[account.status])}</Badge>
+        ),
       },
       {
         id: 'عملیات',
@@ -111,7 +114,7 @@ export function ReceivablesPage() {
           },
         }) => (
           <Button size="sm" onClick={() => setReceiptJob(job.id)}>
-            {t('key203', 'ثبت دریافت')}
+            {t('ui.recordReceipt')}
           </Button>
         ),
       },
@@ -121,15 +124,15 @@ export function ReceivablesPage() {
   return (
     <>
       <PageHeading
-        title={t('key214', 'مطالبات مشتریان')}
-        description={t('key215', 'سفارش‌های تکمیل‌شده‌ای که هنوز تمام مبلغ آن‌ها دریافت نشده است.')}
+        title={t('ui.customerReceivables')}
+        description={t('ui.completedOrdersWhoseFullAmountHasNotYet')}
         action={
           <Button
             variant="outline"
             onClick={() =>
               downloadCsv(
                 [
-                  ['سفارش', 'مشتری', t('key216', 'مبلغ خدمت'), 'دریافت', 'مانده'],
+                  ['سفارش', 'مشتری', t('ui.serviceAmount'), 'دریافت', 'مانده'],
                   ...rows.map((row) => [
                     row.job.id,
                     row.customer?.name ?? '',
@@ -142,20 +145,22 @@ export function ReceivablesPage() {
               )
             }
           >
-            {t('csv', 'خروجی CSV')}
+            {t('ui.exportCsv')}
           </Button>
         }
       />
       <Input
         className="mb-4 max-w-sm"
-        aria-label={t('key217', 'جستجوی مطالبات')}
-        placeholder={t('key218', 'نام مشتری یا شماره سفارش…')}
+        aria-label={t('ui.searchReceivables')}
+        placeholder={t('ui.customerNameOrOrderId')}
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
       <Panel
-        title={t('key219', 'سفارش‌های دارای مانده')}
-        subtitle={t('reduce2', 'مانده نمایش‌داده‌شده: {{reduce}}', { reduce: money(rows.reduce((sum, row) => sum + row.account.outstanding, 0)) })}
+        title={t('ui.ordersWithOutstandingBalances')}
+        subtitle={t('ui.displayedBalanceReduce', {
+          reduce: money(rows.reduce((sum, row) => sum + row.account.outstanding, 0)),
+        })}
       >
         <DataTable
           data={rows}
@@ -163,7 +168,7 @@ export function ReceivablesPage() {
           columns={receivableColumns}
           emptyMessage={null}
         />
-        {!rows.length ? <EmptyState text="مطالبه‌ای با این شرایط وجود ندارد." /> : null}
+        {!rows.length ? <EmptyState text={t('labels.noReceivablesMatchTheseFilters')} /> : null}
       </Panel>
       {receiptJob ? (
         <TransactionDialog

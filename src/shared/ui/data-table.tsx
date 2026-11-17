@@ -9,8 +9,9 @@ import {
 import { Button } from './button';
 import { DataTablePagination } from './data-table-pagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table';
-import { useTranslation } from 'react-i18next'
-import i18next from 'i18next'
+import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
+import { translateLabel } from '../i18n';
 
 export type DataTableColumn<TData extends RowData> = ColumnDef<DataTableFeatures, TData>;
 
@@ -25,9 +26,9 @@ export function DataTable<TData extends RowData>({
   data,
   columns,
   getRowId,
-  emptyMessage = i18next.t('key15', 'موردی برای نمایش وجود ندارد.'),
+  emptyMessage = i18next.t('ui.noRecordsToDisplay'),
 }: DataTableProps<TData>) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const table = useTable({
     ...dataTableDefaults,
     features: dataTableFeatures,
@@ -45,6 +46,13 @@ export function DataTable<TData extends RowData>({
             <TableRow key={group.id}>
               {group.headers.map((header) => {
                 const sorted = header.column.getIsSorted();
+                const definition = header.column.columnDef.header;
+                const label =
+                  typeof definition === 'string' ? (
+                    translateLabel(definition)
+                  ) : (
+                    <table.FlexRender header={header} />
+                  );
                 const Icon =
                   sorted === 'asc' ? ArrowUp : sorted === 'desc' ? ArrowDown : ArrowUpDown;
                 return (
@@ -65,18 +73,18 @@ export function DataTable<TData extends RowData>({
                           table.resetPageIndex();
                         }}
                       >
-                        <table.FlexRender header={header} />
+                        {label}
                         <Icon aria-hidden="true" />
                         <span className="sr-only">
                           {sorted === 'asc'
-                            ? t('key16', 'صعودی؛ تغییر به نزولی')
+                            ? t('ui.ascendingSwitchToDescending')
                             : sorted === 'desc'
-                              ? t('key17', 'نزولی؛ حذف مرتب‌سازی')
-                              : t('key18', 'مرتب‌سازی صعودی')}
+                              ? t('ui.descendingClearSorting')
+                              : t('ui.sortAscending')}
                         </span>
                       </Button>
                     ) : (
-                      <table.FlexRender header={header} />
+                      label
                     )}
                   </TableHead>
                 );

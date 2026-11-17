@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { useState, type FormEvent } from 'react';
 import { Building2, Save } from 'lucide-react';
 import { useCompanySettings } from '@/shared/store/settings-store';
@@ -37,10 +38,10 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from '@/shared/ui/alert-dialog';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 export function SettingsPage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const settings = useCompanySettings((state) => state.settings);
   const saveSettings = useCompanySettings((state) => state.saveSettings);
   const theme = useTheme((state) => state.theme);
@@ -76,23 +77,21 @@ export function SettingsPage() {
   return (
     <>
       <PageHeading
-        title={t('key87', 'تنظیمات')}
-        description={t('key88', 'مشخصات شرکت، پیش‌فرض‌های سفارش و ظاهر داشبورد را مدیریت کنید.')}
+        title={t('ui.settings')}
+        description={t('ui.manageCompanyDetailsOrderDefaultsAndDashboardAppearance')}
       />
       <form onSubmit={submit} className="flex flex-col gap-6">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Building2 className="size-5" />
-              {t('key89', 'مشخصات شرکت و شعبه')}
+              {t('ui.companyAndBranchDetails')}
             </CardTitle>
-            <CardDescription>
-              {t('key90', 'نام شرکت در منوی کناری و فوتر و نام شعبه در هدر نمایش داده می‌شود.')}
-            </CardDescription>
+            <CardDescription>{t('ui.theCompanyNameAppearsInTheSidebarAnd')}</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="company-name">{t('key91', 'نام شرکت')}</Label>
+              <Label htmlFor="company-name">{t('ui.companyName')}</Label>
               <Input
                 id="company-name"
                 value={draft.companyName}
@@ -102,7 +101,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="brand-name">{t('key92', 'نام لاتین برند')}</Label>
+              <Label htmlFor="brand-name">{t('ui.latinBrandName')}</Label>
               <Input
                 id="brand-name"
                 dir="ltr"
@@ -113,7 +112,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="branch-name">{t('key93', 'نام شعبه')}</Label>
+              <Label htmlFor="branch-name">{t('ui.branchName')}</Label>
               <Input
                 id="branch-name"
                 value={draft.branchName}
@@ -123,7 +122,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="company-phone">{t('key94', 'شماره تماس شرکت')}</Label>
+              <Label htmlFor="company-phone">{t('ui.companyPhone')}</Label>
               <Input
                 id="company-phone"
                 type="tel"
@@ -134,7 +133,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2 md:col-span-2">
-              <Label htmlFor="company-address">{t('key95', 'نشانی شرکت')}</Label>
+              <Label htmlFor="company-address">{t('ui.companyAddress')}</Label>
               <Textarea
                 id="company-address"
                 value={draft.address}
@@ -146,14 +145,12 @@ export function SettingsPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>{t('key96', 'پیش‌فرض‌های ثبت سفارش')}</CardTitle>
-            <CardDescription>
-              {t('key97', 'این مقادیر فقط روی سفارش‌های جدید اعمال می‌شوند و در فرم سفارش قابل تغییرند.')}
-            </CardDescription>
+            <CardTitle>{t('ui.newOrderDefaults')}</CardTitle>
+            <CardDescription>{t('ui.theseDefaultsApplyOnlyToNewOrdersAnd')}</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="default-time">{t('key98', 'ساعت پیش‌فرض مراجعه')}</Label>
+              <Label htmlFor="default-time">{t('ui.defaultVisitTime')}</Label>
               <TimePicker
                 id="default-time"
                 value={draft.defaultVisitTime}
@@ -162,9 +159,8 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="default-priority">{t('key99', 'اولویت پیش‌فرض')}</Label>
+              <Label htmlFor="default-priority">{t('ui.defaultPriority')}</Label>
               <Select
-                dir="rtl"
                 value={draft.defaultPriority}
                 onValueChange={(value) => {
                   if (value === 'normal' || value === 'urgent') update('defaultPriority', value);
@@ -175,8 +171,8 @@ export function SettingsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="normal">{t('key100', 'عادی')}</SelectItem>
-                    <SelectItem value="urgent">{t('key101', 'فوری')}</SelectItem>
+                    <SelectItem value="normal">{t('ui.normal')}</SelectItem>
+                    <SelectItem value="urgent">{t('ui.urgent')}</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -184,24 +180,24 @@ export function SettingsPage() {
           </CardContent>
           <CardFooter>
             <p className="text-sm text-muted-foreground">
-              {t('key102', 'کمیسیون شرکت در هر سفارش به‌صورت مبلغ ثبت می‌شود؛ تغییر پیش‌فرض‌ها مبالغ و تسویه‌های قبلی را تغییر نمی‌دهد.')}
+              {t('ui.companyCommissionIsRecordedAsAnAmountOn')}
             </p>
           </CardFooter>
         </Card>
         {error ? (
           <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription>{translateLabel(error)}</AlertDescription>
           </Alert>
         ) : null}
         {saved ? (
           <Alert>
-            <AlertDescription>{t('key103', 'تنظیمات ذخیره شد.')}</AlertDescription>
+            <AlertDescription>{t('ui.settingsSaved')}</AlertDescription>
           </Alert>
         ) : null}
         <div className="flex flex-wrap items-center gap-3">
           <Button type="submit" disabled={!dirty}>
             <Save className="size-4" />
-            {t('key104', 'ذخیره تغییرات')}
+            {t('ui.saveChanges')}
           </Button>
           <Button
             type="button"
@@ -213,23 +209,23 @@ export function SettingsPage() {
               setSaved(false);
             }}
           >
-            {t('key105', 'لغو تغییرات')}
+            {t('ui.discardChanges')}
           </Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button type="button" variant="ghost">
-                {t('key106', 'بازیابی پیش‌فرض‌ها')}
+                {t('ui.restoreDefaults')}
               </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent dir="rtl">
+            <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>{t('key107', 'بازیابی تنظیمات پیش‌فرض؟')}</AlertDialogTitle>
+                <AlertDialogTitle>{t('ui.restoreDefaultSettings')}</AlertDialogTitle>
                 <AlertDialogDescription>
-                  {t('key108', 'مقادیر فرم به پیش‌فرض برمی‌گردند. برای اعمال، ذخیره تغییرات را بزنید. سفارش‌ها و اطلاعات مالی حذف نمی‌شوند.')}
+                  {t('ui.theFormWillReturnToItsDefaultsSelect')}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>{t('key59', 'انصراف')}</AlertDialogCancel>
+                <AlertDialogCancel>{t('ui.cancel2')}</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => {
                     setDraft({ ...defaultCompanySettings });
@@ -237,27 +233,24 @@ export function SettingsPage() {
                     setError('');
                   }}
                 >
-                  {t('key109', 'بازیابی فرم')}
+                  {t('ui.resetForm')}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
           {dirty ? (
-            <span className="text-sm text-muted-foreground">{t('key110', 'تغییرات ذخیره‌نشده دارید.')}</span>
+            <span className="text-sm text-muted-foreground">{t('ui.youHaveUnsavedChanges')}</span>
           ) : null}
         </div>
       </form>
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle>{t('key111', 'ظاهر برنامه')}</CardTitle>
-          <CardDescription>
-            {t('key112', 'انتخاب پوسته فوراً اعمال و برای همین مرورگر ذخیره می‌شود.')}
-          </CardDescription>
+          <CardTitle>{t('ui.appearance')}</CardTitle>
+          <CardDescription>{t('ui.themeChangesApplyImmediatelyAndAreSavedFor')}</CardDescription>
         </CardHeader>
         <CardContent>
-          <Label htmlFor="settings-theme">{t('key113', 'پوسته')}</Label>
+          <Label htmlFor="settings-theme">{t('ui.theme')}</Label>
           <Select
-            dir="rtl"
             value={theme}
             onValueChange={(value) => {
               if (value !== theme) toggleTheme();
@@ -268,15 +261,15 @@ export function SettingsPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="light">{t('key114', 'روشن')}</SelectItem>
-                <SelectItem value="dark">{t('key115', 'تاریک')}</SelectItem>
+                <SelectItem value="light">{t('ui.light')}</SelectItem>
+                <SelectItem value="dark">{t('ui.dark')}</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
         </CardContent>
       </Card>
       <p className="mt-4 text-xs text-muted-foreground">
-        {t('key116', 'تنظیمات این نسخه در مرورگر فعلی نگهداری می‌شوند.')}
+        {t('ui.settingsInThisDemoAreStoredInThe')}
       </p>
     </>
   );

@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { DayButton, getDefaultClassNames } from 'react-day-picker';
-import { DayPicker } from 'react-day-picker/persian';
+import { DayPicker, enUS, faIR } from 'react-day-picker/persian';
+import { useTranslation } from 'react-i18next';
+import { toIsoDate } from '@/shared/lib/date';
 import { Button, buttonVariants } from '@/shared/ui/button';
 import { cn } from '@/shared/lib/utils';
 
@@ -17,12 +19,15 @@ function Calendar({
   buttonVariant?: React.ComponentProps<typeof Button>['variant'];
 }) {
   const defaultClassNames = getDefaultClassNames();
+  const { i18n } = useTranslation();
+  const english = i18n.resolvedLanguage === 'en';
 
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      dir="rtl"
-      numerals="arabext"
+      dir={i18n.dir()}
+      numerals={english ? 'latn' : 'arabext'}
+      locale={english ? enUS : faIR}
       className={cn('group/calendar bg-background p-3 [--cell-size:--spacing(8)]', className)}
       captionLayout={captionLayout}
       classNames={{
@@ -95,7 +100,7 @@ function CalendarDayButton({
       ref={ref}
       variant="ghost"
       size="icon"
-      data-day={day.date.toLocaleDateString('fa-IR')}
+      data-day={toIsoDate(day.date)}
       data-selected={modifiers.selected}
       className={cn(
         'size-(--cell-size) rounded-md p-0 font-normal data-[selected=true]:bg-primary data-[selected=true]:text-primary-foreground',

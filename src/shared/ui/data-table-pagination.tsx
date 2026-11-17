@@ -1,7 +1,7 @@
 import type { ReactTable, RowData } from '@tanstack/react-table';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import type { DataTableFeatures } from './data-table-features';
-import { number } from '../lib/format';
+
 import { Button } from './button';
 import {
   Select,
@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from './select';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 const pageSizes = [10, 20, 50];
 
@@ -20,7 +20,7 @@ export function DataTablePagination<TData extends RowData>({
 }: {
   table: ReactTable<DataTableFeatures, TData>;
 }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const { pageIndex, pageSize } = table.state.pagination;
   const total = table.getRowCount();
   const pageCount = table.getPageCount();
@@ -29,78 +29,74 @@ export function DataTablePagination<TData extends RowData>({
 
   return (
     <nav
-      aria-label={t('key19', 'صفحه‌بندی جدول')}
-      dir="rtl"
+      aria-label={t('ui.tablePagination')}
       className="flex flex-wrap items-center justify-between gap-3 border-t border-border p-4 text-xs text-muted-foreground"
     >
       <p role="status" aria-live="polite" aria-atomic="true">
-        {number(start)} {t('key20', 'تا')} {number(end)} {t('key21', 'از')} {number(total)} {t('key22', 'مورد')}
+        {t('pagination.range', { start, end, total })}
       </p>
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2">
-          <span>{t('key23', 'تعداد در صفحه')}</span>
+          <span>{t('ui.rowsPerPage')}</span>
           <Select
-            dir="rtl"
             value={String(pageSize)}
             onValueChange={(value) => table.setPageSize(Number(value))}
           >
-            <SelectTrigger size="sm" aria-label={t('key24', 'تعداد ردیف در هر صفحه')}>
+            <SelectTrigger size="sm" aria-label={t('ui.numberOfRowsPerPage')}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 {pageSizes.map((size) => (
                   <SelectItem key={size} value={String(size)}>
-                    {number(size)}
+                    {size}
                   </SelectItem>
                 ))}
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
-        <span>
-          {t('key25', 'صفحه')} {number(total ? pageIndex + 1 : 0)} {t('key21', 'از')} {number(pageCount)}
-        </span>
+        <span>{t('pagination.page', { page: total ? pageIndex + 1 : 0, pages: pageCount })}</span>
         <div className="flex items-center gap-1">
           <Button
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label={t('key26', 'صفحه اول')}
+            aria-label={t('ui.firstPage')}
             onClick={() => table.firstPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            <ChevronsRight aria-hidden="true" />
+            <ChevronsRight aria-hidden="true" className="ltr:rotate-180" />
           </Button>
           <Button
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label={t('key27', 'صفحه قبل')}
+            aria-label={t('ui.previousPage')}
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            <ChevronRight aria-hidden="true" />
+            <ChevronRight aria-hidden="true" className="ltr:rotate-180" />
           </Button>
           <Button
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label={t('key28', 'صفحه بعد')}
+            aria-label={t('ui.nextPage')}
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            <ChevronLeft aria-hidden="true" />
+            <ChevronLeft aria-hidden="true" className="ltr:rotate-180" />
           </Button>
           <Button
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label={t('key29', 'صفحه آخر')}
+            aria-label={t('ui.lastPage')}
             onClick={() => table.lastPage()}
             disabled={!table.getCanNextPage()}
           >
-            <ChevronsLeft aria-hidden="true" />
+            <ChevronsLeft aria-hidden="true" className="ltr:rotate-180" />
           </Button>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { cn } from '@/shared/lib/utils';
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
@@ -18,13 +19,13 @@ import { statusLabels, type Job } from '@/entities/service/model/types';
 import { JobTable, JobEditor } from '@/features/requests/job-components';
 import { CashChart } from '@/features/finance/cash-chart';
 import { PageHeading, Panel, StatCard } from '@/shared/ui/primitives';
-import { money, number } from '@/shared/lib/format';
+import { money } from '@/shared/lib/format';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 export function OverviewPage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
   const technicians = useDemo((state) => state.technicians);
@@ -35,15 +36,15 @@ export function OverviewPage() {
   return (
     <>
       <PageHeading
-        title={t('key174', 'نمای کلی کسب‌وکار')}
-        description={t('key175', 'همه‌چیز برای یک روز کاری منظم، در یک نگاه.')}
+        title={t('ui.businessOverview')}
+        description={t('ui.everythingYouNeedForAnOrganizedWorkingDay')}
         action={
           <Button
             className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
             onClick={() => setEditor('new')}
           >
             <Plus size={18} />
-            {t('key176', 'درخواست جدید')}
+            {t('ui.newRequest')}
           </Button>
         }
       />
@@ -51,15 +52,15 @@ export function OverviewPage() {
         <div>
           <span className="flex items-center gap-1.75 text-muted-foreground text-3xs dark:text-muted-foreground">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
-            {t('key177', 'مرکز عملیات خدمات')}
+            {t('ui.serviceOperationsCenter')}
           </span>
-          <h2>{t('key178', 'خدمات بهتر، با مدیریت دقیق‌تر.')}</h2>
-          <p>{number(active.length)} {t('key179', 'درخواست باز دارید؛ تیم شما برای رسیدگی آماده است.')}</p>
+          <h2>{t('ui.betterServiceThroughClearerCoordination')}</h2>
+          <p>{t('overview.openRequests', { count: active.length })}</p>
           <Link
             to="/dispatch"
             className="flex gap-2.25 items-center text-2xs text-primary mt-5 font-bold dark:text-primary"
           >
-            {t('key180', 'مشاهده برنامه اعزام')} <ArrowLeft size={16} />
+            {t('ui.viewDispatchSchedule')} <ArrowLeft size={16} />
           </Link>
         </div>
         <div
@@ -81,47 +82,52 @@ export function OverviewPage() {
       </div>
       <div className="grid grid-cols-4 gap-4.25 mb-5.75 max-tablet:grid-cols-2 max-mobile:gap-2.75 max-compact:gap-2">
         <StatCard
-          title={t('key181', 'درخواست‌های باز')}
-          value={number(active.length)}
-          detail={t('length4', '{{length}} مورد در انتظار تخصیص', { length: number(jobs.filter((job) => job.status === 'new').length) })}
+          title={t('ui.openRequests')}
+          value={active.length}
+          detail={t('ui.lengthAwaitingAssignment', {
+            length: jobs.filter((job) => job.status === 'new').length,
+          })}
           icon={<ClipboardList size={20} />}
         />
         <StatCard
-          title={t('key182', 'تعمیرکاران تیم')}
-          value={number(technicians.length)}
-          detail="مشاهده ظرفیت در صفحه اعزام"
+          title={t('ui.technicians')}
+          value={technicians.length}
+          detail={t('labels.viewCapacityOnTheDispatchPage')}
           icon={<Wrench size={20} />}
         />
         <StatCard
-          title={t('key183', 'کمیسیون خدمات تکمیل‌شده')}
+          title={t('ui.commissionOnCompletedServices')}
           value={money(finance.commission)}
-          detail="مستقل از دریافت وجه"
+          detail={t('labels.independentOfCustomerReceipts')}
           icon={<Wallet size={20} />}
           accent
         />
         <StatCard
-          title={t('key184', 'خالص گردش نقدی')}
+          title={t('ui.netCashFlow')}
           value={money(finance.cashFlow)}
-          detail="دریافت منهای تمام پرداخت‌ها"
+          detail={t('labels.receiptsMinusAllPayments')}
           icon={<ArrowDownLeft size={20} />}
         />
       </div>
       <div className="grid grid-cols-[1.45fr_1fr] gap-5.25 mb-5.75 max-tablet:grid-cols-1">
         <Panel
-          title={t('key185', 'گردش مالی')}
-          subtitle="آخرین روزهای دارای تراکنش"
+          title={t('ui.cashMovement')}
+          subtitle={t('labels.latestDaysWithTransactions')}
           action={
             <Link
               className="inline-flex gap-1.75 items-center text-primary text-2xs border-0 bg-none whitespace-nowrap"
               to="/finance"
             >
-              {t('key186', 'جزئیات مالی')} <ArrowLeft size={15} />
+              {t('ui.financialDetails')} <ArrowLeft size={15} />
             </Link>
           }
         >
           <CashChart />
         </Panel>
-        <Panel title={t('key187', 'وضعیت درخواست‌ها')} subtitle="از ثبت تا پایان خدمت">
+        <Panel
+          title={t('ui.requestStatuses')}
+          subtitle={t('labels.fromCreationToServiceCompletion')}
+        >
           <div className="flex items-center justify-evenly gap-6 pt-6 px-6 pb-5 min-h-48.25 max-desktop:gap-4 max-desktop:px-4.5 max-tablet:justify-center max-tablet:gap-11.25 max-mobile:gap-6 max-compact:gap-4.5">
             <div
               className="w-32.5 h-32.5 rounded-full grid place-items-center shrink-0 [&_>_div]:w-26.75 [&_>_div]:h-26.75 [&_>_div]:rounded-full [&_>_div]:bg-white [&_>_div]:flex [&_>_div]:items-center [&_>_div]:justify-center [&_>_div]:flex-col [&_strong]:text-3xl [&_strong]:text-primary [&_span]:text-4xs [&_span]:text-muted-foreground [&_span]:mt-1.75 max-desktop:w-26.25 max-desktop:h-26.25 max-desktop:[&_>_div]:w-21.25 max-desktop:[&_>_div]:h-21.25 max-tablet:w-32.5 max-tablet:h-32.5 max-tablet:[&_>_div]:w-26.75 max-tablet:[&_>_div]:h-26.75 max-compact:w-25.75 max-compact:h-25.75 max-compact:[&_>_div]:w-20.75 max-compact:[&_>_div]:h-20.75 dark:[&_strong]:text-primary dark:[&_>_div]:bg-card"
@@ -131,7 +137,7 @@ export function OverviewPage() {
             >
               <div>
                 <strong>{jobs.length}</strong>
-                <span>{t('key188', 'کل درخواست‌ها')}</span>
+                <span>{t('ui.totalRequests')}</span>
               </div>
             </div>
             <div className="flex flex-1 flex-col gap-4.25 min-w-33.75 max-w-52.5 [&_>_div]:flex [&_>_div]:justify-between [&_>_div]:items-center [&_>_div]:gap-4 [&_>_div]:text-2xs [&_>_div_>_span]:flex [&_>_div_>_span]:items-center [&_>_div_>_span]:gap-1.75 [&_>_div_>_span]:text-muted-foreground [&_strong]:text-muted-foreground [&_strong]:text-xs max-desktop:min-w-27.5 max-desktop:[&_>_div_>_span]:text-3xs max-tablet:min-w-40 max-mobile:min-w-33.75">
@@ -146,9 +152,9 @@ export function OverviewPage() {
                         status === 'scheduled' && 'bg-status-scheduled-foreground',
                       )}
                     />
-                    {statusLabels[status]}
+                    {translateLabel(statusLabels[status])}
                   </span>
-                  <strong>{number(jobs.filter((job) => job.status === status).length)}</strong>
+                  <strong>{jobs.filter((job) => job.status === status).length}</strong>
                 </div>
               ))}
             </div>
@@ -157,26 +163,29 @@ export function OverviewPage() {
             className="flex items-center justify-center gap-2 border-t border-t-border mt-5.5 p-3.25 text-2xs text-muted-foreground dark:border-border"
             to="/requests"
           >
-            {t('key189', 'مدیریت همه درخواست‌ها')} <ArrowLeft size={16} />
+            {t('ui.manageAllRequests')} <ArrowLeft size={16} />
           </Link>
         </Panel>
       </div>
       <Panel
-        title={t('key190', 'آخرین درخواست‌ها')}
-        subtitle="پیگیری سریع خدمات و وضعیت رسیدگی"
+        title={t('ui.recentRequests')}
+        subtitle={t('labels.quicklyTrackServicesAndProgress')}
         action={
           <Link
             to="/requests"
             className="inline-flex gap-1.75 items-center text-primary text-2xs border-0 bg-none whitespace-nowrap"
           >
-            {t('key191', 'همه درخواست‌ها')} <ArrowLeft size={15} />
+            {t('ui.allRequests')} <ArrowLeft size={15} />
           </Link>
         }
       >
         <JobTable jobs={jobs.slice(0, 5)} onSelect={setEditor} />
       </Panel>
       <div className="grid grid-cols-[1.65fr_1fr] gap-5.5 mt-5.75 max-tablet:grid-cols-1 max-mobile:gap-4">
-        <Panel title={t('key192', 'در صف رسیدگی')} subtitle="درخواست‌هایی که به توجه شما نیاز دارند">
+        <Panel
+          title={t('ui.awaitingAttention')}
+          subtitle={t('labels.requestsThatNeedYourAttention')}
+        >
           <div className="[&_>_button]:flex [&_>_button]:items-center [&_>_button]:gap-3 [&_>_button]:w-full [&_>_button]:bg-white [&_>_button]:border-0 [&_>_button]:border-t [&_>_button]:border-t-border [&_>_button]:py-4 [&_>_button]:px-5.5 [&_>_button]:text-start [&_>_button]:h-auto [&_>_button:hover]:bg-muted [&_strong]:text-2xs [&_strong]:text-muted-foreground [&_strong]:font-medium [&_small]:block [&_small]:text-3xs [&_small]:text-muted-foreground [&_small]:mt-1.5 [&_.badge]:ms-auto max-mobile:[&_>_button]:px-4.25 max-mobile:[&_>_button]:gap-2.25 max-mobile:[&_strong]:text-3xs dark:[&_>_button]:bg-card dark:[&_>_button]:border-border dark:[&_>_button]:text-foreground dark:[&_>_button:hover]:bg-accent dark:[&_>_button:hover]:border-border">
             {active.length ? (
               active.slice(0, 3).map((job) => (
@@ -191,7 +200,7 @@ export function OverviewPage() {
                   </span>
                   <div>
                     <strong>
-                      {job.appliance} {job.brand} ·{' '}
+                      {translateLabel(job.appliance)} {job.brand} ·{' '}
                       {customers.find((item) => item.id === job.customerId)?.name}
                     </strong>
                     <small>{job.issue}</small>
@@ -210,21 +219,21 @@ export function OverviewPage() {
                         'bg-status-cancelled text-status-cancelled-foreground',
                     )}
                   >
-                    {statusLabels[job.status]}
+                    {translateLabel(statusLabels[job.status])}
                   </Badge>
                 </Button>
               ))
             ) : (
-              <p className="p-6 text-muted-foreground">{t('key193', 'همه درخواست‌ها رسیدگی شده‌اند.')}</p>
+              <p className="p-6 text-muted-foreground">{t('ui.allRequestsHaveBeenHandled')}</p>
             )}
           </div>
         </Panel>
         <div className="bg-accent border border-border rounded-lg p-6.75 flex flex-col justify-center [&_h2]:text-primary [&_h2]:text-lg [&_h2]:mt-1.5 [&_h2]:mx-0 [&_h2]:mb-3.5 [&_p]:text-muted-foreground [&_p]:text-ui [&_p]:leading-loose [&_a]:text-primary [&_a]:text-2xs [&_a]:flex [&_a]:items-center [&_a]:gap-2 [&_a]:mt-6 max-mobile:p-5.75 dark:[&_h2]:text-primary dark:[&_a]:text-primary dark:[&_p]:text-muted-foreground dark:bg-accent dark:border-border">
-          <span className="text-muted-foreground text-3xs mb-2.5">{t('key194', 'شفافیت مالی')}</span>
-          <h2>{t('key195', 'هر خدمت، یک حساب روشن.')}</h2>
-          <p>{t('key196', 'سهم شرکت، مانده تعمیرکار و پول جابه‌جا شده را جداگانه دنبال کنید.')}</p>
+          <span className="text-muted-foreground text-3xs mb-2.5">{t('ui.financialClarity')}</span>
+          <h2>{t('ui.aClearAccountForEveryService')}</h2>
+          <p>{t('ui.trackCompanyCommissionTechnicianBalancesAndActualCash')}</p>
           <Link to="/finance">
-            {t('key197', 'رفتن به امور مالی')} <ArrowLeft size={17} />
+            {t('ui.goToFinance')} <ArrowLeft size={17} />
           </Link>
         </div>
       </div>

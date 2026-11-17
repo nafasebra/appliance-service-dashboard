@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { cn } from '@/shared/lib/utils';
 import { downloadTransactionsCsv } from './utils/transaction-csv';
 import { useMemo, useState, type FormEvent } from 'react';
@@ -22,7 +23,7 @@ import {
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 import { toIsoDate } from '@/shared/lib/date';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 const kindLabels = {
   receipt: 'دریافت از مشتری',
@@ -31,7 +32,7 @@ const kindLabels = {
 };
 
 export function FinancePage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
   const addTransaction = useDemo((state) => state.addTransaction);
@@ -47,7 +48,7 @@ export function FinancePage() {
         .filter((item) => filter === 'all' || item.kind === filter)
         .slice()
         .sort((a, b) => b.date.localeCompare(a.date)),
-    [transactions, filter],
+    [transactions, filter, t],
   );
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -55,15 +56,15 @@ export function FinancePage() {
     const amount = Number(form.get('amount'));
     const jobId = kind === 'expense' ? '' : String(form.get('jobId'));
     if (!Number.isSafeInteger(amount) || amount <= 0)
-      return setError(t('key220', 'مبلغ باید عدد صحیح و بزرگ‌تر از صفر باشد.'));
+      return setError('ui.amountMustBeAWholeNumberGreaterThan');
     const job = jobs.find((item) => item.id === jobId);
-    if (kind !== 'expense' && !job) return setError(t('key221', 'درخواست مرتبط را انتخاب کنید.'));
+    if (kind !== 'expense' && !job) return setError('ui.selectTheRelatedRequest');
     if (kind === 'payout' && job) {
       const paid = transactions
         .filter((item) => item.kind === 'payout' && item.jobId === jobId)
         .reduce((sum, item) => sum + item.amount, 0);
       if (job.status !== 'completed' || amount > job.total - job.commission - paid)
-        return setError(t('key222', 'پرداخت باید در محدوده مانده تعمیرکار برای یک خدمت تکمیل‌شده باشد.'));
+        return setError('ui.payoutsMustBeWithinTheTechnicianSRemaining');
     }
     const failure = addTransaction({
       id: crypto.randomUUID(),
@@ -91,7 +92,7 @@ export function FinancePage() {
       {
         id: 'نوع',
         header: 'نوع',
-        accessorFn: (item) => kindLabels[item.kind],
+        accessorFn: (item) => translateLabel(kindLabels[item.kind]),
         cell: ({ row: { original: item } }) => (
           <Badge
             className={cn(
@@ -101,7 +102,7 @@ export function FinancePage() {
                 : 'bg-status-scheduled text-status-scheduled-foreground',
             )}
           >
-            {kindLabels[item.kind]}
+            {translateLabel(kindLabels[item.kind])}
           </Badge>
         ),
       },
@@ -133,13 +134,13 @@ export function FinancePage() {
         ),
       },
     ],
-    [],
+    [t],
   );
   return (
     <>
       <PageHeading
-        title={t('key223', 'دفتر گردش مالی')}
-        description={t('key224', 'شفافیت در دریافت‌ها، پرداخت‌ها و سهم شرکت از هر خدمت.')}
+        title={t('ui.transactionRegister')}
+        description={t('ui.clarityOnReceiptsPayoutsAndTheCompanyS')}
         action={
           <Button
             className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
@@ -149,51 +150,51 @@ export function FinancePage() {
             }}
           >
             <Plus size={18} />
-            {t('key225', 'ثبت تراکنش')}
+            {t('ui.recordTransaction')}
           </Button>
         }
       />
       <div className="grid grid-cols-4 gap-4.25 mb-5.75 max-tablet:grid-cols-2 max-mobile:gap-2.75 max-compact:gap-2">
         <StatCard
-          title={t('key226', 'کل دریافت ثبت‌شده')}
+          title={t('ui.totalRecordedReceipts')}
           value={money(finance.receipts)}
-          detail="وجه دریافت‌شده از مشتریان"
+          detail={t('labels.moneyReceivedFromCustomers')}
           icon={<ArrowDownLeft size={20} />}
         />
         <StatCard
-          title={t('key227', 'کل پرداخت و هزینه')}
+          title={t('ui.totalPaymentsAndExpenses')}
           value={money(finance.payouts + finance.expenses)}
-          detail="تسویه تعمیرکار + هزینه شرکت"
+          detail={t('labels.technicianPayoutsCompanyExpenses')}
           icon={<ArrowUpRight size={20} />}
         />
         <StatCard
-          title={t('key184', 'خالص گردش نقدی')}
+          title={t('ui.netCashFlow')}
           value={money(finance.cashFlow)}
-          detail="بدون احتساب مانده ابتدای دوره"
+          detail={t('labels.excludingOpeningBalance')}
           icon={<Wallet size={20} />}
           accent
         />
         <StatCard
-          title={t('key228', 'مانده تعمیرکاران')}
+          title={t('ui.technicianBalances')}
           value={money(finance.payable)}
-          detail="تعهد پرداخت خدمات تکمیل‌شده"
+          detail={t('labels.paymentObligationsForCompletedServices')}
           icon={<HandCoins size={20} />}
         />
       </div>
       <div className="flex items-center gap-7.5 p-5.5 bg-accent border border-border rounded-lg mb-5.5 [&_>_div]:shrink-0 [&_span]:block [&_span]:text-muted-foreground [&_span]:text-2xs [&_strong]:block [&_strong]:mt-2.75 [&_strong]:text-primary [&_strong]:text-base [&_p]:text-2xs [&_p]:text-muted-foreground [&_p]:leading-loose [&_p]:border-s [&_p]:border-s-border [&_p]:ps-6.25 max-tablet:flex-wrap max-tablet:gap-5 max-tablet:[&_p]:border-0 max-tablet:[&_p]:p-0 max-mobile:[&_strong]:text-sm dark:[&_strong]:text-primary dark:[&_p]:text-muted-foreground dark:[&_span]:text-muted-foreground dark:bg-accent dark:border-border">
         <div>
-          <span>{t('key229', 'ارزش خدمات تکمیل‌شده')}</span>
+          <span>{t('ui.completedServiceValue')}</span>
           <strong>{money(finance.serviceValue)}</strong>
         </div>
         <div>
-          <span>{t('key230', 'کمیسیون این خدمات')}</span>
+          <span>{t('ui.commissionOnTheseServices')}</span>
           <strong>{money(finance.commission)}</strong>
         </div>
-        <p>{t('key231', 'تومان و مبالغ صرفاً نمونه‌اند. کمیسیون معادل سود خالص یا موجودی حساب بانکی نیست.')}</p>
+        <p>{t('ui.tomanAndAllAmountsAreSampleValuesCommission')}</p>
       </div>
       <Panel
-        title={t('key223', 'دفتر گردش مالی')}
-        subtitle="همه تراکنش‌های نمونه · بدون مانده افتتاحیه"
+        title={t('ui.transactionRegister')}
+        subtitle={t('labels.allDemoTransactionsNoOpeningBalance')}
         action={
           <Button
             variant="outline"
@@ -202,17 +203,17 @@ export function FinancePage() {
             onClick={exportCsv}
           >
             <Download size={16} />
-            {t('csv', 'خروجی CSV')}
+            {t('ui.exportCsv')}
           </Button>
         }
       >
         <div className="flex items-center gap-3 pt-0 px-5.5 pb-5 flex-wrap max-mobile:px-4.5">
           <div className="flex bg-muted p-1 rounded-md gap-0.75 [&_button]:border-0 [&_button]:bg-transparent [&_button]:text-2xs [&_button]:py-2 [&_button]:px-3.5 [&_button]:rounded-md [&_button]:text-muted-foreground [&_.selected]:bg-white [&_.selected]:shadow-xs [&_.selected]:text-primary max-compact:[&_button]:px-2.5 dark:[&_.selected]:bg-muted dark:[&_.selected]:border-border dark:[&_.selected]:text-primary-foreground dark:bg-muted dark:border-border dark:text-muted-foreground">
             {[
-              ['all', t('key232', 'همه')],
-              ['receipt', t('key233', 'دریافت‌ها')],
-              ['payout', t('key234', 'تسویه‌ها')],
-              ['expense', t('key235', 'هزینه‌ها')],
+              ['all', t('ui.all')],
+              ['receipt', t('ui.receipts')],
+              ['payout', t('ui.payouts')],
+              ['expense', t('ui.expenses')],
             ].map(([value, label]) => (
               <Button
                 variant="ghost"
@@ -224,7 +225,7 @@ export function FinancePage() {
                 key={value}
                 onClick={() => setFilter(value)}
               >
-                {label}
+                {translateLabel(label)}
               </Button>
             ))}
           </div>
@@ -241,26 +242,22 @@ export function FinancePage() {
         )}
       </Panel>
       {open && (
-        <Modal title={t('key236', 'ثبت تراکنش نمونه')} onClose={() => setOpen(false)}>
+        <Modal title={t('ui.recordDemoTransaction')} onClose={() => setOpen(false)}>
           <form
             onSubmit={submit}
             className="grid grid-cols-2 gap-4.5 p-5.75 [&_label]:flex [&_label]:flex-col [&_label]:gap-2.25 [&_label]:text-ui [&_input]:border [&_input]:border-border [&_input]:rounded-md [&_input]:p-2.5 [&_input]:text-xs [&_input]:w-full [&_input]:bg-white [&_select]:border [&_select]:border-border [&_select]:rounded-md [&_select]:p-2.5 [&_select]:text-xs [&_select]:w-full [&_select]:bg-white [&_textarea]:border [&_textarea]:border-border [&_textarea]:rounded-md [&_textarea]:p-2.5 [&_textarea]:text-xs [&_textarea]:w-full [&_textarea]:bg-white [&_input[type='date']]:direction-ltr [&_input[type='time']]:direction-ltr [&_textarea]:min-h-19.5 [&_textarea]:resize-y max-mobile:gap-3.5 max-mobile:p-4.5 max-compact:grid-cols-1 dark:[&_input]:bg-muted dark:[&_input]:border-border dark:[&_input]:text-primary-foreground dark:[&_select]:bg-muted dark:[&_select]:border-border dark:[&_select]:text-primary-foreground dark:[&_textarea]:bg-muted dark:[&_textarea]:border-border dark:[&_textarea]:text-primary-foreground"
           >
             <Label className="flex flex-col gap-2 text-ui">
-              {t('key237', 'نوع تراکنش')}
-              <Select
-                dir="rtl"
-                value={kind}
-                onValueChange={(value) => setKind(value as Transaction['kind'])}
-              >
+              {t('ui.transactionType')}
+              <Select value={kind} onValueChange={(value) => setKind(value as Transaction['kind'])}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t('key63', 'انتخاب کنید')} />
+                  <SelectValue placeholder={t('ui.selectAnOption')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     {Object.entries(kindLabels).map(([value, label]) => (
                       <SelectItem key={value} value={value}>
-                        {label}
+                        {translateLabel(label)}
                       </SelectItem>
                     ))}
                   </SelectGroup>
@@ -268,15 +265,15 @@ export function FinancePage() {
               </Select>
             </Label>
             <Label className="flex flex-col gap-2 text-ui">
-              {t('key238', 'مبلغ (تومان نمونه)')}
+              {t('ui.amountSampleToman')}
               <Input name="amount" type="number" min="1" step="1" required />
             </Label>
             {kind !== 'expense' && (
               <Label className="col-span-full flex flex-col gap-2 text-ui">
-                {t('key239', 'درخواست مرتبط')}
-                <Select dir="rtl" name="jobId" required>
+                {t('ui.relatedRequest')}
+                <Select name="jobId" required>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder={t('key240', 'انتخاب درخواست')} />
+                    <SelectValue placeholder={t('ui.selectRequest')} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
@@ -284,7 +281,7 @@ export function FinancePage() {
                         .filter((job) => kind !== 'payout' || job.status === 'completed')
                         .map((job) => (
                           <SelectItem key={job.id} value={job.id}>
-                            {job.id} · {job.appliance} {job.brand}
+                            {job.id} · {translateLabel(job.appliance)} {job.brand}
                           </SelectItem>
                         ))}
                     </SelectGroup>
@@ -293,28 +290,28 @@ export function FinancePage() {
               </Label>
             )}
             <Label className="flex flex-col gap-2 text-ui">
-              {t('key241', 'تاریخ (جلالی)')}
+              {t('ui.dateJalali')}
               <JalaliDatePicker
                 name="date"
                 value={transactionDate}
                 onValueChange={setTransactionDate}
-                aria-label={t('key242', 'تاریخ تراکنش')}
+                aria-label={t('ui.transactionDate')}
                 required
               />
             </Label>
             <Label className="flex flex-col gap-2 text-ui">
-              {t('key85', 'شرح')}
+              {t('ui.description')}
               <Input name="description" required maxLength={150} />
             </Label>
             <p className="text-2xs text-muted-foreground leading-loose col-span-full">
-              {t('key243', 'این عملیات فقط دفتر نمونه مرورگر را تغییر می‌دهد و پرداخت بانکی انجام نمی‌دهد.')}
+              {t('ui.thisOnlyUpdatesTheBrowserSDemoLedger')}
             </p>
             {error && (
               <p
                 className="bg-status-cancelled text-destructive p-2.5 rounded-md text-ui leading-loose dark:bg-status-cancelled dark:text-destructive col-span-full"
                 role="alert"
               >
-                {error}
+                {translateLabel(error)}
               </p>
             )}
             <div className="flex gap-2.25 mt-1.25 col-span-full">
@@ -322,7 +319,7 @@ export function FinancePage() {
                 className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
                 type="submit"
               >
-                {t('key225', 'ثبت تراکنش')}
+                {t('ui.recordTransaction')}
               </Button>
               <Button
                 variant="outline"
@@ -330,7 +327,7 @@ export function FinancePage() {
                 type="button"
                 onClick={() => setOpen(false)}
               >
-                {t('key59', 'انصراف')}
+                {t('ui.cancel2')}
               </Button>
             </div>
           </form>

@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState, type FormEvent } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
 import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';
@@ -14,11 +15,11 @@ import {
 } from '@/shared/ui/select';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
-import { number } from '@/shared/lib/format';
-import { useTranslation } from 'react-i18next'
+
+import { useTranslation } from 'react-i18next';
 
 export function TechnicianSpecialtiesPage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const technicians = useDemo((state) => state.technicians);
   const saveTechnician = useDemo((state) => state.saveTechnician);
   const [query, setQuery] = useState('');
@@ -30,7 +31,7 @@ export function TechnicianSpecialtiesPage() {
       [...new Set(technicians.map((tech) => tech.specialty))].filter((name) =>
         name.includes(query.trim()),
       ),
-    [technicians, query],
+    [technicians, query, t],
   );
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -40,7 +41,7 @@ export function TechnicianSpecialtiesPage() {
     const specialty = String(form.get('specialty') ?? '').trim();
     const failure = saveTechnician({ ...tech, specialty });
     setError(failure ?? '');
-    setMessage(failure ? '' : t('name', 'تخصص {{name}} به‌روزرسانی شد.', { name: tech.name }));
+    setMessage(failure ? '' : t('ui.specialtyUpdatedForName', { name: tech.name }));
   }
   const specialtyRows = useMemo(
     () =>
@@ -48,7 +49,7 @@ export function TechnicianSpecialtiesPage() {
         const members = technicians.filter((tech) => tech.specialty === name);
         return { name, members };
       }),
-    [specialties, technicians],
+    [specialties, technicians, t],
   );
   const specialtyColumns = useMemo<DataTableColumn<(typeof specialtyRows)[number]>[]>(
     () => [
@@ -65,7 +66,7 @@ export function TechnicianSpecialtiesPage() {
           row: {
             original: { members },
           },
-        }) => number(members.length),
+        }) => members.length,
       },
       {
         id: 'اعضای تیم',
@@ -73,26 +74,26 @@ export function TechnicianSpecialtiesPage() {
         accessorFn: ({ members }) => members.map((tech) => tech.name).join('، '),
       },
     ],
-    [],
+    [t],
   );
   return (
     <>
       <PageHeading
-        title={t('key32', 'تخصص‌های تعمیرکاران')}
-        description={t('key33', 'مشاهده پوشش تخصصی تیم و تعیین حوزه تخصص هر تعمیرکار.')}
+        title={t('ui.technicianSpecialties')}
+        description={t('ui.viewTheTeamSExpertiseAndAssignEach')}
       />
       {error || message ? (
         <Alert variant={error ? 'destructive' : 'default'} className="mb-4">
-          <AlertDescription>{error || message}</AlertDescription>
+          <AlertDescription>{translateLabel(error || message)}</AlertDescription>
         </Alert>
       ) : null}
-      <Panel title={t('key34', 'تعیین یا تغییر تخصص')}>
+      <Panel title={t('ui.assignOrChangeSpecialty')}>
         <form onSubmit={submit} className="flex flex-wrap items-end gap-4 p-6">
           <Label className="flex flex-col gap-2">
-            {t('key35', 'تعمیرکار')}
-            <Select dir="rtl" name="technicianId" required>
+            {t('ui.technician')}
+            <Select name="technicianId" required>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder={t('key36', 'انتخاب تعمیرکار')} />
+                <SelectValue placeholder={t('ui.selectTechnician')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -106,41 +107,41 @@ export function TechnicianSpecialtiesPage() {
             </Select>
           </Label>
           <Label className="flex flex-col gap-2">
-            {t('key37', 'عنوان تخصص')}
+            {t('ui.specialtyTitle')}
             <Input
               name="specialty"
               value={specialty}
               onChange={(event) => setSpecialty(event.target.value)}
               required
               maxLength={150}
-              placeholder={t('key38', 'انتخاب یا ورود تخصص جدید')}
+              placeholder={t('ui.selectOrEnterANewSpecialty')}
             />
-            <Select dir="rtl" value={specialty || undefined} onValueChange={setSpecialty}>
-              <SelectTrigger aria-label={t('key39', 'انتخاب از تخصص‌های موجود')} className="w-full">
-                <SelectValue placeholder={t('key40', 'تخصص‌های موجود')} />
+            <Select value={specialty || undefined} onValueChange={setSpecialty}>
+              <SelectTrigger aria-label={t('ui.chooseAnExistingSpecialty')} className="w-full">
+                <SelectValue placeholder={t('ui.existingSpecialties')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   {[...new Set(technicians.map((tech) => tech.specialty))].map((name) => (
                     <SelectItem key={name} value={name}>
-                      {name}
+                      {translateLabel(name)}
                     </SelectItem>
                   ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
           </Label>
-          <Button type="submit">{t('key41', 'ثبت تخصص')}</Button>
+          <Button type="submit">{t('ui.saveSpecialty')}</Button>
         </form>
       </Panel>
       <Input
-        aria-label={t('key42', 'جستجوی تخصص')}
+        aria-label={t('ui.searchSpecialties')}
         className="my-4 max-w-sm"
-        placeholder={t('key43', 'جستجوی تخصص…')}
+        placeholder={t('ui.searchSpecialties2')}
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
-      <Panel title={t('key44', 'پوشش تخصصی تیم')}>
+      <Panel title={t('ui.teamExpertise')}>
         <DataTable
           data={specialtyRows}
           getRowId={({ name }) => String(name)}

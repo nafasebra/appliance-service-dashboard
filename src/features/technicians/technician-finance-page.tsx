@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState, type FormEvent } from 'react';
 import { getJobPayable } from './utils/technician-finance';
 import { Wallet } from 'lucide-react';
@@ -20,10 +21,10 @@ import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money, dateLabel } from '@/shared/lib/format';
 import { toIsoDate } from '@/shared/lib/date';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 export function TechnicianFinancePage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const technicians = useDemo((state) => state.technicians);
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
@@ -34,22 +35,22 @@ export function TechnicianFinancePage() {
   const [error, setError] = useState('');
   const members = useMemo(
     () => technicians.filter((tech) => technicianId === 'all' || tech.id === technicianId),
-    [technicians, technicianId],
+    [technicians, technicianId, t],
   );
   const assigned = useMemo(
     () => jobs.filter((job) => members.some((tech) => tech.id === job.technicianId)),
-    [jobs, members],
+    [jobs, members, t],
   );
   const related = useMemo(
     () =>
       transactions.filter((transaction) => assigned.some((job) => job.id === transaction.jobId)),
-    [transactions, assigned],
+    [transactions, assigned, t],
   );
   const finance = summarizeFinance(assigned, related);
   const payouts = useMemo(
     () =>
       related.filter((item) => item.kind === 'payout').sort((a, b) => b.date.localeCompare(a.date)),
-    [related],
+    [related, t],
   );
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -60,7 +61,7 @@ export function TechnicianFinancePage() {
       amount <= 0 ||
       amount > getJobPayable(jobId, jobs, transactions)
     ) {
-      setError(t('key71', 'مبلغ باید عدد صحیح مثبت و حداکثر برابر مانده سفارش باشد.'));
+      setError('ui.enterAPositiveWholeAmountWithinTheOrder');
       return;
     }
     const failure = addTransaction({
@@ -84,7 +85,7 @@ export function TechnicianFinancePage() {
         );
         return { tech, techJobs, summary };
       }),
-    [members, assigned, related],
+    [members, assigned, related, t],
   );
   const memberColumns = useMemo<DataTableColumn<(typeof memberRows)[number]>[]>(
     () => [
@@ -144,11 +145,11 @@ export function TechnicianFinancePage() {
         }) => money(summary.payable),
       },
     ],
-    [],
+    [t],
   );
   const payableJobs = useMemo(
     () => assigned.filter((job) => getJobPayable(job.id, jobs, transactions) > 0),
-    [assigned, jobs, transactions],
+    [assigned, jobs, transactions, t],
   );
   const payableJobColumns = useMemo<DataTableColumn<(typeof payableJobs)[number]>[]>(
     () => [
@@ -158,7 +159,7 @@ export function TechnicianFinancePage() {
         accessorFn: (job) => job.id,
         cell: ({ row: { original: job } }) => (
           <>
-            <bdi>{job.id}</bdi> · {job.appliance}
+            <bdi>{job.id}</bdi> · {translateLabel(job.appliance)}
           </>
         ),
       },
@@ -187,7 +188,7 @@ export function TechnicianFinancePage() {
               setJobId(job.id);
             }}
           >
-            {t('key72', 'ثبت پرداخت')}
+            {t('ui.recordPayout')}
           </Button>
         ),
       },
@@ -228,26 +229,21 @@ export function TechnicianFinancePage() {
         cell: ({ row: { original: item } }) => money(item.amount),
       },
     ],
-    [technicians, jobs],
+    [technicians, jobs, t],
   );
   return (
     <>
       <PageHeading
-        title={t('key73', 'امور مالی تعمیرکاران')}
-        description={t('key74', 'سهم خدمات تکمیل‌شده، پرداخت‌های ثبت‌شده و مانده قابل تسویه هر تعمیرکار.')}
+        title={t('ui.technicianFinances')}
+        description={t('ui.completedServiceSharesRecordedPayoutsAndEachTechnician')}
       />
-      <Select
-        dir="rtl"
-
-        value={technicianId}
-        onValueChange={(value) => setTechnicianId(value)}
-      >
-        <SelectTrigger aria-label={t('key36', 'انتخاب تعمیرکار')} className="mb-4">
-          <SelectValue placeholder={t('key63', 'انتخاب کنید')} />
+      <Select value={technicianId} onValueChange={(value) => setTechnicianId(value)}>
+        <SelectTrigger aria-label={t('ui.selectTechnician')} className="mb-4">
+          <SelectValue placeholder={t('ui.selectAnOption')} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem value="all">{t('key64', 'همه تعمیرکاران')}</SelectItem>
+            <SelectItem value="all">{t('ui.allTechnicians')}</SelectItem>
             {technicians.map((tech) => (
               <SelectItem key={tech.id} value={tech.id}>
                 {tech.name}
@@ -258,25 +254,25 @@ export function TechnicianFinancePage() {
       </Select>
       <div className="mb-6 grid gap-4 md:grid-cols-3">
         <StatCard
-          title={t('key75', 'سهم تعمیرکاران')}
+          title={t('ui.technicianShares')}
           value={money(finance.serviceValue - finance.commission)}
-          detail="ارزش خدمات تکمیل‌شده منهای کمیسیون"
+          detail={t('labels.completedServiceValueMinusCommission')}
           icon={<Wallet />}
         />
         <StatCard
-          title={t('key76', 'پرداخت‌شده')}
+          title={t('ui.paid3')}
           value={money(finance.payouts)}
-          detail="مجموع پرداخت‌های ثبت‌شده"
+          detail={t('labels.totalRecordedPayouts')}
           icon={<Wallet />}
         />
         <StatCard
-          title={t('key77', 'مانده قابل پرداخت')}
+          title={t('ui.amountPayable')}
           value={money(finance.payable)}
-          detail="براساس مانده هر سفارش تکمیل‌شده"
+          detail={t('labels.basedOnEachCompletedOrderSBalance')}
           icon={<Wallet />}
         />
       </div>
-      <Panel title={t('key78', 'حساب اعضای تیم')}>
+      <Panel title={t('ui.teamAccounts')}>
         <DataTable
           data={memberRows}
           getRowId={({ tech }) => String(tech.id)}
@@ -286,7 +282,7 @@ export function TechnicianFinancePage() {
         {!members.length ? <EmptyState /> : null}
       </Panel>
       <div className="mt-6">
-        <Panel title={t('key79', 'سفارش‌های قابل تسویه')}>
+        <Panel title={t('ui.ordersEligibleForPayout')}>
           <DataTable
             data={payableJobs}
             getRowId={(job) => String(job.id)}
@@ -294,27 +290,29 @@ export function TechnicianFinancePage() {
             emptyMessage={null}
           />
           {!assigned.some((job) => getJobPayable(job.id, jobs, transactions) > 0) ? (
-            <EmptyState text="سفارش تکمیل‌شده‌ای با مانده قابل پرداخت وجود ندارد." />
+            <EmptyState text={t('labels.noCompletedOrdersHaveARemainingPayableBalance')} />
           ) : null}
         </Panel>
       </div>
       <div className="mt-6">
-        <Panel title={t('key80', 'تاریخچه پرداخت به تعمیرکاران')}>
+        <Panel title={t('ui.technicianPayoutHistory')}>
           <DataTable
             data={payouts}
             getRowId={(item) => String(item.id)}
             columns={payoutColumns}
             emptyMessage={null}
           />
-          {!payouts.length ? <EmptyState text="پرداختی ثبت نشده است." /> : null}
+          {!payouts.length ? <EmptyState text={t('labels.noPayoutsRecorded')} /> : null}
         </Panel>
       </div>
       {jobId ? (
-        <Modal title={t('key81', 'ثبت پرداخت به تعمیرکار')} onClose={() => setJobId('')}>
+        <Modal title={t('ui.recordTechnicianPayout')} onClose={() => setJobId('')}>
           <form onSubmit={submit} className="flex flex-col gap-4 p-6">
-            <p>{t('key82', 'مانده سفارش:')} {money(getJobPayable(jobId, jobs, transactions))}</p>
+            <p>
+              {t('ui.orderBalance')} {money(getJobPayable(jobId, jobs, transactions))}
+            </p>
             <Label className="flex flex-col gap-2">
-              {t('key83', 'مبلغ (تومان)')}
+              {t('ui.amountToman2')}
               <Input
                 name="amount"
                 type="number"
@@ -325,25 +323,25 @@ export function TechnicianFinancePage() {
               />
             </Label>
             <Label className="flex flex-col gap-2">
-              {t('key84', 'تاریخ پرداخت')}
+              {t('ui.payoutDate')}
               <JalaliDatePicker name="date" value={date} onValueChange={setDate} required />
             </Label>
             <Label className="flex flex-col gap-2">
-              {t('key85', 'شرح')}
+              {t('ui.description')}
               <Input name="description" required maxLength={150} />
             </Label>
             {error ? (
               <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription>{translateLabel(error)}</AlertDescription>
               </Alert>
             ) : null}
             <p className="text-xs text-muted-foreground">
-              {t('key86', 'ثبت در دفتر مالی نمونه است و انتقال بانکی انجام نمی‌دهد.')}
+              {t('ui.thisRecordsAnEntryInTheDemoLedger')}
             </p>
             <div className="flex gap-2">
-              <Button type="submit">{t('key72', 'ثبت پرداخت')}</Button>
+              <Button type="submit">{t('ui.recordPayout')}</Button>
               <Button type="button" variant="outline" onClick={() => setJobId('')}>
-                {t('key59', 'انصراف')}
+                {t('ui.cancel2')}
               </Button>
             </div>
           </form>

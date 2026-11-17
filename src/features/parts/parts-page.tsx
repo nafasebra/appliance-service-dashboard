@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { usePartsColumns } from './hooks/use-parts-columns';
 import { useCallback, useMemo, useState, type FormEvent } from 'react';
 import { getPartJobLabel, matchesPart } from './utils/part-filters';
@@ -29,8 +30,8 @@ import {
 } from '@/shared/ui/select';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { DataTable } from '@/shared/ui/data-table';
-import { number } from '@/shared/lib/format';
-import { useTranslation } from 'react-i18next'
+
+import { useTranslation } from 'react-i18next';
 
 type Section = 'inventory' | 'needs' | 'purchases' | 'allocations';
 const sections = [
@@ -41,7 +42,7 @@ const sections = [
 ] as const;
 
 export function PartsPage({ section }: { section: Section }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const data = useParts((state) => state.data);
   const change = useParts((state) => state.change);
   const storageError = useParts((state) => state.storageError);
@@ -63,7 +64,7 @@ export function PartsPage({ section }: { section: Section }) {
     (operation: Parameters<typeof change>[0]) => {
       const failure = change(operation);
       setError(failure ?? '');
-      setMessage(failure ? '' : t('key125', 'اطلاعات با موفقیت ثبت شد.'));
+      setMessage(failure ? '' : t('ui.changesSavedSuccessfully'));
       return !failure;
     },
     [change, t],
@@ -80,7 +81,7 @@ export function PartsPage({ section }: { section: Section }) {
                 ? availableQuantity(data, part.id) === 0
                 : availableQuantity(data, part.id) <= part.minimum)),
       ),
-    [data, appliance, search, status],
+    [data, appliance, search, status, t],
   );
   const needs = useMemo(
     () =>
@@ -91,7 +92,7 @@ export function PartsPage({ section }: { section: Section }) {
           (section !== 'allocations' ||
             ['reserved', 'delivered', 'used', 'returned'].includes(need.status)),
       ),
-    [data, appliance, search, status, section],
+    [data, appliance, search, status, section, t],
   );
   const purchases = useMemo(
     () =>
@@ -100,7 +101,7 @@ export function PartsPage({ section }: { section: Section }) {
           matchesPart(purchase.partId, data.parts, appliance, search) &&
           (status === 'all' || purchase.status === status),
       ),
-    [data, appliance, search, status],
+    [data, appliance, search, status, t],
   );
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -130,7 +131,7 @@ export function PartsPage({ section }: { section: Section }) {
       return;
     }
     if (!Number.isSafeInteger(quantity) || quantity <= 0) {
-      setError(t('key126', 'تعداد باید عدد صحیح مثبت باشد.'));
+      setError('ui.quantityMustBeAPositiveWholeNumber');
       return;
     }
     const partId = getFormText(fields, 'partId');
@@ -143,7 +144,7 @@ export function PartsPage({ section }: { section: Section }) {
         job.status === 'completed' ||
         job.appliance !== part?.appliance
       ) {
-        setError(t('key127', 'قطعه باید با نوع دستگاه یک سفارش باز سازگار باشد.'));
+        setError('ui.thePartMustMatchTheApplianceTypeOf');
         return;
       }
       if (
@@ -188,12 +189,12 @@ export function PartsPage({ section }: { section: Section }) {
     (id: string, next: NeedStatus) => {
       const need = data.needs.find((item) => item.id === id);
       if (!need) {
-        setError(t('key128', 'درخواست قطعه پیدا نشد.'));
+        setError('ui.partRequestNotFound');
         return;
       }
       const job = jobs.find((item) => item.id === need.jobId);
       if (next === 'reserved' && (!job || ['cancelled', 'completed'].includes(job.status))) {
-        setError(t('key129', 'رزرو فقط برای سفارش باز مجاز است.'));
+        setError('ui.partsCanOnlyBeReservedForOpenOrders');
         return;
       }
       act((current) => transitionNeed(current, id, next));
@@ -217,7 +218,7 @@ export function PartsPage({ section }: { section: Section }) {
     <>
       <PageHeading
         title={title}
-        description={t('key130', 'مدیریت قطعه از استعلام انبار تا تأمین، تحویل و مصرف در سفارش مشتری')}
+        description={t('ui.managePartsFromAvailabilityChecksThroughProcurementDelivery')}
         action={
           section !== 'allocations' ? (
             <Button
@@ -231,100 +232,98 @@ export function PartsPage({ section }: { section: Section }) {
             >
               <Plus />
               {section === 'inventory'
-                ? t('key131', 'تعریف قطعه')
+                ? t('ui.addPart')
                 : section === 'needs'
-                  ? t('key132', 'درخواست قطعه')
-                  : t('key133', 'درخواست خرید')}
+                  ? t('ui.requestPart')
+                  : t('ui.requestPurchase')}
             </Button>
           ) : undefined
         }
       />
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
-          title={t('key134', 'انواع قطعه')}
-          value={number(data.parts.length)}
-          detail="به تفکیک دستگاه و مدل سازگار"
+          title={t('ui.partTypes')}
+          value={data.parts.length}
+          detail={t('labels.byApplianceTypeAndCompatibleModel')}
           icon={<Package />}
         />
         <StatCard
-          title={t('key135', 'موجودی قابل تخصیص')}
-          value={number(data.parts.reduce((sum, p) => sum + availableQuantity(data, p.id), 0))}
-          detail="موجودی فیزیکی منهای رزرو"
+          title={t('ui.availableStock')}
+          value={data.parts.reduce((sum, p) => sum + availableQuantity(data, p.id), 0)}
+          detail={t('labels.physicalStockMinusReservations')}
           icon={<Package />}
         />
         <StatCard
-          title={t('key136', 'کم‌موجود یا ناموجود')}
-          value={number(
-            data.parts.filter((p) => p.active && availableQuantity(data, p.id) <= p.minimum).length,
+          title={t('ui.lowOrOutOfStock')}
+          value={
+            data.parts.filter((p) => p.active && availableQuantity(data, p.id) <= p.minimum).length
+          }
+          detail={t('labels.procurementReviewNeeded')}
+          icon={<Package />}
+        />
+        <StatCard
+          title={t('ui.onTheWay')}
+          value={data.purchases.reduce(
+            (sum, p) => sum + (p.status === 'ordered' ? p.quantity - p.received : 0),
+            0,
           )}
-          detail="نیازمند بررسی تأمین"
-          icon={<Package />}
-        />
-        <StatCard
-          title={t('key137', 'در راه')}
-          value={number(
-            data.purchases.reduce(
-              (sum, p) => sum + (p.status === 'ordered' ? p.quantity - p.received : 0),
-              0,
-            ),
-          )}
-          detail="سفارش خرید ثبت‌شده و دریافت‌نشده"
+          detail={t('labels.orderedPurchasesNotYetReceived')}
           icon={<Package />}
         />
       </div>
       {storageError ? (
         <Alert variant="destructive" className="mb-4">
           <AlertDescription>
-            {t('key138', 'ذخیره مرورگر در دسترس نیست؛ تغییرات فعلی پس از خروج حفظ نمی‌شوند.')}
+            {t('ui.browserStorageIsUnavailableCurrentChangesWillNot')}
           </AlertDescription>
         </Alert>
       ) : null}
       {error || message ? (
         <Alert variant={error ? 'destructive' : 'default'} className="mb-4">
-          <AlertDescription>{error || message}</AlertDescription>
+          <AlertDescription>{translateLabel(error || message)}</AlertDescription>
         </Alert>
       ) : null}
       <div className="mb-4 flex flex-row gap-3">
         <Input
-          aria-label={t('key139', 'جستجوی قطعه')}
-          placeholder={t('key140', 'نام، کد یا مدل سازگار…')}
+          aria-label={t('ui.searchParts')}
+          placeholder={t('ui.nameCodeOrCompatibleModel')}
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           className="max-w-sm"
         />
-        <Select dir="rtl" value={appliance} onValueChange={(value) => setAppliance(value)}>
-          <SelectTrigger className="w-full" aria-label={t('key141', 'نوع دستگاه')}>
-            <SelectValue placeholder={t('key63', 'انتخاب کنید')} />
+        <Select value={appliance} onValueChange={(value) => setAppliance(value)}>
+          <SelectTrigger className="w-full" aria-label={t('ui.applianceType')}>
+            <SelectValue placeholder={t('ui.selectAnOption')} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="all">{t('key142', 'همه دستگاه‌ها')}</SelectItem>
+              <SelectItem value="all">{t('ui.allAppliances')}</SelectItem>
               {appliances.map((item) => (
                 <SelectItem key={item} value={item}>
-                  {item}
+                  {translateLabel(item)}
                 </SelectItem>
               ))}
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select dir="rtl" value={status} onValueChange={(value) => setStatus(value)}>
-          <SelectTrigger className="w-full" aria-label={t('key143', 'وضعیت')}>
-            <SelectValue placeholder={t('key63', 'انتخاب کنید')} />
+        <Select value={status} onValueChange={(value) => setStatus(value)}>
+          <SelectTrigger className="w-full" aria-label={t('ui.status')}>
+            <SelectValue placeholder={t('ui.selectAnOption')} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="all">{t('key124', 'همه وضعیت‌ها')}</SelectItem>
+              <SelectItem value="all">{t('ui.allStatuses')}</SelectItem>
               {section === 'inventory' ? (
                 <>
-                  <SelectItem value="low">{t('key144', 'کم‌موجود')}</SelectItem>
-                  <SelectItem value="empty">{t('key145', 'ناموجود')}</SelectItem>
-                  <SelectItem value="inactive">{t('key146', 'غیرفعال')}</SelectItem>
+                  <SelectItem value="low">{t('ui.lowStock')}</SelectItem>
+                  <SelectItem value="empty">{t('ui.outOfStock')}</SelectItem>
+                  <SelectItem value="inactive">{t('ui.inactive')}</SelectItem>
                 </>
               ) : (
                 Object.entries(section === 'purchases' ? purchaseLabels : needLabels).map(
                   ([value, label]) => (
                     <SelectItem key={value} value={value}>
-                      {label}
+                      {translateLabel(label)}
                     </SelectItem>
                   ),
                 )
@@ -335,7 +334,7 @@ export function PartsPage({ section }: { section: Section }) {
       </div>
       <Panel
         title={title}
-        subtitle="اطلاعات نمونه؛ عملیات انبار به‌صورت مستقل از پرداخت‌های مالی ثبت می‌شود."
+        subtitle={t('labels.sampleDataInventoryOperationsAreRecordedSeparatelyFrom')}
       >
         {section === 'inventory' ? (
           <DataTable
@@ -367,7 +366,7 @@ export function PartsPage({ section }: { section: Section }) {
           : section === 'purchases'
             ? purchases.length
             : needs.length) === 0 ? (
-          <EmptyState text="موردی برای نمایش وجود ندارد. درخواست جدید ثبت کنید یا فیلترها را تغییر دهید." />
+          <EmptyState text={t('labels.noRecordsToDisplayCreateARequestOr')} />
         ) : null}
       </Panel>
       {form ? (
@@ -375,11 +374,11 @@ export function PartsPage({ section }: { section: Section }) {
           title={
             form === 'part'
               ? editing
-                ? t('key147', 'ویرایش قطعه')
-                : t('key131', 'تعریف قطعه')
+                ? t('ui.editPart')
+                : t('ui.addPart')
               : form === 'need'
-                ? t('key148', 'درخواست قطعه و استعلام')
-                : t('key149', 'درخواست تأمین موجودی')
+                ? t('ui.partRequestAndAvailabilityCheck')
+                : t('ui.requestStockReplenishment')
           }
           onClose={() => setForm(null)}
         >
@@ -387,28 +386,24 @@ export function PartsPage({ section }: { section: Section }) {
             {form === 'part' ? (
               <>
                 <Label className="flex flex-col gap-2">
-                  {t('key150', 'نام قطعه')}
+                  {t('ui.partName')}
                   <Input name="name" defaultValue={editing?.name} required maxLength={100} />
                 </Label>
                 <Label className="flex flex-col gap-2">
-                  {t('key151', 'کد یکتا')}
+                  {t('ui.uniqueCode')}
                   <Input name="code" defaultValue={editing?.code} required maxLength={50} />
                 </Label>
                 <Label className="flex flex-col gap-2">
-                  {t('key141', 'نوع دستگاه')}
-                  <Select
-                    dir="rtl"
-                    name="appliance"
-                    defaultValue={editing?.appliance ?? appliances[0]}
-                  >
+                  {t('ui.applianceType')}
+                  <Select name="appliance" defaultValue={editing?.appliance ?? appliances[0]}>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder={t('key63', 'انتخاب کنید')} />
+                      <SelectValue placeholder={t('ui.selectAnOption')} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
                         {appliances.map((item) => (
                           <SelectItem key={item} value={item}>
-                            {item}
+                            {translateLabel(item)}
                           </SelectItem>
                         ))}
                       </SelectGroup>
@@ -416,15 +411,15 @@ export function PartsPage({ section }: { section: Section }) {
                   </Select>
                 </Label>
                 <Label className="flex flex-col gap-2">
-                  {t('key152', 'برند و مدل سازگار')}
+                  {t('ui.compatibleBrandsAndModels')}
                   <Input name="compatibility" defaultValue={editing?.compatibility} required />
                 </Label>
                 <Label className="flex flex-col gap-2">
-                  {t('key153', 'محل نگهداری')}
+                  {t('ui.storageLocation')}
                   <Input name="location" defaultValue={editing?.location} required />
                 </Label>
                 <Label className="flex flex-col gap-2">
-                  {t('key154', 'حداقل موجودی')}
+                  {t('ui.minimumStock')}
                   <Input
                     name="minimum"
                     type="number"
@@ -436,7 +431,7 @@ export function PartsPage({ section }: { section: Section }) {
                 </Label>
                 {!editing ? (
                   <Label className="flex flex-col gap-2">
-                    {t('key155', 'موجودی اولیه')}
+                    {t('ui.openingStock')}
                     <Input name="stock" type="number" min="0" step="1" defaultValue="0" required />
                   </Label>
                 ) : null}
@@ -444,10 +439,10 @@ export function PartsPage({ section }: { section: Section }) {
             ) : (
               <>
                 <Label className="flex flex-col gap-2">
-                  {t('key156', 'قطعه')}
-                  <Select dir="rtl" name="partId" required>
+                  {t('ui.part')}
+                  <Select name="partId" required>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder={t('key63', 'انتخاب کنید')} />
+                      <SelectValue placeholder={t('ui.selectAnOption')} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -455,7 +450,7 @@ export function PartsPage({ section }: { section: Section }) {
                           .filter((p) => p.active)
                           .map((part) => (
                             <SelectItem key={part.id} value={part.id}>
-                              {part.name} · {part.appliance}
+                              {part.name} · {translateLabel(part.appliance)}
                             </SelectItem>
                           ))}
                       </SelectGroup>
@@ -463,15 +458,15 @@ export function PartsPage({ section }: { section: Section }) {
                   </Select>
                 </Label>
                 <Label className="flex flex-col gap-2">
-                  {t('key157', 'تعداد')}
+                  {t('ui.quantity')}
                   <Input name="quantity" type="number" min="1" step="1" defaultValue="1" required />
                 </Label>
                 {form === 'need' ? (
                   <Label className="col-span-full flex flex-col gap-2">
-                    {t('key158', 'سفارش مشتری')}
-                    <Select dir="rtl" name="jobId" required>
+                    {t('ui.customerOrder')}
+                    <Select name="jobId" required>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder={t('key159', 'انتخاب سفارش باز')} />
+                        <SelectValue placeholder={t('ui.selectAnOpenOrder')} />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
@@ -488,7 +483,7 @@ export function PartsPage({ section }: { section: Section }) {
                   </Label>
                 ) : (
                   <Label className="flex flex-col gap-2">
-                    {t('key160', 'تأمین‌کننده پیشنهادی')}
+                    {t('ui.suggestedSupplier')}
                     <Input name="supplier" />
                   </Label>
                 )}
@@ -496,20 +491,20 @@ export function PartsPage({ section }: { section: Section }) {
             )}
             {error ? (
               <Alert variant="destructive" className="col-span-full">
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription>{translateLabel(error)}</AlertDescription>
               </Alert>
             ) : null}
             <div className="col-span-full flex gap-2">
-              <Button type="submit">{t('key58', 'ذخیره')}</Button>
+              <Button type="submit">{t('ui.save')}</Button>
               <Button type="button" variant="outline" onClick={() => setForm(null)}>
-                {t('key59', 'انصراف')}
+                {t('ui.cancel2')}
               </Button>
             </div>
           </form>
         </Modal>
       ) : null}
       {delivery ? (
-        <Modal title={t('key161', 'تحویل قطعه به تعمیرکار')} onClose={() => setDelivery('')}>
+        <Modal title={t('ui.deliverPartToTechnician')} onClose={() => setDelivery('')}>
           <form
             className="flex flex-col gap-4 p-6"
             onSubmit={(event) => {
@@ -520,10 +515,10 @@ export function PartsPage({ section }: { section: Section }) {
             }}
           >
             <Label className="flex flex-col gap-2">
-              {t('key162', 'دریافت‌کننده')}
-              <Select dir="rtl" name="technicianId" required>
+              {t('ui.recipient')}
+              <Select name="technicianId" required>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t('key36', 'انتخاب تعمیرکار')} />
+                  <SelectValue placeholder={t('ui.selectTechnician')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -536,13 +531,13 @@ export function PartsPage({ section }: { section: Section }) {
                 </SelectContent>
               </Select>
             </Label>
-            {error ? <p role="alert">{error}</p> : null}
-            <Button type="submit">{t('key163', 'ثبت تحویل')}</Button>
+            {error ? <p role="alert">{translateLabel(error)}</p> : null}
+            <Button type="submit">{t('ui.recordDelivery')}</Button>
           </form>
         </Modal>
       ) : null}
       {receiving ? (
-        <Modal title={t('key164', 'ثبت خرید / دریافت کالا')} onClose={() => setReceiving('')}>
+        <Modal title={t('ui.recordPurchaseGoodsReceipt')} onClose={() => setReceiving('')}>
           <form
             className="flex flex-col gap-4 p-6"
             onSubmit={(event) => {
@@ -571,7 +566,7 @@ export function PartsPage({ section }: { section: Section }) {
           >
             {data.purchases.find((p) => p.id === receiving)?.status === 'approved' ? (
               <Label className="flex flex-col gap-2">
-                {t('key165', 'تأمین‌کننده')}
+                {t('ui.supplier')}
                 <Input
                   name="supplier"
                   required
@@ -580,7 +575,7 @@ export function PartsPage({ section }: { section: Section }) {
               </Label>
             ) : (
               <Label className="flex flex-col gap-2">
-                {t('key166', 'تعداد دریافت این مرحله')}
+                {t('ui.quantityReceivedInThisDelivery')}
                 <Input
                   type="number"
                   name="quantity"
@@ -595,8 +590,8 @@ export function PartsPage({ section }: { section: Section }) {
                 />
               </Label>
             )}
-            {error ? <p role="alert">{error}</p> : null}
-            <Button type="submit">{t('key167', 'ثبت')}</Button>
+            {error ? <p role="alert">{translateLabel(error)}</p> : null}
+            <Button type="submit">{t('ui.submit')}</Button>
           </form>
         </Modal>
       ) : null}

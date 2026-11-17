@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { JobStatusBadge } from '@/entities/service/ui/job-status-badge';
 import { useMemo } from 'react';
 import { ArrowUpLeft, WashingMachine, Refrigerator, Wind, CookingPot } from 'lucide-react';
@@ -7,7 +8,7 @@ import { dateLabel, money } from '@/shared/lib/format';
 import { EmptyState } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 export function ApplianceIcon({ appliance }: { appliance: string }) {
   const Icon =
@@ -22,7 +23,7 @@ export function ApplianceIcon({ appliance }: { appliance: string }) {
 }
 
 export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job) => void }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const customers = useDemo((state) => state.customers);
   const technicians = useDemo((state) => state.technicians);
   const jobColumns = useMemo<DataTableColumn<(typeof jobs)[number]>[]>(
@@ -38,14 +39,14 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
             </span>
             <div>
               <strong>
-                {job.appliance} {job.brand}
+                {translateLabel(job.appliance)} {job.brand}
               </strong>
               <small className="direction-ltr text-start font-latin tracking-normal">
                 {job.id}
               </small>
             </div>
             {job.priority === 'urgent' && (
-              <span className="w-1.25 h-1.25 rounded-full bg-secondary" title={t('key101', 'فوری')} />
+              <span className="w-1.25 h-1.25 rounded-full bg-secondary" title={t('ui.urgent')} />
             )}
           </div>
         ),
@@ -69,7 +70,7 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
         accessorFn: (job) => technicians.find((item) => item.id === job.technicianId)?.name,
         cell: ({ row: { original: job } }) =>
           technicians.find((item) => item.id === job.technicianId)?.name ?? (
-            <span className="text-muted-foreground">{t('key292', 'تخصیص داده نشده')}</span>
+            <span className="text-muted-foreground">{t('ui.notAssigned')}</span>
           ),
       },
       {
@@ -88,7 +89,7 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
       {
         id: 'وضعیت',
         header: 'وضعیت',
-        accessorFn: (job) => statusLabels[job.status],
+        accessorFn: (job) => translateLabel(statusLabels[job.status]),
         cell: ({ row: { original: job } }) => <JobStatusBadge status={job.status} showDot />,
       },
       {
@@ -96,7 +97,9 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
         header: 'مبلغ خدمت',
         accessorFn: (job) => job.total,
         cell: ({ row: { original: job } }) => (
-          <span className="whitespace-nowrap">{job.total ? money(job.total) : t('key293', 'تعیین نشده')}</span>
+          <span className="whitespace-nowrap">
+            {job.total ? money(job.total) : t('ui.notSpecified')}
+          </span>
         ),
       },
       {
@@ -108,7 +111,7 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
             variant="ghost"
             size="icon-sm"
             className="grid place-items-center h-7.75 w-7.75 border border-transparent rounded-md text-muted-foreground bg-transparent shrink-0 [&:hover]:bg-accent [&:hover]:border-border dark:[&:hover]:bg-accent dark:[&:hover]:border-border"
-            aria-label={t('id', 'جزئیات {{id}}', { id: job.id })}
+            aria-label={t('ui.detailsForId', { id: job.id })}
             onClick={() => onSelect(job)}
           >
             <ArrowUpLeft size={18} />

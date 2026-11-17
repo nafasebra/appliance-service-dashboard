@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { useMemo } from 'react';
 import type { Customer, Job, Technician } from '@/entities/service/model/types';
 import {
@@ -16,8 +17,8 @@ import { createColumnHelper } from '@tanstack/react-table';
 import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
-import { number } from '@/shared/lib/format';
-import i18next from 'i18next'
+
+import { useTranslation } from 'react-i18next';
 
 const inventoryColumn = createColumnHelper<DataTableFeatures, Part>();
 const purchaseColumn = createColumnHelper<DataTableFeatures, PartPurchase>();
@@ -48,6 +49,7 @@ export function usePartsColumns({
   needAction,
   setDelivery,
 }: PartsColumnOptions) {
+  const { t } = useTranslation();
   const inventoryColumns = useMemo(
     () =>
       inventoryColumn.columns([
@@ -68,7 +70,7 @@ export function usePartsColumns({
           header: 'دستگاه و سازگاری',
           cell: ({ row: { original: part } }) => (
             <>
-              {part.appliance}
+              {translateLabel(part.appliance)}
               <p className="text-xs text-muted-foreground">{part.compatibility}</p>
             </>
           ),
@@ -77,27 +79,27 @@ export function usePartsColumns({
         inventoryColumn.accessor((part) => part.stock, {
           id: 'فیزیکی',
           header: 'فیزیکی',
-          cell: ({ cell }) => number(cell.getValue()),
+          cell: ({ cell }) => cell.getValue(),
         }),
         inventoryColumn.accessor((part) => reservedQuantity(data, part.id), {
           id: 'رزرو',
           header: 'رزرو',
-          cell: ({ cell }) => number(cell.getValue()),
+          cell: ({ cell }) => cell.getValue(),
         }),
         inventoryColumn.accessor((part) => availableQuantity(data, part.id), {
           id: 'قابل تخصیص',
           header: 'قابل تخصیص',
-          cell: ({ cell }) => number(cell.getValue()),
+          cell: ({ cell }) => cell.getValue(),
         }),
         inventoryColumn.accessor(
           (part) =>
             !part.active
-              ? i18next.t('key146', 'غیرفعال')
+              ? t('ui.inactive')
               : availableQuantity(data, part.id) === 0
-                ? i18next.t('key145', 'ناموجود')
+                ? t('ui.outOfStock')
                 : availableQuantity(data, part.id) <= part.minimum
-                  ? i18next.t('key144', 'کم‌موجود')
-                  : i18next.t('key310', 'موجود'),
+                  ? t('ui.lowStock')
+                  : t('ui.inStock'),
           {
             id: 'وضعیت',
             header: 'وضعیت',
@@ -118,7 +120,7 @@ export function usePartsColumns({
                   setForm('part');
                 }}
               >
-                {i18next.t('key45', 'ویرایش')}
+                {t('ui.edit')}
               </Button>
               <Button
                 variant="ghost"
@@ -132,13 +134,13 @@ export function usePartsColumns({
                   }))
                 }
               >
-                {part.active ? i18next.t('key146', 'غیرفعال') : i18next.t('key311', 'فعال')}
+                {part.active ? t('ui.inactive') : t('ui.active')}
               </Button>
             </div>
           ),
         }),
       ]),
-    [data, setEditing, setForm, act],
+    [data, setEditing, setForm, act, t],
   );
   const purchaseColumns = useMemo(
     () =>
@@ -155,36 +157,36 @@ export function usePartsColumns({
                   jobs,
                   customers,
                 )
-              : i18next.t('key312', 'تکمیل موجودی انبار'),
+              : t('ui.replenishInventory'),
           { id: 'مرتبط با درخواست', header: 'مرتبط با درخواست' },
         ),
-        purchaseColumn.accessor((purchase) => purchase.supplier || i18next.t('key293', 'تعیین نشده'), {
+        purchaseColumn.accessor((purchase) => purchase.supplier || t('ui.notSpecified'), {
           id: 'تأمین‌کننده',
           header: 'تأمین‌کننده',
         }),
         purchaseColumn.accessor((purchase) => purchase.quantity, {
           id: 'تعداد خرید',
           header: 'تعداد خرید',
-          cell: ({ cell }) => number(cell.getValue()),
+          cell: ({ cell }) => cell.getValue(),
         }),
         purchaseColumn.accessor((purchase) => purchase.received, {
           id: 'دریافت',
           header: 'دریافت',
-          cell: ({ cell }) => number(cell.getValue()),
+          cell: ({ cell }) => cell.getValue(),
         }),
         purchaseColumn.accessor(
           (purchase) =>
             purchase.received > 0 && purchase.status === 'ordered'
-              ? i18next.t('key313', 'دریافت جزئی')
-              : purchaseLabels[purchase.status],
+              ? t('ui.partiallyReceived')
+              : translateLabel(purchaseLabels[purchase.status]),
           {
             id: 'وضعیت',
             header: 'وضعیت',
             cell: ({ row: { original: purchase } }) => (
               <Badge variant="secondary">
                 {purchase.received > 0 && purchase.status === 'ordered'
-                  ? i18next.t('key313', 'دریافت جزئی')
-                  : purchaseLabels[purchase.status]}
+                  ? t('ui.partiallyReceived')
+                  : translateLabel(purchaseLabels[purchase.status])}
               </Badge>
             ),
           },
@@ -207,17 +209,17 @@ export function usePartsColumns({
                     }))
                   }
                 >
-                  {i18next.t('key314', 'تأیید خرید')}
+                  {t('ui.approvePurchase')}
                 </Button>
               ) : null}
               {purchase.status === 'approved' ? (
                 <Button size="sm" onClick={() => setReceiving(purchase.id)}>
-                  {i18next.t('key315', 'ثبت سفارش خرید')}
+                  {t('ui.placePurchaseOrder')}
                 </Button>
               ) : null}
               {purchase.status === 'ordered' ? (
                 <Button size="sm" onClick={() => setReceiving(purchase.id)}>
-                  {i18next.t('key316', 'دریافت کالا')}
+                  {t('ui.receiveGoods')}
                 </Button>
               ) : null}
               {['pending', 'approved'].includes(purchase.status) ? (
@@ -233,14 +235,14 @@ export function usePartsColumns({
                     }))
                   }
                 >
-                  {i18next.t('key317', 'لغو')}
+                  {t('ui.cancel')}
                 </Button>
               ) : null}
             </div>
           ),
         }),
       ]),
-    [data, jobs, customers, act, setReceiving],
+    [data, jobs, customers, act, setReceiving, t],
   );
   const needColumns = useMemo(
     () =>
@@ -256,14 +258,14 @@ export function usePartsColumns({
         needColumn.accessor((need) => need.quantity, {
           id: 'تعداد',
           header: 'تعداد',
-          cell: ({ cell }) => number(cell.getValue()),
+          cell: ({ cell }) => cell.getValue(),
         }),
         needColumn.accessor((need) => availableQuantity(data, need.partId), {
           id: 'قابل تخصیص',
           header: 'قابل تخصیص',
-          cell: ({ cell }) => number(cell.getValue()),
+          cell: ({ cell }) => cell.getValue(),
         }),
-        needColumn.accessor((need) => needLabels[need.status], {
+        needColumn.accessor((need) => translateLabel(needLabels[need.status]), {
           id: 'وضعیت',
           header: 'وضعیت',
           cell: ({ cell }) => <Badge variant="secondary">{cell.getValue()}</Badge>,
@@ -293,12 +295,12 @@ export function usePartsColumns({
                   }
                   disabled={need.status === 'available'}
                 >
-                  {i18next.t('key318', 'استعلام موجودی')}
+                  {t('ui.checkAvailability')}
                 </Button>
               ) : null}
               {need.status === 'available' ? (
                 <Button size="sm" onClick={() => needAction(need.id, 'reserved')}>
-                  {i18next.t('key319', 'رزرو برای سفارش')}
+                  {t('ui.reserveForOrder')}
                 </Button>
               ) : null}
               {need.status === 'unavailable' ? (
@@ -330,38 +332,38 @@ export function usePartsColumns({
                     }))
                   }
                 >
-                  {i18next.t('key320', 'ارجاع به تأمین')}
+                  {t('ui.sendToProcurement')}
                 </Button>
               ) : null}
               {need.status === 'reserved' ? (
                 <Button size="sm" onClick={() => setDelivery(need.id)}>
-                  {i18next.t('key321', 'تحویل به تعمیرکار')}
+                  {t('ui.deliverToTechnician')}
                 </Button>
               ) : null}
               {need.status === 'delivered' ? (
                 <>
                   <Button size="sm" onClick={() => needAction(need.id, 'used')}>
-                    {i18next.t('key322', 'ثبت مصرف')}
+                    {t('ui.recordConsumption')}
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => needAction(need.id, 'returned')}
                   >
-                    {i18next.t('key323', 'برگشت سالم به انبار')}
+                    {t('ui.returnToInventory')}
                   </Button>
                 </>
               ) : null}
               {['pending', 'available', 'unavailable', 'reserved'].includes(need.status) ? (
                 <Button size="sm" variant="ghost" onClick={() => needAction(need.id, 'cancelled')}>
-                  {i18next.t('key317', 'لغو')}
+                  {t('ui.cancel')}
                 </Button>
               ) : null}
             </div>
           ),
         }),
       ]),
-    [data, jobs, customers, technicians, needAction, act, setDelivery],
+    [data, jobs, customers, technicians, needAction, act, setDelivery, t],
   );
   return { inventoryColumns, purchaseColumns, needColumns };
 }

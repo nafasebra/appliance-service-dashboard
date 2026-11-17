@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { useMemo } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
 import {
@@ -11,7 +12,7 @@ import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { money, dateLabel } from '@/shared/lib/format';
 import { downloadCsv } from '@/shared/utils/csv';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 export function CustomerStatement({
   customerId,
@@ -22,21 +23,21 @@ export function CustomerStatement({
   onClose: () => void;
   onReceipt: (jobId: string) => void;
 }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const customers = useDemo((state) => state.customers);
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
   const customer = customers.find((item) => item.id === customerId);
   const orders = useMemo(
     () => jobs.filter((job) => job.customerId === customerId),
-    [jobs, customerId],
+    [jobs, customerId, t],
   );
   const receipts = useMemo(
     () =>
       transactions.filter(
         (item) => item.kind === 'receipt' && orders.some((job) => job.id === item.jobId),
       ),
-    [transactions, orders],
+    [transactions, orders, t],
   );
   const account = getCustomerAccount(customerId, jobs, transactions);
 
@@ -46,7 +47,7 @@ export function CustomerStatement({
         const row = getOrderAccount(job, transactions);
         return { job, row };
       }),
-    [orders, transactions],
+    [orders, transactions, t],
   );
   const orderColumns = useMemo<DataTableColumn<(typeof orderRows)[number]>[]>(
     () => [
@@ -61,7 +62,7 @@ export function CustomerStatement({
         }) => (
           <>
             <bdi>{job.id}</bdi>
-            <p>{job.appliance}</p>
+            <p>{translateLabel(job.appliance)}</p>
           </>
         ),
       },
@@ -98,12 +99,12 @@ export function CustomerStatement({
       {
         id: 'وضعیت',
         header: 'وضعیت',
-        accessorFn: ({ row }) => paymentStatusLabels[row.status],
+        accessorFn: ({ row }) => translateLabel(paymentStatusLabels[row.status]),
         cell: ({
           row: {
             original: { row },
           },
-        }) => <Badge variant="secondary">{paymentStatusLabels[row.status]}</Badge>,
+        }) => <Badge variant="secondary">{translateLabel(paymentStatusLabels[row.status])}</Badge>,
       },
       {
         id: 'عملیات',
@@ -116,7 +117,7 @@ export function CustomerStatement({
         }) =>
           job.status !== 'cancelled' && job.total > row.receipts ? (
             <Button size="sm" variant="outline" onClick={() => onReceipt(job.id)}>
-              {t('key203', 'ثبت دریافت')}
+              {t('ui.recordReceipt')}
             </Button>
           ) : (
             '—'
@@ -151,21 +152,32 @@ export function CustomerStatement({
         cell: ({ row: { original: item } }) => money(item.amount),
       },
     ],
-    [],
+    [t],
   );
   return (
-    <Modal title={`صورت‌حساب ${customer?.name ?? ''}`} onClose={onClose}>
+    <Modal title={t('account.statement', { name: customer?.name ?? '' })} onClose={onClose}>
       <div className="flex flex-col gap-5 p-6">
         <p className="text-sm">
-          {t('key334', 'خدمات قطعی:')} {money(account.charge)} {t('key335', '· دریافت:')} {money(account.receipts)} {t('key336', '· مطالبات:')}{' '}
-          {money(account.outstanding)} {t('key337', '· پیش‌دریافت / بستانکاری:')} {money(account.credit)}
+          {t('account.summary', {
+            charge: money(account.charge),
+            receipts: money(account.receipts),
+            outstanding: money(account.outstanding),
+            credit: money(account.credit),
+          })}
         </p>
         <Button
           variant="outline"
           onClick={() =>
             downloadCsv(
               [
-                ['سفارش', 'تاریخ', 'خدمات قطعی', 'دریافت', t('key338', 'مانده بدهی'), t('key248', 'پیش‌دریافت / بستانکاری')],
+                [
+                  'سفارش',
+                  'تاریخ',
+                  'خدمات قطعی',
+                  'دریافت',
+                  t('ui.outstandingDebt'),
+                  t('ui.advanceCredit'),
+                ],
                 ...orders.map((job) => {
                   const row = getOrderAccount(job, transactions);
                   return [
@@ -182,24 +194,24 @@ export function CustomerStatement({
             )
           }
         >
-          {t('csv2', 'خروجی صورت‌حساب CSV')}
+          {t('ui.exportStatementCsv')}
         </Button>
-        <h3 className="font-semibold">{t('key339', 'ریز حساب سفارش‌ها')}</h3>
+        <h3 className="font-semibold">{t('ui.orderAccountDetails')}</h3>
         <DataTable
           data={orderRows}
           getRowId={({ job }) => String(job.id)}
           columns={orderColumns}
           emptyMessage={null}
         />
-        {!orders.length ? <EmptyState text="سفارشی برای این مشتری ثبت نشده است." /> : null}
-        <h3 className="font-semibold">{t('key340', 'رسیدهای دریافت وجه')}</h3>
+        {!orders.length ? <EmptyState text={t('labels.noOrdersRecordedForThisCustomer')} /> : null}
+        <h3 className="font-semibold">{t('ui.customerReceiptHistory')}</h3>
         <DataTable
           data={receipts}
           getRowId={(item) => String(item.id)}
           columns={receiptColumns}
           emptyMessage={null}
         />
-        {!receipts.length ? <EmptyState text="دریافتی ثبت نشده است." /> : null}
+        {!receipts.length ? <EmptyState text={t('labels.noReceiptsRecorded')} /> : null}
       </div>
     </Modal>
   );

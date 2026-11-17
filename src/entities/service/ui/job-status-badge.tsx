@@ -1,6 +1,8 @@
+import { translateLabel } from '@/shared/i18n';
 import { statusLabels, type JobStatus } from '../model/types';
 import { Badge } from '@/shared/ui/badge';
 import { cn } from '@/shared/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 export function JobStatusBadge({
   status,
@@ -9,6 +11,7 @@ export function JobStatusBadge({
   status: JobStatus;
   showDot?: boolean;
 }) {
+  useTranslation();
   return (
     <Badge
       className={cn(
@@ -21,7 +24,7 @@ export function JobStatusBadge({
       )}
     >
       {showDot ? <span aria-hidden="true" className="size-1 rounded-full bg-current" /> : null}
-      {statusLabels[status]}
+      {translateLabel(statusLabels[status])}
     </Badge>
   );
 }

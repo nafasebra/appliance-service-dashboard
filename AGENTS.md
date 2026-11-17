@@ -35,6 +35,8 @@ Read the relevant local skill before related work:
 - shadcn/ui: `.skills/shadcn/SKILL.md`
 - Frontend architecture: `.skills/frontend-architecture/SKILL.md`
 - Zustand stores, selectors and persistence: `.skills/zustand/SKILL.md`
+- Localization, new UI copy, or direction changes: `.skills/i18n/SKILL.md` and
+  `docs/localization.md`.
 - TanStack Table changes: `.skills/tanstack-table/core/SKILL.md`, then
   `.skills/tanstack-table/react/getting-started/SKILL.md`; load the feature/state
   references needed for the change.
@@ -133,7 +135,7 @@ persisted data before trusting it.
 There is no backend, authentication, database, bank integration, or production
 accounting system. Backend technology, deployment, and API contracts are undecided.
 Toman, Tehran, the sample reference date, and the demo workflow are provisional.
-Dates are entered as Gregorian dates and displayed using Persian formatting.
+Dates use a Jalali calendar in both interface languages and ISO dates in records.
 
 Current demo statuses are `new`, `scheduled`, `working`, `completed`, and
 `cancelled`. Commission is an explicit integer amount, not a configured percentage.
@@ -180,7 +182,7 @@ Persian RTL UI -> feature hooks/use cases -> API adapters -> backend -> database
 - Write comments to explain intent, constraints, or tradeoffs rather than restating code.
 - Use semantic HTML, associated form labels, keyboard access, visible focus states,
   and accessible names for icon-only controls when adding UI.
-- Preserve Persian copy and RTL layout. Prefer logical spacing utilities such as
+- Support Persian RTL and English LTR. Prefer logical spacing utilities such as
   `ms-*`, `me-*`, `ps-*`, and `pe-*` where direction matters. Handle LTR identifiers
   explicitly. Do not assume a currency, timezone, or calendar from display language.
 - Use the locally bundled Vazirmatn font as the primary interface typeface. Keep

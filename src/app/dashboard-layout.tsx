@@ -8,7 +8,7 @@ import { useDemo } from '@/shared/store/demo-store';
 import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
 import { Modal } from '@/shared/ui/primitives';
 import { SidebarInset, SidebarProvider } from '@/shared/ui/sidebar';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 export function DashboardLayout() {
   return (
@@ -19,7 +19,7 @@ export function DashboardLayout() {
 }
 
 function DashboardShell() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const [helpOpen, setHelpOpen] = useState(false);
   const storageError = useDemo((state) => state.storageError);
 
@@ -30,7 +30,7 @@ function DashboardShell() {
         to="."
         hash="main-content"
       >
-        {t('key', 'رفتن به محتوای اصلی')}
+        {t('ui.skipToMainContent')}
       </Link>
 
       <DashboardSidebar onOpenHelp={() => setHelpOpen(true)} />
@@ -41,9 +41,9 @@ function DashboardShell() {
         {storageError ? (
           <Alert className="mx-9 mt-4 w-auto border-border bg-status-new text-muted-foreground max-mobile:mx-4.5 dark:border-border dark:bg-status-new dark:text-muted-foreground">
             <AlertTriangle />
-            <AlertTitle>{t('key2', 'ذخیره‌سازی مرورگر در دسترس نیست')}</AlertTitle>
+            <AlertTitle>{t('ui.browserStorageIsUnavailable')}</AlertTitle>
             <AlertDescription className="text-inherit/80">
-              {t('key3', 'تغییرات پس از بستن صفحه حفظ نمی‌شوند.')}
+              {t('ui.changesWillNotBeSavedAfterYouClose')}
             </AlertDescription>
           </Alert>
         ) : null}
@@ -59,17 +59,11 @@ function DashboardShell() {
       </SidebarInset>
 
       {helpOpen ? (
-        <Modal title={t('key4', 'راهنمای نسخه نمایشی')} onClose={() => setHelpOpen(false)}>
+        <Modal title={t('ui.demoGuide')} onClose={() => setHelpOpen(false)}>
           <div className="p-6 text-xs leading-loose text-muted-foreground [&_p]:mb-3.75">
-            <p>
-              {t('key5', 'از «درخواست جدید» یک خدمت برای مشتریان نمونه ثبت کنید. با بازکردن ردیف درخواست، تعمیرکار، زمان مراجعه و وضعیت را تغییر دهید.')}
-            </p>
-            <p>
-              {t('key6', 'در صفحه اعزام، تاریخ روز را انتخاب کنید تا برنامه تعمیرکاران نمایش داده شود. دریافت از مشتری، هزینه و تسویه تعمیرکار در امور مالی ثبت می‌شود.')}
-            </p>
-            <p>
-              {t('key7', 'این نسخه بک‌اند ندارد. اطلاعات فقط در همین مرورگر ذخیره می‌شوند. تومان، وضعیت‌ها و جریان پرداخت، انتخاب‌های موقت برای نمایش‌اند.')}
-            </p>
+            <p>{t('ui.createAServiceRequestForASampleCustomer')}</p>
+            <p>{t('ui.chooseADateOnTheDispatchPageTo')}</p>
+            <p>{t('ui.thisDemoHasNoBackendDataStaysIn')}</p>
           </div>
         </Modal>
       ) : null}

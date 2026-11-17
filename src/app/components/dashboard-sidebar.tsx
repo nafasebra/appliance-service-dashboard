@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { Link } from '@tanstack/react-router';
 import { ArrowUpLeft, LifeBuoy, RotateCcw, Wrench, X } from 'lucide-react';
 import { navigationGroups } from '@/app/utils/navigation';
@@ -29,12 +30,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/shared/ui/sidebar';
-import { useTranslation } from 'react-i18next'
-
-const persianNumber = new Intl.NumberFormat('fa');
+import { useTranslation } from 'react-i18next';
 
 export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation();
   const settings = useCompanySettings((state) => state.settings);
   const jobs = useDemo((state) => state.jobs);
   const resetDemo = useDemo((state) => state.resetDemo);
@@ -48,8 +47,7 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
   return (
     <Sidebar
       id="dashboard-sidebar"
-      side="right"
-      dir="rtl"
+      side={i18n.dir() === 'rtl' ? 'right' : 'left'}
       className="pt-7.75 px-4.5 pb-4 max-desktop:px-3.5"
     >
       <SidebarHeader className="flex flex-row items-center gap-2 pt-0 px-2.25 pb-7 [&_>_a]:flex [&_>_a]:items-center [&_>_a]:gap-2.75 [&_strong]:text-lg [&_strong]:tracking-tight [&_strong_span]:mt-1.75 [&_strong_span]:block [&_strong_span]:font-latin [&_strong_span]:text-4xs [&_strong_span]:tracking-widest [&_strong_span]:text-muted-foreground">
@@ -67,7 +65,7 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
           size="icon-sm"
           type="button"
           className="grid h-7.75 w-7.75 shrink-0 place-items-center rounded-md border border-transparent bg-transparent text-muted-foreground hover:border-border hover:bg-accent dark:hover:border-border dark:hover:bg-accent"
-          aria-label={t('key8', 'بستن منو')}
+          aria-label={t('ui.closeMenu')}
           onClick={closeSidebar}
         >
           <X size={19} />
@@ -78,10 +76,10 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
         {navigationGroups.map((group) => (
           <SidebarGroup key={group.label}>
             <SidebarGroupLabel className="mt-1 mx-3.5 mb-3 h-auto text-2xs text-muted-foreground">
-              {group.label}
+              {translateLabel(group.label)}
             </SidebarGroupLabel>
-            <SidebarGroupContent className="pb-4">
-              <SidebarMenu aria-label={group.label}>
+            <SidebarGroupContent className="hide-scrollbar pb-4">
+              <SidebarMenu aria-label={translateLabel(group.label)} className="hide-scrollbar">
                 {group.items.map(({ to, label, icon: Icon }) => (
                   <SidebarMenuItem key={to}>
                     <SidebarMenuButton asChild>
@@ -99,10 +97,10 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
                         onClick={closeSidebarOnMobile}
                       >
                         <Icon size={20} strokeWidth={1.7} />
-                        <span>{label}</span>
+                        <span>{translateLabel(label)}</span>
                         {to === '/requests' ? (
                           <SidebarMenuBadge className="end-2 top-1/2 -translate-y-1/2 rounded-md bg-muted py-0.5 px-1.75 text-2xs text-primary dark:bg-accent dark:text-primary">
-                            {persianNumber.format(newJobCount)}
+                            {newJobCount}
                           </SidebarMenuBadge>
                         ) : null}
                       </Link>
@@ -120,10 +118,10 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
           <span className="mb-3.25 -mt-9.75 grid h-9.75 w-9.75 place-items-center rounded-lg border-1.25 border-white bg-muted text-primary dark:bg-accent dark:text-primary">
             <LifeBuoy size={23} />
           </span>
-          <strong>{t('key283', 'یک قدم جلوتر از کارها')}</strong>
-          <p>{t('key284', 'راهنمای استفاده از نسخه نمایشی')}</p>
+          <strong>{t('ui.stayOneStepAhead')}</strong>
+          <p>{t('ui.howToUseTheDemo')}</p>
           <Button variant="outline" onClick={onOpenHelp}>
-            {t('key285', 'راهنمای داشبورد')} <ArrowUpLeft size={16} />
+            {t('ui.dashboardGuide')} <ArrowUpLeft size={16} />
           </Button>
         </div>
 
@@ -134,20 +132,20 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
               className="flex h-auto items-center gap-2.25 border-0 bg-transparent py-4.75 px-2.25 text-2xs text-muted-foreground"
             >
               <RotateCcw size={17} />
-              {t('key286', 'بازنشانی داده‌های نمونه')}
+              {t('ui.resetSampleData')}
             </Button>
           </AlertDialogTrigger>
-          <AlertDialogContent dir="rtl">
+          <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>{t('key287', 'بازنشانی اطلاعات نمونه؟')}</AlertDialogTitle>
+              <AlertDialogTitle>{t('ui.resetSampleRecords')}</AlertDialogTitle>
               <AlertDialogDescription>
-                {t('key288', 'درخواست‌ها و تراکنش‌هایی که در این مرورگر اضافه یا ویرایش کرده‌اید با داده‌های اولیه جایگزین می‌شوند.')}
+                {t('ui.requestsAndTransactionsAddedOrEditedInThis')}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>{t('key59', 'انصراف')}</AlertDialogCancel>
+              <AlertDialogCancel>{t('ui.cancel2')}</AlertDialogCancel>
               <AlertDialogAction variant="destructive" onClick={resetDemo}>
-                {t('key289', 'بازنشانی داده‌ها')}
+                {t('ui.resetData')}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

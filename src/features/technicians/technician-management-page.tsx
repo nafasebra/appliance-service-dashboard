@@ -1,3 +1,4 @@
+import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState, type FormEvent } from 'react';
 import { getFormText } from '@/shared/utils/form';
 import { Plus } from 'lucide-react';
@@ -9,11 +10,11 @@ import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
-import { number } from '@/shared/lib/format';
-import { useTranslation } from 'react-i18next'
+
+import { useTranslation } from 'react-i18next';
 
 export function TechnicianManagementPage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const technicians = useDemo((state) => state.technicians);
   const jobs = useDemo((state) => state.jobs);
   const saveTechnician = useDemo((state) => state.saveTechnician);
@@ -25,7 +26,7 @@ export function TechnicianManagementPage() {
       technicians.filter((tech) =>
         `${tech.name} ${tech.phone} ${tech.specialty} ${tech.area}`.includes(query.trim()),
       ),
-    [technicians, query],
+    [technicians, query, t],
   );
   const editing = editor && editor !== 'new' ? editor : undefined;
 
@@ -75,12 +76,10 @@ export function TechnicianManagementPage() {
               job.technicianId === tech.id && !['completed', 'cancelled'].includes(job.status),
           ).length,
         cell: ({ row: { original: tech } }) =>
-          number(
-            jobs.filter(
-              (job) =>
-                job.technicianId === tech.id && !['completed', 'cancelled'].includes(job.status),
-            ).length,
-          ),
+          jobs.filter(
+            (job) =>
+              job.technicianId === tech.id && !['completed', 'cancelled'].includes(job.status),
+          ).length,
       },
       {
         id: 'عملیات',
@@ -95,7 +94,7 @@ export function TechnicianManagementPage() {
               setEditor(tech);
             }}
           >
-            {t('key45', 'ویرایش')}
+            {t('ui.edit')}
           </Button>
         ),
       },
@@ -105,8 +104,8 @@ export function TechnicianManagementPage() {
   return (
     <>
       <PageHeading
-        title={t('key46', 'مدیریت تعمیرکاران')}
-        description={t('key47', 'اطلاعات تماس، تخصص و محدوده فعالیت اعضای تیم.')}
+        title={t('ui.technicianManagement')}
+        description={t('ui.teamContactDetailsSpecialtiesAndServiceAreas')}
         action={
           <Button
             onClick={() => {
@@ -115,18 +114,21 @@ export function TechnicianManagementPage() {
             }}
           >
             <Plus />
-            {t('key48', 'افزودن تعمیرکار')}
+            {t('ui.addTechnician')}
           </Button>
         }
       />
       <Input
         className="mb-4 max-w-sm"
-        aria-label={t('key49', 'جستجوی تعمیرکار')}
-        placeholder={t('key50', 'نام، تلفن، تخصص یا محدوده…')}
+        aria-label={t('ui.searchTechnicians')}
+        placeholder={t('ui.namePhoneSpecialtyOrServiceArea')}
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
-      <Panel title={t('key51', 'اعضای تیم')} subtitle={t('length', '{{length}} تعمیرکار', { length: number(filtered.length) })}>
+      <Panel
+        title={t('ui.teamMembers')}
+        subtitle={t('ui.lengthTechnicians', { length: filtered.length })}
+      >
         <DataTable
           data={filtered}
           getRowId={(tech) => String(tech.id)}
@@ -137,16 +139,16 @@ export function TechnicianManagementPage() {
       </Panel>
       {editor ? (
         <Modal
-          title={editing ? t('key52', 'ویرایش تعمیرکار') : t('key48', 'افزودن تعمیرکار')}
+          title={editing ? t('ui.editTechnician') : t('ui.addTechnician')}
           onClose={() => setEditor(null)}
         >
           <form onSubmit={submit} className="grid gap-4 p-6 sm:grid-cols-2">
             <Label className="flex flex-col gap-2">
-              {t('key53', 'نام و نام خانوادگی')}
+              {t('ui.fullName')}
               <Input name="name" required maxLength={100} defaultValue={editing?.name} />
             </Label>
             <Label className="flex flex-col gap-2">
-              {t('key54', 'تلفن')}
+              {t('ui.phone')}
               <Input
                 name="phone"
                 type="tel"
@@ -157,28 +159,28 @@ export function TechnicianManagementPage() {
               />
             </Label>
             <Label className="flex flex-col gap-2">
-              {t('key55', 'تخصص')}
+              {t('ui.specialty')}
               <Input
                 name="specialty"
                 required
                 maxLength={150}
                 defaultValue={editing?.specialty}
-                placeholder={t('key56', 'مثلاً تعمیر یخچال و فریزر')}
+                placeholder={t('ui.forExampleRefrigeratorAndFreezerRepairs')}
               />
             </Label>
             <Label className="flex flex-col gap-2">
-              {t('key57', 'محدوده فعالیت')}
+              {t('ui.serviceArea')}
               <Input name="area" required maxLength={150} defaultValue={editing?.area} />
             </Label>
             {error ? (
               <Alert variant="destructive" className="col-span-full">
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription>{translateLabel(error)}</AlertDescription>
               </Alert>
             ) : null}
             <div className="col-span-full flex gap-2">
-              <Button type="submit">{t('key58', 'ذخیره')}</Button>
+              <Button type="submit">{t('ui.save')}</Button>
               <Button type="button" variant="outline" onClick={() => setEditor(null)}>
-                {t('key59', 'انصراف')}
+                {t('ui.cancel2')}
               </Button>
             </div>
           </form>

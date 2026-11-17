@@ -9,6 +9,16 @@
     <title>مدیریت خدمات تعمیرات لوازم خانگی</title>
     <script>
       (() => {
+        let language = 'fa';
+        try {
+          if (localStorage.getItem('hamyar-service-language') === 'en') language = 'en';
+        } catch {
+          /* Keep the default when browser storage is unavailable. */
+        }
+        document.documentElement.lang = language;
+        document.documentElement.dir = language === 'en' ? 'ltr' : 'rtl';
+      })();
+      (() => {
         try {
           const saved = localStorage.getItem('hamyar-service-theme');
           const theme =
