@@ -2,6 +2,15 @@
 
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
+@utility hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @theme {
   --font-sans: 'Vazirmatn', Tahoma, Arial, sans-serif;
   --font-latin: Arial, sans-serif;
