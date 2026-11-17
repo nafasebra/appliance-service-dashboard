@@ -104,6 +104,13 @@ service records, parts, company settings and theme. Subscribe with selectors to 
 fields a component uses. Keep derived values derived
 instead of synchronizing duplicate state with effects.
 
+Tables use `shared/ui/data-table.tsx`, which combines the local shadcn Table
+primitives with TanStack Table v9. Features own typed column definitions and raw
+accessors; keep monetary and quantity accessors numeric and date accessors ISO.
+Memoize derived rows and column definitions, supply stable record IDs, and disable
+sorting for action columns. The shared component owns local sorting and accessible
+header controls; Persian text comparison lives in `shared/utils/table-sort.ts`.
+
 ## System design
 
 The application is client-only. `shared/store/demo-store.ts` owns

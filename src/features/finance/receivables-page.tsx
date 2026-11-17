@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import type { DataTableFeatures } from '@/shared/ui/data-table-features';
+import { useMemo, useState } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
 import { getOrderAccount, paymentStatusLabels } from '@/entities/service/model/customer-account';
 import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Badge } from '@/shared/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
+import { DataTable } from '@/shared/ui/data-table';
 import { money, dateLabel } from '@/shared/lib/format';
 import { downloadCsv } from '@/shared/utils/csv';
 import { TransactionDialog } from './components/transaction-dialog';
@@ -16,18 +18,111 @@ export function ReceivablesPage() {
   const transactions = useDemo((state) => state.transactions);
   const [query, setQuery] = useState('');
   const [receiptJob, setReceiptJob] = useState('');
-  const rows = jobs
-    .filter((job) => job.status === 'completed')
-    .map((job) => ({
-      job,
-      customer: customers.find((customer) => customer.id === job.customerId),
-      account: getOrderAccount(job, transactions),
-    }))
-    .filter(
-      (row) =>
-        row.account.outstanding > 0 &&
-        `${row.job.id} ${row.customer?.name ?? ''}`.includes(query.trim()),
-    );
+  const rows = useMemo(
+    () =>
+      jobs
+        .filter((job) => job.status === 'completed')
+        .map((job) => ({
+          job,
+          customer: customers.find((customer) => customer.id === job.customerId),
+          account: getOrderAccount(job, transactions),
+        }))
+        .filter(
+          (row) =>
+            row.account.outstanding > 0 &&
+            `${row.job.id} ${row.customer?.name ?? ''}`.includes(query.trim()),
+        ),
+    [jobs, customers, transactions, query],
+  );
+  const receivableColumns = useMemo<ColumnDef<DataTableFeatures, (typeof rows)[number]>[]>(
+    () => [
+      {
+        id: 'سفارش',
+        header: 'سفارش',
+        accessorFn: ({ job }) => job.id,
+        cell: ({
+          row: {
+            original: { job },
+          },
+        }) => <bdi>{job.id}</bdi>,
+      },
+      {
+        id: 'مشتری',
+        header: 'مشتری',
+        accessorFn: ({ customer }) => customer?.name,
+        cell: ({
+          row: {
+            original: { customer },
+          },
+        }) => customer?.name,
+      },
+      {
+        id: 'تاریخ خدمت',
+        header: 'تاریخ خدمت',
+        accessorFn: ({ job }) => job.date,
+        cell: ({
+          row: {
+            original: { job },
+          },
+        }) => dateLabel(job.date),
+      },
+      {
+        id: 'مبلغ قطعی',
+        header: 'مبلغ قطعی',
+        accessorFn: ({ account }) => account.charge,
+        cell: ({
+          row: {
+            original: { account },
+          },
+        }) => money(account.charge),
+      },
+      {
+        id: 'دریافت',
+        header: 'دریافت',
+        accessorFn: ({ account }) => account.receipts,
+        cell: ({
+          row: {
+            original: { account },
+          },
+        }) => money(account.receipts),
+      },
+      {
+        id: 'مانده',
+        header: 'مانده',
+        accessorFn: ({ account }) => account.outstanding,
+        cell: ({
+          row: {
+            original: { account },
+          },
+        }) => money(account.outstanding),
+      },
+      {
+        id: 'وضعیت',
+        header: 'وضعیت',
+        accessorFn: ({ account }) => paymentStatusLabels[account.status],
+        cell: ({
+          row: {
+            original: { account },
+          },
+        }) => <Badge variant="secondary">{paymentStatusLabels[account.status]}</Badge>,
+      },
+      {
+        id: 'عملیات',
+        header: 'عملیات',
+        enableSorting: false,
+        cell: ({
+          row: {
+            original: { job },
+          },
+        }) => (
+          <Button size="sm" onClick={() => setReceiptJob(job.id)}>
+            ثبت دریافت
+          </Button>
+        ),
+      },
+    ],
+    [setReceiptJob],
+  );
   return (
     <>
       <PageHeading
@@ -67,46 +162,12 @@ export function ReceivablesPage() {
         title="سفارش‌های دارای مانده"
         subtitle={`مانده نمایش‌داده‌شده: ${money(rows.reduce((sum, row) => sum + row.account.outstanding, 0))}`}
       >
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {[
-                'سفارش',
-                'مشتری',
-                'تاریخ خدمت',
-                'مبلغ قطعی',
-                'دریافت',
-                'مانده',
-                'وضعیت',
-                'عملیات',
-              ].map((label) => (
-                <TableHead key={label}>{label}</TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {rows.map(({ job, customer, account }) => (
-              <TableRow key={job.id}>
-                <TableCell>
-                  <bdi>{job.id}</bdi>
-                </TableCell>
-                <TableCell>{customer?.name}</TableCell>
-                <TableCell>{dateLabel(job.date)}</TableCell>
-                <TableCell>{money(account.charge)}</TableCell>
-                <TableCell>{money(account.receipts)}</TableCell>
-                <TableCell>{money(account.outstanding)}</TableCell>
-                <TableCell>
-                  <Badge variant="secondary">{paymentStatusLabels[account.status]}</Badge>
-                </TableCell>
-                <TableCell>
-                  <Button size="sm" onClick={() => setReceiptJob(job.id)}>
-                    ثبت دریافت
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <DataTable
+          data={rows}
+          getRowId={({ job }) => String(job.id)}
+          columns={receivableColumns}
+          emptyMessage={null}
+        />
         {!rows.length ? <EmptyState text="مطالبه‌ای با این شرایط وجود ندارد." /> : null}
       </Panel>
       {receiptJob ? (

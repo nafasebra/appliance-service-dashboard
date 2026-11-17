@@ -1,4 +1,6 @@
-import { useState, type FormEvent } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import type { DataTableFeatures } from '@/shared/ui/data-table-features';
+import { useMemo, useState, type FormEvent } from 'react';
 import { getJobPayable } from './utils/technician-finance';
 import { Wallet } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
@@ -17,7 +19,7 @@ import {
 } from '@/shared/ui/select';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
-import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from '@/shared/ui/table';
+import { DataTable } from '@/shared/ui/data-table';
 import { money, dateLabel } from '@/shared/lib/format';
 import { toIsoDate } from '@/shared/lib/date';
 
@@ -30,15 +32,25 @@ export function TechnicianFinancePage() {
   const [jobId, setJobId] = useState('');
   const [date, setDate] = useState(() => toIsoDate(new Date()));
   const [error, setError] = useState('');
-  const members = technicians.filter((tech) => technicianId === 'all' || tech.id === technicianId);
-  const assigned = jobs.filter((job) => members.some((tech) => tech.id === job.technicianId));
-  const related = transactions.filter((transaction) =>
-    assigned.some((job) => job.id === transaction.jobId),
+  const members = useMemo(
+    () => technicians.filter((tech) => technicianId === 'all' || tech.id === technicianId),
+    [technicians, technicianId],
+  );
+  const assigned = useMemo(
+    () => jobs.filter((job) => members.some((tech) => tech.id === job.technicianId)),
+    [jobs, members],
+  );
+  const related = useMemo(
+    () =>
+      transactions.filter((transaction) => assigned.some((job) => job.id === transaction.jobId)),
+    [transactions, assigned],
   );
   const finance = summarizeFinance(assigned, related);
-  const payouts = related
-    .filter((item) => item.kind === 'payout')
-    .sort((a, b) => b.date.localeCompare(a.date));
+  const payouts = useMemo(
+    () =>
+      related.filter((item) => item.kind === 'payout').sort((a, b) => b.date.localeCompare(a.date)),
+    [related],
+  );
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -62,6 +74,174 @@ export function TechnicianFinancePage() {
     if (failure) return setError(failure);
     setJobId('');
   }
+  const memberRows = useMemo(
+    () =>
+      members.map((tech) => {
+        const techJobs = assigned.filter((job) => job.technicianId === tech.id);
+        const summary = summarizeFinance(
+          techJobs,
+          related.filter((item) => techJobs.some((job) => job.id === item.jobId)),
+        );
+        return { tech, techJobs, summary };
+      }),
+    [members, assigned, related],
+  );
+  const memberColumns = useMemo<ColumnDef<DataTableFeatures, (typeof memberRows)[number]>[]>(
+    () => [
+      {
+        id: 'تعمیرکار',
+        header: 'تعمیرکار',
+        accessorFn: ({ tech }) => tech.name,
+        cell: ({
+          row: {
+            original: { tech },
+          },
+        }) => tech.name,
+      },
+      {
+        id: 'ارزش خدمات',
+        header: 'ارزش خدمات',
+        accessorFn: ({ summary }) => summary.serviceValue,
+        cell: ({
+          row: {
+            original: { summary },
+          },
+        }) => money(summary.serviceValue),
+      },
+      {
+        id: 'کمیسیون شرکت',
+        header: 'کمیسیون شرکت',
+        accessorFn: ({ summary }) => summary.commission,
+        cell: ({
+          row: {
+            original: { summary },
+          },
+        }) => money(summary.commission),
+      },
+      {
+        id: 'سهم تعمیرکار',
+        header: 'سهم تعمیرکار',
+        accessorFn: ({ summary }) => summary.serviceValue - summary.commission,
+        cell: ({
+          row: {
+            original: { summary },
+          },
+        }) => money(summary.serviceValue - summary.commission),
+      },
+      {
+        id: 'پرداخت‌شده',
+        header: 'پرداخت‌شده',
+        accessorFn: ({ summary }) => summary.payouts,
+        cell: ({
+          row: {
+            original: { summary },
+          },
+        }) => money(summary.payouts),
+      },
+      {
+        id: 'مانده',
+        header: 'مانده',
+        accessorFn: ({ summary }) => summary.payable,
+        cell: ({
+          row: {
+            original: { summary },
+          },
+        }) => money(summary.payable),
+      },
+    ],
+    [],
+  );
+  const payableJobs = useMemo(
+    () => assigned.filter((job) => getJobPayable(job.id, jobs, transactions) > 0),
+    [assigned, jobs, transactions],
+  );
+  const payableJobColumns = useMemo<ColumnDef<DataTableFeatures, (typeof payableJobs)[number]>[]>(
+    () => [
+      {
+        id: 'سفارش',
+        header: 'سفارش',
+        accessorFn: (job) => job.id,
+        cell: ({ row: { original: job } }) => (
+          <>
+            <bdi>{job.id}</bdi> · {job.appliance}
+          </>
+        ),
+      },
+      {
+        id: 'تعمیرکار',
+        header: 'تعمیرکار',
+        accessorFn: (job) => technicians.find((tech) => tech.id === job.technicianId)?.name,
+        cell: ({ row: { original: job } }) =>
+          technicians.find((tech) => tech.id === job.technicianId)?.name,
+      },
+      {
+        id: 'مانده',
+        header: 'مانده',
+        accessorFn: (job) => getJobPayable(job.id, jobs, transactions),
+        cell: ({ row: { original: job } }) => money(getJobPayable(job.id, jobs, transactions)),
+      },
+      {
+        id: 'عملیات',
+        header: 'عملیات',
+        enableSorting: false,
+        cell: ({ row: { original: job } }) => (
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => {
+              setError('');
+              setDate(toIsoDate(new Date()));
+              setJobId(job.id);
+            }}
+          >
+            ثبت پرداخت
+          </Button>
+        ),
+      },
+    ],
+    [technicians, jobs, transactions, setError, setDate, setJobId],
+  );
+  const payoutColumns = useMemo<ColumnDef<DataTableFeatures, (typeof payouts)[number]>[]>(
+    () => [
+      {
+        id: 'تاریخ',
+        header: 'تاریخ',
+        accessorFn: (item) => item.date,
+        cell: ({ row: { original: item } }) => dateLabel(item.date),
+      },
+      {
+        id: 'سفارش',
+        header: 'سفارش',
+        accessorFn: (item) => item.jobId,
+        cell: ({ row: { original: item } }) => <bdi>{item.jobId}</bdi>,
+      },
+      {
+        id: 'تعمیرکار',
+        header: 'تعمیرکار',
+        accessorFn: (item) =>
+          technicians.find(
+            (tech) => tech.id === jobs.find((job) => job.id === item.jobId)?.technicianId,
+          )?.name,
+        cell: ({ row: { original: item } }) =>
+          technicians.find(
+            (tech) => tech.id === jobs.find((job) => job.id === item.jobId)?.technicianId,
+          )?.name,
+      },
+      {
+        id: 'شرح',
+        header: 'شرح',
+        accessorFn: (item) => item.description,
+        cell: ({ row: { original: item } }) => item.description,
+      },
+      {
+        id: 'مبلغ',
+        header: 'مبلغ',
+        accessorFn: (item) => item.amount,
+        cell: ({ row: { original: item } }) => money(item.amount),
+      },
+    ],
+    [technicians, jobs],
+  );
   return (
     <>
       <PageHeading
@@ -109,83 +289,22 @@ export function TechnicianFinancePage() {
         />
       </div>
       <Panel title="حساب اعضای تیم">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {[
-                'تعمیرکار',
-                'ارزش خدمات',
-                'کمیسیون شرکت',
-                'سهم تعمیرکار',
-                'پرداخت‌شده',
-                'مانده',
-              ].map((label) => (
-                <TableHead key={label}>{label}</TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {members.map((tech) => {
-              const techJobs = assigned.filter((job) => job.technicianId === tech.id);
-              const summary = summarizeFinance(
-                techJobs,
-                related.filter((item) => techJobs.some((job) => job.id === item.jobId)),
-              );
-              return (
-                <TableRow key={tech.id}>
-                  <TableCell>{tech.name}</TableCell>
-                  <TableCell>{money(summary.serviceValue)}</TableCell>
-                  <TableCell>{money(summary.commission)}</TableCell>
-                  <TableCell>{money(summary.serviceValue - summary.commission)}</TableCell>
-                  <TableCell>{money(summary.payouts)}</TableCell>
-                  <TableCell>{money(summary.payable)}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        <DataTable
+          data={memberRows}
+          getRowId={({ tech }) => String(tech.id)}
+          columns={memberColumns}
+          emptyMessage={null}
+        />
         {!members.length ? <EmptyState /> : null}
       </Panel>
       <div className="mt-6">
         <Panel title="سفارش‌های قابل تسویه">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>سفارش</TableHead>
-                <TableHead>تعمیرکار</TableHead>
-                <TableHead>مانده</TableHead>
-                <TableHead>عملیات</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {assigned
-                .filter((job) => getJobPayable(job.id, jobs, transactions) > 0)
-                .map((job) => (
-                  <TableRow key={job.id}>
-                    <TableCell>
-                      <bdi>{job.id}</bdi> · {job.appliance}
-                    </TableCell>
-                    <TableCell>
-                      {technicians.find((tech) => tech.id === job.technicianId)?.name}
-                    </TableCell>
-                    <TableCell>{money(getJobPayable(job.id, jobs, transactions))}</TableCell>
-                    <TableCell>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => {
-                          setError('');
-                          setDate(toIsoDate(new Date()));
-                          setJobId(job.id);
-                        }}
-                      >
-                        ثبت پرداخت
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
+          <DataTable
+            data={payableJobs}
+            getRowId={(job) => String(job.id)}
+            columns={payableJobColumns}
+            emptyMessage={null}
+          />
           {!assigned.some((job) => getJobPayable(job.id, jobs, transactions) > 0) ? (
             <EmptyState text="سفارش تکمیل‌شده‌ای با مانده قابل پرداخت وجود ندارد." />
           ) : null}
@@ -193,37 +312,12 @@ export function TechnicianFinancePage() {
       </div>
       <div className="mt-6">
         <Panel title="تاریخچه پرداخت به تعمیرکاران">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>تاریخ</TableHead>
-                <TableHead>سفارش</TableHead>
-                <TableHead>تعمیرکار</TableHead>
-                <TableHead>شرح</TableHead>
-                <TableHead>مبلغ</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {payouts.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>{dateLabel(item.date)}</TableCell>
-                  <TableCell>
-                    <bdi>{item.jobId}</bdi>
-                  </TableCell>
-                  <TableCell>
-                    {
-                      technicians.find(
-                        (tech) =>
-                          tech.id === jobs.find((job) => job.id === item.jobId)?.technicianId,
-                      )?.name
-                    }
-                  </TableCell>
-                  <TableCell>{item.description}</TableCell>
-                  <TableCell>{money(item.amount)}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <DataTable
+            data={payouts}
+            getRowId={(item) => String(item.id)}
+            columns={payoutColumns}
+            emptyMessage={null}
+          />
           {!payouts.length ? <EmptyState text="پرداختی ثبت نشده است." /> : null}
         </Panel>
       </div>

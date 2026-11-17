@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import type { DataTableFeatures } from '@/shared/ui/data-table-features';
+import { useMemo, useState } from 'react';
 import { Search, ArrowUpLeft } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
 import { JobTable, JobEditor } from '@/features/requests/job-components';
@@ -8,7 +10,7 @@ import { number } from '@/shared/lib/format';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
+import { DataTable } from '@/shared/ui/data-table';
 
 export function CustomersPage() {
   const customers = useDemo((state) => state.customers);
@@ -16,8 +18,58 @@ export function CustomersPage() {
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState<string | null>(null);
   const [editor, setEditor] = useState<Job | null>(null);
-  const filtered = customers.filter((customer) =>
-    `${customer.name} ${customer.phone} ${customer.address}`.includes(query.trim()),
+  const filtered = useMemo(
+    () =>
+      customers.filter((customer) =>
+        `${customer.name} ${customer.phone} ${customer.address}`.includes(query.trim()),
+      ),
+    [customers, query],
+  );
+  const customerColumns = useMemo<ColumnDef<DataTableFeatures, (typeof filtered)[number]>[]>(
+    () => [
+      {
+        id: 'نام مشتری',
+        header: 'نام مشتری',
+        accessorFn: (customer) => customer.name,
+        cell: ({ row: { original: customer } }) => <strong>{customer.name}</strong>,
+      },
+      {
+        id: 'تلفن',
+        header: 'تلفن',
+        accessorFn: (customer) => customer.phone,
+        cell: ({ row: { original: customer } }) => <bdi>{customer.phone}</bdi>,
+      },
+      {
+        id: 'آدرس',
+        header: 'آدرس',
+        accessorFn: (customer) => customer.address,
+        cell: ({ row: { original: customer } }) => customer.address,
+      },
+      {
+        id: 'تعداد درخواست',
+        header: 'تعداد درخواست',
+        accessorFn: (customer) => jobs.filter((job) => job.customerId === customer.id).length,
+        cell: ({ row: { original: customer } }) =>
+          number(jobs.filter((job) => job.customerId === customer.id).length),
+      },
+      {
+        id: 'سوابق',
+        header: 'سوابق',
+        enableSorting: false,
+        cell: ({ row: { original: customer } }) => (
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="grid place-items-center h-7.75 w-7.75 border border-transparent rounded-md text-muted-foreground bg-transparent shrink-0 [&:hover]:bg-accent [&:hover]:border-border dark:[&:hover]:bg-accent dark:[&:hover]:border-border"
+            onClick={() => setSelected(customer.id)}
+            aria-label={`سوابق ${customer.name}`}
+          >
+            <ArrowUpLeft size={18} />
+          </Button>
+        ),
+      },
+    ],
+    [jobs, setSelected],
   );
   return (
     <>
@@ -39,44 +91,12 @@ export function CustomersPage() {
           </Label>
         </div>
         {filtered.length ? (
-          <Table className="overflow-auto">
-            <TableHeader>
-              <TableRow>
-                <TableHead>نام مشتری</TableHead>
-                <TableHead>تلفن</TableHead>
-                <TableHead>آدرس</TableHead>
-                <TableHead>تعداد درخواست</TableHead>
-                <TableHead>سوابق</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered.map((customer) => (
-                <TableRow key={customer.id}>
-                  <TableCell>
-                    <strong>{customer.name}</strong>
-                  </TableCell>
-                  <TableCell>
-                    <bdi>{customer.phone}</bdi>
-                  </TableCell>
-                  <TableCell>{customer.address}</TableCell>
-                  <TableCell>
-                    {number(jobs.filter((job) => job.customerId === customer.id).length)}
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      className="grid place-items-center h-7.75 w-7.75 border border-transparent rounded-md text-muted-foreground bg-transparent shrink-0 [&:hover]:bg-accent [&:hover]:border-border dark:[&:hover]:bg-accent dark:[&:hover]:border-border"
-                      onClick={() => setSelected(customer.id)}
-                      aria-label={`سوابق ${customer.name}`}
-                    >
-                      <ArrowUpLeft size={18} />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <DataTable
+            data={filtered}
+            getRowId={(customer) => String(customer.id)}
+            columns={customerColumns}
+            emptyMessage={null}
+          />
         ) : (
           <EmptyState />
         )}

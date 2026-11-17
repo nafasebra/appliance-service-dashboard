@@ -6,21 +6,19 @@ export const isTechnicianRoute = (path: string) =>
 const isFinanceRoute = (path: string) =>
   ['/finance', '/customer-accounts', '/receivables', '/receipts', '/expenses'].includes(path);
 
-export function getNavigationGroups() {
-  return [
-    {
-      label: 'مدیریت کسب‌وکار',
-      items: navigation.filter(
-        (item) =>
-          !isPartsRoute(item.to) &&
-          !isTechnicianRoute(item.to) &&
-          !isFinanceRoute(item.to) &&
-          item.to !== '/settings',
-      ),
-    },
-    { label: 'مدیریت تعمیرکاران', items: navigation.filter((item) => isTechnicianRoute(item.to)) },
-    { label: 'مدیریت قطعات', items: navigation.filter((item) => isPartsRoute(item.to)) },
-    { label: 'حسابداری و امور مالی', items: navigation.filter((item) => isFinanceRoute(item.to)) },
-    { label: 'سیستم', items: navigation.filter((item) => item.to === '/settings') },
-  ];
-}
+export const navigationGroups = [
+  {
+    label: 'مدیریت کسب‌وکار',
+    items: navigation.filter(
+      (item) =>
+        !isPartsRoute(item.to) &&
+        !isTechnicianRoute(item.to) &&
+        !isFinanceRoute(item.to) &&
+        item.to !== '/settings',
+    ),
+  },
+  { label: 'مدیریت تعمیرکاران', items: navigation.filter((item) => isTechnicianRoute(item.to)) },
+  { label: 'مدیریت قطعات', items: navigation.filter((item) => isPartsRoute(item.to)) },
+  { label: 'حسابداری و امور مالی', items: navigation.filter((item) => isFinanceRoute(item.to)) },
+  { label: 'سیستم', items: navigation.filter((item) => item.to === '/settings') },
+];

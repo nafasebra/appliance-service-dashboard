@@ -1,6 +1,8 @@
+import type { ColumnDef } from '@tanstack/react-table';
+import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { cn } from '@/shared/lib/utils';
 import { downloadTransactionsCsv } from './utils/transaction-csv';
-import { useState, type FormEvent } from 'react';
+import { useMemo, useState, type FormEvent } from 'react';
 import { Plus, ArrowDownLeft, ArrowUpRight, Wallet, HandCoins, Download } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
 import { summarizeFinance } from '@/entities/service/model/finance';
@@ -19,7 +21,7 @@ import {
   SelectGroup,
   SelectItem,
 } from '@/shared/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
+import { DataTable } from '@/shared/ui/data-table';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 import { toIsoDate } from '@/shared/lib/date';
 
@@ -39,10 +41,14 @@ export function FinancePage() {
   const [transactionDate, setTransactionDate] = useState(() => toIsoDate(new Date()));
   const [error, setError] = useState('');
   const finance = summarizeFinance(jobs, transactions);
-  const filtered = transactions
-    .filter((item) => filter === 'all' || item.kind === filter)
-    .slice()
-    .sort((a, b) => b.date.localeCompare(a.date));
+  const filtered = useMemo(
+    () =>
+      transactions
+        .filter((item) => filter === 'all' || item.kind === filter)
+        .slice()
+        .sort((a, b) => b.date.localeCompare(a.date)),
+    [transactions, filter],
+  );
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -74,6 +80,61 @@ export function FinancePage() {
   function exportCsv() {
     downloadTransactionsCsv(filtered, kindLabels);
   }
+  const transactionColumns = useMemo<ColumnDef<DataTableFeatures, (typeof filtered)[number]>[]>(
+    () => [
+      {
+        id: 'شرح تراکنش',
+        header: 'شرح تراکنش',
+        accessorFn: (item) => item.description,
+        cell: ({ row: { original: item } }) => <strong>{item.description}</strong>,
+      },
+      {
+        id: 'نوع',
+        header: 'نوع',
+        accessorFn: (item) => kindLabels[item.kind],
+        cell: ({ row: { original: item } }) => (
+          <Badge
+            className={cn(
+              'inline-flex items-center gap-1 rounded-md px-2 py-1 text-3xs whitespace-nowrap',
+              item.kind === 'receipt'
+                ? 'bg-status-completed text-status-completed-foreground'
+                : 'bg-status-scheduled text-status-scheduled-foreground',
+            )}
+          >
+            {kindLabels[item.kind]}
+          </Badge>
+        ),
+      },
+      {
+        id: 'درخواست مرتبط',
+        header: 'درخواست مرتبط',
+        accessorFn: (item) => item.jobId || '—',
+        cell: ({ row: { original: item } }) => <bdi>{item.jobId || '—'}</bdi>,
+      },
+      {
+        id: 'تاریخ',
+        header: 'تاریخ',
+        accessorFn: (item) => item.date,
+        cell: ({ row: { original: item } }) => dateLabel(item.date),
+      },
+      {
+        id: 'مبلغ',
+        header: 'مبلغ',
+        accessorFn: (item) => item.amount,
+        cell: ({ row: { original: item } }) => (
+          <span
+            className={cn(
+              'whitespace-nowrap',
+              item.kind === 'receipt' ? 'text-primary' : 'text-destructive',
+            )}
+          >
+            {item.kind === 'receipt' ? '+' : '−'} {money(item.amount)}
+          </span>
+        ),
+      },
+    ],
+    [],
+  );
   return (
     <>
       <PageHeading
@@ -169,50 +230,12 @@ export function FinancePage() {
           </div>
         </div>
         {filtered.length ? (
-          <Table className="overflow-auto">
-            <TableHeader>
-              <TableRow>
-                <TableHead>شرح تراکنش</TableHead>
-                <TableHead>نوع</TableHead>
-                <TableHead>درخواست مرتبط</TableHead>
-                <TableHead>تاریخ</TableHead>
-                <TableHead>مبلغ</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    <strong>{item.description}</strong>
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      className={cn(
-                        'inline-flex items-center gap-1 rounded-md px-2 py-1 text-3xs whitespace-nowrap',
-                        item.kind === 'receipt'
-                          ? 'bg-status-completed text-status-completed-foreground'
-                          : 'bg-status-scheduled text-status-scheduled-foreground',
-                      )}
-                    >
-                      {kindLabels[item.kind]}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <bdi>{item.jobId || '—'}</bdi>
-                  </TableCell>
-                  <TableCell>{dateLabel(item.date)}</TableCell>
-                  <TableCell
-                    className={cn(
-                      'whitespace-nowrap',
-                      item.kind === 'receipt' ? 'text-primary' : 'text-destructive',
-                    )}
-                  >
-                    {item.kind === 'receipt' ? '+' : '−'} {money(item.amount)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <DataTable
+            data={filtered}
+            getRowId={(item) => String(item.id)}
+            columns={transactionColumns}
+            emptyMessage={null}
+          />
         ) : (
           <EmptyState />
         )}

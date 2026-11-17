@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import type { DataTableFeatures } from '@/shared/ui/data-table-features';
+import { useMemo, useState } from 'react';
 import { Wallet } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
 import { getCustomerAccount } from '@/entities/service/model/customer-account';
@@ -13,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
+import { DataTable } from '@/shared/ui/data-table';
 import { money } from '@/shared/lib/format';
 import { CustomerStatement } from './components/customer-statement';
 import { TransactionDialog } from './components/transaction-dialog';
@@ -26,19 +28,78 @@ export function CustomerAccountsPage() {
   const [status, setStatus] = useState('all');
   const [selected, setSelected] = useState('');
   const [receiptJob, setReceiptJob] = useState('');
-  const accounts = customers.map((customer) => ({
-    customer,
-    ...getCustomerAccount(customer.id, jobs, transactions),
-  }));
-  const filtered = accounts.filter(
-    (row) =>
-      `${row.customer.name} ${row.customer.phone}`.includes(query.trim()) &&
-      (status === 'all' ||
-        (status === 'debtor'
-          ? row.outstanding > 0
-          : status === 'credit'
-            ? row.credit > 0
-            : row.outstanding === 0 && row.credit === 0)),
+  const accounts = useMemo(
+    () =>
+      customers.map((customer) => ({
+        customer,
+        ...getCustomerAccount(customer.id, jobs, transactions),
+      })),
+    [customers, jobs, transactions],
+  );
+  const filtered = useMemo(
+    () =>
+      accounts.filter(
+        (row) =>
+          `${row.customer.name} ${row.customer.phone}`.includes(query.trim()) &&
+          (status === 'all' ||
+            (status === 'debtor'
+              ? row.outstanding > 0
+              : status === 'credit'
+                ? row.credit > 0
+                : row.outstanding === 0 && row.credit === 0)),
+      ),
+    [accounts, query, status],
+  );
+  const accountColumns = useMemo<ColumnDef<DataTableFeatures, (typeof filtered)[number]>[]>(
+    () => [
+      {
+        id: 'مشتری',
+        header: 'مشتری',
+        accessorFn: (row) => row.customer.name,
+        cell: ({ row: { original: row } }) => row.customer.name,
+      },
+      {
+        id: 'تلفن',
+        header: 'تلفن',
+        accessorFn: (row) => row.customer.phone,
+        cell: ({ row: { original: row } }) => <bdi>{row.customer.phone}</bdi>,
+      },
+      {
+        id: 'خدمات قطعی',
+        header: 'خدمات قطعی',
+        accessorFn: (row) => row.charge,
+        cell: ({ row: { original: row } }) => money(row.charge),
+      },
+      {
+        id: 'کل دریافت',
+        header: 'کل دریافت',
+        accessorFn: (row) => row.receipts,
+        cell: ({ row: { original: row } }) => money(row.receipts),
+      },
+      {
+        id: 'بدهی',
+        header: 'بدهی',
+        accessorFn: (row) => row.outstanding,
+        cell: ({ row: { original: row } }) => money(row.outstanding),
+      },
+      {
+        id: 'بستانکاری',
+        header: 'بستانکاری',
+        accessorFn: (row) => row.credit,
+        cell: ({ row: { original: row } }) => money(row.credit),
+      },
+      {
+        id: 'صورت‌حساب',
+        header: 'صورت‌حساب',
+        enableSorting: false,
+        cell: ({ row: { original: row } }) => (
+          <Button variant="outline" size="sm" onClick={() => setSelected(row.customer.id)}>
+            مشاهده ریز حساب
+          </Button>
+        ),
+      },
+    ],
+    [setSelected],
   );
   return (
     <>
@@ -89,36 +150,12 @@ export function CustomerAccountsPage() {
         </Select>
       </div>
       <Panel title="دفتر حساب مشتریان">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {['مشتری', 'تلفن', 'خدمات قطعی', 'کل دریافت', 'بدهی', 'بستانکاری', 'صورت‌حساب'].map(
-                (label) => (
-                  <TableHead key={label}>{label}</TableHead>
-                ),
-              )}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.map((row) => (
-              <TableRow key={row.customer.id}>
-                <TableCell>{row.customer.name}</TableCell>
-                <TableCell>
-                  <bdi>{row.customer.phone}</bdi>
-                </TableCell>
-                <TableCell>{money(row.charge)}</TableCell>
-                <TableCell>{money(row.receipts)}</TableCell>
-                <TableCell>{money(row.outstanding)}</TableCell>
-                <TableCell>{money(row.credit)}</TableCell>
-                <TableCell>
-                  <Button variant="outline" size="sm" onClick={() => setSelected(row.customer.id)}>
-                    مشاهده ریز حساب
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <DataTable
+          data={filtered}
+          getRowId={(row) => String(row.customer.id)}
+          columns={accountColumns}
+          emptyMessage={null}
+        />
         {!filtered.length ? <EmptyState /> : null}
       </Panel>
       {selected ? (

@@ -1,4 +1,6 @@
-import { useState, type FormEvent } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import type { DataTableFeatures } from '@/shared/ui/data-table-features';
+import { useMemo, useState, type FormEvent } from 'react';
 import { getFormText } from '@/shared/utils/form';
 import { Plus } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
@@ -8,7 +10,7 @@ import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
-import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from '@/shared/ui/table';
+import { DataTable } from '@/shared/ui/data-table';
 import { number } from '@/shared/lib/format';
 
 export function TechnicianManagementPage() {
@@ -18,8 +20,12 @@ export function TechnicianManagementPage() {
   const [query, setQuery] = useState('');
   const [editor, setEditor] = useState<Technician | 'new' | null>(null);
   const [error, setError] = useState('');
-  const filtered = technicians.filter((tech) =>
-    `${tech.name} ${tech.phone} ${tech.specialty} ${tech.area}`.includes(query.trim()),
+  const filtered = useMemo(
+    () =>
+      technicians.filter((tech) =>
+        `${tech.name} ${tech.phone} ${tech.specialty} ${tech.area}`.includes(query.trim()),
+      ),
+    [technicians, query],
   );
   const editing = editor && editor !== 'new' ? editor : undefined;
 
@@ -37,6 +43,68 @@ export function TechnicianManagementPage() {
     if (!failure) setEditor(null);
   }
 
+  const technicianColumns = useMemo<ColumnDef<DataTableFeatures, (typeof filtered)[number]>[]>(
+    () => [
+      {
+        id: 'نام تعمیرکار',
+        header: 'نام تعمیرکار',
+        accessorFn: (tech) => tech.name,
+        cell: ({ row: { original: tech } }) => tech.name,
+      },
+      {
+        id: 'تلفن',
+        header: 'تلفن',
+        accessorFn: (tech) => tech.phone,
+        cell: ({ row: { original: tech } }) => <bdi>{tech.phone}</bdi>,
+      },
+      {
+        id: 'تخصص',
+        header: 'تخصص',
+        accessorFn: (tech) => tech.specialty,
+        cell: ({ row: { original: tech } }) => tech.specialty,
+      },
+      {
+        id: 'محدوده',
+        header: 'محدوده',
+        accessorFn: (tech) => tech.area,
+        cell: ({ row: { original: tech } }) => tech.area,
+      },
+      {
+        id: 'سفارش باز',
+        header: 'سفارش باز',
+        accessorFn: (tech) =>
+          jobs.filter(
+            (job) =>
+              job.technicianId === tech.id && !['completed', 'cancelled'].includes(job.status),
+          ).length,
+        cell: ({ row: { original: tech } }) =>
+          number(
+            jobs.filter(
+              (job) =>
+                job.technicianId === tech.id && !['completed', 'cancelled'].includes(job.status),
+            ).length,
+          ),
+      },
+      {
+        id: 'عملیات',
+        header: 'عملیات',
+        enableSorting: false,
+        cell: ({ row: { original: tech } }) => (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setError('');
+              setEditor(tech);
+            }}
+          >
+            ویرایش
+          </Button>
+        ),
+      },
+    ],
+    [jobs, setError, setEditor],
+  );
   return (
     <>
       <PageHeading
@@ -62,48 +130,12 @@ export function TechnicianManagementPage() {
         onChange={(event) => setQuery(event.target.value)}
       />
       <Panel title="اعضای تیم" subtitle={`${number(filtered.length)} تعمیرکار`}>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {['نام تعمیرکار', 'تلفن', 'تخصص', 'محدوده', 'سفارش باز', 'عملیات'].map((label) => (
-                <TableHead key={label}>{label}</TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.map((tech) => (
-              <TableRow key={tech.id}>
-                <TableCell>{tech.name}</TableCell>
-                <TableCell>
-                  <bdi>{tech.phone}</bdi>
-                </TableCell>
-                <TableCell>{tech.specialty}</TableCell>
-                <TableCell>{tech.area}</TableCell>
-                <TableCell>
-                  {number(
-                    jobs.filter(
-                      (job) =>
-                        job.technicianId === tech.id &&
-                        !['completed', 'cancelled'].includes(job.status),
-                    ).length,
-                  )}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setError('');
-                      setEditor(tech);
-                    }}
-                  >
-                    ویرایش
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <DataTable
+          data={filtered}
+          getRowId={(tech) => String(tech.id)}
+          columns={technicianColumns}
+          emptyMessage={null}
+        />
         {!filtered.length ? <EmptyState /> : null}
       </Panel>
       {editor ? (

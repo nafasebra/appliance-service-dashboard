@@ -1,3 +1,6 @@
+import type { ColumnDef } from '@tanstack/react-table';
+import type { DataTableFeatures } from '@/shared/ui/data-table-features';
+import { useMemo } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
 import { appliances } from '@/entities/service/model/types';
 import { summarizeFinance } from '@/entities/service/model/finance';
@@ -5,12 +8,91 @@ import { CashChart } from '@/features/finance/cash-chart';
 import { PageHeading, Panel } from '@/shared/ui/primitives';
 import { money, number } from '@/shared/lib/format';
 import { Progress } from '@/shared/ui/progress';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
+import { DataTable } from '@/shared/ui/data-table';
 
 export function ReportsPage() {
   const jobs = useDemo((state) => state.jobs);
   const technicians = useDemo((state) => state.technicians);
   const transactions = useDemo((state) => state.transactions);
+  const performanceRows = useMemo(
+    () =>
+      technicians.map((tech) => {
+        const assigned = jobs.filter((job) => job.technicianId === tech.id);
+        const summary = summarizeFinance(
+          assigned,
+          transactions.filter((item) => assigned.some((job) => job.id === item.jobId)),
+        );
+        return { tech, assigned, summary };
+      }),
+    [technicians, jobs, transactions],
+  );
+  const performanceColumns = useMemo<
+    ColumnDef<DataTableFeatures, (typeof performanceRows)[number]>[]
+  >(
+    () => [
+      {
+        id: 'تعمیرکار',
+        header: 'تعمیرکار',
+        accessorFn: ({ tech }) => tech.name,
+        cell: ({
+          row: {
+            original: { tech },
+          },
+        }) => <strong>{tech.name}</strong>,
+      },
+      {
+        id: 'کل درخواست‌ها',
+        header: 'کل درخواست‌ها',
+        accessorFn: ({ assigned }) => assigned.length,
+        cell: ({
+          row: {
+            original: { assigned },
+          },
+        }) => number(assigned.length),
+      },
+      {
+        id: 'تکمیل‌شده',
+        header: 'تکمیل‌شده',
+        accessorFn: ({ assigned }) => assigned.filter((job) => job.status === 'completed').length,
+        cell: ({
+          row: {
+            original: { assigned },
+          },
+        }) => number(assigned.filter((job) => job.status === 'completed').length),
+      },
+      {
+        id: 'ارزش خدمات تکمیل‌شده',
+        header: 'ارزش خدمات تکمیل‌شده',
+        accessorFn: ({ summary }) => summary.serviceValue,
+        cell: ({
+          row: {
+            original: { summary },
+          },
+        }) => money(summary.serviceValue),
+      },
+      {
+        id: 'کمیسیون شرکت',
+        header: 'کمیسیون شرکت',
+        accessorFn: ({ summary }) => summary.commission,
+        cell: ({
+          row: {
+            original: { summary },
+          },
+        }) => money(summary.commission),
+      },
+      {
+        id: 'مانده تعمیرکار',
+        header: 'مانده تعمیرکار',
+        accessorFn: ({ summary }) => summary.payable,
+        cell: ({
+          row: {
+            original: { summary },
+          },
+        }) => money(summary.payable),
+      },
+    ],
+    [],
+  );
   return (
     <>
       <PageHeading
@@ -45,41 +127,11 @@ export function ReportsPage() {
         title="عملکرد و حساب تعمیرکاران"
         subtitle="کمیسیون و سهم تعمیرکار بر اساس خدمات تکمیل‌شده"
       >
-        <Table className="overflow-auto">
-          <TableHeader>
-            <TableRow>
-              <TableHead>تعمیرکار</TableHead>
-              <TableHead>کل درخواست‌ها</TableHead>
-              <TableHead>تکمیل‌شده</TableHead>
-              <TableHead>ارزش خدمات تکمیل‌شده</TableHead>
-              <TableHead>کمیسیون شرکت</TableHead>
-              <TableHead>مانده تعمیرکار</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {technicians.map((tech) => {
-              const assigned = jobs.filter((job) => job.technicianId === tech.id);
-              const summary = summarizeFinance(
-                assigned,
-                transactions.filter((item) => assigned.some((job) => job.id === item.jobId)),
-              );
-              return (
-                <TableRow key={tech.id}>
-                  <TableCell>
-                    <strong>{tech.name}</strong>
-                  </TableCell>
-                  <TableCell>{number(assigned.length)}</TableCell>
-                  <TableCell>
-                    {number(assigned.filter((job) => job.status === 'completed').length)}
-                  </TableCell>
-                  <TableCell>{money(summary.serviceValue)}</TableCell>
-                  <TableCell>{money(summary.commission)}</TableCell>
-                  <TableCell>{money(summary.payable)}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        <DataTable
+          data={performanceRows}
+          getRowId={({ tech }) => String(tech.id)}
+          columns={performanceColumns}
+        />
       </Panel>
     </>
   );

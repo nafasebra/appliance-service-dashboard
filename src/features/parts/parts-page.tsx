@@ -1,4 +1,6 @@
-import { useState, type FormEvent } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import type { DataTableFeatures } from '@/shared/ui/data-table-features';
+import { useMemo, useState, type FormEvent } from 'react';
 import { getPartJobLabel, matchesPart } from './utils/part-filters';
 import { getFormText } from '@/shared/utils/form';
 import { Package, Plus } from 'lucide-react';
@@ -29,7 +31,7 @@ import {
 } from '@/shared/ui/select';
 import { Badge } from '@/shared/ui/badge';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
+import { DataTable } from '@/shared/ui/data-table';
 import { number } from '@/shared/lib/format';
 
 type Section = 'inventory' | 'needs' | 'purchases' | 'allocations';
@@ -64,27 +66,39 @@ export function PartsPage({ section }: { section: Section }) {
     setMessage(failure ? '' : 'اطلاعات با موفقیت ثبت شد.');
     return !failure;
   }
-  const inventory = data.parts.filter(
-    (part) =>
-      matchesPart(part.id, data.parts, appliance, search) &&
-      (status === 'all' ||
-        (status === 'inactive'
-          ? !part.active
-          : status === 'empty'
-            ? availableQuantity(data, part.id) === 0
-            : availableQuantity(data, part.id) <= part.minimum)),
+  const inventory = useMemo(
+    () =>
+      data.parts.filter(
+        (part) =>
+          matchesPart(part.id, data.parts, appliance, search) &&
+          (status === 'all' ||
+            (status === 'inactive'
+              ? !part.active
+              : status === 'empty'
+                ? availableQuantity(data, part.id) === 0
+                : availableQuantity(data, part.id) <= part.minimum)),
+      ),
+    [data, appliance, search, status],
   );
-  const needs = data.needs.filter(
-    (need) =>
-      matchesPart(need.partId, data.parts, appliance, search) &&
-      (status === 'all' || need.status === status) &&
-      (section !== 'allocations' ||
-        ['reserved', 'delivered', 'used', 'returned'].includes(need.status)),
+  const needs = useMemo(
+    () =>
+      data.needs.filter(
+        (need) =>
+          matchesPart(need.partId, data.parts, appliance, search) &&
+          (status === 'all' || need.status === status) &&
+          (section !== 'allocations' ||
+            ['reserved', 'delivered', 'used', 'returned'].includes(need.status)),
+      ),
+    [data, appliance, search, status, section],
   );
-  const purchases = data.purchases.filter(
-    (purchase) =>
-      matchesPart(purchase.partId, data.parts, appliance, search) &&
-      (status === 'all' || purchase.status === status),
+  const purchases = useMemo(
+    () =>
+      data.purchases.filter(
+        (purchase) =>
+          matchesPart(purchase.partId, data.parts, appliance, search) &&
+          (status === 'all' || purchase.status === status),
+      ),
+    [data, appliance, search, status],
   );
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -177,6 +191,358 @@ export function PartsPage({ section }: { section: Section }) {
     }
     act((current) => transitionNeed(current, id, next));
   }
+  const inventoryColumns = useMemo<ColumnDef<DataTableFeatures, (typeof inventory)[number]>[]>(
+    () => [
+      {
+        id: 'قطعه / کد',
+        header: 'قطعه / کد',
+        accessorFn: (part) => part.name,
+        cell: ({ row: { original: part } }) => (
+          <>
+            <strong>{part.name}</strong>
+            <div>
+              <bdi>{part.code}</bdi>
+            </div>
+          </>
+        ),
+      },
+      {
+        id: 'دستگاه و سازگاری',
+        header: 'دستگاه و سازگاری',
+        accessorFn: (part) => part.appliance,
+        cell: ({ row: { original: part } }) => (
+          <>
+            {part.appliance}
+            <p className="text-xs text-muted-foreground">{part.compatibility}</p>
+          </>
+        ),
+      },
+      {
+        id: 'محل',
+        header: 'محل',
+        accessorFn: (part) => part.location,
+        cell: ({ row: { original: part } }) => part.location,
+      },
+      {
+        id: 'فیزیکی',
+        header: 'فیزیکی',
+        accessorFn: (part) => part.stock,
+        cell: ({ row: { original: part } }) => number(part.stock),
+      },
+      {
+        id: 'رزرو',
+        header: 'رزرو',
+        accessorFn: (part) => reservedQuantity(data, part.id),
+        cell: ({ row: { original: part } }) => number(reservedQuantity(data, part.id)),
+      },
+      {
+        id: 'قابل تخصیص',
+        header: 'قابل تخصیص',
+        accessorFn: (part) => availableQuantity(data, part.id),
+        cell: ({ row: { original: part } }) => number(availableQuantity(data, part.id)),
+      },
+      {
+        id: 'وضعیت',
+        header: 'وضعیت',
+        accessorFn: (part) =>
+          !part.active
+            ? 'غیرفعال'
+            : availableQuantity(data, part.id) === 0
+              ? 'ناموجود'
+              : availableQuantity(data, part.id) <= part.minimum
+                ? 'کم‌موجود'
+                : 'موجود',
+        cell: ({ row: { original: part } }) => (
+          <Badge variant="secondary">
+            {!part.active
+              ? 'غیرفعال'
+              : availableQuantity(data, part.id) === 0
+                ? 'ناموجود'
+                : availableQuantity(data, part.id) <= part.minimum
+                  ? 'کم‌موجود'
+                  : 'موجود'}
+          </Badge>
+        ),
+      },
+      {
+        id: 'عملیات',
+        header: 'عملیات',
+        enableSorting: false,
+        cell: ({ row: { original: part } }) => (
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setEditing(part);
+                setForm('part');
+              }}
+            >
+              ویرایش
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                act((current) => ({
+                  ...current,
+                  parts: current.parts.map((p) =>
+                    p.id === part.id ? { ...p, active: !p.active } : p,
+                  ),
+                }))
+              }
+            >
+              {part.active ? 'غیرفعال' : 'فعال'}
+            </Button>
+          </div>
+        ),
+      },
+    ],
+    [data, setEditing, setForm, act],
+  );
+  const purchaseColumns = useMemo<ColumnDef<DataTableFeatures, (typeof purchases)[number]>[]>(
+    () => [
+      {
+        id: 'قطعه',
+        header: 'قطعه',
+        accessorFn: (purchase) => data.parts.find((p) => p.id === purchase.partId)?.name,
+        cell: ({ row: { original: purchase } }) =>
+          data.parts.find((p) => p.id === purchase.partId)?.name,
+      },
+      {
+        id: 'مرتبط با درخواست',
+        header: 'مرتبط با درخواست',
+        accessorFn: (purchase) =>
+          purchase.needId
+            ? getPartJobLabel(
+                data.needs.find((n) => n.id === purchase.needId)?.jobId ?? '',
+                jobs,
+                customers,
+              )
+            : 'تکمیل موجودی انبار',
+        cell: ({ row: { original: purchase } }) =>
+          purchase.needId
+            ? getPartJobLabel(
+                data.needs.find((n) => n.id === purchase.needId)?.jobId ?? '',
+                jobs,
+                customers,
+              )
+            : 'تکمیل موجودی انبار',
+      },
+      {
+        id: 'تأمین‌کننده',
+        header: 'تأمین‌کننده',
+        accessorFn: (purchase) => purchase.supplier || 'تعیین نشده',
+        cell: ({ row: { original: purchase } }) => purchase.supplier || 'تعیین نشده',
+      },
+      {
+        id: 'تعداد خرید',
+        header: 'تعداد خرید',
+        accessorFn: (purchase) => purchase.quantity,
+        cell: ({ row: { original: purchase } }) => number(purchase.quantity),
+      },
+      {
+        id: 'دریافت',
+        header: 'دریافت',
+        accessorFn: (purchase) => purchase.received,
+        cell: ({ row: { original: purchase } }) => number(purchase.received),
+      },
+      {
+        id: 'وضعیت',
+        header: 'وضعیت',
+        accessorFn: (purchase) =>
+          purchase.received > 0 && purchase.status === 'ordered'
+            ? 'دریافت جزئی'
+            : purchaseLabels[purchase.status],
+        cell: ({ row: { original: purchase } }) => (
+          <Badge variant="secondary">
+            {purchase.received > 0 && purchase.status === 'ordered'
+              ? 'دریافت جزئی'
+              : purchaseLabels[purchase.status]}
+          </Badge>
+        ),
+      },
+      {
+        id: 'عملیات',
+        header: 'عملیات',
+        enableSorting: false,
+        cell: ({ row: { original: purchase } }) => (
+          <div className="flex gap-2">
+            {purchase.status === 'pending' ? (
+              <Button
+                size="sm"
+                onClick={() =>
+                  act((current) => ({
+                    ...current,
+                    purchases: current.purchases.map((p) =>
+                      p.id === purchase.id ? { ...p, status: 'approved' } : p,
+                    ),
+                  }))
+                }
+              >
+                تأیید خرید
+              </Button>
+            ) : null}
+            {purchase.status === 'approved' ? (
+              <Button size="sm" onClick={() => setReceiving(purchase.id)}>
+                ثبت سفارش خرید
+              </Button>
+            ) : null}
+            {purchase.status === 'ordered' ? (
+              <Button size="sm" onClick={() => setReceiving(purchase.id)}>
+                دریافت کالا
+              </Button>
+            ) : null}
+            {['pending', 'approved'].includes(purchase.status) ? (
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() =>
+                  act((current) => ({
+                    ...current,
+                    purchases: current.purchases.map((p) =>
+                      p.id === purchase.id ? { ...p, status: 'cancelled' } : p,
+                    ),
+                  }))
+                }
+              >
+                لغو
+              </Button>
+            ) : null}
+          </div>
+        ),
+      },
+    ],
+    [data, jobs, customers, act, setReceiving],
+  );
+  const needColumns = useMemo<ColumnDef<DataTableFeatures, (typeof needs)[number]>[]>(
+    () => [
+      {
+        id: 'قطعه',
+        header: 'قطعه',
+        accessorFn: (need) => data.parts.find((p) => p.id === need.partId)?.name,
+        cell: ({ row: { original: need } }) => data.parts.find((p) => p.id === need.partId)?.name,
+      },
+      {
+        id: 'سفارش مشتری',
+        header: 'سفارش مشتری',
+        accessorFn: (need) => getPartJobLabel(need.jobId, jobs, customers),
+        cell: ({ row: { original: need } }) => getPartJobLabel(need.jobId, jobs, customers),
+      },
+      {
+        id: 'تعداد',
+        header: 'تعداد',
+        accessorFn: (need) => need.quantity,
+        cell: ({ row: { original: need } }) => number(need.quantity),
+      },
+      {
+        id: 'قابل تخصیص',
+        header: 'قابل تخصیص',
+        accessorFn: (need) => availableQuantity(data, need.partId),
+        cell: ({ row: { original: need } }) => number(availableQuantity(data, need.partId)),
+      },
+      {
+        id: 'وضعیت',
+        header: 'وضعیت',
+        accessorFn: (need) => needLabels[need.status],
+        cell: ({ row: { original: need } }) => (
+          <Badge variant="secondary">{needLabels[need.status]}</Badge>
+        ),
+      },
+      {
+        id: 'تحویل‌گیرنده',
+        header: 'تحویل‌گیرنده',
+        accessorFn: (need) => technicians.find((t) => t.id === need.technicianId)?.name ?? '—',
+        cell: ({ row: { original: need } }) =>
+          technicians.find((t) => t.id === need.technicianId)?.name ?? '—',
+      },
+      {
+        id: 'عملیات',
+        header: 'عملیات',
+        enableSorting: false,
+        cell: ({ row: { original: need } }) => (
+          <div className="flex flex-wrap gap-2">
+            {['pending', 'unavailable', 'available'].includes(need.status) ? (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  needAction(
+                    need.id,
+                    availableQuantity(data, need.partId) >= need.quantity &&
+                      data.parts.find((p) => p.id === need.partId)?.active
+                      ? 'available'
+                      : 'unavailable',
+                  )
+                }
+                disabled={need.status === 'available'}
+              >
+                استعلام موجودی
+              </Button>
+            ) : null}
+            {need.status === 'available' ? (
+              <Button size="sm" onClick={() => needAction(need.id, 'reserved')}>
+                رزرو برای سفارش
+              </Button>
+            ) : null}
+            {need.status === 'unavailable' ? (
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={data.purchases.some(
+                  (p) =>
+                    p.needId === need.id && p.status !== 'cancelled' && p.status !== 'received',
+                )}
+                onClick={() =>
+                  act((current) => ({
+                    ...current,
+                    purchases: [
+                      ...current.purchases,
+                      {
+                        id: crypto.randomUUID(),
+                        partId: need.partId,
+                        needId: need.id,
+                        quantity: Math.max(
+                          1,
+                          need.quantity - availableQuantity(current, need.partId),
+                        ),
+                        received: 0,
+                        supplier: '',
+                        status: 'pending',
+                      },
+                    ],
+                  }))
+                }
+              >
+                ارجاع به تأمین
+              </Button>
+            ) : null}
+            {need.status === 'reserved' ? (
+              <Button size="sm" onClick={() => setDelivery(need.id)}>
+                تحویل به تعمیرکار
+              </Button>
+            ) : null}
+            {need.status === 'delivered' ? (
+              <>
+                <Button size="sm" onClick={() => needAction(need.id, 'used')}>
+                  ثبت مصرف
+                </Button>
+                <Button size="sm" variant="outline" onClick={() => needAction(need.id, 'returned')}>
+                  برگشت سالم به انبار
+                </Button>
+              </>
+            ) : null}
+            {['pending', 'available', 'unavailable', 'reserved'].includes(need.status) ? (
+              <Button size="sm" variant="ghost" onClick={() => needAction(need.id, 'cancelled')}>
+                لغو
+              </Button>
+            ) : null}
+          </div>
+        ),
+      },
+    ],
+    [data, jobs, customers, technicians, needAction, act, setDelivery],
+  );
   return (
     <>
       <PageHeading
@@ -301,284 +667,31 @@ export function PartsPage({ section }: { section: Section }) {
         title={title}
         subtitle="اطلاعات نمونه؛ عملیات انبار به‌صورت مستقل از پرداخت‌های مالی ثبت می‌شود."
       >
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {(section === 'inventory'
-                ? [
-                    'قطعه / کد',
-                    'دستگاه و سازگاری',
-                    'محل',
-                    'فیزیکی',
-                    'رزرو',
-                    'قابل تخصیص',
-                    'وضعیت',
-                    'عملیات',
-                  ]
-                : section === 'purchases'
-                  ? [
-                      'قطعه',
-                      'مرتبط با درخواست',
-                      'تأمین‌کننده',
-                      'تعداد خرید',
-                      'دریافت',
-                      'وضعیت',
-                      'عملیات',
-                    ]
-                  : [
-                      'قطعه',
-                      'سفارش مشتری',
-                      'تعداد',
-                      'قابل تخصیص',
-                      'وضعیت',
-                      'تحویل‌گیرنده',
-                      'عملیات',
-                    ]
-              ).map((label) => (
-                <TableHead key={label}>{label}</TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {section === 'inventory'
-              ? inventory.map((part) => (
-                  <TableRow key={part.id}>
-                    <TableCell>
-                      <strong>{part.name}</strong>
-                      <div>
-                        <bdi>{part.code}</bdi>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      {part.appliance}
-                      <p className="text-xs text-muted-foreground">{part.compatibility}</p>
-                    </TableCell>
-                    <TableCell>{part.location}</TableCell>
-                    <TableCell>{number(part.stock)}</TableCell>
-                    <TableCell>{number(reservedQuantity(data, part.id))}</TableCell>
-                    <TableCell>{number(availableQuantity(data, part.id))}</TableCell>
-                    <TableCell>
-                      <Badge variant="secondary">
-                        {!part.active
-                          ? 'غیرفعال'
-                          : availableQuantity(data, part.id) === 0
-                            ? 'ناموجود'
-                            : availableQuantity(data, part.id) <= part.minimum
-                              ? 'کم‌موجود'
-                              : 'موجود'}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            setEditing(part);
-                            setForm('part');
-                          }}
-                        >
-                          ویرایش
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() =>
-                            act((current) => ({
-                              ...current,
-                              parts: current.parts.map((p) =>
-                                p.id === part.id ? { ...p, active: !p.active } : p,
-                              ),
-                            }))
-                          }
-                        >
-                          {part.active ? 'غیرفعال' : 'فعال'}
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              : null}
-            {section === 'needs' || section === 'allocations'
-              ? needs.map((need) => (
-                  <TableRow key={need.id}>
-                    <TableCell>{data.parts.find((p) => p.id === need.partId)?.name}</TableCell>
-                    <TableCell>{getPartJobLabel(need.jobId, jobs, customers)}</TableCell>
-                    <TableCell>{number(need.quantity)}</TableCell>
-                    <TableCell>{number(availableQuantity(data, need.partId))}</TableCell>
-                    <TableCell>
-                      <Badge variant="secondary">{needLabels[need.status]}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      {technicians.find((t) => t.id === need.technicianId)?.name ?? '—'}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex flex-wrap gap-2">
-                        {['pending', 'unavailable', 'available'].includes(need.status) ? (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() =>
-                              needAction(
-                                need.id,
-                                availableQuantity(data, need.partId) >= need.quantity &&
-                                  data.parts.find((p) => p.id === need.partId)?.active
-                                  ? 'available'
-                                  : 'unavailable',
-                              )
-                            }
-                            disabled={need.status === 'available'}
-                          >
-                            استعلام موجودی
-                          </Button>
-                        ) : null}
-                        {need.status === 'available' ? (
-                          <Button size="sm" onClick={() => needAction(need.id, 'reserved')}>
-                            رزرو برای سفارش
-                          </Button>
-                        ) : null}
-                        {need.status === 'unavailable' ? (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            disabled={data.purchases.some(
-                              (p) =>
-                                p.needId === need.id &&
-                                p.status !== 'cancelled' &&
-                                p.status !== 'received',
-                            )}
-                            onClick={() =>
-                              act((current) => ({
-                                ...current,
-                                purchases: [
-                                  ...current.purchases,
-                                  {
-                                    id: crypto.randomUUID(),
-                                    partId: need.partId,
-                                    needId: need.id,
-                                    quantity: Math.max(
-                                      1,
-                                      need.quantity - availableQuantity(current, need.partId),
-                                    ),
-                                    received: 0,
-                                    supplier: '',
-                                    status: 'pending',
-                                  },
-                                ],
-                              }))
-                            }
-                          >
-                            ارجاع به تأمین
-                          </Button>
-                        ) : null}
-                        {need.status === 'reserved' ? (
-                          <Button size="sm" onClick={() => setDelivery(need.id)}>
-                            تحویل به تعمیرکار
-                          </Button>
-                        ) : null}
-                        {need.status === 'delivered' ? (
-                          <>
-                            <Button size="sm" onClick={() => needAction(need.id, 'used')}>
-                              ثبت مصرف
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => needAction(need.id, 'returned')}
-                            >
-                              برگشت سالم به انبار
-                            </Button>
-                          </>
-                        ) : null}
-                        {['pending', 'available', 'unavailable', 'reserved'].includes(
-                          need.status,
-                        ) ? (
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => needAction(need.id, 'cancelled')}
-                          >
-                            لغو
-                          </Button>
-                        ) : null}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              : null}
-            {section === 'purchases'
-              ? purchases.map((purchase) => (
-                  <TableRow key={purchase.id}>
-                    <TableCell>{data.parts.find((p) => p.id === purchase.partId)?.name}</TableCell>
-                    <TableCell>
-                      {purchase.needId
-                        ? getPartJobLabel(
-                            data.needs.find((n) => n.id === purchase.needId)?.jobId ?? '',
-                            jobs,
-                            customers,
-                          )
-                        : 'تکمیل موجودی انبار'}
-                    </TableCell>
-                    <TableCell>{purchase.supplier || 'تعیین نشده'}</TableCell>
-                    <TableCell>{number(purchase.quantity)}</TableCell>
-                    <TableCell>{number(purchase.received)}</TableCell>
-                    <TableCell>
-                      <Badge variant="secondary">
-                        {purchase.received > 0 && purchase.status === 'ordered'
-                          ? 'دریافت جزئی'
-                          : purchaseLabels[purchase.status]}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        {purchase.status === 'pending' ? (
-                          <Button
-                            size="sm"
-                            onClick={() =>
-                              act((current) => ({
-                                ...current,
-                                purchases: current.purchases.map((p) =>
-                                  p.id === purchase.id ? { ...p, status: 'approved' } : p,
-                                ),
-                              }))
-                            }
-                          >
-                            تأیید خرید
-                          </Button>
-                        ) : null}
-                        {purchase.status === 'approved' ? (
-                          <Button size="sm" onClick={() => setReceiving(purchase.id)}>
-                            ثبت سفارش خرید
-                          </Button>
-                        ) : null}
-                        {purchase.status === 'ordered' ? (
-                          <Button size="sm" onClick={() => setReceiving(purchase.id)}>
-                            دریافت کالا
-                          </Button>
-                        ) : null}
-                        {['pending', 'approved'].includes(purchase.status) ? (
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() =>
-                              act((current) => ({
-                                ...current,
-                                purchases: current.purchases.map((p) =>
-                                  p.id === purchase.id ? { ...p, status: 'cancelled' } : p,
-                                ),
-                              }))
-                            }
-                          >
-                            لغو
-                          </Button>
-                        ) : null}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              : null}
-          </TableBody>
-        </Table>
+        {section === 'inventory' ? (
+          <DataTable
+            data={inventory}
+            key="inventory"
+            getRowId={(part) => String(part.id)}
+            columns={inventoryColumns}
+            emptyMessage={null}
+          />
+        ) : section === 'purchases' ? (
+          <DataTable
+            data={purchases}
+            key="purchases"
+            getRowId={(purchase) => String(purchase.id)}
+            columns={purchaseColumns}
+            emptyMessage={null}
+          />
+        ) : (
+          <DataTable
+            data={needs}
+            key="needs"
+            getRowId={(need) => String(need.id)}
+            columns={needColumns}
+            emptyMessage={null}
+          />
+        )}
         {(section === 'inventory'
           ? inventory.length
           : section === 'purchases'

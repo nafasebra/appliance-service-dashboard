@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { ArrowUpLeft, LifeBuoy, RotateCcw, Wrench, X } from 'lucide-react';
-import { getNavigationGroups } from '@/app/utils/navigation';
+import { navigationGroups } from '@/app/utils/navigation';
 import { useCompanySettings } from '@/shared/store/settings-store';
 import { useDashboardSidebar } from '@/app/hooks/use-dashboard-sidebar';
 import { useDemo } from '@/shared/store/demo-store';
@@ -31,7 +31,6 @@ import {
 } from '@/shared/ui/sidebar';
 
 const persianNumber = new Intl.NumberFormat('fa');
-const navigationGroups = getNavigationGroups();
 
 export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
   const settings = useCompanySettings((state) => state.settings);
@@ -79,7 +78,7 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
             <SidebarGroupLabel className="mt-1 mx-3.5 mb-3 h-auto text-2xs text-muted-foreground">
               {group.label}
             </SidebarGroupLabel>
-            <SidebarGroupContent>
+            <SidebarGroupContent className="pb-4">
               <SidebarMenu aria-label={group.label}>
                 {group.items.map(({ to, label, icon: Icon }) => (
                   <SidebarMenuItem key={to}>

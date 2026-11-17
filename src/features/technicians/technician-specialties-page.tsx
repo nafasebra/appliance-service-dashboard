@@ -1,4 +1,6 @@
-import { useState, type FormEvent } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import type { DataTableFeatures } from '@/shared/ui/data-table-features';
+import { useMemo, useState, type FormEvent } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
 import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
@@ -13,7 +15,7 @@ import {
   SelectItem,
 } from '@/shared/ui/select';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
-import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from '@/shared/ui/table';
+import { DataTable } from '@/shared/ui/data-table';
 import { number } from '@/shared/lib/format';
 
 export function TechnicianSpecialtiesPage() {
@@ -23,8 +25,12 @@ export function TechnicianSpecialtiesPage() {
   const [specialty, setSpecialty] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const specialties = [...new Set(technicians.map((tech) => tech.specialty))].filter((name) =>
-    name.includes(query.trim()),
+  const specialties = useMemo(
+    () =>
+      [...new Set(technicians.map((tech) => tech.specialty))].filter((name) =>
+        name.includes(query.trim()),
+      ),
+    [technicians, query],
   );
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -36,6 +42,49 @@ export function TechnicianSpecialtiesPage() {
     setError(failure ?? '');
     setMessage(failure ? '' : `تخصص ${tech.name} به‌روزرسانی شد.`);
   }
+  const specialtyRows = useMemo(
+    () =>
+      specialties.map((name) => {
+        const members = technicians.filter((tech) => tech.specialty === name);
+        return { name, members };
+      }),
+    [specialties, technicians],
+  );
+  const specialtyColumns = useMemo<ColumnDef<DataTableFeatures, (typeof specialtyRows)[number]>[]>(
+    () => [
+      {
+        id: 'تخصص',
+        header: 'تخصص',
+        accessorFn: ({ name }) => name,
+        cell: ({
+          row: {
+            original: { name },
+          },
+        }) => name,
+      },
+      {
+        id: 'تعداد تعمیرکار',
+        header: 'تعداد تعمیرکار',
+        accessorFn: ({ members }) => members.length,
+        cell: ({
+          row: {
+            original: { members },
+          },
+        }) => number(members.length),
+      },
+      {
+        id: 'اعضای تیم',
+        header: 'اعضای تیم',
+        accessorFn: ({ members }) => members.map((tech) => tech.name).join('، '),
+        cell: ({
+          row: {
+            original: { members },
+          },
+        }) => members.map((tech) => tech.name).join('، '),
+      },
+    ],
+    [],
+  );
   return (
     <>
       <PageHeading
@@ -102,27 +151,12 @@ export function TechnicianSpecialtiesPage() {
         onChange={(event) => setQuery(event.target.value)}
       />
       <Panel title="پوشش تخصصی تیم">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>تخصص</TableHead>
-              <TableHead>تعداد تعمیرکار</TableHead>
-              <TableHead>اعضای تیم</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {specialties.map((name) => {
-              const members = technicians.filter((tech) => tech.specialty === name);
-              return (
-                <TableRow key={name}>
-                  <TableCell>{name}</TableCell>
-                  <TableCell>{number(members.length)}</TableCell>
-                  <TableCell>{members.map((tech) => tech.name).join('، ')}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        <DataTable
+          data={specialtyRows}
+          getRowId={({ name }) => String(name)}
+          columns={specialtyColumns}
+          emptyMessage={null}
+        />
         {!specialties.length ? <EmptyState /> : null}
       </Panel>
     </>
