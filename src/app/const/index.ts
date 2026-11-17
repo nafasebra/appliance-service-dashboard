@@ -6,9 +6,17 @@ import {
   Users,
   Wallet,
   ChartNoAxesCombined,
+  Package,
+  PackageSearch,
+  ShoppingCart,
+  PackageCheck,
 } from 'lucide-react';
 
 export const navigation = [
+  { to: '/parts', label: 'قطعات و موجودی', icon: Package },
+  { to: '/part-needs', label: 'نیاز قطعه و استعلام', icon: PackageSearch },
+  { to: '/part-purchases', label: 'تأمین و خرید', icon: ShoppingCart },
+  { to: '/part-allocations', label: 'تخصیص و تحویل', icon: PackageCheck },
   { to: '/', label: 'نمای کلی', icon: LayoutDashboard },
   { to: '/requests', label: 'درخواست‌های خدمات', icon: ClipboardList },
   { to: '/dispatch', label: 'برنامه‌ریزی و اعزام', icon: CalendarDays },

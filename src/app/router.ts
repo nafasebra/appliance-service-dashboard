@@ -2,6 +2,12 @@ import { createRouter } from '@tanstack/react-router';
 import { indexRoute } from '@/app/routes/index-route';
 import { rootRoute } from '@/app/routes/root-route';
 import {
+  partsRoute,
+  partNeedsRoute,
+  partPurchasesRoute,
+  partAllocationsRoute,
+} from '@/app/routes/parts-routes';
+import {
   requestsRoute,
   dispatchRoute,
   techniciansRoute,
@@ -11,6 +17,10 @@ import {
 } from '@/app/routes/service-routes';
 
 const routeTree = rootRoute.addChildren([
+  partsRoute,
+  partNeedsRoute,
+  partPurchasesRoute,
+  partAllocationsRoute,
   indexRoute,
   requestsRoute,
   dispatchRoute,
