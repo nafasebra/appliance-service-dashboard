@@ -91,3 +91,56 @@ test('table sorts ISO dates chronologically, Persian names alphabetically and mi
   assert.equal(table.atoms.sorting.get().length, 1);
   assert.deepEqual(createTestTable([]).getRowModel().rows, []);
 });
+
+test('pagination slices rows, respects page boundaries and preserves record IDs', () => {
+  const records = Array.from({ length: 23 }, (_, index) => ({
+    id: String(index),
+    amount: 23 - index,
+    date: '2026-11-17',
+  }));
+  const table = createTestTable(records);
+  assert.equal(table.getRowCount(), 23);
+  assert.equal(table.getPageCount(), 3);
+  assert.equal(table.getCanPreviousPage(), false);
+  assert.equal(table.getRowModel().rows.length, 10);
+  table.nextPage();
+  assert.equal(table.getRowModel().rows[0].id, '10');
+  table.lastPage();
+  assert.deepEqual(
+    table.getRowModel().rows.map((row) => row.id),
+    ['20', '21', '22'],
+  );
+  assert.equal(table.getCanNextPage(), false);
+  assert.equal(table.atoms.pagination.get().pageIndex, 2);
+  table.previousPage();
+  assert.equal(table.atoms.pagination.get().pageIndex, 1);
+  table.firstPage();
+  assert.equal(table.getRowModel().rows[0].id, '0');
+});
+
+test('sorting runs across all rows before pagination and page size changes retain the first visible row', () => {
+  const table = createTestTable(
+    Array.from({ length: 23 }, (_, index) => ({
+      id: String(index),
+      amount: 23 - index,
+      date: '2026-11-17',
+    })),
+  );
+  const amount = table.getColumn('amount');
+  assert.ok(amount);
+  amount.toggleSorting(false);
+  assert.equal(table.getRowModel().rows[0].original.amount, 1);
+  table.lastPage();
+  table.setPageSize(20);
+  assert.equal(table.atoms.pagination.get().pageIndex, 1);
+  assert.equal(table.getRowModel().rows.length, 3);
+  table.setPageSize(50);
+  assert.equal(table.atoms.pagination.get().pageIndex, 0);
+  assert.equal(table.getRowModel().rows.length, 23);
+  table.resetPageIndex();
+  assert.equal(table.atoms.pagination.get().pageIndex, 0);
+  const empty = createTestTable([]);
+  assert.equal(empty.getPageCount(), 0);
+  assert.equal(empty.getCanPreviousPage(), false);
+  assert.equal(empty.getCanNextPage(), false);
+});

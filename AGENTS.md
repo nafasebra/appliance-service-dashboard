@@ -113,6 +113,9 @@ accessors; keep monetary and quantity accessors numeric and date accessors ISO.
 Memoize derived rows and column definitions, supply stable record IDs, and disable
 sorting for action columns. The shared component owns local sorting and accessible
 header controls; Persian text comparison lives in `shared/utils/table-sort.ts`.
+Client pagination uses the same shared feature registry: sort before slicing,
+default to 10 rows with 10/20/50 choices, reset the page on data/sort changes, and
+keep navigation controls in `shared/ui/data-table-pagination.tsx`.
 Use the public `DataTableColumn<T>` type at feature boundaries. Prefer the v9
 column helper for accessor-specific value inference. Parts table definitions live
 in `features/parts/hooks/use-parts-columns.tsx`; keep workflow actions in the page
