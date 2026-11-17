@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useRef, useState, type ReactNode } from 'react';
+import { appendTransaction } from './customer-account';
 import { initialData } from './demo-data';
 import type { DemoData, Job, Transaction, Technician } from './types';
 import { isDemoData, validateJobUpdate } from './validation';
@@ -7,7 +8,7 @@ const storageKey = 'hamyar-service-demo-v1';
 interface DemoContextValue extends DemoData {
   saveTechnician: (technician: Technician) => string | null;
   saveJob: (job: Job) => string | null;
-  addTransaction: (transaction: Transaction) => void;
+  addTransaction: (transaction: Transaction) => string | null;
   resetDemo: () => void;
   storageError: boolean;
 }
@@ -28,8 +29,10 @@ function readDemo(): DemoData {
 
 export function DemoProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState(readDemo);
+  const current = useRef(data);
   const [storageError, setStorageError] = useState(false);
   function update(next: DemoData) {
+    current.current = next;
     setData(next);
     try {
       localStorage.setItem(storageKey, JSON.stringify(next));
@@ -44,6 +47,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
         ...data,
         storageError,
         saveTechnician: (technician) => {
+          const data = current.current;
           const next = {
             ...data,
             technicians: data.technicians.some((item) => item.id === technician.id)
@@ -55,6 +59,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
           return null;
         },
         saveJob: (job) => {
+          const data = current.current;
           const validationError = validateJobUpdate(
             data.jobs.find((item) => item.id === job.id),
             job,
@@ -69,8 +74,14 @@ export function DemoProvider({ children }: { children: ReactNode }) {
           });
           return null;
         },
-        addTransaction: (transaction) =>
-          update({ ...data, transactions: [...data.transactions, transaction] }),
+        addTransaction: (transaction) => {
+          try {
+            update(appendTransaction(current.current, transaction));
+            return null;
+          } catch (error) {
+            return error instanceof Error ? error.message : 'ثبت تراکنش انجام نشد.';
+          }
+        },
         resetDemo: () => update(structuredClone(initialData)),
       }}
     >

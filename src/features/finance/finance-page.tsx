@@ -21,6 +21,7 @@ import {
 } from '@/shared/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
+import { toIsoDate } from '@/shared/lib/date';
 
 const kindLabels = {
   receipt: 'دریافت از مشتری',
@@ -33,7 +34,7 @@ export function FinancePage() {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState('all');
   const [kind, setKind] = useState<Transaction['kind']>('receipt');
-  const [transactionDate, setTransactionDate] = useState('2026-11-16');
+  const [transactionDate, setTransactionDate] = useState(() => toIsoDate(new Date()));
   const [error, setError] = useState('');
   const finance = summarizeFinance(jobs, transactions);
   const filtered = transactions
@@ -56,7 +57,7 @@ export function FinancePage() {
       if (job.status !== 'completed' || amount > job.total - job.commission - paid)
         return setError('پرداخت باید در محدوده مانده تعمیرکار برای یک خدمت تکمیل‌شده باشد.');
     }
-    addTransaction({
+    const failure = addTransaction({
       id: crypto.randomUUID(),
       kind,
       jobId,
@@ -64,6 +65,7 @@ export function FinancePage() {
       date: String(form.get('date')),
       description: String(form.get('description')).trim(),
     });
+    if (failure) return setError(failure);
     setOpen(false);
     setError('');
   }
@@ -73,7 +75,7 @@ export function FinancePage() {
   return (
     <>
       <PageHeading
-        title="امور مالی"
+        title="دفتر گردش مالی"
         description="شفافیت در دریافت‌ها، پرداخت‌ها و سهم شرکت از هر خدمت."
         action={
           <Button

@@ -28,6 +28,8 @@ export interface Job {
   commission: number;
 }
 export interface Transaction {
+  method?: 'cash' | 'card' | 'bank';
+  reference?: string;
   id: string;
   jobId: string;
   kind: 'receipt' | 'payout' | 'expense';

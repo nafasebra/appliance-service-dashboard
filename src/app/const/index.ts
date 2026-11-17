@@ -14,6 +14,10 @@ import {
 } from 'lucide-react';
 
 export const navigation = [
+  { to: '/customer-accounts', label: 'حساب مشتریان', icon: Users },
+  { to: '/receivables', label: 'مطالبات مشتریان', icon: ClipboardList },
+  { to: '/receipts', label: 'دریافت‌های مشتریان', icon: Wallet },
+  { to: '/expenses', label: 'هزینه‌های شرکت', icon: Wallet },
   { to: '/settings', label: 'تنظیمات', icon: Settings },
   { to: '/technician-specialties', label: 'تخصص‌های تعمیرکاران', icon: Wrench },
   { to: '/technician-jobs', label: 'سفارش‌های در دست انجام', icon: ClipboardList },
@@ -27,6 +31,6 @@ export const navigation = [
   { to: '/dispatch', label: 'برنامه‌ریزی و اعزام', icon: CalendarDays },
   { to: '/technicians', label: 'تعمیرکاران', icon: Wrench },
   { to: '/customers', label: 'مشتریان', icon: Users },
-  { to: '/finance', label: 'امور مالی', icon: Wallet },
+  { to: '/finance', label: 'دفتر گردش مالی', icon: Wallet },
   { to: '/reports', label: 'گزارش‌ها', icon: ChartNoAxesCombined },
 ] as const;

@@ -91,6 +91,9 @@ function isJob(value: unknown): value is Job {
 function isTransaction(value: unknown): value is Transaction {
   return (
     isRecord(value) &&
+    (value.method === undefined || ['cash', 'card', 'bank'].includes(String(value.method))) &&
+    (value.reference === undefined ||
+      (typeof value.reference === 'string' && value.reference.length <= 100)) &&
     isNonEmptyString(value.id) &&
     typeof value.jobId === 'string' &&
     typeof value.kind === 'string' &&
@@ -191,6 +194,15 @@ export function validateJobUpdate(
   if (payouts > next.total - next.commission) {
     return 'سهم تعمیرکار نمی‌تواند از مجموع پرداخت‌های ثبت‌شده برای این درخواست کمتر باشد.';
   }
+
+  const receipts = linkedTransactions.reduce(
+    (sum, item) => sum + (item.kind === 'receipt' ? item.amount : 0),
+    0,
+  );
+  if (linkedTransactions.length > 0 && next.customerId !== previous.customerId)
+    return 'سفارش دارای تراکنش مالی را نمی‌توان به مشتری دیگری منتقل کرد.';
+  if (receipts > 0 && (next.status === 'cancelled' || next.total < receipts))
+    return 'سفارش دارای دریافت وجه را بدون اصلاح مالی نمی‌توان لغو کرد یا مبلغ آن را کمتر از دریافت ثبت‌شده قرار داد.';
 
   return null;
 }

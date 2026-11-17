@@ -1,5 +1,11 @@
 import { createRouter } from '@tanstack/react-router';
 import { indexRoute } from '@/app/routes/index-route';
+import {
+  customerAccountsRoute,
+  receivablesRoute,
+  receiptsRoute,
+  expensesRoute,
+} from '@/app/routes/accounting-routes';
 import { settingsRoute } from '@/app/routes/settings-route';
 import { rootRoute } from '@/app/routes/root-route';
 import {
@@ -21,6 +27,10 @@ import {
 } from '@/app/routes/service-routes';
 
 const routeTree = rootRoute.addChildren([
+  customerAccountsRoute,
+  receivablesRoute,
+  receiptsRoute,
+  expensesRoute,
   settingsRoute,
   partsRoute,
   partNeedsRoute,

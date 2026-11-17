@@ -48,7 +48,7 @@ export function TechnicianFinancePage() {
       setError('مبلغ باید عدد صحیح مثبت و حداکثر برابر مانده سفارش باشد.');
       return;
     }
-    addTransaction({
+    const failure = addTransaction({
       id: crypto.randomUUID(),
       kind: 'payout',
       jobId,
@@ -56,6 +56,7 @@ export function TechnicianFinancePage() {
       date,
       description: String(form.get('description')).trim(),
     });
+    if (failure) return setError(failure);
     setJobId('');
   }
   return (
