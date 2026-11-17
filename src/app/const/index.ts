@@ -13,6 +13,9 @@ import {
 } from 'lucide-react';
 
 export const navigation = [
+  { to: '/technician-specialties', label: 'تخصص‌های تعمیرکاران', icon: Wrench },
+  { to: '/technician-jobs', label: 'سفارش‌های در دست انجام', icon: ClipboardList },
+  { to: '/technician-finance', label: 'امور مالی تعمیرکاران', icon: Wallet },
   { to: '/parts', label: 'قطعات و موجودی', icon: Package },
   { to: '/part-needs', label: 'نیاز قطعه و استعلام', icon: PackageSearch },
   { to: '/part-purchases', label: 'تأمین و خرید', icon: ShoppingCart },

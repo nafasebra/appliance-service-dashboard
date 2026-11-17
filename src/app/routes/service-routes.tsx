@@ -2,7 +2,11 @@ import { createRoute } from '@tanstack/react-router';
 import { rootRoute } from './root-route';
 import { RequestsPage } from '@/features/operations/requests-page';
 import { DispatchPage } from '@/features/operations/dispatch-page';
-import { CustomersPage, TechniciansPage } from '@/features/operations/people-pages';
+import { CustomersPage } from '@/features/operations/people-pages';
+import { TechnicianManagementPage } from '@/features/operations/technician-management-page';
+import { TechnicianSpecialtiesPage } from '@/features/operations/technician-specialties-page';
+import { TechnicianJobsPage } from '@/features/operations/technician-jobs-page';
+import { TechnicianFinancePage } from '@/features/operations/technician-finance-page';
 import { FinancePage } from '@/features/operations/finance-page';
 import { ReportsPage } from '@/features/operations/reports-page';
 
@@ -19,7 +23,22 @@ export const dispatchRoute = createRoute({
 export const techniciansRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/technicians',
-  component: TechniciansPage,
+  component: TechnicianManagementPage,
+});
+export const technicianSpecialtiesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/technician-specialties',
+  component: TechnicianSpecialtiesPage,
+});
+export const technicianJobsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/technician-jobs',
+  component: TechnicianJobsPage,
+});
+export const technicianFinanceRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/technician-finance',
+  component: TechnicianFinancePage,
 });
 export const customersRoute = createRoute({
   getParentRoute: () => rootRoute,

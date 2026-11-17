@@ -1,10 +1,11 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import { initialData } from './demo-data';
-import type { DemoData, Job, Transaction } from './types';
+import type { DemoData, Job, Transaction, Technician } from './types';
 import { isDemoData, validateJobUpdate } from './validation';
 
 const storageKey = 'hamyar-service-demo-v1';
 interface DemoContextValue extends DemoData {
+  saveTechnician: (technician: Technician) => string | null;
   saveJob: (job: Job) => string | null;
   addTransaction: (transaction: Transaction) => void;
   resetDemo: () => void;
@@ -42,6 +43,17 @@ export function DemoProvider({ children }: { children: ReactNode }) {
       value={{
         ...data,
         storageError,
+        saveTechnician: (technician) => {
+          const next = {
+            ...data,
+            technicians: data.technicians.some((item) => item.id === technician.id)
+              ? data.technicians.map((item) => (item.id === technician.id ? technician : item))
+              : [...data.technicians, technician],
+          };
+          if (!isDemoData(next)) return 'نام، تلفن، تخصص و محدوده فعالیت را کامل وارد کنید.';
+          update(next);
+          return null;
+        },
         saveJob: (job) => {
           const validationError = validateJobUpdate(
             data.jobs.find((item) => item.id === job.id),
