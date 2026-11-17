@@ -15,7 +15,7 @@ import { SidebarTrigger } from '@/shared/ui/sidebar';
 import { useCompanySettings } from '@/entities/company/model/settings-store';
 
 export function DashboardHeader() {
-  const { settings } = useCompanySettings();
+  const settings = useCompanySettings((state) => state.settings);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const currentPage = navigation.find((item) => item.to === pathname)?.label ?? 'داشبورد';
 

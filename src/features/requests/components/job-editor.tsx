@@ -19,8 +19,10 @@ import { Textarea } from '@/shared/ui/textarea';
 import { JalaliDatePicker, TimePicker } from '@/shared/ui/date-time-picker';
 
 export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) {
-  const { settings } = useCompanySettings();
-  const { customers, technicians, saveJob } = useDemo();
+  const settings = useCompanySettings((state) => state.settings);
+  const customers = useDemo((state) => state.customers);
+  const technicians = useDemo((state) => state.technicians);
+  const saveJob = useDemo((state) => state.saveJob);
   const [error, setError] = useState('');
   const [date, setDate] = useState(job?.date ?? '2026-11-16');
   function submit(event: FormEvent<HTMLFormElement>) {

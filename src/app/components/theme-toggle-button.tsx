@@ -3,7 +3,8 @@ import { useTheme } from '@/shared/lib/theme';
 import { Button } from '@/shared/ui/button';
 
 export function ThemeToggleButton() {
-  const { theme, toggleTheme } = useTheme();
+  const theme = useTheme((state) => state.theme);
+  const toggleTheme = useTheme((state) => state.toggleTheme);
   const isDark = theme === 'dark';
 
   return (

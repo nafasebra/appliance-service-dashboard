@@ -7,7 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
 const persianNumber = new Intl.NumberFormat('fa');
 
 export function NotificationButton() {
-  const { jobs } = useDemo();
+  const jobs = useDemo((state) => state.jobs);
   const newJobs = jobs.filter((job) => job.status === 'new');
 
   return (

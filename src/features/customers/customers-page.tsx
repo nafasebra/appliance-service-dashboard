@@ -11,7 +11,8 @@ import { Label } from '@/shared/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
 
 export function CustomersPage() {
-  const { customers, jobs } = useDemo();
+  const customers = useDemo((state) => state.customers);
+  const jobs = useDemo((state) => state.jobs);
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState<string | null>(null);
   const [editor, setEditor] = useState<Job | null>(null);

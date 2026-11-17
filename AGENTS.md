@@ -94,14 +94,15 @@ shared layout and not-found fallback; `App.tsx` mounts `RouterProvider`. Use typ
 `Link` and router navigation for internal URLs. Keep feature business logic outside
 route definitions. New routes do not require a generator or a Vite router plugin.
 
-Keep transient UI state local. Introduce shared state or server-state
-caching only when the implemented workflows need it. Keep derived values derived
+Keep transient UI state local. Use Zustand stores for data shared across pages:
+service records, parts, company settings and theme. Subscribe with selectors to the
+fields a component uses. Keep derived values derived
 instead of synchronizing duplicate state with effects.
 
 ## System design
 
-The application is client-only. `entities/service/model/demo-store.tsx` owns
-shared demo records through React context; `demo-data.ts` contains seed records,
+The application is client-only. `entities/service/model/demo-store.ts` owns
+shared demo records through Zustand; `demo-data.ts` contains seed records,
 `types.ts` defines domain types, and `finance.ts` contains pure financial summaries.
 Demo changes persist under `hamyar-service-demo-v1` in localStorage. Reset requires
 the existing confirmation dialog. Preserve storage error feedback and validate
@@ -184,7 +185,7 @@ Persian RTL UI -> feature hooks/use cases -> API adapters -> backend -> database
 - Preserve the removed sidebar copy `فضای آزمایشی شما`; do not reintroduce it.
   Keep the dashboard-guide button readable in dark mode.
 - Theme initialization runs in `index.html` before React mounts; the provider in
-  `shared/lib/theme.tsx` persists the toggle under `hamyar-service-theme`. First
+  `shared/lib/theme.ts` persists the toggle under `hamyar-service-theme`. First
   visit uses the system preference; subsequent visits use the saved choice.
 
 ## Formatting and newlines

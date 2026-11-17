@@ -19,7 +19,7 @@ export function DashboardLayout() {
 
 function DashboardShell() {
   const [helpOpen, setHelpOpen] = useState(false);
-  const { storageError } = useDemo();
+  const storageError = useDemo((state) => state.storageError);
 
   return (
     <>

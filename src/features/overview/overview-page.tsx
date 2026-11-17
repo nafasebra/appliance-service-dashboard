@@ -23,7 +23,10 @@ import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 
 export function OverviewPage() {
-  const { jobs, transactions, technicians, customers } = useDemo();
+  const jobs = useDemo((state) => state.jobs);
+  const transactions = useDemo((state) => state.transactions);
+  const technicians = useDemo((state) => state.technicians);
+  const customers = useDemo((state) => state.customers);
   const [editor, setEditor] = useState<Job | 'new' | null>(null);
   const finance = summarizeFinance(jobs, transactions);
   const active = jobs.filter((job) => !['completed', 'cancelled'].includes(job.status));

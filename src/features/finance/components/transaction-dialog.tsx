@@ -29,7 +29,10 @@ export function TransactionDialog({
   initialJobId?: string;
   onClose: () => void;
 }) {
-  const { jobs, customers, transactions, addTransaction } = useDemo();
+  const jobs = useDemo((state) => state.jobs);
+  const customers = useDemo((state) => state.customers);
+  const transactions = useDemo((state) => state.transactions);
+  const addTransaction = useDemo((state) => state.addTransaction);
   const [jobId, setJobId] = useState(initialJobId);
   const [date, setDate] = useState(() => toIsoDate(new Date()));
   const [method, setMethod] = useState<NonNullable<Transaction['method']>>('bank');

@@ -39,8 +39,10 @@ import {
 } from '@/shared/ui/alert-dialog';
 
 export function SettingsPage() {
-  const { settings, saveSettings } = useCompanySettings();
-  const { theme, toggleTheme } = useTheme();
+  const settings = useCompanySettings((state) => state.settings);
+  const saveSettings = useCompanySettings((state) => state.saveSettings);
+  const theme = useTheme((state) => state.theme);
+  const toggleTheme = useTheme((state) => state.toggleTheme);
   const [draft, setDraft] = useState<CompanySettings>(() => ({ ...settings }));
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);

@@ -30,7 +30,9 @@ const kindLabels = {
 };
 
 export function FinancePage() {
-  const { jobs, transactions, addTransaction } = useDemo();
+  const jobs = useDemo((state) => state.jobs);
+  const transactions = useDemo((state) => state.transactions);
+  const addTransaction = useDemo((state) => state.addTransaction);
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState('all');
   const [kind, setKind] = useState<Transaction['kind']>('receipt');

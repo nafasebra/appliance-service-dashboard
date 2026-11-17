@@ -22,7 +22,10 @@ import { money, dateLabel } from '@/shared/lib/format';
 import { toIsoDate } from '@/shared/lib/date';
 
 export function TechnicianFinancePage() {
-  const { technicians, jobs, transactions, addTransaction } = useDemo();
+  const technicians = useDemo((state) => state.technicians);
+  const jobs = useDemo((state) => state.jobs);
+  const transactions = useDemo((state) => state.transactions);
+  const addTransaction = useDemo((state) => state.addTransaction);
   const [technicianId, setTechnicianId] = useState('all');
   const [jobId, setJobId] = useState('');
   const [date, setDate] = useState(() => toIsoDate(new Date()));

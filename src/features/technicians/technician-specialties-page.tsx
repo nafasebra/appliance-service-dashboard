@@ -17,7 +17,8 @@ import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from '@
 import { number } from '@/shared/lib/format';
 
 export function TechnicianSpecialtiesPage() {
-  const { technicians, saveTechnician } = useDemo();
+  const technicians = useDemo((state) => state.technicians);
+  const saveTechnician = useDemo((state) => state.saveTechnician);
   const [query, setQuery] = useState('');
   const [specialty, setSpecialty] = useState('');
   const [message, setMessage] = useState('');

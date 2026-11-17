@@ -34,8 +34,9 @@ const persianNumber = new Intl.NumberFormat('fa');
 const navigationGroups = getNavigationGroups();
 
 export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
-  const { settings } = useCompanySettings();
-  const { jobs, resetDemo } = useDemo();
+  const settings = useCompanySettings((state) => state.settings);
+  const jobs = useDemo((state) => state.jobs);
+  const resetDemo = useDemo((state) => state.resetDemo);
   const { closeSidebar, closeSidebarOnMobile } = useDashboardSidebar();
   let newJobCount = 0;
 

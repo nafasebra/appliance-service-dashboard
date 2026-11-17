@@ -14,7 +14,9 @@ import { downloadCsv } from '@/shared/utils/csv';
 import { TransactionDialog } from './components/transaction-dialog';
 
 export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' }) {
-  const { jobs, customers, transactions } = useDemo();
+  const jobs = useDemo((state) => state.jobs);
+  const customers = useDemo((state) => state.customers);
+  const transactions = useDemo((state) => state.transactions);
   const [query, setQuery] = useState('');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');

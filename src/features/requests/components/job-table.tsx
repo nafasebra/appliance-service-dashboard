@@ -21,7 +21,8 @@ export function ApplianceIcon({ appliance }: { appliance: string }) {
 }
 
 export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job) => void }) {
-  const { customers, technicians } = useDemo();
+  const customers = useDemo((state) => state.customers);
+  const technicians = useDemo((state) => state.technicians);
   if (!jobs.length) return <EmptyState />;
   return (
     <Table className="overflow-auto">

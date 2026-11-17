@@ -41,8 +41,12 @@ const sections = [
 ] as const;
 
 export function PartsPage({ section }: { section: Section }) {
-  const { data, change, storageError } = useParts();
-  const { jobs, customers, technicians } = useDemo();
+  const data = useParts((state) => state.data);
+  const change = useParts((state) => state.change);
+  const storageError = useParts((state) => state.storageError);
+  const jobs = useDemo((state) => state.jobs);
+  const customers = useDemo((state) => state.customers);
+  const technicians = useDemo((state) => state.technicians);
   const [search, setSearch] = useState('');
   const [appliance, setAppliance] = useState('all');
   const [status, setStatus] = useState('all');

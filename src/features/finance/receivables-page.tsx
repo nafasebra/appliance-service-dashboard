@@ -11,7 +11,9 @@ import { downloadCsv } from '@/shared/utils/csv';
 import { TransactionDialog } from './components/transaction-dialog';
 
 export function ReceivablesPage() {
-  const { jobs, customers, transactions } = useDemo();
+  const jobs = useDemo((state) => state.jobs);
+  const customers = useDemo((state) => state.customers);
+  const transactions = useDemo((state) => state.transactions);
   const [query, setQuery] = useState('');
   const [receiptJob, setReceiptJob] = useState('');
   const rows = jobs

@@ -12,7 +12,9 @@ import { Label } from '@/shared/ui/label';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 
 export function DispatchPage() {
-  const { jobs, customers, technicians } = useDemo();
+  const jobs = useDemo((state) => state.jobs);
+  const customers = useDemo((state) => state.customers);
+  const technicians = useDemo((state) => state.technicians);
   const [date, setDate] = useState('2026-11-16');
   const [editor, setEditor] = useState<Job | 'new' | null>(null);
   const visits = jobs.filter((job) => job.date === date && job.status !== 'cancelled');

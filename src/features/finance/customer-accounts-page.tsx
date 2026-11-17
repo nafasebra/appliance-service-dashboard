@@ -19,7 +19,9 @@ import { CustomerStatement } from './components/customer-statement';
 import { TransactionDialog } from './components/transaction-dialog';
 
 export function CustomerAccountsPage() {
-  const { customers, jobs, transactions } = useDemo();
+  const customers = useDemo((state) => state.customers);
+  const jobs = useDemo((state) => state.jobs);
+  const transactions = useDemo((state) => state.transactions);
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState('all');
   const [selected, setSelected] = useState('');

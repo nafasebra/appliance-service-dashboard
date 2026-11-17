@@ -20,7 +20,9 @@ export function CustomerStatement({
   onClose: () => void;
   onReceipt: (jobId: string) => void;
 }) {
-  const { customers, jobs, transactions } = useDemo();
+  const customers = useDemo((state) => state.customers);
+  const jobs = useDemo((state) => state.jobs);
+  const transactions = useDemo((state) => state.transactions);
   const customer = customers.find((item) => item.id === customerId);
   const orders = jobs.filter((job) => job.customerId === customerId);
   const receipts = transactions.filter(

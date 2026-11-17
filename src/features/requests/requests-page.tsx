@@ -19,7 +19,8 @@ import {
 } from '@/shared/ui/select';
 
 export function RequestsPage() {
-  const { jobs, customers } = useDemo();
+  const jobs = useDemo((state) => state.jobs);
+  const customers = useDemo((state) => state.customers);
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState('all');
   const [editor, setEditor] = useState<Job | 'new' | null>(null);

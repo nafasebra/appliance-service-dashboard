@@ -3,7 +3,7 @@ import { getCashChartData } from '../utils/cash-chart';
 import { number, dateLabel } from '@/shared/lib/format';
 
 export function CashChart() {
-  const { transactions } = useDemo();
+  const transactions = useDemo((state) => state.transactions);
   const { points, max } = getCashChartData(transactions);
   return (
     <div>

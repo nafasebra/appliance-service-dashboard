@@ -14,7 +14,8 @@ import {
 import { number } from '@/shared/lib/format';
 
 export function TechnicianJobsPage() {
-  const { technicians, jobs } = useDemo();
+  const technicians = useDemo((state) => state.technicians);
+  const jobs = useDemo((state) => state.jobs);
   const [technicianId, setTechnicianId] = useState('all');
   const [status, setStatus] = useState('all');
   const [selected, setSelected] = useState<Job | null>(null);

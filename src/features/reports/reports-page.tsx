@@ -8,7 +8,9 @@ import { Progress } from '@/shared/ui/progress';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
 
 export function ReportsPage() {
-  const { jobs, technicians, transactions } = useDemo();
+  const jobs = useDemo((state) => state.jobs);
+  const technicians = useDemo((state) => state.technicians);
+  const transactions = useDemo((state) => state.transactions);
   return (
     <>
       <PageHeading

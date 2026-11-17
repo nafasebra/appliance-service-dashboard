@@ -12,7 +12,9 @@ import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from '@
 import { number } from '@/shared/lib/format';
 
 export function TechnicianManagementPage() {
-  const { technicians, jobs, saveTechnician } = useDemo();
+  const technicians = useDemo((state) => state.technicians);
+  const jobs = useDemo((state) => state.jobs);
+  const saveTechnician = useDemo((state) => state.saveTechnician);
   const [query, setQuery] = useState('');
   const [editor, setEditor] = useState<Technician | 'new' | null>(null);
   const [error, setError] = useState('');
