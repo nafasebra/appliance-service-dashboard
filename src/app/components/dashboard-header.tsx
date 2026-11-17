@@ -12,8 +12,10 @@ import {
   BreadcrumbSeparator,
 } from '@/shared/ui/breadcrumb';
 import { SidebarTrigger } from '@/shared/ui/sidebar';
+import { useCompanySettings } from '@/entities/company/model/settings-store';
 
 export function DashboardHeader() {
+  const { settings } = useCompanySettings();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const currentPage = navigation.find((item) => item.to === pathname)?.label ?? 'داشبورد';
 
@@ -49,7 +51,7 @@ export function DashboardHeader() {
           <span className="h-6.25 w-px bg-border" />
           <span className="flex items-center gap-1.75 text-2xs text-muted-foreground max-desktop:hidden [&_i]:h-1.5 [&_i]:w-1.5 [&_i]:rounded-full [&_i]:bg-primary">
             <i />
-            شعبه تهران
+            {settings.branchName}
           </span>
         </div>
 

@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { useDemo } from '@/entities/service/model/demo-store';
+import { useCompanySettings } from '@/entities/company/model/settings-store';
 import { appliances, statusLabels, type Job, type JobStatus } from '@/entities/service/model/types';
 import { validateAmounts } from '@/entities/service/model/finance';
 import { Modal } from '@/shared/ui/primitives';
@@ -18,6 +19,7 @@ import { Textarea } from '@/shared/ui/textarea';
 import { JalaliDatePicker, TimePicker } from '@/shared/ui/date-time-picker';
 
 export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) {
+  const { settings } = useCompanySettings();
   const { customers, technicians, saveJob } = useDemo();
   const [error, setError] = useState('');
   const [date, setDate] = useState(job?.date ?? '2026-11-16');
@@ -109,7 +111,11 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
           اولویت
-          <Select dir="rtl" name="priority" defaultValue={job?.priority ?? 'normal'}>
+          <Select
+            dir="rtl"
+            name="priority"
+            defaultValue={job?.priority ?? settings.defaultPriority}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="انتخاب کنید" />
             </SelectTrigger>
@@ -143,7 +149,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
           ساعت مراجعه
-          <TimePicker name="time" defaultValue={job?.time ?? '09:00'} required />
+          <TimePicker name="time" defaultValue={job?.time ?? settings.defaultVisitTime} required />
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
           تعمیرکار

@@ -2,6 +2,7 @@ import { createRootRoute, Link } from '@tanstack/react-router';
 import { DashboardLayout } from '@/app/dashboard-layout';
 import { DemoProvider } from '@/entities/service/model/demo-store';
 import { PartsProvider } from '@/features/parts/model/parts-store';
+import { CompanySettingsProvider } from '@/entities/company/model/settings-store';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 
@@ -14,7 +15,9 @@ function RootLayout() {
   return (
     <DemoProvider>
       <PartsProvider>
-        <DashboardLayout />
+        <CompanySettingsProvider>
+          <DashboardLayout />
+        </CompanySettingsProvider>
       </PartsProvider>
     </DemoProvider>
   );

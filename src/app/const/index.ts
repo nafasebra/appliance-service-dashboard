@@ -10,9 +10,11 @@ import {
   PackageSearch,
   ShoppingCart,
   PackageCheck,
+  Settings,
 } from 'lucide-react';
 
 export const navigation = [
+  { to: '/settings', label: 'تنظیمات', icon: Settings },
   { to: '/technician-specialties', label: 'تخصص‌های تعمیرکاران', icon: Wrench },
   { to: '/technician-jobs', label: 'سفارش‌های در دست انجام', icon: ClipboardList },
   { to: '/technician-finance', label: 'امور مالی تعمیرکاران', icon: Wallet },

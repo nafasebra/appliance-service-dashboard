@@ -1,5 +1,6 @@
 import { createRouter } from '@tanstack/react-router';
 import { indexRoute } from '@/app/routes/index-route';
+import { settingsRoute } from '@/app/routes/settings-route';
 import { rootRoute } from '@/app/routes/root-route';
 import {
   partsRoute,
@@ -20,6 +21,7 @@ import {
 } from '@/app/routes/service-routes';
 
 const routeTree = rootRoute.addChildren([
+  settingsRoute,
   partsRoute,
   partNeedsRoute,
   partPurchasesRoute,

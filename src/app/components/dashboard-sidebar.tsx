@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { ArrowUpLeft, LifeBuoy, RotateCcw, Wrench, X } from 'lucide-react';
 import { getNavigationGroups } from '@/app/utils/navigation';
+import { useCompanySettings } from '@/entities/company/model/settings-store';
 import { useDashboardSidebar } from '@/app/hooks/use-dashboard-sidebar';
 import { useDemo } from '@/entities/service/model/demo-store';
 import {
@@ -33,6 +34,7 @@ const persianNumber = new Intl.NumberFormat('fa');
 const navigationGroups = getNavigationGroups();
 
 export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
+  const { settings } = useCompanySettings();
   const { jobs, resetDemo } = useDemo();
   const { closeSidebar, closeSidebarOnMobile } = useDashboardSidebar();
   let newJobCount = 0;
@@ -53,8 +55,9 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
           <span className="grid h-10.75 w-10.75 -rotate-7 place-items-center rounded-lg bg-primary text-white">
             <Wrench size={24} />
           </span>
-          <strong>
-            <span>HAMYAR SERVICE</span>
+          <strong className="min-w-0 truncate" title={settings.companyName}>
+            {settings.companyName}
+            <span>{settings.brandName}</span>
           </strong>
         </Link>
         <Button
