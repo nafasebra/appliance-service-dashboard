@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "address": "Address",
+    "history": "History",
+    "name": "Customer name",
+    "phone": "Phone",
+    "requestCount": "Requests"
+  },
+  "description": "Contact details, addresses, and service history in one place.",
+  "directory": {
+    "count_one": "{{count}} sample customer",
+    "count_other": "{{count}} sample customers",
+    "title": "Customer directory"
+  },
+  "history": {
+    "open": "History for {{name}}",
+    "title": "History for {{name}}"
+  },
+  "search": {
+    "label": "Search customers",
+    "placeholder": "Search name, phone, or address…"
+  },
+  "title": "Customers"
+}

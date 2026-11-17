@@ -180,7 +180,9 @@ and both themes when extending the interface.
 
 Persian and English are available from the header language selector, with automatic
 RTL/LTR layout and a saved browser preference. Translations live in standard nested
-JSON files under `src/shared/i18n/locales/{fa,en}/translation.json` and are managed
-with i18next/react-i18next. The Jalali calendar and existing business records are
+JSON files managed with i18next/react-i18next. Customers owns its messages under
+`src/features/customers/i18n/{fa,en}.json` and exposes `useCustomersTranslation()`.
+Shared and unmigrated messages remain in `src/shared/i18n/locales`. The Jalali
+calendar and existing business records are
 preserved in both languages. See [localization conventions](docs/localization.md)
 for adding messages and running extraction and validation.

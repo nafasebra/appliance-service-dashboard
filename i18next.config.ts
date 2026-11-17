@@ -4,8 +4,17 @@ export default defineConfig({
   locales: ['fa', 'en'],
   extract: {
     input: 'src/**/*.{ts,tsx}',
-    ignore: ['src/**/*.test.ts', 'src/shared/i18n/**', 'src/**/model/**', 'src/shared/store/**'],
-    output: 'src/shared/i18n/locales/{{language}}/{{namespace}}.json',
+    ignore: [
+      'src/**/*.test.ts',
+      'src/**/*.type-test.ts',
+      'src/shared/i18n/**',
+      'src/**/model/**',
+      'src/shared/store/**',
+    ],
+    output: (language, namespace) =>
+      namespace === 'translation'
+        ? `src/shared/i18n/locales/${language}/translation.json`
+        : `src/features/${namespace}/i18n/${language}.json`,
     primaryLanguage: 'fa',
     defaultNS: 'translation',
     preservePatterns: ['labels.*', 'ui.*', 'appTitle'],
@@ -26,4 +35,15 @@ export default defineConfig({
   status: {
     ignoreKeys: ['languages.english', 'languages.persian'],
   },
+  plugins: [
+    {
+      name: 'feature-translation-hooks',
+      // Normalize the documented hook convention only for CLI analysis, not source.
+      onLoad: (code) =>
+        code.replace(
+          /const t = use([A-Z][A-Za-z0-9]*)Translation\(\)/g,
+          (_, feature: string) => `const { t } = useTranslation('${feature.toLowerCase()}')`,
+        ),
+    },
+  ],
 });

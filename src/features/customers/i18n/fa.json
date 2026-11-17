@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "address": "آدرس",
+    "history": "سوابق",
+    "name": "نام مشتری",
+    "phone": "تلفن",
+    "requestCount": "تعداد درخواست"
+  },
+  "description": "اطلاعات تماس، آدرس و سوابق خدمات مشتریان در یک جا.",
+  "directory": {
+    "count_one": "{{count}} مشتری نمونه",
+    "count_other": "{{count}} مشتری نمونه",
+    "title": "دفتر مشتریان"
+  },
+  "history": {
+    "open": "سوابق {{name}}",
+    "title": "سوابق {{name}}"
+  },
+  "search": {
+    "label": "جستجوی مشتری",
+    "placeholder": "جستجوی نام، تلفن یا آدرس…"
+  },
+  "title": "مشتریان"
+}

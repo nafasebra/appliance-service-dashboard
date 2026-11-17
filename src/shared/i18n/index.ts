@@ -3,8 +3,11 @@ import { initReactI18next } from 'react-i18next';
 import en from './locales/en/translation.json' with { type: 'json' };
 import fa from './locales/fa/translation.json' with { type: 'json' };
 import { legacyLabelKeys } from './legacy-labels.ts';
+import { translationOptions, type TranslationBundle } from './resources.ts';
+import type { ParseKeys } from 'i18next';
 
-export type Language = 'fa' | 'en';
+export type { Language } from './resources.ts';
+import type { Language } from './resources.ts';
 export const languageStorageKey = 'hamyar-service-language';
 
 export function resolveLanguage(value: string | null | undefined): Language {
@@ -21,17 +24,12 @@ function readLanguage(): Language {
 }
 
 export const i18n = instance;
+export const sharedTranslations = {
+  namespace: 'translation',
+  locales: { en, fa },
+} as const satisfies TranslationBundle;
 
-void i18n.use(initReactI18next).init({
-  resources: { en: { translation: en }, fa: { translation: fa } },
-  lng: readLanguage(),
-  fallbackLng: 'fa',
-  supportedLngs: ['fa', 'en'],
-  load: 'languageOnly',
-  returnEmptyString: false,
-  initAsync: false,
-  interpolation: { escapeValue: false },
-});
+void i18n.use(initReactI18next).init(translationOptions(readLanguage(), [sharedTranslations]));
 
 function applyLanguage(language: string) {
   const supported = resolveLanguage(language);
@@ -53,7 +51,8 @@ applyLanguage(i18n.language);
 
 export function translateLabel(label: string): string {
   const key = Object.hasOwn(legacyLabelKeys, label) ? legacyLabelKeys[label] : label;
-  return i18n.exists(key) ? i18n.t(key) : label;
+  // Compatibility input is dynamic; exists validates it before the typed lookup.
+  return i18n.exists(key) ? i18n.t(key as ParseKeys<'translation'>) : label;
 }
 
 export function getLocale(): string {

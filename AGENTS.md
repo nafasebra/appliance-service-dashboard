@@ -37,9 +37,15 @@ Read the relevant local skill before related work:
 - Zustand stores, selectors and persistence: `.skills/zustand/SKILL.md`
 - Localization, new UI copy, or direction changes: `.skills/i18n/SKILL.md` and
   `docs/localization.md`.
+
 - TanStack Table changes: `.skills/tanstack-table/core/SKILL.md`, then
   `.skills/tanstack-table/react/getting-started/SKILL.md`; load the feature/state
   references needed for the change.
+
+Feature-local i18n is being introduced incrementally. Customers is the reference:
+keep its messages and typed hook in `features/customers/i18n/`. Compose bundles in
+`app/i18n.ts`; shared infrastructure must receive bundles rather than import features.
+Migrate additional features only after user approval of the reference architecture.
 
 Sources and project-specific compatibility notes are in `.skills/README.md`.
 User instructions and this project's constraints take precedence over skill defaults.

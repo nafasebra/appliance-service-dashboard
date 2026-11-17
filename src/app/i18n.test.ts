@@ -1,12 +1,26 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import en from './locales/en/translation.json' with { type: 'json' };
-import fa from './locales/fa/translation.json' with { type: 'json' };
-import { i18n, getLocale, languageStorageKey, resolveLanguage, translateLabel } from './index.ts';
-import { legacyLabelKeys } from './legacy-labels.ts';
-import { money } from '../lib/format.ts';
-import { formatJalaliDate } from '../lib/date.ts';
-import { initialData } from '../../entities/service/model/demo-data.ts';
+import en from '../shared/i18n/locales/en/translation.json' with { type: 'json' };
+import fa from '../shared/i18n/locales/fa/translation.json' with { type: 'json' };
+import {
+  i18n,
+  getLocale,
+  languageStorageKey,
+  resolveLanguage,
+  translateLabel,
+} from '../shared/i18n/index.ts';
+import { legacyLabelKeys } from '../shared/i18n/legacy-labels.ts';
+import { money } from '../shared/lib/format.ts';
+import { formatJalaliDate } from '../shared/lib/date.ts';
+import { initialData } from '../entities/service/model/demo-data.ts';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { I18nextProvider } from 'react-i18next';
+import { createI18n } from '../shared/i18n/create-i18n.ts';
+import { buildResources } from '../shared/i18n/resources.ts';
+import { customersTranslations } from '../features/customers/i18n/resources.ts';
+import { useCustomersTranslation } from '../features/customers/i18n/use-customers-translation.ts';
+import { translationBundles } from './i18n.ts';
 
 function flatten(value: unknown, prefix = ''): Record<string, string> {
   assert.ok(value && typeof value === 'object' && !Array.isArray(value));
@@ -97,4 +111,63 @@ test('unsupported saved language falls back to Persian', () => {
   assert.equal(resolveLanguage('fa-IR'), 'fa');
   assert.equal(resolveLanguage('unsupported'), 'fa');
   assert.equal(resolveLanguage(null), 'fa');
+});
+
+test('feature catalogs keep matching keys and placeholders', () => {
+  const english = flatten(customersTranslations.locales.en);
+  const persian = flatten(customersTranslations.locales.fa);
+  assert.deepEqual(Object.keys(english).sort(), Object.keys(persian).sort());
+  for (const [key, value] of Object.entries(english)) {
+    assert.ok(value.trim() && persian[key]?.trim(), key);
+    const placeholders = (message: string) =>
+      [...message.matchAll(/{{([^}]+)}}/g)].map((m) => m[1]).sort();
+    assert.deepEqual(placeholders(value), placeholders(persian[key]), key);
+  }
+});
+
+test('registration rejects namespace collisions before overwriting translations', () => {
+  assert.throws(() => buildResources([customersTranslations, customersTranslations]), /duplicate/);
+  assert.throws(
+    () => buildResources([{ ...customersTranslations, namespace: '__proto__' }]),
+    /Invalid/,
+  );
+});
+
+test('feature hook renders with isolated server instances and follows language changes', async () => {
+  const bundles = translationBundles;
+  assert.equal(i18n.getFixedT('en', 'customers')('title'), 'Customers');
+  const [english, persian] = await Promise.all([
+    createI18n('en', bundles),
+    createI18n('fa', bundles),
+  ]);
+  function CustomerSummary() {
+    const t = useCustomersTranslation();
+    return createElement(
+      'h1',
+      null,
+      `${t('title')} | ${t('history.title', { name: 'Alex' })} | ${t('directory.count', { count: 2 })}`,
+    );
+  }
+  const render = (instance: typeof english) =>
+    renderToStaticMarkup(
+      createElement(I18nextProvider, { i18n: instance }, createElement(CustomerSummary)),
+    );
+  assert.match(render(english), /Customers \| History for Alex \| 2 sample customers/);
+  assert.match(render(persian), /مشتریان.*سوابق Alex.*2 مشتری نمونه/);
+  assert.equal(
+    english.getFixedT('en', 'customers')('directory.count', { count: 1 }),
+    '1 sample customer',
+  );
+  assert.equal(
+    english.getFixedT('en', 'customers')('directory.count', { count: 0 }),
+    '0 sample customers',
+  );
+  await english.changeLanguage('fa');
+  assert.match(render(english), /مشتریان/);
+  await english.changeLanguage('en');
+  assert.equal(persian.language, 'fa');
+  english.addResourceBundle('en', 'customers', { title: 'Changed locally' }, true, true);
+  assert.equal(customersTranslations.locales.en.title, 'Customers');
+  assert.equal(persian.getFixedT('en', 'customers')('title'), 'Customers');
+  assert.equal(i18n.language, 'fa');
 });
