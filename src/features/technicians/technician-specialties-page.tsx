@@ -15,8 +15,10 @@ import {
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { number } from '@/shared/lib/format';
+import { useTranslation } from 'react-i18next'
 
 export function TechnicianSpecialtiesPage() {
+  const { t } = useTranslation()
   const technicians = useDemo((state) => state.technicians);
   const saveTechnician = useDemo((state) => state.saveTechnician);
   const [query, setQuery] = useState('');
@@ -38,7 +40,7 @@ export function TechnicianSpecialtiesPage() {
     const specialty = String(form.get('specialty') ?? '').trim();
     const failure = saveTechnician({ ...tech, specialty });
     setError(failure ?? '');
-    setMessage(failure ? '' : `تخصص ${tech.name} به‌روزرسانی شد.`);
+    setMessage(failure ? '' : t('name', 'تخصص {{name}} به‌روزرسانی شد.', { name: tech.name }));
   }
   const specialtyRows = useMemo(
     () =>
@@ -76,21 +78,21 @@ export function TechnicianSpecialtiesPage() {
   return (
     <>
       <PageHeading
-        title="تخصص‌های تعمیرکاران"
-        description="مشاهده پوشش تخصصی تیم و تعیین حوزه تخصص هر تعمیرکار."
+        title={t('key32', 'تخصص‌های تعمیرکاران')}
+        description={t('key33', 'مشاهده پوشش تخصصی تیم و تعیین حوزه تخصص هر تعمیرکار.')}
       />
       {error || message ? (
         <Alert variant={error ? 'destructive' : 'default'} className="mb-4">
           <AlertDescription>{error || message}</AlertDescription>
         </Alert>
       ) : null}
-      <Panel title="تعیین یا تغییر تخصص">
+      <Panel title={t('key34', 'تعیین یا تغییر تخصص')}>
         <form onSubmit={submit} className="flex flex-wrap items-end gap-4 p-6">
           <Label className="flex flex-col gap-2">
-            تعمیرکار
+            {t('key35', 'تعمیرکار')}
             <Select dir="rtl" name="technicianId" required>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="انتخاب تعمیرکار" />
+                <SelectValue placeholder={t('key36', 'انتخاب تعمیرکار')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -104,18 +106,18 @@ export function TechnicianSpecialtiesPage() {
             </Select>
           </Label>
           <Label className="flex flex-col gap-2">
-            عنوان تخصص
+            {t('key37', 'عنوان تخصص')}
             <Input
               name="specialty"
               value={specialty}
               onChange={(event) => setSpecialty(event.target.value)}
               required
               maxLength={150}
-              placeholder="انتخاب یا ورود تخصص جدید"
+              placeholder={t('key38', 'انتخاب یا ورود تخصص جدید')}
             />
             <Select dir="rtl" value={specialty || undefined} onValueChange={setSpecialty}>
-              <SelectTrigger aria-label="انتخاب از تخصص‌های موجود" className="w-full">
-                <SelectValue placeholder="تخصص‌های موجود" />
+              <SelectTrigger aria-label={t('key39', 'انتخاب از تخصص‌های موجود')} className="w-full">
+                <SelectValue placeholder={t('key40', 'تخصص‌های موجود')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -128,17 +130,17 @@ export function TechnicianSpecialtiesPage() {
               </SelectContent>
             </Select>
           </Label>
-          <Button type="submit">ثبت تخصص</Button>
+          <Button type="submit">{t('key41', 'ثبت تخصص')}</Button>
         </form>
       </Panel>
       <Input
-        aria-label="جستجوی تخصص"
+        aria-label={t('key42', 'جستجوی تخصص')}
         className="my-4 max-w-sm"
-        placeholder="جستجوی تخصص…"
+        placeholder={t('key43', 'جستجوی تخصص…')}
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
-      <Panel title="پوشش تخصصی تیم">
+      <Panel title={t('key44', 'پوشش تخصصی تیم')}>
         <DataTable
           data={specialtyRows}
           getRowId={({ name }) => String(name)}

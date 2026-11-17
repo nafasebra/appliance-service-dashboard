@@ -11,8 +11,10 @@ import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Label } from '@/shared/ui/label';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
+import { useTranslation } from 'react-i18next'
 
 export function DispatchPage() {
+  const { t } = useTranslation()
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const technicians = useDemo((state) => state.technicians);
@@ -22,13 +24,13 @@ export function DispatchPage() {
   return (
     <>
       <PageHeading
-        title="برنامه‌ریزی و اعزام"
-        description="برنامه مراجعه هر تعمیرکار را ببینید و درخواست‌ها را تخصیص دهید."
+        title={t('key262', 'برنامه‌ریزی و اعزام')}
+        description={t('key263', 'برنامه مراجعه هر تعمیرکار را ببینید و درخواست‌ها را تخصیص دهید.')}
         action={
           <Label className="flex flex-col gap-1.75 text-2xs text-muted-foreground">
-            تاریخ برنامه
+            {t('key264', 'تاریخ برنامه')}
             <JalaliDatePicker
-              aria-label="تاریخ برنامه اعزام"
+              aria-label={t('key265', 'تاریخ برنامه اعزام')}
               value={date}
               onValueChange={setDate}
             />
@@ -38,8 +40,7 @@ export function DispatchPage() {
       <div className="flex gap-2.5 items-center py-4 px-4.75 border border-border rounded-md text-muted-foreground bg-accent text-ui mb-6 [&_button]:ms-auto max-mobile:flex-wrap max-mobile:leading-loose max-mobile:[&_>_span]:flex-1 max-mobile:[&_button]:ms-7.5 dark:bg-accent dark:border-border">
         <Clock3 size={20} />
         <span>
-          نمای برنامه روزانه · {number(visits.length)} مراجعه · ساعت‌ها بر اساس زمان محلی تهران در
-          این نمونه
+          {t('key266', 'نمای برنامه روزانه ·')} {number(visits.length)} {t('key267', 'مراجعه · ساعت‌ها بر اساس زمان محلی تهران در این نمونه')}
         </span>
         <Button
           variant="link"
@@ -47,12 +48,12 @@ export function DispatchPage() {
           onClick={() => setEditor('new')}
         >
           <Plus size={16} />
-          درخواست جدید
+          {t('key176', 'درخواست جدید')}
         </Button>
       </div>
       <div className="grid grid-cols-3 gap-4.5 items-start max-desktop:grid-cols-2 max-mobile:grid-cols-1">
         {[
-          { id: '', name: 'بدون تخصیص', specialty: 'برای این درخواست‌ها تعمیرکار انتخاب کنید' },
+          { id: '', name: t('key268', 'بدون تخصیص'), specialty: t('key269', 'برای این درخواست‌ها تعمیرکار انتخاب کنید') },
           ...technicians,
         ].map((tech) => {
           const assigned = visits

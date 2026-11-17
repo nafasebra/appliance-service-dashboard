@@ -9,8 +9,10 @@ import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
+import { useTranslation } from 'react-i18next'
 
 export function CustomersPage() {
+  const { t } = useTranslation()
   const customers = useDemo((state) => state.customers);
   const jobs = useDemo((state) => state.jobs);
   const [query, setQuery] = useState('');
@@ -59,31 +61,31 @@ export function CustomersPage() {
             size="icon-sm"
             className="grid place-items-center h-7.75 w-7.75 border border-transparent rounded-md text-muted-foreground bg-transparent shrink-0 [&:hover]:bg-accent [&:hover]:border-border dark:[&:hover]:bg-accent dark:[&:hover]:border-border"
             onClick={() => setSelected(customer.id)}
-            aria-label={`سوابق ${customer.name}`}
+            aria-label={t('name2', 'سوابق {{name}}', { name: customer.name })}
           >
             <ArrowUpLeft size={18} />
           </Button>
         ),
       },
     ],
-    [jobs, setSelected],
+    [jobs, setSelected, t],
   );
   return (
     <>
       <PageHeading
-        title="مشتریان"
-        description="اطلاعات تماس، آدرس و سوابق خدمات مشتریان در یک جا."
+        title={t('key257', 'مشتریان')}
+        description={t('key258', 'اطلاعات تماس، آدرس و سوابق خدمات مشتریان در یک جا.')}
       />
-      <Panel title="دفتر مشتریان" subtitle={`${number(customers.length)} مشتری نمونه`}>
+      <Panel title={t('key259', 'دفتر مشتریان')} subtitle={t('length5', '{{length}} مشتری نمونه', { length: number(customers.length) })}>
         <div className="flex items-center gap-3 pt-0 px-5.5 pb-5 flex-wrap max-mobile:px-4.5">
           <Label className="flex w-85 max-w-full items-center gap-2.5 rounded-md border border-border py-0 px-2.75 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring [&_input]:w-full [&_input]:border-0 [&_input]:bg-transparent [&_input]:py-2.75 [&_input]:px-0 [&_input]:text-2xs [&_input]:outline-hidden dark:border-border dark:bg-muted dark:text-primary-foreground">
             <Search size={18} />
             <Input
               className="border-0 shadow-none focus-visible:ring-0"
-              aria-label="جستجوی مشتری"
+              aria-label={t('key260', 'جستجوی مشتری')}
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="جستجوی نام، تلفن یا آدرس…"
+              placeholder={t('key261', 'جستجوی نام، تلفن یا آدرس…')}
             />
           </Label>
         </div>
@@ -100,7 +102,7 @@ export function CustomersPage() {
       </Panel>
       {selected && (
         <Modal
-          title={`سوابق ${customers.find((item) => item.id === selected)?.name}`}
+          title={t('val', 'سوابق {{val}}', { val: customers.find((item) => item.id === selected)?.name })}
           onClose={() => setSelected(null)}
         >
           <JobTable

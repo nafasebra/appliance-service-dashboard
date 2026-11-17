@@ -1,3 +1,4 @@
+import i18next from 'i18next'
 const jalaliDateFormatter = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
   year: 'numeric',
   month: 'long',
@@ -30,5 +31,5 @@ export function toIsoDate(date: Date): string {
 
 export function formatJalaliDate(value: string): string {
   const date = parseIsoDate(value);
-  return date ? jalaliDateFormatter.format(date) : 'انتخاب تاریخ';
+  return date ? jalaliDateFormatter.format(date) : i18next.t('key13', 'انتخاب تاریخ');
 }

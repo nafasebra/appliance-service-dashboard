@@ -9,6 +9,8 @@ import {
 import { Button } from './button';
 import { DataTablePagination } from './data-table-pagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table';
+import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
 
 export type DataTableColumn<TData extends RowData> = ColumnDef<DataTableFeatures, TData>;
 
@@ -23,8 +25,9 @@ export function DataTable<TData extends RowData>({
   data,
   columns,
   getRowId,
-  emptyMessage = 'موردی برای نمایش وجود ندارد.',
+  emptyMessage = i18next.t('key15', 'موردی برای نمایش وجود ندارد.'),
 }: DataTableProps<TData>) {
+  const { t } = useTranslation()
   const table = useTable({
     ...dataTableDefaults,
     features: dataTableFeatures,
@@ -66,10 +69,10 @@ export function DataTable<TData extends RowData>({
                         <Icon aria-hidden="true" />
                         <span className="sr-only">
                           {sorted === 'asc'
-                            ? 'صعودی؛ تغییر به نزولی'
+                            ? t('key16', 'صعودی؛ تغییر به نزولی')
                             : sorted === 'desc'
-                              ? 'نزولی؛ حذف مرتب‌سازی'
-                              : 'مرتب‌سازی صعودی'}
+                              ? t('key17', 'نزولی؛ حذف مرتب‌سازی')
+                              : t('key18', 'مرتب‌سازی صعودی')}
                         </span>
                       </Button>
                     ) : (

@@ -17,8 +17,10 @@ import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money } from '@/shared/lib/format';
 import { CustomerStatement } from './components/customer-statement';
 import { TransactionDialog } from './components/transaction-dialog';
+import { useTranslation } from 'react-i18next'
 
 export function CustomerAccountsPage() {
+  const { t } = useTranslation()
   const customers = useDemo((state) => state.customers);
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
@@ -91,34 +93,34 @@ export function CustomerAccountsPage() {
         enableSorting: false,
         cell: ({ row: { original: row } }) => (
           <Button variant="outline" size="sm" onClick={() => setSelected(row.customer.id)}>
-            مشاهده ریز حساب
+            {t('key244', 'مشاهده ریز حساب')}
           </Button>
         ),
       },
     ],
-    [setSelected],
+    [setSelected, t],
   );
   return (
     <>
       <PageHeading
-        title="حساب مشتریان"
-        description="صورت‌حساب تفصیلی مشتری، دریافت‌ها و مانده هر سفارش؛ مطالبات فقط از خدمات تکمیل‌شده محاسبه می‌شوند."
+        title={t('key245', 'حساب مشتریان')}
+        description={t('key246', 'صورت‌حساب تفصیلی مشتری، دریافت‌ها و مانده هر سفارش؛ مطالبات فقط از خدمات تکمیل‌شده محاسبه می‌شوند.')}
       />
       <div className="mb-6 grid gap-4 md:grid-cols-3">
         <StatCard
-          title="خدمات قطعی"
+          title={t('key247', 'خدمات قطعی')}
           value={money(accounts.reduce((sum, row) => sum + row.charge, 0))}
           detail="مجموع سفارش‌های تکمیل‌شده"
           icon={<Wallet />}
         />
         <StatCard
-          title="مطالبات مشتریان"
+          title={t('key214', 'مطالبات مشتریان')}
           value={money(accounts.reduce((sum, row) => sum + row.outstanding, 0))}
           detail="مانده بدهی به تفکیک سفارش"
           icon={<Wallet />}
         />
         <StatCard
-          title="پیش‌دریافت / بستانکاری"
+          title={t('key248', 'پیش‌دریافت / بستانکاری')}
           value={money(accounts.reduce((sum, row) => sum + row.credit, 0))}
           detail="دریافت مازاد بر خدمات قطعی هر سفارش"
           icon={<Wallet />}
@@ -126,27 +128,27 @@ export function CustomerAccountsPage() {
       </div>
       <div className="mb-4 flex flex-wrap gap-3">
         <Input
-          aria-label="جستجوی حساب مشتری"
+          aria-label={t('key249', 'جستجوی حساب مشتری')}
           className="max-w-sm"
-          placeholder="نام یا تلفن مشتری…"
+          placeholder={t('key250', 'نام یا تلفن مشتری…')}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
         <Select dir="rtl" value={status} onValueChange={setStatus}>
-          <SelectTrigger aria-label="وضعیت حساب">
+          <SelectTrigger aria-label={t('key251', 'وضعیت حساب')}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="all">همه حساب‌ها</SelectItem>
-              <SelectItem value="debtor">دارای بدهی</SelectItem>
-              <SelectItem value="credit">دارای پیش‌دریافت / بستانکاری</SelectItem>
-              <SelectItem value="clear">بدون مانده</SelectItem>
+              <SelectItem value="all">{t('key252', 'همه حساب‌ها')}</SelectItem>
+              <SelectItem value="debtor">{t('key253', 'دارای بدهی')}</SelectItem>
+              <SelectItem value="credit">{t('key254', 'دارای پیش‌دریافت / بستانکاری')}</SelectItem>
+              <SelectItem value="clear">{t('key255', 'بدون مانده')}</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
       </div>
-      <Panel title="دفتر حساب مشتریان">
+      <Panel title={t('key256', 'دفتر حساب مشتریان')}>
         <DataTable
           data={filtered}
           getRowId={(row) => String(row.customer.id)}

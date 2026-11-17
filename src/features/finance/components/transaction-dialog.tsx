@@ -19,6 +19,7 @@ import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 import { toIsoDate } from '@/shared/lib/date';
 import { money } from '@/shared/lib/format';
 import { getFormText } from '@/shared/utils/form';
+import { useTranslation } from 'react-i18next'
 
 export function TransactionDialog({
   kind,
@@ -29,6 +30,7 @@ export function TransactionDialog({
   initialJobId?: string;
   onClose: () => void;
 }) {
+  const { t } = useTranslation()
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const transactions = useDemo((state) => state.transactions);
@@ -71,14 +73,14 @@ export function TransactionDialog({
   }
 
   return (
-    <Modal title={kind === 'receipt' ? 'ثبت دریافت از مشتری' : 'ثبت هزینه شرکت'} onClose={onClose}>
+    <Modal title={kind === 'receipt' ? t('key326', 'ثبت دریافت از مشتری') : t('key327', 'ثبت هزینه شرکت')} onClose={onClose}>
       <form onSubmit={submit} className="grid gap-4 p-6 sm:grid-cols-2">
         {kind === 'receipt' ? (
           <div className="col-span-full flex flex-col gap-2">
-            <Label htmlFor="receipt-job">سفارش مشتری</Label>
+            <Label htmlFor="receipt-job">{t('key158', 'سفارش مشتری')}</Label>
             <Select dir="rtl" value={jobId} onValueChange={setJobId} required>
               <SelectTrigger id="receipt-job" className="w-full">
-                <SelectValue placeholder="انتخاب سفارش دارای مانده" />
+                <SelectValue placeholder={t('key328', 'انتخاب سفارش دارای مانده')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -93,15 +95,15 @@ export function TransactionDialog({
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
-              مانده قابل دریافت: {money(remaining)}
+              {t('key329', 'مانده قابل دریافت:')} {money(remaining)}
               {selectedJob && selectedJob.status !== 'completed'
-                ? ' · این دریافت به‌عنوان پیش‌دریافت نمایش داده می‌شود.'
+                ? t('key330', ' · این دریافت به‌عنوان پیش‌دریافت نمایش داده می‌شود.')
                 : ''}
             </p>
           </div>
         ) : null}
         <div className="flex flex-col gap-2">
-          <Label htmlFor="transaction-amount">مبلغ (تومان)</Label>
+          <Label htmlFor="transaction-amount">{t('key83', 'مبلغ (تومان)')}</Label>
           <Input
             id="transaction-amount"
             name="amount"
@@ -113,16 +115,16 @@ export function TransactionDialog({
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Label>تاریخ</Label>
+          <Label>{t('key324', 'تاریخ')}</Label>
           <JalaliDatePicker
             value={date}
             onValueChange={setDate}
             required
-            aria-label="تاریخ تراکنش"
+            aria-label={t('key242', 'تاریخ تراکنش')}
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="transaction-method">روش پرداخت</Label>
+          <Label htmlFor="transaction-method">{t('key331', 'روش پرداخت')}</Label>
           <Select
             dir="rtl"
             value={method}
@@ -145,11 +147,11 @@ export function TransactionDialog({
           </Select>
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="transaction-reference">شماره پیگیری / سند (اختیاری)</Label>
+          <Label htmlFor="transaction-reference">{t('key332', 'شماره پیگیری / سند (اختیاری)')}</Label>
           <Input id="transaction-reference" name="reference" maxLength={100} />
         </div>
         <div className="col-span-full flex flex-col gap-2">
-          <Label htmlFor="transaction-description">شرح تراکنش</Label>
+          <Label htmlFor="transaction-description">{t('key333', 'شرح تراکنش')}</Label>
           <Input id="transaction-description" name="description" required maxLength={150} />
         </div>
         {error ? (
@@ -159,10 +161,10 @@ export function TransactionDialog({
         ) : null}
         <div className="col-span-full flex gap-2">
           <Button type="submit" disabled={kind === 'receipt' && remaining <= 0}>
-            ثبت تراکنش
+            {t('key225', 'ثبت تراکنش')}
           </Button>
           <Button type="button" variant="outline" onClick={onClose}>
-            انصراف
+            {t('key59', 'انصراف')}
           </Button>
         </div>
       </form>

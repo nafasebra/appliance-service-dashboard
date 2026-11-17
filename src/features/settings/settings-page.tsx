@@ -37,8 +37,10 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from '@/shared/ui/alert-dialog';
+import { useTranslation } from 'react-i18next'
 
 export function SettingsPage() {
+  const { t } = useTranslation()
   const settings = useCompanySettings((state) => state.settings);
   const saveSettings = useCompanySettings((state) => state.saveSettings);
   const theme = useTheme((state) => state.theme);
@@ -74,23 +76,23 @@ export function SettingsPage() {
   return (
     <>
       <PageHeading
-        title="تنظیمات"
-        description="مشخصات شرکت، پیش‌فرض‌های سفارش و ظاهر داشبورد را مدیریت کنید."
+        title={t('key87', 'تنظیمات')}
+        description={t('key88', 'مشخصات شرکت، پیش‌فرض‌های سفارش و ظاهر داشبورد را مدیریت کنید.')}
       />
       <form onSubmit={submit} className="flex flex-col gap-6">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Building2 className="size-5" />
-              مشخصات شرکت و شعبه
+              {t('key89', 'مشخصات شرکت و شعبه')}
             </CardTitle>
             <CardDescription>
-              نام شرکت در منوی کناری و فوتر و نام شعبه در هدر نمایش داده می‌شود.
+              {t('key90', 'نام شرکت در منوی کناری و فوتر و نام شعبه در هدر نمایش داده می‌شود.')}
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="company-name">نام شرکت</Label>
+              <Label htmlFor="company-name">{t('key91', 'نام شرکت')}</Label>
               <Input
                 id="company-name"
                 value={draft.companyName}
@@ -100,7 +102,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="brand-name">نام لاتین برند</Label>
+              <Label htmlFor="brand-name">{t('key92', 'نام لاتین برند')}</Label>
               <Input
                 id="brand-name"
                 dir="ltr"
@@ -111,7 +113,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="branch-name">نام شعبه</Label>
+              <Label htmlFor="branch-name">{t('key93', 'نام شعبه')}</Label>
               <Input
                 id="branch-name"
                 value={draft.branchName}
@@ -121,7 +123,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="company-phone">شماره تماس شرکت</Label>
+              <Label htmlFor="company-phone">{t('key94', 'شماره تماس شرکت')}</Label>
               <Input
                 id="company-phone"
                 type="tel"
@@ -132,7 +134,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2 md:col-span-2">
-              <Label htmlFor="company-address">نشانی شرکت</Label>
+              <Label htmlFor="company-address">{t('key95', 'نشانی شرکت')}</Label>
               <Textarea
                 id="company-address"
                 value={draft.address}
@@ -144,14 +146,14 @@ export function SettingsPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>پیش‌فرض‌های ثبت سفارش</CardTitle>
+            <CardTitle>{t('key96', 'پیش‌فرض‌های ثبت سفارش')}</CardTitle>
             <CardDescription>
-              این مقادیر فقط روی سفارش‌های جدید اعمال می‌شوند و در فرم سفارش قابل تغییرند.
+              {t('key97', 'این مقادیر فقط روی سفارش‌های جدید اعمال می‌شوند و در فرم سفارش قابل تغییرند.')}
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="default-time">ساعت پیش‌فرض مراجعه</Label>
+              <Label htmlFor="default-time">{t('key98', 'ساعت پیش‌فرض مراجعه')}</Label>
               <TimePicker
                 id="default-time"
                 value={draft.defaultVisitTime}
@@ -160,7 +162,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="default-priority">اولویت پیش‌فرض</Label>
+              <Label htmlFor="default-priority">{t('key99', 'اولویت پیش‌فرض')}</Label>
               <Select
                 dir="rtl"
                 value={draft.defaultPriority}
@@ -173,8 +175,8 @@ export function SettingsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="normal">عادی</SelectItem>
-                    <SelectItem value="urgent">فوری</SelectItem>
+                    <SelectItem value="normal">{t('key100', 'عادی')}</SelectItem>
+                    <SelectItem value="urgent">{t('key101', 'فوری')}</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -182,8 +184,7 @@ export function SettingsPage() {
           </CardContent>
           <CardFooter>
             <p className="text-sm text-muted-foreground">
-              کمیسیون شرکت در هر سفارش به‌صورت مبلغ ثبت می‌شود؛ تغییر پیش‌فرض‌ها مبالغ و تسویه‌های
-              قبلی را تغییر نمی‌دهد.
+              {t('key102', 'کمیسیون شرکت در هر سفارش به‌صورت مبلغ ثبت می‌شود؛ تغییر پیش‌فرض‌ها مبالغ و تسویه‌های قبلی را تغییر نمی‌دهد.')}
             </p>
           </CardFooter>
         </Card>
@@ -194,13 +195,13 @@ export function SettingsPage() {
         ) : null}
         {saved ? (
           <Alert>
-            <AlertDescription>تنظیمات ذخیره شد.</AlertDescription>
+            <AlertDescription>{t('key103', 'تنظیمات ذخیره شد.')}</AlertDescription>
           </Alert>
         ) : null}
         <div className="flex flex-wrap items-center gap-3">
           <Button type="submit" disabled={!dirty}>
             <Save className="size-4" />
-            ذخیره تغییرات
+            {t('key104', 'ذخیره تغییرات')}
           </Button>
           <Button
             type="button"
@@ -212,24 +213,23 @@ export function SettingsPage() {
               setSaved(false);
             }}
           >
-            لغو تغییرات
+            {t('key105', 'لغو تغییرات')}
           </Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button type="button" variant="ghost">
-                بازیابی پیش‌فرض‌ها
+                {t('key106', 'بازیابی پیش‌فرض‌ها')}
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent dir="rtl">
               <AlertDialogHeader>
-                <AlertDialogTitle>بازیابی تنظیمات پیش‌فرض؟</AlertDialogTitle>
+                <AlertDialogTitle>{t('key107', 'بازیابی تنظیمات پیش‌فرض؟')}</AlertDialogTitle>
                 <AlertDialogDescription>
-                  مقادیر فرم به پیش‌فرض برمی‌گردند. برای اعمال، ذخیره تغییرات را بزنید. سفارش‌ها و
-                  اطلاعات مالی حذف نمی‌شوند.
+                  {t('key108', 'مقادیر فرم به پیش‌فرض برمی‌گردند. برای اعمال، ذخیره تغییرات را بزنید. سفارش‌ها و اطلاعات مالی حذف نمی‌شوند.')}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>انصراف</AlertDialogCancel>
+                <AlertDialogCancel>{t('key59', 'انصراف')}</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => {
                     setDraft({ ...defaultCompanySettings });
@@ -237,25 +237,25 @@ export function SettingsPage() {
                     setError('');
                   }}
                 >
-                  بازیابی فرم
+                  {t('key109', 'بازیابی فرم')}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
           {dirty ? (
-            <span className="text-sm text-muted-foreground">تغییرات ذخیره‌نشده دارید.</span>
+            <span className="text-sm text-muted-foreground">{t('key110', 'تغییرات ذخیره‌نشده دارید.')}</span>
           ) : null}
         </div>
       </form>
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle>ظاهر برنامه</CardTitle>
+          <CardTitle>{t('key111', 'ظاهر برنامه')}</CardTitle>
           <CardDescription>
-            انتخاب پوسته فوراً اعمال و برای همین مرورگر ذخیره می‌شود.
+            {t('key112', 'انتخاب پوسته فوراً اعمال و برای همین مرورگر ذخیره می‌شود.')}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Label htmlFor="settings-theme">پوسته</Label>
+          <Label htmlFor="settings-theme">{t('key113', 'پوسته')}</Label>
           <Select
             dir="rtl"
             value={theme}
@@ -268,15 +268,15 @@ export function SettingsPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="light">روشن</SelectItem>
-                <SelectItem value="dark">تاریک</SelectItem>
+                <SelectItem value="light">{t('key114', 'روشن')}</SelectItem>
+                <SelectItem value="dark">{t('key115', 'تاریک')}</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
         </CardContent>
       </Card>
       <p className="mt-4 text-xs text-muted-foreground">
-        تنظیمات این نسخه در مرورگر فعلی نگهداری می‌شوند.
+        {t('key116', 'تنظیمات این نسخه در مرورگر فعلی نگهداری می‌شوند.')}
       </p>
     </>
   );

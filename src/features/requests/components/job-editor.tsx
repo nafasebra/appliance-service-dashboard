@@ -17,8 +17,10 @@ import {
 } from '@/shared/ui/select';
 import { Textarea } from '@/shared/ui/textarea';
 import { JalaliDatePicker, TimePicker } from '@/shared/ui/date-time-picker';
+import { useTranslation } from 'react-i18next'
 
 export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) {
+  const { t } = useTranslation()
   const settings = useCompanySettings((state) => state.settings);
   const customers = useDemo((state) => state.customers);
   const technicians = useDemo((state) => state.technicians);
@@ -34,11 +36,11 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
     const selectedTechnician = String(form.get('technicianId') ?? '');
     const technicianId = selectedTechnician === '__unassigned' ? '' : selectedTechnician;
     if (!validateAmounts(total, commission))
-      return setError('مبلغ‌ها باید عدد صحیح و نامنفی باشند و کمیسیون از مبلغ خدمت بیشتر نباشد.');
+      return setError(t('key294', 'مبلغ‌ها باید عدد صحیح و نامنفی باشند و کمیسیون از مبلغ خدمت بیشتر نباشد.'));
     if (['scheduled', 'working', 'completed'].includes(status) && !technicianId)
-      return setError('برای این وضعیت، یک تعمیرکار انتخاب کنید.');
+      return setError(t('key295', 'برای این وضعیت، یک تعمیرکار انتخاب کنید.'));
     if (status === 'completed' && total === 0)
-      return setError('برای تکمیل درخواست، مبلغ خدمت را ثبت کنید.');
+      return setError(t('key296', 'برای تکمیل درخواست، مبلغ خدمت را ثبت کنید.'));
     const saveError = saveJob({
       id: job?.id ?? `SR-${crypto.randomUUID().slice(0, 6).toUpperCase()}`,
       customerId: String(form.get('customerId')),
@@ -57,13 +59,13 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
     onClose();
   }
   return (
-    <Modal title={job ? `جزئیات درخواست ${job.id}` : 'ثبت درخواست جدید'} onClose={onClose}>
+    <Modal title={job ? t('id2', 'جزئیات درخواست {{id}}', { id: job.id }) : t('key297', 'ثبت درخواست جدید')} onClose={onClose}>
       <form
         onSubmit={submit}
         className="grid grid-cols-2 gap-4.5 p-5.75 [&_label]:flex [&_label]:flex-col [&_label]:gap-2.25 [&_label]:text-ui [&_input]:border [&_input]:border-border [&_input]:rounded-md [&_input]:p-2.5 [&_input]:text-xs [&_input]:w-full [&_input]:bg-white [&_select]:border [&_select]:border-border [&_select]:rounded-md [&_select]:p-2.5 [&_select]:text-xs [&_select]:w-full [&_select]:bg-white [&_textarea]:border [&_textarea]:border-border [&_textarea]:rounded-md [&_textarea]:p-2.5 [&_textarea]:text-xs [&_textarea]:w-full [&_textarea]:bg-white [&_input[type='date']]:direction-ltr [&_input[type='time']]:direction-ltr [&_textarea]:min-h-19.5 [&_textarea]:resize-y max-mobile:gap-3.5 max-mobile:p-4.5 max-compact:grid-cols-1 dark:[&_input]:bg-muted dark:[&_input]:border-border dark:[&_input]:text-primary-foreground dark:[&_select]:bg-muted dark:[&_select]:border-border dark:[&_select]:text-primary-foreground dark:[&_textarea]:bg-muted dark:[&_textarea]:border-border dark:[&_textarea]:text-primary-foreground"
       >
         <Label className="flex flex-col gap-2 text-ui">
-          مشتری
+          {t('key211', 'مشتری')}
           <Select
             dir="rtl"
             name="customerId"
@@ -71,7 +73,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             required
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="انتخاب کنید" />
+              <SelectValue placeholder={t('key63', 'انتخاب کنید')} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -85,10 +87,10 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           </Select>
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          نوع دستگاه
+          {t('key141', 'نوع دستگاه')}
           <Select dir="rtl" name="appliance" defaultValue={job?.appliance ?? appliances[0]}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="انتخاب کنید" />
+              <SelectValue placeholder={t('key63', 'انتخاب کنید')} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -102,66 +104,66 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           </Select>
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          برند دستگاه
+          {t('key298', 'برند دستگاه')}
           <Input
             name="brand"
             defaultValue={job?.brand}
             required
             maxLength={50}
-            placeholder="مثلاً سامسونگ"
+            placeholder={t('key299', 'مثلاً سامسونگ')}
           />
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          اولویت
+          {t('key300', 'اولویت')}
           <Select
             dir="rtl"
             name="priority"
             defaultValue={job?.priority ?? settings.defaultPriority}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="انتخاب کنید" />
+              <SelectValue placeholder={t('key63', 'انتخاب کنید')} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="normal">عادی</SelectItem>
-                <SelectItem value="urgent">فوری</SelectItem>
+                <SelectItem value="normal">{t('key100', 'عادی')}</SelectItem>
+                <SelectItem value="urgent">{t('key101', 'فوری')}</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
         </Label>
         <Label className="col-span-full flex flex-col gap-2 text-ui">
-          شرح مشکل
+          {t('key301', 'شرح مشکل')}
           <Textarea
             name="issue"
             defaultValue={job?.issue}
             required
             maxLength={500}
-            placeholder="مشکل دستگاه را توضیح دهید…"
+            placeholder={t('key302', 'مشکل دستگاه را توضیح دهید…')}
           />
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          تاریخ مراجعه (جلالی)
+          {t('key303', 'تاریخ مراجعه (جلالی)')}
           <JalaliDatePicker
             name="date"
             value={date}
             onValueChange={setDate}
-            aria-label="تاریخ مراجعه"
+            aria-label={t('key304', 'تاریخ مراجعه')}
             required
           />
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          ساعت مراجعه
+          {t('key305', 'ساعت مراجعه')}
           <TimePicker name="time" defaultValue={job?.time ?? settings.defaultVisitTime} required />
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          تعمیرکار
+          {t('key35', 'تعمیرکار')}
           <Select dir="rtl" name="technicianId" defaultValue={job?.technicianId || '__unassigned'}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="بدون تخصیص" />
+              <SelectValue placeholder={t('key268', 'بدون تخصیص')} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="__unassigned">بدون تخصیص</SelectItem>
+                <SelectItem value="__unassigned">{t('key268', 'بدون تخصیص')}</SelectItem>
 
                 {technicians.map((item) => (
                   <SelectItem key={item.id} value={item.id}>
@@ -173,10 +175,10 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           </Select>
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          وضعیت
+          {t('key143', 'وضعیت')}
           <Select dir="rtl" name="status" defaultValue={job?.status ?? 'new'}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="انتخاب کنید" />
+              <SelectValue placeholder={t('key63', 'انتخاب کنید')} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -190,7 +192,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           </Select>
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          مبلغ خدمت (تومان نمونه)
+          {t('key306', 'مبلغ خدمت (تومان نمونه)')}
           <Input
             name="total"
             type="number"
@@ -201,7 +203,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           />
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          سهم شرکت (تومان نمونه)
+          {t('key307', 'سهم شرکت (تومان نمونه)')}
           <Input
             name="commission"
             type="number"
@@ -212,7 +214,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           />
         </Label>
         <p className="text-2xs text-muted-foreground leading-loose col-span-full">
-          تغییر وضعیت به معنی دریافت پول نیست. دریافت و پرداخت در بخش مالی ثبت می‌شود.
+          {t('key308', 'تغییر وضعیت به معنی دریافت پول نیست. دریافت و پرداخت در بخش مالی ثبت می‌شود.')}
         </p>
         {error && (
           <p
@@ -227,7 +229,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
             type="submit"
           >
-            ذخیره درخواست
+            {t('key309', 'ذخیره درخواست')}
           </Button>
           <Button
             type="button"
@@ -235,7 +237,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground"
             onClick={onClose}
           >
-            انصراف
+            {t('key59', 'انصراف')}
           </Button>
         </div>
       </form>

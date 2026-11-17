@@ -3,6 +3,7 @@ import { PanelLeftIcon } from 'lucide-react';
 import { Slot } from 'radix-ui';
 import { Button } from '@/shared/ui/button';
 import { cn } from '@/shared/lib/utils';
+import { useTranslation } from 'react-i18next'
 
 const MOBILE_BREAKPOINT = 762;
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b';
@@ -94,6 +95,7 @@ function Sidebar({
   dir,
   ...props
 }: React.ComponentProps<'aside'> & { side?: 'left' | 'right' }) {
+  const { t } = useTranslation()
   const { open, openMobile, setOpenMobile, isMobile } = useSidebar();
   const visible = isMobile ? openMobile : open;
   const closedTransform = side === 'right' ? 'translate-x-full' : '-translate-x-full';
@@ -103,7 +105,7 @@ function Sidebar({
       {isMobile && openMobile && (
         <button
           type="button"
-          aria-label="بستن منو"
+          aria-label={t('key8', 'بستن منو')}
           className="fixed inset-0 z-40 bg-foreground/40"
           onClick={() => setOpenMobile(false)}
         />
@@ -136,13 +138,14 @@ function Sidebar({
 }
 
 function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<typeof Button>) {
+  const { t } = useTranslation()
   const { toggleSidebar, open, openMobile, isMobile } = useSidebar();
   return (
     <Button
       data-slot="sidebar-trigger"
       variant="ghost"
       size="icon-sm"
-      aria-label="باز و بسته کردن منو"
+      aria-label={t('key9', 'باز و بسته کردن منو')}
       aria-expanded={isMobile ? openMobile : open}
       className={cn('size-8', className)}
       onClick={(event) => {
@@ -152,7 +155,7 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
       {...props}
     >
       <PanelLeftIcon className="rtl:rotate-180" />
-      <span className="sr-only">باز و بسته کردن منو</span>
+      <span className="sr-only">{t('key9', 'باز و بسته کردن منو')}</span>
     </Button>
   );
 }

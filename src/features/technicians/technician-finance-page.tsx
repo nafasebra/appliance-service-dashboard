@@ -20,8 +20,10 @@ import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money, dateLabel } from '@/shared/lib/format';
 import { toIsoDate } from '@/shared/lib/date';
+import { useTranslation } from 'react-i18next'
 
 export function TechnicianFinancePage() {
+  const { t } = useTranslation()
   const technicians = useDemo((state) => state.technicians);
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
@@ -58,7 +60,7 @@ export function TechnicianFinancePage() {
       amount <= 0 ||
       amount > getJobPayable(jobId, jobs, transactions)
     ) {
-      setError('مبلغ باید عدد صحیح مثبت و حداکثر برابر مانده سفارش باشد.');
+      setError(t('key71', 'مبلغ باید عدد صحیح مثبت و حداکثر برابر مانده سفارش باشد.'));
       return;
     }
     const failure = addTransaction({
@@ -185,12 +187,12 @@ export function TechnicianFinancePage() {
               setJobId(job.id);
             }}
           >
-            ثبت پرداخت
+            {t('key72', 'ثبت پرداخت')}
           </Button>
         ),
       },
     ],
-    [technicians, jobs, transactions, setError, setDate, setJobId],
+    [technicians, jobs, transactions, setError, setDate, setJobId, t],
   );
   const payoutColumns = useMemo<DataTableColumn<(typeof payouts)[number]>[]>(
     () => [
@@ -231,8 +233,8 @@ export function TechnicianFinancePage() {
   return (
     <>
       <PageHeading
-        title="امور مالی تعمیرکاران"
-        description="سهم خدمات تکمیل‌شده، پرداخت‌های ثبت‌شده و مانده قابل تسویه هر تعمیرکار."
+        title={t('key73', 'امور مالی تعمیرکاران')}
+        description={t('key74', 'سهم خدمات تکمیل‌شده، پرداخت‌های ثبت‌شده و مانده قابل تسویه هر تعمیرکار.')}
       />
       <Select
         dir="rtl"
@@ -240,12 +242,12 @@ export function TechnicianFinancePage() {
         value={technicianId}
         onValueChange={(value) => setTechnicianId(value)}
       >
-        <SelectTrigger aria-label="انتخاب تعمیرکار" className="mb-4">
-          <SelectValue placeholder="انتخاب کنید" />
+        <SelectTrigger aria-label={t('key36', 'انتخاب تعمیرکار')} className="mb-4">
+          <SelectValue placeholder={t('key63', 'انتخاب کنید')} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem value="all">همه تعمیرکاران</SelectItem>
+            <SelectItem value="all">{t('key64', 'همه تعمیرکاران')}</SelectItem>
             {technicians.map((tech) => (
               <SelectItem key={tech.id} value={tech.id}>
                 {tech.name}
@@ -256,25 +258,25 @@ export function TechnicianFinancePage() {
       </Select>
       <div className="mb-6 grid gap-4 md:grid-cols-3">
         <StatCard
-          title="سهم تعمیرکاران"
+          title={t('key75', 'سهم تعمیرکاران')}
           value={money(finance.serviceValue - finance.commission)}
           detail="ارزش خدمات تکمیل‌شده منهای کمیسیون"
           icon={<Wallet />}
         />
         <StatCard
-          title="پرداخت‌شده"
+          title={t('key76', 'پرداخت‌شده')}
           value={money(finance.payouts)}
           detail="مجموع پرداخت‌های ثبت‌شده"
           icon={<Wallet />}
         />
         <StatCard
-          title="مانده قابل پرداخت"
+          title={t('key77', 'مانده قابل پرداخت')}
           value={money(finance.payable)}
           detail="براساس مانده هر سفارش تکمیل‌شده"
           icon={<Wallet />}
         />
       </div>
-      <Panel title="حساب اعضای تیم">
+      <Panel title={t('key78', 'حساب اعضای تیم')}>
         <DataTable
           data={memberRows}
           getRowId={({ tech }) => String(tech.id)}
@@ -284,7 +286,7 @@ export function TechnicianFinancePage() {
         {!members.length ? <EmptyState /> : null}
       </Panel>
       <div className="mt-6">
-        <Panel title="سفارش‌های قابل تسویه">
+        <Panel title={t('key79', 'سفارش‌های قابل تسویه')}>
           <DataTable
             data={payableJobs}
             getRowId={(job) => String(job.id)}
@@ -297,7 +299,7 @@ export function TechnicianFinancePage() {
         </Panel>
       </div>
       <div className="mt-6">
-        <Panel title="تاریخچه پرداخت به تعمیرکاران">
+        <Panel title={t('key80', 'تاریخچه پرداخت به تعمیرکاران')}>
           <DataTable
             data={payouts}
             getRowId={(item) => String(item.id)}
@@ -308,11 +310,11 @@ export function TechnicianFinancePage() {
         </Panel>
       </div>
       {jobId ? (
-        <Modal title="ثبت پرداخت به تعمیرکار" onClose={() => setJobId('')}>
+        <Modal title={t('key81', 'ثبت پرداخت به تعمیرکار')} onClose={() => setJobId('')}>
           <form onSubmit={submit} className="flex flex-col gap-4 p-6">
-            <p>مانده سفارش: {money(getJobPayable(jobId, jobs, transactions))}</p>
+            <p>{t('key82', 'مانده سفارش:')} {money(getJobPayable(jobId, jobs, transactions))}</p>
             <Label className="flex flex-col gap-2">
-              مبلغ (تومان)
+              {t('key83', 'مبلغ (تومان)')}
               <Input
                 name="amount"
                 type="number"
@@ -323,11 +325,11 @@ export function TechnicianFinancePage() {
               />
             </Label>
             <Label className="flex flex-col gap-2">
-              تاریخ پرداخت
+              {t('key84', 'تاریخ پرداخت')}
               <JalaliDatePicker name="date" value={date} onValueChange={setDate} required />
             </Label>
             <Label className="flex flex-col gap-2">
-              شرح
+              {t('key85', 'شرح')}
               <Input name="description" required maxLength={150} />
             </Label>
             {error ? (
@@ -336,12 +338,12 @@ export function TechnicianFinancePage() {
               </Alert>
             ) : null}
             <p className="text-xs text-muted-foreground">
-              ثبت در دفتر مالی نمونه است و انتقال بانکی انجام نمی‌دهد.
+              {t('key86', 'ثبت در دفتر مالی نمونه است و انتقال بانکی انجام نمی‌دهد.')}
             </p>
             <div className="flex gap-2">
-              <Button type="submit">ثبت پرداخت</Button>
+              <Button type="submit">{t('key72', 'ثبت پرداخت')}</Button>
               <Button type="button" variant="outline" onClick={() => setJobId('')}>
-                انصراف
+                {t('key59', 'انصراف')}
               </Button>
             </div>
           </form>

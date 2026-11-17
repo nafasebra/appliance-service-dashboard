@@ -7,8 +7,10 @@ import { PageHeading, Panel } from '@/shared/ui/primitives';
 import { money, number } from '@/shared/lib/format';
 import { Progress } from '@/shared/ui/progress';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
+import { useTranslation } from 'react-i18next'
 
 export function ReportsPage() {
+  const { t } = useTranslation()
   const jobs = useDemo((state) => state.jobs);
   const technicians = useDemo((state) => state.technicians);
   const transactions = useDemo((state) => state.transactions);
@@ -92,14 +94,14 @@ export function ReportsPage() {
   return (
     <>
       <PageHeading
-        title="گزارش‌های عملکرد"
-        description="تصویری از خدمات، عملکرد تیم و گردش مالی تمام داده‌های نمونه."
+        title={t('key168', 'گزارش‌های عملکرد')}
+        description={t('key169', 'تصویری از خدمات، عملکرد تیم و گردش مالی تمام داده‌های نمونه.')}
       />
       <div className="grid grid-cols-[1.2fr_1fr] gap-5 mb-5.75 max-tablet:grid-cols-1">
-        <Panel title="گردش دریافت و پرداخت" subtitle="روزهای دارای تراکنش · میلیون تومان">
+        <Panel title={t('key170', 'گردش دریافت و پرداخت')} subtitle="روزهای دارای تراکنش · میلیون تومان">
           <CashChart />
         </Panel>
-        <Panel title="درخواست‌ها به تفکیک دستگاه" subtitle="همه وضعیت‌ها">
+        <Panel title={t('key171', 'درخواست‌ها به تفکیک دستگاه')} subtitle="همه وضعیت‌ها">
           <div className="pt-2 px-6 pb-6.25 flex flex-col gap-5.25 [&_>_div_>_div:first-child]:flex [&_>_div_>_div:first-child]:justify-between [&_>_div_>_div:first-child]:text-2xs [&_>_div_>_div:first-child]:text-muted-foreground [&_>_div_>_div:first-child]:mb-2.5 [&_strong]:font-normal">
             {appliances.map((appliance) => {
               const count = jobs.filter((job) => job.appliance === appliance).length;
@@ -107,7 +109,7 @@ export function ReportsPage() {
                 <div key={appliance}>
                   <div>
                     <span>{appliance}</span>
-                    <strong>{number(count)} درخواست</strong>
+                    <strong>{number(count)} {t('key172', 'درخواست')}</strong>
                   </div>
                   <Progress
                     className="h-1.75 bg-muted rounded-md overflow-hidden [&_span]:h-full [&_span]:block [&_span]:bg-primary [&_span]:rounded-md dark:bg-muted dark:border-border dark:text-muted-foreground"
@@ -120,7 +122,7 @@ export function ReportsPage() {
         </Panel>
       </div>
       <Panel
-        title="عملکرد و حساب تعمیرکاران"
+        title={t('key173', 'عملکرد و حساب تعمیرکاران')}
         subtitle="کمیسیون و سهم تعمیرکار بر اساس خدمات تکمیل‌شده"
       >
         <DataTable

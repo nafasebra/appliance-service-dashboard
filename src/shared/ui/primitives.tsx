@@ -9,6 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/shared/ui/dialog';
+import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
 
 export function PageHeading({
   title,
@@ -19,10 +21,11 @@ export function PageHeading({
   description: string;
   action?: ReactNode;
 }) {
+  const { t } = useTranslation()
   return (
     <div className="flex items-center justify-between gap-4.5 [&_p]:text-muted-foreground [&_p]:text-ui [&_p]:mt-1.75 [&_p]:leading-relaxed mb-6.5 max-mobile:items-start max-mobile:[&_p]:max-w-57.5 max-mobile:[&_>_.button]:text-2xs max-mobile:[&_>_.button]:py-2.25 [&_>_.button]:px-2.5 dark:[&_p]:text-muted-foreground">
       <div>
-        <div className="text-muted-foreground text-3xs mb-2.5">فضای کاری / مدیریت خدمات</div>
+        <div className="text-muted-foreground text-3xs mb-2.5">{t('key10', 'فضای کاری / مدیریت خدمات')}</div>
         <h1>{title}</h1>
         <p>{description}</p>
       </div>
@@ -96,7 +99,7 @@ export function StatCard({
     </Card>
   );
 }
-export function EmptyState({ text = 'موردی پیدا نشد. فیلترها را تغییر دهید.' }: { text?: string }) {
+export function EmptyState({ text = i18next.t('key11', 'موردی پیدا نشد. فیلترها را تغییر دهید.') }: { text?: string }) {
   return (
     <div className="flex items-center justify-center flex-col gap-3.5 py-10 px-5 text-muted-foreground text-ui leading-loose text-center">
       <Inbox size={30} />
@@ -113,6 +116,7 @@ export function Modal({
   children: ReactNode;
   onClose: () => void;
 }) {
+  const { t } = useTranslation()
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent
@@ -121,7 +125,7 @@ export function Modal({
       >
         <DialogHeader className="flex items-center justify-between py-4.75 px-5.75 border-b border-b-border [&_h2]:text-sm dark:border-border">
           <DialogTitle id="modal-title">{title}</DialogTitle>
-          <DialogDescription className="sr-only">پنجرهٔ {title}</DialogDescription>
+          <DialogDescription className="sr-only">{t('title', 'پنجرهٔ {{title}}', { title })}</DialogDescription>
         </DialogHeader>
         {children}
       </DialogContent>

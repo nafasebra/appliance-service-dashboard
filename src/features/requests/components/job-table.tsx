@@ -7,6 +7,7 @@ import { dateLabel, money } from '@/shared/lib/format';
 import { EmptyState } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
+import { useTranslation } from 'react-i18next'
 
 export function ApplianceIcon({ appliance }: { appliance: string }) {
   const Icon =
@@ -21,6 +22,7 @@ export function ApplianceIcon({ appliance }: { appliance: string }) {
 }
 
 export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job) => void }) {
+  const { t } = useTranslation()
   const customers = useDemo((state) => state.customers);
   const technicians = useDemo((state) => state.technicians);
   const jobColumns = useMemo<DataTableColumn<(typeof jobs)[number]>[]>(
@@ -43,7 +45,7 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
               </small>
             </div>
             {job.priority === 'urgent' && (
-              <span className="w-1.25 h-1.25 rounded-full bg-secondary" title="فوری" />
+              <span className="w-1.25 h-1.25 rounded-full bg-secondary" title={t('key101', 'فوری')} />
             )}
           </div>
         ),
@@ -67,7 +69,7 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
         accessorFn: (job) => technicians.find((item) => item.id === job.technicianId)?.name,
         cell: ({ row: { original: job } }) =>
           technicians.find((item) => item.id === job.technicianId)?.name ?? (
-            <span className="text-muted-foreground">تخصیص داده نشده</span>
+            <span className="text-muted-foreground">{t('key292', 'تخصیص داده نشده')}</span>
           ),
       },
       {
@@ -94,7 +96,7 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
         header: 'مبلغ خدمت',
         accessorFn: (job) => job.total,
         cell: ({ row: { original: job } }) => (
-          <span className="whitespace-nowrap">{job.total ? money(job.total) : 'تعیین نشده'}</span>
+          <span className="whitespace-nowrap">{job.total ? money(job.total) : t('key293', 'تعیین نشده')}</span>
         ),
       },
       {
@@ -106,7 +108,7 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
             variant="ghost"
             size="icon-sm"
             className="grid place-items-center h-7.75 w-7.75 border border-transparent rounded-md text-muted-foreground bg-transparent shrink-0 [&:hover]:bg-accent [&:hover]:border-border dark:[&:hover]:bg-accent dark:[&:hover]:border-border"
-            aria-label={`جزئیات ${job.id}`}
+            aria-label={t('id', 'جزئیات {{id}}', { id: job.id })}
             onClick={() => onSelect(job)}
           >
             <ArrowUpLeft size={18} />
@@ -114,7 +116,7 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
         ),
       },
     ],
-    [customers, technicians, onSelect],
+    [customers, technicians, onSelect, t],
   );
   if (!jobs.length) return <EmptyState />;
   return (

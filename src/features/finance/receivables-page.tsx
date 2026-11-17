@@ -9,8 +9,10 @@ import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money, dateLabel } from '@/shared/lib/format';
 import { downloadCsv } from '@/shared/utils/csv';
 import { TransactionDialog } from './components/transaction-dialog';
+import { useTranslation } from 'react-i18next'
 
 export function ReceivablesPage() {
+  const { t } = useTranslation()
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const transactions = useDemo((state) => state.transactions);
@@ -109,25 +111,25 @@ export function ReceivablesPage() {
           },
         }) => (
           <Button size="sm" onClick={() => setReceiptJob(job.id)}>
-            ثبت دریافت
+            {t('key203', 'ثبت دریافت')}
           </Button>
         ),
       },
     ],
-    [setReceiptJob],
+    [setReceiptJob, t],
   );
   return (
     <>
       <PageHeading
-        title="مطالبات مشتریان"
-        description="سفارش‌های تکمیل‌شده‌ای که هنوز تمام مبلغ آن‌ها دریافت نشده است."
+        title={t('key214', 'مطالبات مشتریان')}
+        description={t('key215', 'سفارش‌های تکمیل‌شده‌ای که هنوز تمام مبلغ آن‌ها دریافت نشده است.')}
         action={
           <Button
             variant="outline"
             onClick={() =>
               downloadCsv(
                 [
-                  ['سفارش', 'مشتری', 'مبلغ خدمت', 'دریافت', 'مانده'],
+                  ['سفارش', 'مشتری', t('key216', 'مبلغ خدمت'), 'دریافت', 'مانده'],
                   ...rows.map((row) => [
                     row.job.id,
                     row.customer?.name ?? '',
@@ -140,20 +142,20 @@ export function ReceivablesPage() {
               )
             }
           >
-            خروجی CSV
+            {t('csv', 'خروجی CSV')}
           </Button>
         }
       />
       <Input
         className="mb-4 max-w-sm"
-        aria-label="جستجوی مطالبات"
-        placeholder="نام مشتری یا شماره سفارش…"
+        aria-label={t('key217', 'جستجوی مطالبات')}
+        placeholder={t('key218', 'نام مشتری یا شماره سفارش…')}
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
       <Panel
-        title="سفارش‌های دارای مانده"
-        subtitle={`مانده نمایش‌داده‌شده: ${money(rows.reduce((sum, row) => sum + row.account.outstanding, 0))}`}
+        title={t('key219', 'سفارش‌های دارای مانده')}
+        subtitle={t('reduce2', 'مانده نمایش‌داده‌شده: {{reduce}}', { reduce: money(rows.reduce((sum, row) => sum + row.account.outstanding, 0)) })}
       >
         <DataTable
           data={rows}

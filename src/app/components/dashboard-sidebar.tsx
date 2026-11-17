@@ -29,10 +29,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/shared/ui/sidebar';
+import { useTranslation } from 'react-i18next'
 
 const persianNumber = new Intl.NumberFormat('fa');
 
 export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
+  const { t } = useTranslation()
   const settings = useCompanySettings((state) => state.settings);
   const jobs = useDemo((state) => state.jobs);
   const resetDemo = useDemo((state) => state.resetDemo);
@@ -65,7 +67,7 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
           size="icon-sm"
           type="button"
           className="grid h-7.75 w-7.75 shrink-0 place-items-center rounded-md border border-transparent bg-transparent text-muted-foreground hover:border-border hover:bg-accent dark:hover:border-border dark:hover:bg-accent"
-          aria-label="بستن منو"
+          aria-label={t('key8', 'بستن منو')}
           onClick={closeSidebar}
         >
           <X size={19} />
@@ -118,10 +120,10 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
           <span className="mb-3.25 -mt-9.75 grid h-9.75 w-9.75 place-items-center rounded-lg border-1.25 border-white bg-muted text-primary dark:bg-accent dark:text-primary">
             <LifeBuoy size={23} />
           </span>
-          <strong>یک قدم جلوتر از کارها</strong>
-          <p>راهنمای استفاده از نسخه نمایشی</p>
+          <strong>{t('key283', 'یک قدم جلوتر از کارها')}</strong>
+          <p>{t('key284', 'راهنمای استفاده از نسخه نمایشی')}</p>
           <Button variant="outline" onClick={onOpenHelp}>
-            راهنمای داشبورد <ArrowUpLeft size={16} />
+            {t('key285', 'راهنمای داشبورد')} <ArrowUpLeft size={16} />
           </Button>
         </div>
 
@@ -132,21 +134,20 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
               className="flex h-auto items-center gap-2.25 border-0 bg-transparent py-4.75 px-2.25 text-2xs text-muted-foreground"
             >
               <RotateCcw size={17} />
-              بازنشانی داده‌های نمونه
+              {t('key286', 'بازنشانی داده‌های نمونه')}
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent dir="rtl">
             <AlertDialogHeader>
-              <AlertDialogTitle>بازنشانی اطلاعات نمونه؟</AlertDialogTitle>
+              <AlertDialogTitle>{t('key287', 'بازنشانی اطلاعات نمونه؟')}</AlertDialogTitle>
               <AlertDialogDescription>
-                درخواست‌ها و تراکنش‌هایی که در این مرورگر اضافه یا ویرایش کرده‌اید با داده‌های اولیه
-                جایگزین می‌شوند.
+                {t('key288', 'درخواست‌ها و تراکنش‌هایی که در این مرورگر اضافه یا ویرایش کرده‌اید با داده‌های اولیه جایگزین می‌شوند.')}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>انصراف</AlertDialogCancel>
+              <AlertDialogCancel>{t('key59', 'انصراف')}</AlertDialogCancel>
               <AlertDialogAction variant="destructive" onClick={resetDemo}>
-                بازنشانی داده‌ها
+                {t('key289', 'بازنشانی داده‌ها')}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

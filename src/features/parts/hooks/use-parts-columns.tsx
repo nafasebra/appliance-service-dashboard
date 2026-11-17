@@ -17,6 +17,7 @@ import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { number } from '@/shared/lib/format';
+import i18next from 'i18next'
 
 const inventoryColumn = createColumnHelper<DataTableFeatures, Part>();
 const purchaseColumn = createColumnHelper<DataTableFeatures, PartPurchase>();
@@ -91,12 +92,12 @@ export function usePartsColumns({
         inventoryColumn.accessor(
           (part) =>
             !part.active
-              ? 'غیرفعال'
+              ? i18next.t('key146', 'غیرفعال')
               : availableQuantity(data, part.id) === 0
-                ? 'ناموجود'
+                ? i18next.t('key145', 'ناموجود')
                 : availableQuantity(data, part.id) <= part.minimum
-                  ? 'کم‌موجود'
-                  : 'موجود',
+                  ? i18next.t('key144', 'کم‌موجود')
+                  : i18next.t('key310', 'موجود'),
           {
             id: 'وضعیت',
             header: 'وضعیت',
@@ -117,7 +118,7 @@ export function usePartsColumns({
                   setForm('part');
                 }}
               >
-                ویرایش
+                {i18next.t('key45', 'ویرایش')}
               </Button>
               <Button
                 variant="ghost"
@@ -131,7 +132,7 @@ export function usePartsColumns({
                   }))
                 }
               >
-                {part.active ? 'غیرفعال' : 'فعال'}
+                {part.active ? i18next.t('key146', 'غیرفعال') : i18next.t('key311', 'فعال')}
               </Button>
             </div>
           ),
@@ -154,10 +155,10 @@ export function usePartsColumns({
                   jobs,
                   customers,
                 )
-              : 'تکمیل موجودی انبار',
+              : i18next.t('key312', 'تکمیل موجودی انبار'),
           { id: 'مرتبط با درخواست', header: 'مرتبط با درخواست' },
         ),
-        purchaseColumn.accessor((purchase) => purchase.supplier || 'تعیین نشده', {
+        purchaseColumn.accessor((purchase) => purchase.supplier || i18next.t('key293', 'تعیین نشده'), {
           id: 'تأمین‌کننده',
           header: 'تأمین‌کننده',
         }),
@@ -174,7 +175,7 @@ export function usePartsColumns({
         purchaseColumn.accessor(
           (purchase) =>
             purchase.received > 0 && purchase.status === 'ordered'
-              ? 'دریافت جزئی'
+              ? i18next.t('key313', 'دریافت جزئی')
               : purchaseLabels[purchase.status],
           {
             id: 'وضعیت',
@@ -182,7 +183,7 @@ export function usePartsColumns({
             cell: ({ row: { original: purchase } }) => (
               <Badge variant="secondary">
                 {purchase.received > 0 && purchase.status === 'ordered'
-                  ? 'دریافت جزئی'
+                  ? i18next.t('key313', 'دریافت جزئی')
                   : purchaseLabels[purchase.status]}
               </Badge>
             ),
@@ -206,17 +207,17 @@ export function usePartsColumns({
                     }))
                   }
                 >
-                  تأیید خرید
+                  {i18next.t('key314', 'تأیید خرید')}
                 </Button>
               ) : null}
               {purchase.status === 'approved' ? (
                 <Button size="sm" onClick={() => setReceiving(purchase.id)}>
-                  ثبت سفارش خرید
+                  {i18next.t('key315', 'ثبت سفارش خرید')}
                 </Button>
               ) : null}
               {purchase.status === 'ordered' ? (
                 <Button size="sm" onClick={() => setReceiving(purchase.id)}>
-                  دریافت کالا
+                  {i18next.t('key316', 'دریافت کالا')}
                 </Button>
               ) : null}
               {['pending', 'approved'].includes(purchase.status) ? (
@@ -232,7 +233,7 @@ export function usePartsColumns({
                     }))
                   }
                 >
-                  لغو
+                  {i18next.t('key317', 'لغو')}
                 </Button>
               ) : null}
             </div>
@@ -292,12 +293,12 @@ export function usePartsColumns({
                   }
                   disabled={need.status === 'available'}
                 >
-                  استعلام موجودی
+                  {i18next.t('key318', 'استعلام موجودی')}
                 </Button>
               ) : null}
               {need.status === 'available' ? (
                 <Button size="sm" onClick={() => needAction(need.id, 'reserved')}>
-                  رزرو برای سفارش
+                  {i18next.t('key319', 'رزرو برای سفارش')}
                 </Button>
               ) : null}
               {need.status === 'unavailable' ? (
@@ -329,31 +330,31 @@ export function usePartsColumns({
                     }))
                   }
                 >
-                  ارجاع به تأمین
+                  {i18next.t('key320', 'ارجاع به تأمین')}
                 </Button>
               ) : null}
               {need.status === 'reserved' ? (
                 <Button size="sm" onClick={() => setDelivery(need.id)}>
-                  تحویل به تعمیرکار
+                  {i18next.t('key321', 'تحویل به تعمیرکار')}
                 </Button>
               ) : null}
               {need.status === 'delivered' ? (
                 <>
                   <Button size="sm" onClick={() => needAction(need.id, 'used')}>
-                    ثبت مصرف
+                    {i18next.t('key322', 'ثبت مصرف')}
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => needAction(need.id, 'returned')}
                   >
-                    برگشت سالم به انبار
+                    {i18next.t('key323', 'برگشت سالم به انبار')}
                   </Button>
                 </>
               ) : null}
               {['pending', 'available', 'unavailable', 'reserved'].includes(need.status) ? (
                 <Button size="sm" variant="ghost" onClick={() => needAction(need.id, 'cancelled')}>
-                  لغو
+                  {i18next.t('key317', 'لغو')}
                 </Button>
               ) : null}
             </div>

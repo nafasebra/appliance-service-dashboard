@@ -5,10 +5,13 @@ import '@fontsource/vazirmatn/500.css';
 import '@fontsource/vazirmatn/600.css';
 import '@fontsource/vazirmatn/700.css';
 import App from '@/app/App';
+import { LocalizationProvider } from '@/shared/i18n/provider';
 import '@/styles/index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <LocalizationProvider>
+      <App />
+    </LocalizationProvider>
   </StrictMode>,
 );

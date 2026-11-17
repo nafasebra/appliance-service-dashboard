@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from './select';
+import { useTranslation } from 'react-i18next'
 
 const pageSizes = [10, 20, 50];
 
@@ -19,6 +20,7 @@ export function DataTablePagination<TData extends RowData>({
 }: {
   table: ReactTable<DataTableFeatures, TData>;
 }) {
+  const { t } = useTranslation()
   const { pageIndex, pageSize } = table.state.pagination;
   const total = table.getRowCount();
   const pageCount = table.getPageCount();
@@ -27,22 +29,22 @@ export function DataTablePagination<TData extends RowData>({
 
   return (
     <nav
-      aria-label="صفحه‌بندی جدول"
+      aria-label={t('key19', 'صفحه‌بندی جدول')}
       dir="rtl"
       className="flex flex-wrap items-center justify-between gap-3 border-t border-border p-4 text-xs text-muted-foreground"
     >
       <p role="status" aria-live="polite" aria-atomic="true">
-        {number(start)} تا {number(end)} از {number(total)} مورد
+        {number(start)} {t('key20', 'تا')} {number(end)} {t('key21', 'از')} {number(total)} {t('key22', 'مورد')}
       </p>
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2">
-          <span>تعداد در صفحه</span>
+          <span>{t('key23', 'تعداد در صفحه')}</span>
           <Select
             dir="rtl"
             value={String(pageSize)}
             onValueChange={(value) => table.setPageSize(Number(value))}
           >
-            <SelectTrigger size="sm" aria-label="تعداد ردیف در هر صفحه">
+            <SelectTrigger size="sm" aria-label={t('key24', 'تعداد ردیف در هر صفحه')}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -57,14 +59,14 @@ export function DataTablePagination<TData extends RowData>({
           </Select>
         </div>
         <span>
-          صفحه {number(total ? pageIndex + 1 : 0)} از {number(pageCount)}
+          {t('key25', 'صفحه')} {number(total ? pageIndex + 1 : 0)} {t('key21', 'از')} {number(pageCount)}
         </span>
         <div className="flex items-center gap-1">
           <Button
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label="صفحه اول"
+            aria-label={t('key26', 'صفحه اول')}
             onClick={() => table.firstPage()}
             disabled={!table.getCanPreviousPage()}
           >
@@ -74,7 +76,7 @@ export function DataTablePagination<TData extends RowData>({
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label="صفحه قبل"
+            aria-label={t('key27', 'صفحه قبل')}
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
@@ -84,7 +86,7 @@ export function DataTablePagination<TData extends RowData>({
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label="صفحه بعد"
+            aria-label={t('key28', 'صفحه بعد')}
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
@@ -94,7 +96,7 @@ export function DataTablePagination<TData extends RowData>({
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label="صفحه آخر"
+            aria-label={t('key29', 'صفحه آخر')}
             onClick={() => table.lastPage()}
             disabled={!table.getCanNextPage()}
           >

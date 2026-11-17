@@ -10,8 +10,10 @@ import { Label } from '@/shared/ui/label';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { number } from '@/shared/lib/format';
+import { useTranslation } from 'react-i18next'
 
 export function TechnicianManagementPage() {
+  const { t } = useTranslation()
   const technicians = useDemo((state) => state.technicians);
   const jobs = useDemo((state) => state.jobs);
   const saveTechnician = useDemo((state) => state.saveTechnician);
@@ -93,18 +95,18 @@ export function TechnicianManagementPage() {
               setEditor(tech);
             }}
           >
-            ویرایش
+            {t('key45', 'ویرایش')}
           </Button>
         ),
       },
     ],
-    [jobs, setError, setEditor],
+    [jobs, setError, setEditor, t],
   );
   return (
     <>
       <PageHeading
-        title="مدیریت تعمیرکاران"
-        description="اطلاعات تماس، تخصص و محدوده فعالیت اعضای تیم."
+        title={t('key46', 'مدیریت تعمیرکاران')}
+        description={t('key47', 'اطلاعات تماس، تخصص و محدوده فعالیت اعضای تیم.')}
         action={
           <Button
             onClick={() => {
@@ -113,18 +115,18 @@ export function TechnicianManagementPage() {
             }}
           >
             <Plus />
-            افزودن تعمیرکار
+            {t('key48', 'افزودن تعمیرکار')}
           </Button>
         }
       />
       <Input
         className="mb-4 max-w-sm"
-        aria-label="جستجوی تعمیرکار"
-        placeholder="نام، تلفن، تخصص یا محدوده…"
+        aria-label={t('key49', 'جستجوی تعمیرکار')}
+        placeholder={t('key50', 'نام، تلفن، تخصص یا محدوده…')}
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
-      <Panel title="اعضای تیم" subtitle={`${number(filtered.length)} تعمیرکار`}>
+      <Panel title={t('key51', 'اعضای تیم')} subtitle={t('length', '{{length}} تعمیرکار', { length: number(filtered.length) })}>
         <DataTable
           data={filtered}
           getRowId={(tech) => String(tech.id)}
@@ -135,16 +137,16 @@ export function TechnicianManagementPage() {
       </Panel>
       {editor ? (
         <Modal
-          title={editing ? 'ویرایش تعمیرکار' : 'افزودن تعمیرکار'}
+          title={editing ? t('key52', 'ویرایش تعمیرکار') : t('key48', 'افزودن تعمیرکار')}
           onClose={() => setEditor(null)}
         >
           <form onSubmit={submit} className="grid gap-4 p-6 sm:grid-cols-2">
             <Label className="flex flex-col gap-2">
-              نام و نام خانوادگی
+              {t('key53', 'نام و نام خانوادگی')}
               <Input name="name" required maxLength={100} defaultValue={editing?.name} />
             </Label>
             <Label className="flex flex-col gap-2">
-              تلفن
+              {t('key54', 'تلفن')}
               <Input
                 name="phone"
                 type="tel"
@@ -155,17 +157,17 @@ export function TechnicianManagementPage() {
               />
             </Label>
             <Label className="flex flex-col gap-2">
-              تخصص
+              {t('key55', 'تخصص')}
               <Input
                 name="specialty"
                 required
                 maxLength={150}
                 defaultValue={editing?.specialty}
-                placeholder="مثلاً تعمیر یخچال و فریزر"
+                placeholder={t('key56', 'مثلاً تعمیر یخچال و فریزر')}
               />
             </Label>
             <Label className="flex flex-col gap-2">
-              محدوده فعالیت
+              {t('key57', 'محدوده فعالیت')}
               <Input name="area" required maxLength={150} defaultValue={editing?.area} />
             </Label>
             {error ? (
@@ -174,9 +176,9 @@ export function TechnicianManagementPage() {
               </Alert>
             ) : null}
             <div className="col-span-full flex gap-2">
-              <Button type="submit">ذخیره</Button>
+              <Button type="submit">{t('key58', 'ذخیره')}</Button>
               <Button type="button" variant="outline" onClick={() => setEditor(null)}>
-                انصراف
+                {t('key59', 'انصراف')}
               </Button>
             </div>
           </form>

@@ -4,6 +4,8 @@ import { formatJalaliDate, parseIsoDate, toIsoDate } from '@/shared/lib/date';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
+import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
 
 const JalaliCalendar = lazy(() =>
   import('@/shared/ui/calendar').then((module) => ({ default: module.Calendar })),
@@ -22,8 +24,9 @@ function JalaliDatePicker({
   value,
   onValueChange,
   required,
-  'aria-label': ariaLabel = 'انتخاب تاریخ',
+  'aria-label': ariaLabel = i18next.t('key13', 'انتخاب تاریخ'),
 }: JalaliDatePickerProps) {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false);
   const selected = parseIsoDate(value);
 
@@ -48,7 +51,7 @@ function JalaliDatePicker({
           <Suspense
             fallback={
               <div className="grid h-75 w-70 place-items-center text-xs text-muted-foreground">
-                در حال بارگذاری تقویم…
+                {t('key14', 'در حال بارگذاری تقویم…')}
               </div>
             }
           >

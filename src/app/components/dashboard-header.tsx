@@ -1,6 +1,7 @@
 import { Link, useRouterState } from '@tanstack/react-router';
 import { navigation } from '@/app/const';
 import { NotificationButton } from '@/app/components/notification-button';
+import { LanguageSwitcher } from './language-switcher';
 import { ThemeToggleButton } from '@/app/components/theme-toggle-button';
 import { NoticAlert } from '@/app/components/notic-alert';
 import {
@@ -13,11 +14,13 @@ import {
 } from '@/shared/ui/breadcrumb';
 import { SidebarTrigger } from '@/shared/ui/sidebar';
 import { useCompanySettings } from '@/shared/store/settings-store';
+import { useTranslation } from 'react-i18next'
 
 export function DashboardHeader() {
+  const { t } = useTranslation()
   const settings = useCompanySettings((state) => state.settings);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  const currentPage = navigation.find((item) => item.to === pathname)?.label ?? 'داشبورد';
+  const currentPage = navigation.find((item) => item.to === pathname)?.label ?? t('key290', 'داشبورد');
 
   return (
     <>
@@ -31,13 +34,13 @@ export function DashboardHeader() {
             <BreadcrumbList className="text-ui max-mobile:text-2xs">
               {pathname === '/' ? (
                 <BreadcrumbItem>
-                  <BreadcrumbPage>داشبورد</BreadcrumbPage>
+                  <BreadcrumbPage>{t('key290', 'داشبورد')}</BreadcrumbPage>
                 </BreadcrumbItem>
               ) : (
                 <>
                   <BreadcrumbItem className="max-phone:hidden">
                     <BreadcrumbLink asChild>
-                      <Link to="/">داشبورد</Link>
+                      <Link to="/">{t('key290', 'داشبورد')}</Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="max-phone:hidden" />
@@ -56,6 +59,7 @@ export function DashboardHeader() {
         </div>
 
         <div className="flex items-center gap-5 max-mobile:gap-3">
+          <LanguageSwitcher />
           <NotificationButton />
           <ThemeToggleButton />
         </div>

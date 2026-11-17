@@ -11,6 +11,7 @@ import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { money, dateLabel } from '@/shared/lib/format';
 import { downloadCsv } from '@/shared/utils/csv';
+import { useTranslation } from 'react-i18next'
 
 export function CustomerStatement({
   customerId,
@@ -21,6 +22,7 @@ export function CustomerStatement({
   onClose: () => void;
   onReceipt: (jobId: string) => void;
 }) {
+  const { t } = useTranslation()
   const customers = useDemo((state) => state.customers);
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
@@ -114,14 +116,14 @@ export function CustomerStatement({
         }) =>
           job.status !== 'cancelled' && job.total > row.receipts ? (
             <Button size="sm" variant="outline" onClick={() => onReceipt(job.id)}>
-              ثبت دریافت
+              {t('key203', 'ثبت دریافت')}
             </Button>
           ) : (
             '—'
           ),
       },
     ],
-    [onReceipt],
+    [onReceipt, t],
   );
   const receiptColumns = useMemo<DataTableColumn<(typeof receipts)[number]>[]>(
     () => [
@@ -155,15 +157,15 @@ export function CustomerStatement({
     <Modal title={`صورت‌حساب ${customer?.name ?? ''}`} onClose={onClose}>
       <div className="flex flex-col gap-5 p-6">
         <p className="text-sm">
-          خدمات قطعی: {money(account.charge)} · دریافت: {money(account.receipts)} · مطالبات:{' '}
-          {money(account.outstanding)} · پیش‌دریافت / بستانکاری: {money(account.credit)}
+          {t('key334', 'خدمات قطعی:')} {money(account.charge)} {t('key335', '· دریافت:')} {money(account.receipts)} {t('key336', '· مطالبات:')}{' '}
+          {money(account.outstanding)} {t('key337', '· پیش‌دریافت / بستانکاری:')} {money(account.credit)}
         </p>
         <Button
           variant="outline"
           onClick={() =>
             downloadCsv(
               [
-                ['سفارش', 'تاریخ', 'خدمات قطعی', 'دریافت', 'مانده بدهی', 'پیش‌دریافت / بستانکاری'],
+                ['سفارش', 'تاریخ', 'خدمات قطعی', 'دریافت', t('key338', 'مانده بدهی'), t('key248', 'پیش‌دریافت / بستانکاری')],
                 ...orders.map((job) => {
                   const row = getOrderAccount(job, transactions);
                   return [
@@ -180,9 +182,9 @@ export function CustomerStatement({
             )
           }
         >
-          خروجی صورت‌حساب CSV
+          {t('csv2', 'خروجی صورت‌حساب CSV')}
         </Button>
-        <h3 className="font-semibold">ریز حساب سفارش‌ها</h3>
+        <h3 className="font-semibold">{t('key339', 'ریز حساب سفارش‌ها')}</h3>
         <DataTable
           data={orderRows}
           getRowId={({ job }) => String(job.id)}
@@ -190,7 +192,7 @@ export function CustomerStatement({
           emptyMessage={null}
         />
         {!orders.length ? <EmptyState text="سفارشی برای این مشتری ثبت نشده است." /> : null}
-        <h3 className="font-semibold">رسیدهای دریافت وجه</h3>
+        <h3 className="font-semibold">{t('key340', 'رسیدهای دریافت وجه')}</h3>
         <DataTable
           data={receipts}
           getRowId={(item) => String(item.id)}
