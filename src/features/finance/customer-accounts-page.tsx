@@ -1,5 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
-import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { useMemo, useState } from 'react';
 import { Wallet } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
@@ -15,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/ui/select';
-import { DataTable } from '@/shared/ui/data-table';
+import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money } from '@/shared/lib/format';
 import { CustomerStatement } from './components/customer-statement';
 import { TransactionDialog } from './components/transaction-dialog';
@@ -50,13 +48,12 @@ export function CustomerAccountsPage() {
       ),
     [accounts, query, status],
   );
-  const accountColumns = useMemo<ColumnDef<DataTableFeatures, (typeof filtered)[number]>[]>(
+  const accountColumns = useMemo<DataTableColumn<(typeof filtered)[number]>[]>(
     () => [
       {
         id: 'مشتری',
         header: 'مشتری',
         accessorFn: (row) => row.customer.name,
-        cell: ({ row: { original: row } }) => row.customer.name,
       },
       {
         id: 'تلفن',

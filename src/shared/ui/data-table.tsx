@@ -9,9 +9,11 @@ import {
 import { Button } from './button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table';
 
+export type DataTableColumn<TData extends RowData> = ColumnDef<DataTableFeatures, TData>;
+
 interface DataTableProps<TData extends RowData> {
   data: TData[];
-  columns: ColumnDef<DataTableFeatures, TData>[];
+  columns: DataTableColumn<TData>[];
   getRowId: (row: TData) => string;
   emptyMessage?: ReactNode;
 }
@@ -29,6 +31,7 @@ export function DataTable<TData extends RowData>({
     columns,
     getRowId,
   });
+  const rows = table.getRowModel().rows;
 
   return (
     <Table>
@@ -73,7 +76,7 @@ export function DataTable<TData extends RowData>({
         ))}
       </TableHeader>
       <TableBody>
-        {table.getRowModel().rows.map((row) => (
+        {rows.map((row) => (
           <TableRow key={row.id}>
             {row.getAllCells().map((cell) => (
               <TableCell key={cell.id}>
@@ -82,7 +85,7 @@ export function DataTable<TData extends RowData>({
             ))}
           </TableRow>
         ))}
-        {!table.getRowModel().rows.length && emptyMessage ? (
+        {!rows.length && emptyMessage ? (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center text-muted-foreground">
               {emptyMessage}

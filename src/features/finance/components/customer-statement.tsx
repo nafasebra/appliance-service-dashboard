@@ -1,5 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
-import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { useMemo } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
 import {
@@ -8,7 +6,7 @@ import {
   paymentStatusLabels,
 } from '@/entities/service/model/customer-account';
 import { Modal, EmptyState } from '@/shared/ui/primitives';
-import { DataTable } from '@/shared/ui/data-table';
+import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { money, dateLabel } from '@/shared/lib/format';
@@ -48,7 +46,7 @@ export function CustomerStatement({
       }),
     [orders, transactions],
   );
-  const orderColumns = useMemo<ColumnDef<DataTableFeatures, (typeof orderRows)[number]>[]>(
+  const orderColumns = useMemo<DataTableColumn<(typeof orderRows)[number]>[]>(
     () => [
       {
         id: 'سفارش',
@@ -125,7 +123,7 @@ export function CustomerStatement({
     ],
     [onReceipt],
   );
-  const receiptColumns = useMemo<ColumnDef<DataTableFeatures, (typeof receipts)[number]>[]>(
+  const receiptColumns = useMemo<DataTableColumn<(typeof receipts)[number]>[]>(
     () => [
       {
         id: 'تاریخ',
@@ -143,7 +141,6 @@ export function CustomerStatement({
         id: 'شرح',
         header: 'شرح',
         accessorFn: (item) => item.description,
-        cell: ({ row: { original: item } }) => item.description,
       },
       {
         id: 'مبلغ',

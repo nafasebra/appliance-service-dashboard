@@ -1,5 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
-import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { useMemo } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
 import { appliances } from '@/entities/service/model/types';
@@ -8,7 +6,7 @@ import { CashChart } from '@/features/finance/cash-chart';
 import { PageHeading, Panel } from '@/shared/ui/primitives';
 import { money, number } from '@/shared/lib/format';
 import { Progress } from '@/shared/ui/progress';
-import { DataTable } from '@/shared/ui/data-table';
+import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 
 export function ReportsPage() {
   const jobs = useDemo((state) => state.jobs);
@@ -26,9 +24,7 @@ export function ReportsPage() {
       }),
     [technicians, jobs, transactions],
   );
-  const performanceColumns = useMemo<
-    ColumnDef<DataTableFeatures, (typeof performanceRows)[number]>[]
-  >(
+  const performanceColumns = useMemo<DataTableColumn<(typeof performanceRows)[number]>[]>(
     () => [
       {
         id: 'تعمیرکار',

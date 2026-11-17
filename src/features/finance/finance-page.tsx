@@ -1,5 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
-import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { cn } from '@/shared/lib/utils';
 import { downloadTransactionsCsv } from './utils/transaction-csv';
 import { useMemo, useState, type FormEvent } from 'react';
@@ -21,7 +19,7 @@ import {
   SelectGroup,
   SelectItem,
 } from '@/shared/ui/select';
-import { DataTable } from '@/shared/ui/data-table';
+import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 import { toIsoDate } from '@/shared/lib/date';
 
@@ -80,7 +78,7 @@ export function FinancePage() {
   function exportCsv() {
     downloadTransactionsCsv(filtered, kindLabels);
   }
-  const transactionColumns = useMemo<ColumnDef<DataTableFeatures, (typeof filtered)[number]>[]>(
+  const transactionColumns = useMemo<DataTableColumn<(typeof filtered)[number]>[]>(
     () => [
       {
         id: 'شرح تراکنش',
@@ -142,7 +140,7 @@ export function FinancePage() {
         description="شفافیت در دریافت‌ها، پرداخت‌ها و سهم شرکت از هر خدمت."
         action={
           <Button
-            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:border-border dark:text-primary-foreground dark:[&:hover]:bg-primary"
+            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
             onClick={() => {
               setOpen(true);
               setError('');
@@ -319,7 +317,7 @@ export function FinancePage() {
             )}
             <div className="flex gap-2.25 mt-1.25 col-span-full">
               <Button
-                className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:border-border dark:text-primary-foreground dark:[&:hover]:bg-primary"
+                className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
                 type="submit"
               >
                 ثبت تراکنش

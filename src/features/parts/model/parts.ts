@@ -239,6 +239,7 @@ export function isPartsData(value: unknown): value is PartsData {
         text(n.jobId) &&
         integer(n.quantity) &&
         n.quantity > 0 &&
+        typeof n.status === 'string' &&
         Object.hasOwn(needLabels, n.status) &&
         typeof n.technicianId === 'string' &&
         (!['delivered', 'used', 'returned'].includes(n.status) || text(n.technicianId)),
@@ -258,6 +259,7 @@ export function isPartsData(value: unknown): value is PartsData {
         integer(p.received) &&
         p.received <= p.quantity &&
         typeof p.supplier === 'string' &&
+        typeof p.status === 'string' &&
         Object.hasOwn(purchaseLabels, p.status) &&
         (p.status !== 'received' || p.received === p.quantity),
     )

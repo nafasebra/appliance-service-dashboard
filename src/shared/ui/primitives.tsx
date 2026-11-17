@@ -20,7 +20,7 @@ export function PageHeading({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4.5 mb-7 [&_p]:text-muted-foreground [&_p]:text-ui [&_p]:mt-1.75 [&_p]:leading-relaxed flex items-center justify-between gap-4.5 mb-6.5 max-mobile:items-start max-mobile:[&_p]:max-w-57.5 max-mobile:[&_>_.button]:text-2xs max-mobile:[&_>_.button]:py-2.25 [&_>_.button]:px-2.5 dark:[&_p]:text-muted-foreground">
+    <div className="flex items-center justify-between gap-4.5 [&_p]:text-muted-foreground [&_p]:text-ui [&_p]:mt-1.75 [&_p]:leading-relaxed mb-6.5 max-mobile:items-start max-mobile:[&_p]:max-w-57.5 max-mobile:[&_>_.button]:text-2xs max-mobile:[&_>_.button]:py-2.25 [&_>_.button]:px-2.5 dark:[&_p]:text-muted-foreground">
       <div>
         <div className="text-muted-foreground text-3xs mb-2.5">فضای کاری / مدیریت خدمات</div>
         <h1>{title}</h1>
@@ -116,7 +116,7 @@ export function Modal({
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent
-        className="border border-border rounded-lg w-[min(680px,_calc(100vw_-_32px))] max-h-[88vh] overflow-y-auto p-0 shadow-xl m-auto text-primary [&::backdrop]:bg-foreground/40 [&::backdrop]:backdrop-blur-0.75 dark:bg-card dark:border-border dark:text-foreground dark:[&::backdrop]:bg-foreground/40 max-w-170 gap-0 p-0"
+        className="border border-border rounded-lg w-[min(680px,_calc(100vw_-_32px))] max-h-[88vh] overflow-y-auto p-0 shadow-xl m-auto text-primary [&::backdrop]:bg-foreground/40 [&::backdrop]:backdrop-blur-0.75 dark:bg-card dark:border-border dark:text-foreground dark:[&::backdrop]:bg-foreground/40 max-w-170 gap-0"
         dir="rtl"
       >
         <DialogHeader className="flex items-center justify-between py-4.75 px-5.75 border-b border-b-border [&_h2]:text-sm dark:border-border">

@@ -48,7 +48,7 @@ function DashboardShell() {
 
         <main
           id="main-content"
-          className="mx-auto max-w-425 pt-7.5 px-9 pb-8.75 wide:px-12 max-desktop:py-6.5 px-6 max-mobile:py-6 px-4.5"
+          className="mx-auto max-w-425 pt-7.5 px-9 pb-8.75 wide:px-12 max-desktop:py-6.5 max-desktop:px-6 max-mobile:py-6 max-mobile:px-4.5"
         >
           <Outlet />
         </main>

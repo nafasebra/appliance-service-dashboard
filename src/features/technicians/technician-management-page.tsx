@@ -1,5 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
-import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { useMemo, useState, type FormEvent } from 'react';
 import { getFormText } from '@/shared/utils/form';
 import { Plus } from 'lucide-react';
@@ -10,7 +8,7 @@ import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
-import { DataTable } from '@/shared/ui/data-table';
+import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { number } from '@/shared/lib/format';
 
 export function TechnicianManagementPage() {
@@ -43,13 +41,12 @@ export function TechnicianManagementPage() {
     if (!failure) setEditor(null);
   }
 
-  const technicianColumns = useMemo<ColumnDef<DataTableFeatures, (typeof filtered)[number]>[]>(
+  const technicianColumns = useMemo<DataTableColumn<(typeof filtered)[number]>[]>(
     () => [
       {
         id: 'نام تعمیرکار',
         header: 'نام تعمیرکار',
         accessorFn: (tech) => tech.name,
-        cell: ({ row: { original: tech } }) => tech.name,
       },
       {
         id: 'تلفن',
@@ -61,13 +58,11 @@ export function TechnicianManagementPage() {
         id: 'تخصص',
         header: 'تخصص',
         accessorFn: (tech) => tech.specialty,
-        cell: ({ row: { original: tech } }) => tech.specialty,
       },
       {
         id: 'محدوده',
         header: 'محدوده',
         accessorFn: (tech) => tech.area,
-        cell: ({ row: { original: tech } }) => tech.area,
       },
       {
         id: 'سفارش باز',

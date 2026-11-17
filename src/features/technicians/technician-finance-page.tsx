@@ -1,5 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
-import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { useMemo, useState, type FormEvent } from 'react';
 import { getJobPayable } from './utils/technician-finance';
 import { Wallet } from 'lucide-react';
@@ -19,7 +17,7 @@ import {
 } from '@/shared/ui/select';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
-import { DataTable } from '@/shared/ui/data-table';
+import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money, dateLabel } from '@/shared/lib/format';
 import { toIsoDate } from '@/shared/lib/date';
 
@@ -86,17 +84,12 @@ export function TechnicianFinancePage() {
       }),
     [members, assigned, related],
   );
-  const memberColumns = useMemo<ColumnDef<DataTableFeatures, (typeof memberRows)[number]>[]>(
+  const memberColumns = useMemo<DataTableColumn<(typeof memberRows)[number]>[]>(
     () => [
       {
         id: 'تعمیرکار',
         header: 'تعمیرکار',
         accessorFn: ({ tech }) => tech.name,
-        cell: ({
-          row: {
-            original: { tech },
-          },
-        }) => tech.name,
       },
       {
         id: 'ارزش خدمات',
@@ -155,7 +148,7 @@ export function TechnicianFinancePage() {
     () => assigned.filter((job) => getJobPayable(job.id, jobs, transactions) > 0),
     [assigned, jobs, transactions],
   );
-  const payableJobColumns = useMemo<ColumnDef<DataTableFeatures, (typeof payableJobs)[number]>[]>(
+  const payableJobColumns = useMemo<DataTableColumn<(typeof payableJobs)[number]>[]>(
     () => [
       {
         id: 'سفارش',
@@ -171,8 +164,6 @@ export function TechnicianFinancePage() {
         id: 'تعمیرکار',
         header: 'تعمیرکار',
         accessorFn: (job) => technicians.find((tech) => tech.id === job.technicianId)?.name,
-        cell: ({ row: { original: job } }) =>
-          technicians.find((tech) => tech.id === job.technicianId)?.name,
       },
       {
         id: 'مانده',
@@ -201,7 +192,7 @@ export function TechnicianFinancePage() {
     ],
     [technicians, jobs, transactions, setError, setDate, setJobId],
   );
-  const payoutColumns = useMemo<ColumnDef<DataTableFeatures, (typeof payouts)[number]>[]>(
+  const payoutColumns = useMemo<DataTableColumn<(typeof payouts)[number]>[]>(
     () => [
       {
         id: 'تاریخ',
@@ -222,16 +213,11 @@ export function TechnicianFinancePage() {
           technicians.find(
             (tech) => tech.id === jobs.find((job) => job.id === item.jobId)?.technicianId,
           )?.name,
-        cell: ({ row: { original: item } }) =>
-          technicians.find(
-            (tech) => tech.id === jobs.find((job) => job.id === item.jobId)?.technicianId,
-          )?.name,
       },
       {
         id: 'شرح',
         header: 'شرح',
         accessorFn: (item) => item.description,
-        cell: ({ row: { original: item } }) => item.description,
       },
       {
         id: 'مبلغ',

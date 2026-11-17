@@ -1,5 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
-import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { useMemo, useState } from 'react';
 import { Search, ArrowUpLeft } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
@@ -10,7 +8,7 @@ import { number } from '@/shared/lib/format';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
-import { DataTable } from '@/shared/ui/data-table';
+import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 
 export function CustomersPage() {
   const customers = useDemo((state) => state.customers);
@@ -25,7 +23,7 @@ export function CustomersPage() {
       ),
     [customers, query],
   );
-  const customerColumns = useMemo<ColumnDef<DataTableFeatures, (typeof filtered)[number]>[]>(
+  const customerColumns = useMemo<DataTableColumn<(typeof filtered)[number]>[]>(
     () => [
       {
         id: 'نام مشتری',
@@ -43,7 +41,6 @@ export function CustomersPage() {
         id: 'آدرس',
         header: 'آدرس',
         accessorFn: (customer) => customer.address,
-        cell: ({ row: { original: customer } }) => customer.address,
       },
       {
         id: 'تعداد درخواست',

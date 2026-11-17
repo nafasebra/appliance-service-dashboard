@@ -91,7 +91,8 @@ function isJob(value: unknown): value is Job {
 function isTransaction(value: unknown): value is Transaction {
   return (
     isRecord(value) &&
-    (value.method === undefined || ['cash', 'card', 'bank'].includes(String(value.method))) &&
+    (value.method === undefined ||
+      (typeof value.method === 'string' && ['cash', 'card', 'bank'].includes(value.method))) &&
     (value.reference === undefined ||
       (typeof value.reference === 'string' && value.reference.length <= 100)) &&
     isNonEmptyString(value.id) &&
@@ -152,6 +153,7 @@ export function isDemoData(value: unknown): value is DemoData {
   }
 
   const payoutsByJob = new Map<string, number>();
+  const receiptsByJob = new Map<string, number>();
   for (const transaction of data.transactions) {
     if (transaction.kind === 'expense') {
       if (transaction.jobId !== '') return false;
@@ -160,13 +162,21 @@ export function isDemoData(value: unknown): value is DemoData {
 
     const job = jobsById.get(transaction.jobId);
     if (!job) return false;
+    if (transaction.kind === 'receipt') {
+      if (job.status === 'cancelled' || job.total <= 0) return false;
+      receiptsByJob.set(job.id, (receiptsByJob.get(job.id) ?? 0) + transaction.amount);
+    }
     if (transaction.kind === 'payout') {
       if (job.status !== 'completed') return false;
       payoutsByJob.set(job.id, (payoutsByJob.get(job.id) ?? 0) + transaction.amount);
     }
   }
 
-  return data.jobs.every((job) => (payoutsByJob.get(job.id) ?? 0) <= job.total - job.commission);
+  return data.jobs.every(
+    (job) =>
+      (payoutsByJob.get(job.id) ?? 0) <= job.total - job.commission &&
+      (receiptsByJob.get(job.id) ?? 0) <= job.total,
+  );
 }
 
 export function validateJobUpdate(

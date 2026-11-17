@@ -1,8 +1,9 @@
+import { JobStatusBadge } from '@/entities/service/ui/job-status-badge';
 import { cn } from '@/shared/lib/utils';
 import { useState } from 'react';
 import { Clock3, MapPin, Plus } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
-import { statusLabels, type Job } from '@/entities/service/model/types';
+import { type Job } from '@/entities/service/model/types';
 import { JobEditor } from '@/features/requests/job-components';
 import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';
 import { number } from '@/shared/lib/format';
@@ -88,22 +89,7 @@ export function DispatchPage() {
                         <span className="direction-ltr text-start font-latin tracking-normal">
                           {job.time}
                         </span>
-                        <Badge
-                          className={cn(
-                            'inline-flex items-center gap-1 rounded-md px-2 py-1 text-3xs whitespace-nowrap',
-                            job.status === 'new' && 'bg-status-new text-status-new-foreground',
-                            job.status === 'scheduled' &&
-                              'bg-status-scheduled text-status-scheduled-foreground',
-                            job.status === 'working' &&
-                              'bg-status-working text-status-working-foreground',
-                            job.status === 'completed' &&
-                              'bg-status-completed text-status-completed-foreground',
-                            job.status === 'cancelled' &&
-                              'bg-status-cancelled text-status-cancelled-foreground',
-                          )}
-                        >
-                          {statusLabels[job.status]}
-                        </Badge>
+                        <JobStatusBadge status={job.status} />
                       </div>
                       <h3>
                         {job.appliance} {job.brand}

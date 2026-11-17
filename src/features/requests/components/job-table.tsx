@@ -1,15 +1,12 @@
-import type { ColumnDef } from '@tanstack/react-table';
-import type { DataTableFeatures } from '@/shared/ui/data-table-features';
+import { JobStatusBadge } from '@/entities/service/ui/job-status-badge';
 import { useMemo } from 'react';
-import { cn } from '@/shared/lib/utils';
 import { ArrowUpLeft, WashingMachine, Refrigerator, Wind, CookingPot } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
 import { statusLabels, type Job } from '@/entities/service/model/types';
 import { dateLabel, money } from '@/shared/lib/format';
 import { EmptyState } from '@/shared/ui/primitives';
-import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
-import { DataTable } from '@/shared/ui/data-table';
+import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 
 export function ApplianceIcon({ appliance }: { appliance: string }) {
   const Icon =
@@ -26,7 +23,7 @@ export function ApplianceIcon({ appliance }: { appliance: string }) {
 export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job) => void }) {
   const customers = useDemo((state) => state.customers);
   const technicians = useDemo((state) => state.technicians);
-  const jobColumns = useMemo<ColumnDef<DataTableFeatures, (typeof jobs)[number]>[]>(
+  const jobColumns = useMemo<DataTableColumn<(typeof jobs)[number]>[]>(
     () => [
       {
         id: 'درخواست / دستگاه',
@@ -90,21 +87,7 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
         id: 'وضعیت',
         header: 'وضعیت',
         accessorFn: (job) => statusLabels[job.status],
-        cell: ({ row: { original: job } }) => (
-          <Badge
-            className={cn(
-              'inline-flex items-center gap-1 rounded-md px-2 py-1 text-3xs whitespace-nowrap [&_i]:size-1 [&_i]:rounded-full [&_i]:bg-current',
-              job.status === 'new' && 'bg-status-new text-status-new-foreground',
-              job.status === 'scheduled' && 'bg-status-scheduled text-status-scheduled-foreground',
-              job.status === 'working' && 'bg-status-working text-status-working-foreground',
-              job.status === 'completed' && 'bg-status-completed text-status-completed-foreground',
-              job.status === 'cancelled' && 'bg-status-cancelled text-status-cancelled-foreground',
-            )}
-          >
-            <i />
-            {statusLabels[job.status]}
-          </Badge>
-        ),
+        cell: ({ row: { original: job } }) => <JobStatusBadge status={job.status} showDot />,
       },
       {
         id: 'مبلغ خدمت',

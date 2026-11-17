@@ -1,5 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
-import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { useMemo, useState, type FormEvent } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
 import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';
@@ -15,7 +13,7 @@ import {
   SelectItem,
 } from '@/shared/ui/select';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
-import { DataTable } from '@/shared/ui/data-table';
+import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { number } from '@/shared/lib/format';
 
 export function TechnicianSpecialtiesPage() {
@@ -50,17 +48,12 @@ export function TechnicianSpecialtiesPage() {
       }),
     [specialties, technicians],
   );
-  const specialtyColumns = useMemo<ColumnDef<DataTableFeatures, (typeof specialtyRows)[number]>[]>(
+  const specialtyColumns = useMemo<DataTableColumn<(typeof specialtyRows)[number]>[]>(
     () => [
       {
         id: 'تخصص',
         header: 'تخصص',
         accessorFn: ({ name }) => name,
-        cell: ({
-          row: {
-            original: { name },
-          },
-        }) => name,
       },
       {
         id: 'تعداد تعمیرکار',
@@ -76,11 +69,6 @@ export function TechnicianSpecialtiesPage() {
         id: 'اعضای تیم',
         header: 'اعضای تیم',
         accessorFn: ({ members }) => members.map((tech) => tech.name).join('، '),
-        cell: ({
-          row: {
-            original: { members },
-          },
-        }) => members.map((tech) => tech.name).join('، '),
       },
     ],
     [],

@@ -8,6 +8,30 @@ import {
   isPartsData,
 } from './parts.ts';
 
+test('persisted need and purchase statuses must be strings', () => {
+  const need = {
+    id: 'typed-need',
+    jobId: 'j1',
+    partId: 'part-1',
+    quantity: 1,
+    status: 'pending',
+    technicianId: '',
+  };
+  const purchase = {
+    id: 'typed-purchase',
+    partId: 'part-1',
+    needId: need.id,
+    quantity: 1,
+    received: 0,
+    supplier: '',
+    status: 'pending',
+  };
+  const valid = { ...structuredClone(initialPartsData), needs: [need], purchases: [purchase] };
+  assert.equal(isPartsData(valid), true);
+  assert.equal(isPartsData({ ...valid, needs: [{ ...need, status: ['pending'] }] }), false);
+  assert.equal(isPartsData({ ...valid, purchases: [{ ...purchase, status: ['pending'] }] }), false);
+});
+
 test('reservation, delivery and return preserve stock accounting', () => {
   let data = structuredClone(initialPartsData);
   data.needs.push({

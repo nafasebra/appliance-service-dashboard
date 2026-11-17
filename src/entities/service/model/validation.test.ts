@@ -27,6 +27,31 @@ test('rejects persisted payouts that exceed technician share', () => {
   assert.equal(isDemoData(invalid), false);
 });
 
+test('persisted receipts obey the same order limits as newly recorded receipts', () => {
+  const invalid = structuredClone(initialData);
+  const receipt = invalid.transactions.find((item) => item.kind === 'receipt');
+  assert.ok(receipt);
+  const job = invalid.jobs.find((item) => item.id === receipt.jobId);
+  assert.ok(job);
+  receipt.amount = job.total + 1;
+  assert.equal(isDemoData(invalid), false);
+  receipt.amount = 1;
+  job.status = 'cancelled';
+  assert.equal(isDemoData(invalid), false);
+  job.status = 'new';
+  job.total = 0;
+  job.commission = 0;
+  assert.equal(isDemoData(invalid), false);
+});
+
+test('payment methods must be strings, not values that coerce to a valid method', () => {
+  const invalid: unknown = {
+    ...structuredClone(initialData),
+    transactions: initialData.transactions.map((item) => ({ ...item, method: ['bank'] })),
+  };
+  assert.equal(isDemoData(invalid), false);
+});
+
 test('protects a job after financial transactions are recorded', () => {
   const previous = initialData.jobs.find((job) => job.id === 'SR-1041');
   assert.ok(previous);

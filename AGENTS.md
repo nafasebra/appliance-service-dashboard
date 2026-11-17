@@ -35,6 +35,9 @@ Read the relevant local skill before related work:
 - shadcn/ui: `.skills/shadcn/SKILL.md`
 - Frontend architecture: `.skills/frontend-architecture/SKILL.md`
 - Zustand stores, selectors and persistence: `.skills/zustand/SKILL.md`
+- TanStack Table changes: `.skills/tanstack-table/core/SKILL.md`, then
+  `.skills/tanstack-table/react/getting-started/SKILL.md`; load the feature/state
+  references needed for the change.
 
 Sources and project-specific compatibility notes are in `.skills/README.md`.
 User instructions and this project's constraints take precedence over skill defaults.
@@ -110,6 +113,10 @@ accessors; keep monetary and quantity accessors numeric and date accessors ISO.
 Memoize derived rows and column definitions, supply stable record IDs, and disable
 sorting for action columns. The shared component owns local sorting and accessible
 header controls; Persian text comparison lives in `shared/utils/table-sort.ts`.
+Use the public `DataTableColumn<T>` type at feature boundaries. Prefer the v9
+column helper for accessor-specific value inference. Parts table definitions live
+in `features/parts/hooks/use-parts-columns.tsx`; keep workflow actions in the page
+and callbacks stable when column memos depend on them.
 
 ## System design
 

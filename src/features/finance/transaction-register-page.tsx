@@ -1,5 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
-import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { useMemo, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
@@ -10,7 +8,7 @@ import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
-import { DataTable } from '@/shared/ui/data-table';
+import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money, dateLabel } from '@/shared/lib/format';
 import { downloadCsv } from '@/shared/utils/csv';
 import { TransactionDialog } from './components/transaction-dialog';
@@ -44,7 +42,7 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
         .sort((a, b) => b.item.date.localeCompare(a.item.date)),
     [transactions, kind, jobs, customers, invalidRange, from, to, query],
   );
-  const transactionColumns = useMemo<ColumnDef<DataTableFeatures, (typeof rows)[number]>[]>(
+  const transactionColumns = useMemo<DataTableColumn<(typeof rows)[number]>[]>(
     () => [
       {
         id: 'تاریخ',
@@ -83,21 +81,11 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
         id: 'شرح',
         header: 'شرح',
         accessorFn: ({ item }) => item.description,
-        cell: ({
-          row: {
-            original: { item },
-          },
-        }) => item.description,
       },
       {
         id: 'روش',
         header: 'روش',
         accessorFn: ({ item }) => (item.method ? paymentMethodLabels[item.method] : 'ثبت قدیمی'),
-        cell: ({
-          row: {
-            original: { item },
-          },
-        }) => (item.method ? paymentMethodLabels[item.method] : 'ثبت قدیمی'),
       },
       {
         id: 'شماره سند',

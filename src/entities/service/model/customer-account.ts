@@ -45,15 +45,16 @@ export function appendTransaction(data: DemoData, transaction: Transaction): Dem
   if (data.transactions.some((item) => item.id === transaction.id))
     throw new Error('این تراکنش قبلاً ثبت شده است.');
   const next = { ...data, transactions: [...data.transactions, transaction] };
-  if (!isDemoData(next)) throw new Error('مبلغ، تاریخ، شرح یا ارتباط تراکنش با سفارش معتبر نیست.');
   if (transaction.kind === 'receipt') {
-    const job = data.jobs.find((item) => item.id === transaction.jobId)!;
+    const job = data.jobs.find((item) => item.id === transaction.jobId);
+    if (!job) throw new Error('سفارش مرتبط با دریافت وجه پیدا نشد.');
     const received = getOrderAccount(job, data.transactions).receipts;
     if (job.status === 'cancelled' || job.total <= 0)
       throw new Error('برای دریافت وجه، سفارش باید لغونشده و دارای مبلغ مشخص باشد.');
     if (received + transaction.amount > job.total)
       throw new Error('مبلغ دریافت از مانده قابل دریافت سفارش بیشتر است.');
   }
+  if (!isDemoData(next)) throw new Error('مبلغ، تاریخ، شرح یا ارتباط تراکنش با سفارش معتبر نیست.');
   return next;
 }
 

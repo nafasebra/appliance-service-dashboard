@@ -1,5 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
-import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { useMemo, useState } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
 import { getOrderAccount, paymentStatusLabels } from '@/entities/service/model/customer-account';
@@ -7,7 +5,7 @@ import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Badge } from '@/shared/ui/badge';
-import { DataTable } from '@/shared/ui/data-table';
+import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money, dateLabel } from '@/shared/lib/format';
 import { downloadCsv } from '@/shared/utils/csv';
 import { TransactionDialog } from './components/transaction-dialog';
@@ -34,7 +32,7 @@ export function ReceivablesPage() {
         ),
     [jobs, customers, transactions, query],
   );
-  const receivableColumns = useMemo<ColumnDef<DataTableFeatures, (typeof rows)[number]>[]>(
+  const receivableColumns = useMemo<DataTableColumn<(typeof rows)[number]>[]>(
     () => [
       {
         id: 'سفارش',
@@ -50,11 +48,6 @@ export function ReceivablesPage() {
         id: 'مشتری',
         header: 'مشتری',
         accessorFn: ({ customer }) => customer?.name,
-        cell: ({
-          row: {
-            original: { customer },
-          },
-        }) => customer?.name,
       },
       {
         id: 'تاریخ خدمت',
