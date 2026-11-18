@@ -1,6 +1,7 @@
 {
   "appTitle": "مدیریت خدمات تعمیرات لوازم خانگی",
   "labels": {
+    "accepted": "تأییدشده، در انتظار تخصیص",
     "accountingAndFinance": "حسابداری و امور مالی",
     "aCompletedRequestWithFinancialTransactionsMustRemain": "درخواستی که تراکنش مالی دارد باید تکمیل‌شده باقی بماند. ابتدا برای اصلاح مالی، فرایند برگشت یا ابطال تراکنش تعریف کنید.",
     "actions": "عملیات",
@@ -11,12 +12,14 @@
     "amountNotFinalized": "مبلغ نهایی نشده",
     "anOrderWithFinancialTransactionsCannotBeTransferred": "سفارش دارای تراکنش مالی را نمی‌توان به مشتری دیگری منتقل کرد.",
     "anOrderWithReceiptsCannotBeCancelledOr": "سفارش دارای دریافت وجه را بدون اصلاح مالی نمی‌توان لغو کرد یا مبلغ آن را کمتر از دریافت ثبت‌شده قرار داد.",
+    "awaitingReview": "در انتظار بررسی",
     "balance": "مانده",
     "bankTransfer": "واریز بانکی",
     "businessManagement": "مدیریت کسب‌وکار",
     "cancelled": "لغو شده",
     "cardTerminal": "کارت‌خوان",
     "cash": "نقدی",
+    "collectBeforePayout": "پیش از تسویه تعمیرکار، مانده مشتری باید کامل دریافت شود.",
     "companyCommission": "کمیسیون شرکت",
     "completed": "تکمیل شده",
     "dishwasher": "ظرفشویی",

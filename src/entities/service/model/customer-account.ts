@@ -54,6 +54,11 @@ export function appendTransaction(data: DemoData, transaction: Transaction): Dem
     if (received + transaction.amount > job.total)
       throw new Error('مبلغ دریافت از مانده قابل دریافت سفارش بیشتر است.');
   }
+  if (transaction.kind === 'payout') {
+    const job = data.jobs.find((item) => item.id === transaction.jobId);
+    if (job?.status === 'completed' && getOrderAccount(job, data.transactions).outstanding > 0)
+      throw new Error('پیش از تسویه تعمیرکار، مانده مشتری باید کامل دریافت شود.');
+  }
   if (!isDemoData(next)) throw new Error('مبلغ، تاریخ، شرح یا ارتباط تراکنش با سفارش معتبر نیست.');
   return next;
 }

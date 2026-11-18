@@ -85,7 +85,7 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
                     <SidebarMenuButton asChild>
                       <Link
                         to={to}
-                        activeOptions={{ exact: to === '/' }}
+                        activeOptions={{ exact: to === '/' || to === '/cartable' }}
                         activeProps={{
                           className:
                             "relative flex min-h-11.5 items-center gap-3 rounded-md bg-sidebar-accent py-2.75 px-3.5 text-xs font-bold text-sidebar-accent-foreground before:absolute before:-start-4.5 before:h-6 before:w-0.75 before:rounded-xs before:bg-primary before:content-['']",

@@ -6,6 +6,7 @@ import { useMemo, useState, type FormEvent } from 'react';
 import { Plus, ArrowDownLeft, ArrowUpRight, Wallet, HandCoins, Download } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
 import { summarizeFinance } from '@/entities/service/model/finance';
+import { getOrderAccount } from '@/entities/service/model/customer-account';
 import type { Transaction } from '@/entities/service/model/types';
 import { PageHeading, Panel, StatCard, Modal, EmptyState } from '@/shared/ui/primitives';
 import { money, dateLabel } from '@/shared/lib/format';
@@ -280,7 +281,12 @@ export function FinancePage() {
                   <SelectContent>
                     <SelectGroup>
                       {jobs
-                        .filter((job) => kind !== 'payout' || job.status === 'completed')
+                        .filter(
+                          (job) =>
+                            kind !== 'payout' ||
+                            (job.status === 'completed' &&
+                              getOrderAccount(job, transactions).outstanding === 0),
+                        )
                         .map((job) => (
                           <SelectItem key={job.id} value={job.id}>
                             {job.id} · {translateLabel(job.appliance)} {job.brand}

@@ -26,7 +26,7 @@ export function TechnicianJobsPage() {
   const active = jobs.filter(
     (job) =>
       job.technicianId &&
-      ['new', 'scheduled', 'working'].includes(job.status) &&
+      ['new', 'accepted', 'scheduled', 'working'].includes(job.status) &&
       (technicianId === 'all' || job.technicianId === technicianId) &&
       (status === 'all' || job.status === status),
   );

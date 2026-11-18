@@ -1,4 +1,4 @@
-export type JobStatus = 'new' | 'scheduled' | 'working' | 'completed' | 'cancelled';
+export type JobStatus = 'new' | 'accepted' | 'scheduled' | 'working' | 'completed' | 'cancelled';
 export type Appliance = 'یخچال' | 'لباسشویی' | 'ظرفشویی' | 'کولر گازی' | 'اجاق گاز';
 export interface Customer {
   id: string;
@@ -44,7 +44,8 @@ export interface DemoData {
   transactions: Transaction[];
 }
 export const statusLabels: Record<JobStatus, string> = {
-  new: 'در انتظار اعزام',
+  new: 'در انتظار بررسی',
+  accepted: 'تأییدشده، در انتظار تخصیص',
   scheduled: 'برنامه‌ریزی شده',
   working: 'در حال انجام',
   completed: 'تکمیل شده',

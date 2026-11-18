@@ -176,6 +176,16 @@ Source files use UTF-8, LF line endings, two-space indentation, and a final newl
 Prettier is the formatting authority. Preserve both languages, RTL/LTR behavior,
 and both themes when extending the interface.
 
+## Order workflow
+
+Order workflow pages start at `/cartable` and are grouped in the sidebar:
+incoming requests, assignment, active visits, customer collection, technician
+settlement, and closed orders. The company collects customer payment before paying
+the technician's share; partial receipts and payouts remain in their queue until
+the balance is cleared. See [order workflow](docs/order-workflow.md) for routes,
+transition rules, and payment behavior. These are local demo records; dispatching
+does not send messages or create real-world payments.
+
 ## Localization
 
 Persian and English are available from the header language selector, with automatic

@@ -143,7 +143,7 @@ export function OverviewPage() {
               </div>
             </div>
             <div className="flex flex-1 flex-col gap-4.25 min-w-33.75 max-w-52.5 [&_>_div]:flex [&_>_div]:justify-between [&_>_div]:items-center [&_>_div]:gap-4 [&_>_div]:text-2xs [&_>_div_>_span]:flex [&_>_div_>_span]:items-center [&_>_div_>_span]:gap-1.75 [&_>_div_>_span]:text-muted-foreground [&_strong]:text-muted-foreground [&_strong]:text-xs max-desktop:min-w-27.5 max-desktop:[&_>_div_>_span]:text-3xs max-tablet:min-w-40 max-mobile:min-w-33.75">
-              {(['completed', 'working', 'scheduled', 'new'] as const).map((status) => (
+              {(['completed', 'working', 'scheduled', 'accepted', 'new'] as const).map((status) => (
                 <div key={status}>
                   <span>
                     <i

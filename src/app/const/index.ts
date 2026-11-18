@@ -14,6 +14,12 @@ import {
 } from 'lucide-react';
 
 export const navigation = [
+  { to: '/cartable', label: 'cartable:queues.inbox.title', icon: ClipboardList },
+  { to: '/cartable/assignment', label: 'cartable:queues.assignment.title', icon: Users },
+  { to: '/cartable/active', label: 'cartable:queues.active.title', icon: Wrench },
+  { to: '/cartable/collection', label: 'cartable:queues.collection.title', icon: Wallet },
+  { to: '/cartable/settlement', label: 'cartable:queues.settlement.title', icon: Wallet },
+  { to: '/cartable/archive', label: 'cartable:queues.archive.title', icon: ClipboardList },
   { to: '/customer-accounts', label: 'حساب مشتریان', icon: Users },
   { to: '/receivables', label: 'مطالبات مشتریان', icon: ClipboardList },
   { to: '/receipts', label: 'دریافت‌های مشتریان', icon: Wallet },

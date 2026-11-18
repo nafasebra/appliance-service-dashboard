@@ -4,6 +4,12 @@ import { appendTransaction } from '../../entities/service/model/customer-account
 import { initialData } from '../../entities/service/model/demo-data.ts';
 import type { DemoData, Job, Transaction, Technician } from '../../entities/service/model/types.ts';
 import { isDemoData, validateJobUpdate } from '../../entities/service/model/validation.ts';
+import {
+  applyJobWorkflow,
+  type JobWorkflowAction,
+  type WorkflowFailure,
+} from '../../entities/service/model/job-workflow.ts';
+import type { JobStatus } from '../../entities/service/model/types.ts';
 
 const storageKey = 'hamyar-service-demo-v1';
 export interface DemoState extends DemoData {
@@ -11,6 +17,11 @@ export interface DemoState extends DemoData {
 }
 
 export interface DemoActions {
+  advanceJob: (
+    jobId: string,
+    expectedStatus: JobStatus,
+    action: JobWorkflowAction,
+  ) => WorkflowFailure | null;
   saveTechnician: (technician: Technician) => string | null;
   saveJob: (job: Job) => string | null;
   addTransaction: (transaction: Transaction) => string | null;
@@ -49,6 +60,12 @@ export const useDemo = create<DemoStore>()(
     return {
       ...readDemo(),
       storageError: false,
+      advanceJob: (jobId, expectedStatus, action) => {
+        const result = applyJobWorkflow(records(), jobId, expectedStatus, action);
+        if (!result.ok) return result.failure;
+        update(result.data);
+        return null;
+      },
       saveTechnician: (technician) => {
         technician = structuredClone(technician);
         const data = records();

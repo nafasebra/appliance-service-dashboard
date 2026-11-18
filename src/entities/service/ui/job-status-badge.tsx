@@ -17,6 +17,7 @@ export function JobStatusBadge({
       className={cn(
         'inline-flex items-center gap-1 rounded-md px-2 py-1 text-3xs whitespace-nowrap',
         status === 'new' && 'bg-status-new text-status-new-foreground',
+        status === 'accepted' && 'bg-accent text-accent-foreground',
         status === 'scheduled' && 'bg-status-scheduled text-status-scheduled-foreground',
         status === 'working' && 'bg-status-working text-status-working-foreground',
         status === 'completed' && 'bg-status-completed text-status-completed-foreground',

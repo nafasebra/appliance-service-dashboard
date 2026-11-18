@@ -1,0 +1,88 @@
+{
+  "actions": {
+    "accept": "Accept request",
+    "assign": "Assign technician",
+    "cancel": "Cancel request",
+    "close": "Close",
+    "complete": "Complete repair",
+    "details": "View details",
+    "new": "New request",
+    "payout": "Pay technician",
+    "receipt": "Record customer payment",
+    "start": "Start repair"
+  },
+  "columns": {
+    "actions": "Actions",
+    "balance": "Customer balance",
+    "customer": "Customer",
+    "order": "Order / appliance",
+    "payable": "Technician balance",
+    "status": "Service status",
+    "technician": "Technician / visit"
+  },
+  "count_one": "{{count}} order in this queue",
+  "count_other": "{{count}} orders in this queue",
+  "dialog": {
+    "address": "Customer address",
+    "amount": "Amount (toman)",
+    "cancelNote": "Cancel this request? Requests with recorded receipts require financial correction first.",
+    "commission": "Company commission (toman)",
+    "completeNote": "Confirm the final service amount and commission. This creates customer receivables and the technician's share; it does not move cash.",
+    "date": "Visit date (Jalali)",
+    "description": "Payment description",
+    "issue": "Reported problem",
+    "limit": "Remaining balance: {{amount}}",
+    "method": "Payment method",
+    "noTechnicians": "Add a technician in team management before assigning this request.",
+    "paymentDate": "Payment date (Jalali)",
+    "payoutDescription": "Technician settlement for {{id}}",
+    "receiptDescription": "Customer payment for {{id}}",
+    "reference": "Document reference (optional)",
+    "selectTechnician": "Select a technician",
+    "technician": "Technician",
+    "time": "Visit time",
+    "title": "{{action}} · {{id}}",
+    "total": "Final service amount (toman)"
+  },
+  "empty": "No orders in this queue. Orders appear here as their workflow progresses.",
+  "errors": {
+    "invalidAmount": "Enter a positive whole service amount and a commission between zero and the service amount.",
+    "invalidAssignment": "Choose an existing technician.",
+    "invalidData": "Check the visit date, time, and request details.",
+    "invalidTransition": "This action is not allowed at the current workflow stage.",
+    "notFound": "The request no longer exists.",
+    "stale": "The request changed while this action was open. Close it and try again from the current queue."
+  },
+  "flow": "Request → accept → assign → repair → company collects → technician settlement",
+  "paymentNote": "Completing a repair does not record a payment. Customer receipts, company commission, and technician payouts remain separate.",
+  "queues": {
+    "active": {
+      "description": "Start scheduled visits and finalize the service amount when the repair is complete.",
+      "title": "Visits and repairs"
+    },
+    "archive": {
+      "description": "Cancelled requests and completed jobs with no outstanding customer or technician balance.",
+      "title": "Closed requests"
+    },
+    "assignment": {
+      "description": "Choose a technician and agree a visit date and time for accepted requests.",
+      "title": "Awaiting assignment"
+    },
+    "collection": {
+      "description": "Record full or partial payments received by the company for completed services.",
+      "title": "Customer payment"
+    },
+    "inbox": {
+      "description": "Review the customer's request, then accept it or cancel it.",
+      "title": "Incoming requests"
+    },
+    "settlement": {
+      "description": "Customer payment is complete. Pay the technician's share after keeping the company's commission.",
+      "title": "Technician settlement"
+    }
+  },
+  "saved": "Changes saved. The queues now reflect the current order and payment balances.",
+  "search": "Search by request ID, customer, phone, appliance, or technician",
+  "storageError": "Browser storage is unavailable. Current changes will not survive a reload.",
+  "title": "Order cartable"
+}

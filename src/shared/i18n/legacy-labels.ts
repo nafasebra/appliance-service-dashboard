@@ -1,5 +1,8 @@
 // Global domain and UI labels only; feature compatibility mappings live with their feature.
 export const legacyLabelKeys: Readonly<Record<string, string>> = {
+  'در انتظار بررسی': 'labels.awaitingReview',
+  'تأییدشده، در انتظار تخصیص': 'labels.accepted',
+  'پیش از تسویه تعمیرکار، مانده مشتری باید کامل دریافت شود.': 'labels.collectBeforePayout',
   'درخواست جدید {{appliance}}': 'ui.newApplianceRequest',
   '{{companyName}} · مدیریت هوشمند خدمات': 'ui.companynameSmartServiceManagement',
   'رفتن به محتوای اصلی': 'ui.skipToMainContent',

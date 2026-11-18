@@ -1,4 +1,5 @@
 import { useTechniciansTranslation } from './i18n/use-technicians-translation';
+import { getOrderAccount } from '@/entities/service/model/customer-account';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState, type FormEvent } from 'react';
 import { getJobPayable } from './utils/technician-finance';
@@ -150,7 +151,12 @@ export function TechnicianFinancePage() {
     [t, tShared],
   );
   const payableJobs = useMemo(
-    () => assigned.filter((job) => getJobPayable(job.id, jobs, transactions) > 0),
+    () =>
+      assigned.filter(
+        (job) =>
+          getJobPayable(job.id, jobs, transactions) > 0 &&
+          getOrderAccount(job, transactions).outstanding === 0,
+      ),
     [assigned, jobs, transactions, t, tShared],
   );
   const payableJobColumns = useMemo<DataTableColumn<(typeof payableJobs)[number]>[]>(
@@ -291,7 +297,7 @@ export function TechnicianFinancePage() {
             columns={payableJobColumns}
             emptyMessage={null}
           />
-          {!assigned.some((job) => getJobPayable(job.id, jobs, transactions) > 0) ? (
+          {!payableJobs.length ? (
             <EmptyState text={t('finance.noCompletedOrdersHaveARemainingPayableBalance')} />
           ) : null}
         </Panel>

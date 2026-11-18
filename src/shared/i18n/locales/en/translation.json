@@ -1,6 +1,7 @@
 {
   "appTitle": "Appliance Repair Service Dashboard",
   "labels": {
+    "accepted": "Accepted, awaiting assignment",
     "accountingAndFinance": "Accounting and finance",
     "aCompletedRequestWithFinancialTransactionsMustRemain": "A completed request with financial transactions must remain completed. Define transaction reversal or voiding before making financial corrections.",
     "actions": "Actions",
@@ -11,12 +12,14 @@
     "amountNotFinalized": "Amount not finalized",
     "anOrderWithFinancialTransactionsCannotBeTransferred": "An order with financial transactions cannot be transferred to another customer.",
     "anOrderWithReceiptsCannotBeCancelledOr": "An order with receipts cannot be cancelled or reduced below the amount collected without financial corrections.",
+    "awaitingReview": "Awaiting review",
     "balance": "Balance",
     "bankTransfer": "Bank transfer",
     "businessManagement": "Business management",
     "cancelled": "Cancelled",
     "cardTerminal": "Card terminal",
     "cash": "Cash",
+    "collectBeforePayout": "Collect the customer's full balance before settling with the technician.",
     "companyCommission": "Company commission",
     "completed": "Completed",
     "dishwasher": "Dishwasher",

@@ -5,8 +5,10 @@ export const isTechnicianRoute = (path: string) =>
   path === '/technicians' || path.startsWith('/technician-');
 const isFinanceRoute = (path: string) =>
   ['/finance', '/customer-accounts', '/receivables', '/receipts', '/expenses'].includes(path);
+const isCartableRoute = (path: string) => path === '/cartable' || path.startsWith('/cartable/');
 
 export const navigationGroups = [
+  { label: 'cartable:title', items: navigation.filter((item) => isCartableRoute(item.to)) },
   {
     label: 'مدیریت کسب‌وکار',
     items: navigation.filter(
@@ -14,6 +16,7 @@ export const navigationGroups = [
         !isPartsRoute(item.to) &&
         !isTechnicianRoute(item.to) &&
         !isFinanceRoute(item.to) &&
+        !isCartableRoute(item.to) &&
         item.to !== '/settings',
     ),
   },

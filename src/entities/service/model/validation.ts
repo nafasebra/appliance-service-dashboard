@@ -7,7 +7,7 @@ import {
   type Transaction,
 } from './types.ts';
 
-const jobStatuses = new Set(['new', 'scheduled', 'working', 'completed', 'cancelled']);
+const jobStatuses = new Set(['new', 'accepted', 'scheduled', 'working', 'completed', 'cancelled']);
 const priorities = new Set(['normal', 'urgent']);
 const transactionKinds = new Set(['receipt', 'payout', 'expense']);
 const applianceNames = new Set<string>(appliances);

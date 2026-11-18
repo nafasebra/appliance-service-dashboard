@@ -34,6 +34,7 @@ import { usePartsTranslation } from '../features/parts/i18n/use-parts-translatio
 import { useOverviewTranslation } from '../features/overview/i18n/use-overview-translation.ts';
 import { useReportsTranslation } from '../features/reports/i18n/use-reports-translation.ts';
 import { useSettingsTranslation } from '../features/settings/i18n/use-settings-translation.ts';
+import { useCartableTranslation } from '../features/cartable/i18n/use-cartable-translation.ts';
 
 function flatten(value: unknown, prefix = ''): Record<string, string> {
   assert.ok(value && typeof value === 'object' && !Array.isArray(value));
@@ -179,6 +180,11 @@ test('feature model labels translate through isolated registered bundles', async
 test('every feature hook uses its own namespace and follows the provider locale', async () => {
   const instance = await createI18n('en', translationBundles);
   const probes = [
+    {
+      namespace: 'cartable',
+      key: 'queues.inbox.title',
+      useText: () => useCartableTranslation()('queues.inbox.title'),
+    },
     {
       namespace: 'requests',
       key: 'list.requestList',

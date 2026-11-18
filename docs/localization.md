@@ -10,22 +10,23 @@ The Vite application is client-rendered and uses i18next/react-i18next. Previous
 all messages lived in one `translation` namespace, including feature copy, and
 `legacy-labels.ts` translated existing Persian labels at presentation boundaries.
 
-| Feature     | Responsibility                                                  | Namespace     |
-| ----------- | --------------------------------------------------------------- | ------------- |
-| customers   | Directory, contact search, customer service history             | `customers`   |
-| requests    | Request search, editor, job table                               | `requests`    |
-| dispatch    | Technician schedules and assignment                             | `dispatch`    |
-| technicians | Management, specialties, open jobs, balances                    | `technicians` |
-| finance     | Cash ledger, customer accounts, receivables, receipts, expenses | `finance`     |
-| parts       | Inventory, availability, procurement, allocations               | `parts`       |
-| overview    | Dashboard summary                                               | `overview`    |
-| reports     | Operational and financial reports                               | `reports`     |
-| settings    | Company and workflow preferences                                | `settings`    |
+| Feature     | Responsibility                                                        | Namespace     |
+| ----------- | --------------------------------------------------------------------- | ------------- |
+| customers   | Directory, contact search, customer service history                   | `customers`   |
+| requests    | Request search, editor, job table                                     | `requests`    |
+| dispatch    | Technician schedules and assignment                                   | `dispatch`    |
+| technicians | Management, specialties, open jobs, balances                          | `technicians` |
+| finance     | Cash ledger, customer accounts, receivables, receipts, expenses       | `finance`     |
+| parts       | Inventory, availability, procurement, allocations                     | `parts`       |
+| overview    | Dashboard summary                                                     | `overview`    |
+| reports     | Operational and financial reports                                     | `reports`     |
+| settings    | Company and workflow preferences                                      | `settings`    |
+| cartable    | Order review, assignment, repairs, collection, settlement and archive | `cartable`    |
 
 The shared service entity owns records and pure accounting rules; its domain data
 is not moved into feature catalogs. The app owns the shell, navigation, and resource
 composition. Global controls, pagination, and formatting messages remain shared.
-All nine features own their translations. Shared catalogs contain global controls,
+All features own their translations. Shared catalogs contain global controls,
 navigation, appliance names, service/payment statuses, and validation messages used
 across service workflows. Page-specific headings, forms, tables, and inventory
 statuses live in their feature catalog.

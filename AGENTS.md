@@ -6,7 +6,7 @@ These instructions apply to this project and its descendants. Read this file and
 `docs/project-context.md` before changing the project. Keep both up to date when the
 user confirms requirements or changes an architectural decision.
 
-The current phase is an interactive frontend demonstration. Seven connected pages
+The current phase is an interactive frontend demonstration. Connected pages
 and browser-local workflows are implemented; there is no production backend.
 Extend features within the user's requested scope. Distinguish implemented demo
 behavior from confirmed production requirements. User instructions take precedence.
@@ -16,13 +16,15 @@ behavior from confirmed production requirements. User instructions take preceden
 - The company provides household appliance repair services.
 - The company sends technicians to customers' homes.
 - The company earns a commission from the services performed.
+- The company collects the customer's payment, retains its commission, and pays
+  the technician. New payouts require full collection of the completed order.
 - The dashboard will support managing that operation and viewing company cash flow.
 - The user will define detailed features and workflows in later requests.
 - The interface is Persian and right-to-left by default.
 
 The expected high-level scenario is a service request, technician dispatch, work at
 the customer's home, and recording the associated financial activity. Exact order
-statuses, assignment rules, commission calculation, collection responsibilities,
+production statuses, assignment rules, commission calculation,
 refunds, settlements, and reporting definitions remain undecided. Do not invent
 them or treat example values as confirmed requirements.
 
@@ -66,6 +68,7 @@ src/
   app/                   Application entry, providers, routing, and page composition
   features/
     requests/            Request pages, editor and job table
+    cartable/            Review, assignment, active work, collection, settlement, archive
     dispatch/            Scheduling and dispatch
     customers/           Customer directory and history
     technicians/         Team management, specialties, jobs and balances
@@ -144,13 +147,18 @@ accounting system. Backend technology, deployment, and API contracts are undecid
 Toman, Tehran, the sample reference date, and the demo workflow are provisional.
 Dates use a Jalali calendar in both interface languages and ISO dates in records.
 
-Current demo statuses are `new`, `scheduled`, `working`, `completed`, and
+Current demo statuses are `new`, `accepted`, `scheduled`, `working`, `completed`, and
 `cancelled`. Commission is an explicit integer amount, not a configured percentage.
 Only completed jobs contribute to service value and commission totals. Actual
 receipts and disbursements are separate transactions; completion does not create a
 receipt. Technician payable is service value minus commission minus recorded
 payouts for that job. Cash flow is receipts minus payouts minus expenses and does
 not include an opening bank balance. Preserve these distinctions when extending UI.
+
+Cartable transition rules and payment queues are documented in
+`docs/order-workflow.md`; read it before changing workflow actions, assignment,
+collection, settlement or archive behavior. Persist workflow changes through the
+existing service store. Completing work must not create financial transactions.
 
 For future integration, use the following boundary:
 

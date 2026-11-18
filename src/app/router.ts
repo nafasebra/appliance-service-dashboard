@@ -1,4 +1,12 @@
 import { createRouter } from '@tanstack/react-router';
+import {
+  cartableRoute,
+  cartableAssignmentRoute,
+  cartableActiveRoute,
+  cartableCollectionRoute,
+  cartableSettlementRoute,
+  cartableArchiveRoute,
+} from '@/app/routes/cartable-routes';
 import { indexRoute } from '@/app/routes/index-route';
 import {
   customerAccountsRoute,
@@ -27,6 +35,12 @@ import {
 } from '@/app/routes/service-routes';
 
 const routeTree = rootRoute.addChildren([
+  cartableRoute,
+  cartableAssignmentRoute,
+  cartableActiveRoute,
+  cartableCollectionRoute,
+  cartableSettlementRoute,
+  cartableArchiveRoute,
   customerAccountsRoute,
   receivablesRoute,
   receiptsRoute,
