@@ -1,3 +1,4 @@
+import { useReportsTranslation } from './i18n/use-reports-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
@@ -11,7 +12,8 @@ import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { useTranslation } from 'react-i18next';
 
 export function ReportsPage() {
-  const { t } = useTranslation();
+  const t = useReportsTranslation();
+  const { t: tShared } = useTranslation();
   const jobs = useDemo((state) => state.jobs);
   const technicians = useDemo((state) => state.technicians);
   const transactions = useDemo((state) => state.transactions);
@@ -25,7 +27,7 @@ export function ReportsPage() {
         );
         return { tech, assigned, summary };
       }),
-    [technicians, jobs, transactions, t],
+    [technicians, jobs, transactions, t, tShared],
   );
   const performanceColumns = useMemo<DataTableColumn<(typeof performanceRows)[number]>[]>(
     () => [
@@ -51,7 +53,7 @@ export function ReportsPage() {
       },
       {
         id: 'تکمیل‌شده',
-        header: 'تکمیل‌شده',
+        header: t('performance.completed2'),
         accessorFn: ({ assigned }) => assigned.filter((job) => job.status === 'completed').length,
         cell: ({
           row: {
@@ -81,7 +83,7 @@ export function ReportsPage() {
       },
       {
         id: 'مانده تعمیرکار',
-        header: 'مانده تعمیرکار',
+        header: t('performance.technicianBalance'),
         accessorFn: ({ summary }) => summary.payable,
         cell: ({
           row: {
@@ -90,22 +92,22 @@ export function ReportsPage() {
         }) => money(summary.payable),
       },
     ],
-    [t],
+    [t, tShared],
   );
   return (
     <>
       <PageHeading
-        title={t('ui.performanceReports')}
-        description={t('ui.anOverviewOfServicesTeamPerformanceAndCash')}
+        title={t('performance.performanceReports')}
+        description={t('performance.anOverviewOfServicesTeamPerformanceAndCash')}
       />
       <div className="grid grid-cols-[1.2fr_1fr] gap-5 mb-5.75 max-tablet:grid-cols-1">
         <Panel
-          title={t('ui.receiptsAndPayments')}
-          subtitle={t('labels.daysWithTransactionsMillionToman')}
+          title={t('performance.receiptsAndPayments')}
+          subtitle={t('performance.daysWithTransactionsMillionToman')}
         >
           <CashChart />
         </Panel>
-        <Panel title={t('ui.requestsByAppliance')} subtitle={t('ui.allStatuses')}>
+        <Panel title={t('performance.requestsByAppliance')} subtitle={tShared('ui.allStatuses')}>
           <div className="pt-2 px-6 pb-6.25 flex flex-col gap-5.25 [&_>_div_>_div:first-child]:flex [&_>_div_>_div:first-child]:justify-between [&_>_div_>_div:first-child]:text-2xs [&_>_div_>_div:first-child]:text-muted-foreground [&_>_div_>_div:first-child]:mb-2.5 [&_strong]:font-normal">
             {appliances.map((appliance) => {
               const count = jobs.filter((job) => job.appliance === appliance).length;
@@ -113,7 +115,7 @@ export function ReportsPage() {
                 <div key={appliance}>
                   <div>
                     <span>{translateLabel(appliance)}</span>
-                    <strong>{t('requests.count', { count })}</strong>
+                    <strong>{t('performance.count', { count })}</strong>
                   </div>
                   <Progress
                     className="h-1.75 bg-muted rounded-md overflow-hidden [&_span]:h-full [&_span]:block [&_span]:bg-primary [&_span]:rounded-md dark:bg-muted dark:border-border dark:text-muted-foreground"
@@ -126,8 +128,8 @@ export function ReportsPage() {
         </Panel>
       </div>
       <Panel
-        title={t('ui.technicianPerformanceAndAccounts')}
-        subtitle={t('labels.commissionAndTechnicianSharesAreBasedOnCompleted')}
+        title={t('performance.technicianPerformanceAndAccounts')}
+        subtitle={t('performance.commissionAndTechnicianSharesAreBasedOnCompleted')}
       >
         <DataTable
           data={performanceRows}

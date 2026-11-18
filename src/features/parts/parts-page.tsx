@@ -1,3 +1,4 @@
+import { usePartsTranslation } from './i18n/use-parts-translation';
 import { translateLabel } from '@/shared/i18n';
 import { usePartsColumns } from './hooks/use-parts-columns';
 import { useCallback, useMemo, useState, type FormEvent } from 'react';
@@ -42,7 +43,8 @@ const sections = [
 ] as const;
 
 export function PartsPage({ section }: { section: Section }) {
-  const { t } = useTranslation();
+  const t = usePartsTranslation();
+  const { t: tShared } = useTranslation();
   const data = useParts((state) => state.data);
   const change = useParts((state) => state.change);
   const storageError = useParts((state) => state.storageError);
@@ -64,10 +66,10 @@ export function PartsPage({ section }: { section: Section }) {
     (operation: Parameters<typeof change>[0]) => {
       const failure = change(operation);
       setError(failure ?? '');
-      setMessage(failure ? '' : t('ui.changesSavedSuccessfully'));
+      setMessage(failure ? '' : t('inventory.changesSavedSuccessfully'));
       return !failure;
     },
-    [change, t],
+    [change, t, tShared],
   );
   const inventory = useMemo(
     () =>
@@ -81,7 +83,7 @@ export function PartsPage({ section }: { section: Section }) {
                 ? availableQuantity(data, part.id) === 0
                 : availableQuantity(data, part.id) <= part.minimum)),
       ),
-    [data, appliance, search, status, t],
+    [data, appliance, search, status, t, tShared],
   );
   const needs = useMemo(
     () =>
@@ -92,7 +94,7 @@ export function PartsPage({ section }: { section: Section }) {
           (section !== 'allocations' ||
             ['reserved', 'delivered', 'used', 'returned'].includes(need.status)),
       ),
-    [data, appliance, search, status, section, t],
+    [data, appliance, search, status, section, t, tShared],
   );
   const purchases = useMemo(
     () =>
@@ -101,7 +103,7 @@ export function PartsPage({ section }: { section: Section }) {
           matchesPart(purchase.partId, data.parts, appliance, search) &&
           (status === 'all' || purchase.status === status),
       ),
-    [data, appliance, search, status, t],
+    [data, appliance, search, status, t, tShared],
   );
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -131,7 +133,7 @@ export function PartsPage({ section }: { section: Section }) {
       return;
     }
     if (!Number.isSafeInteger(quantity) || quantity <= 0) {
-      setError('ui.quantityMustBeAPositiveWholeNumber');
+      setError('parts:inventory.quantityMustBeAPositiveWholeNumber');
       return;
     }
     const partId = getFormText(fields, 'partId');
@@ -144,7 +146,7 @@ export function PartsPage({ section }: { section: Section }) {
         job.status === 'completed' ||
         job.appliance !== part?.appliance
       ) {
-        setError('ui.thePartMustMatchTheApplianceTypeOf');
+        setError('parts:inventory.thePartMustMatchTheApplianceTypeOf');
         return;
       }
       if (
@@ -189,17 +191,17 @@ export function PartsPage({ section }: { section: Section }) {
     (id: string, next: NeedStatus) => {
       const need = data.needs.find((item) => item.id === id);
       if (!need) {
-        setError('ui.partRequestNotFound');
+        setError('parts:validation.partRequestNotFound');
         return;
       }
       const job = jobs.find((item) => item.id === need.jobId);
       if (next === 'reserved' && (!job || ['cancelled', 'completed'].includes(job.status))) {
-        setError('ui.partsCanOnlyBeReservedForOpenOrders');
+        setError('parts:inventory.partsCanOnlyBeReservedForOpenOrders');
         return;
       }
       act((current) => transitionNeed(current, id, next));
     },
-    [data.needs, jobs, act, t],
+    [data.needs, jobs, act, t, tShared],
   );
   const { inventoryColumns, purchaseColumns, needColumns } = usePartsColumns({
     data,
@@ -218,7 +220,7 @@ export function PartsPage({ section }: { section: Section }) {
     <>
       <PageHeading
         title={title}
-        description={t('ui.managePartsFromAvailabilityChecksThroughProcurementDelivery')}
+        description={t('inventory.managePartsFromAvailabilityChecksThroughProcurementDelivery')}
         action={
           section !== 'allocations' ? (
             <Button
@@ -232,49 +234,49 @@ export function PartsPage({ section }: { section: Section }) {
             >
               <Plus />
               {section === 'inventory'
-                ? t('ui.addPart')
+                ? t('inventory.addPart')
                 : section === 'needs'
-                  ? t('ui.requestPart')
-                  : t('ui.requestPurchase')}
+                  ? t('inventory.requestPart')
+                  : t('inventory.requestPurchase')}
             </Button>
           ) : undefined
         }
       />
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
-          title={t('ui.partTypes')}
+          title={t('inventory.partTypes')}
           value={data.parts.length}
-          detail={t('labels.byApplianceTypeAndCompatibleModel')}
+          detail={t('inventory.byApplianceTypeAndCompatibleModel')}
           icon={<Package />}
         />
         <StatCard
-          title={t('ui.availableStock')}
+          title={t('inventory.availableStock')}
           value={data.parts.reduce((sum, p) => sum + availableQuantity(data, p.id), 0)}
-          detail={t('labels.physicalStockMinusReservations')}
+          detail={t('inventory.physicalStockMinusReservations')}
           icon={<Package />}
         />
         <StatCard
-          title={t('ui.lowOrOutOfStock')}
+          title={t('inventory.lowOrOutOfStock')}
           value={
             data.parts.filter((p) => p.active && availableQuantity(data, p.id) <= p.minimum).length
           }
-          detail={t('labels.procurementReviewNeeded')}
+          detail={t('inventory.procurementReviewNeeded')}
           icon={<Package />}
         />
         <StatCard
-          title={t('ui.onTheWay')}
+          title={t('inventory.onTheWay')}
           value={data.purchases.reduce(
             (sum, p) => sum + (p.status === 'ordered' ? p.quantity - p.received : 0),
             0,
           )}
-          detail={t('labels.orderedPurchasesNotYetReceived')}
+          detail={t('inventory.orderedPurchasesNotYetReceived')}
           icon={<Package />}
         />
       </div>
       {storageError ? (
         <Alert variant="destructive" className="mb-4">
           <AlertDescription>
-            {t('ui.browserStorageIsUnavailableCurrentChangesWillNot')}
+            {t('inventory.browserStorageIsUnavailableCurrentChangesWillNot')}
           </AlertDescription>
         </Alert>
       ) : null}
@@ -285,19 +287,19 @@ export function PartsPage({ section }: { section: Section }) {
       ) : null}
       <div className="mb-4 flex flex-row gap-3">
         <Input
-          aria-label={t('ui.searchParts')}
-          placeholder={t('ui.nameCodeOrCompatibleModel')}
+          aria-label={t('inventory.searchParts')}
+          placeholder={t('inventory.nameCodeOrCompatibleModel')}
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           className="max-w-sm"
         />
         <Select value={appliance} onValueChange={(value) => setAppliance(value)}>
-          <SelectTrigger className="w-full" aria-label={t('ui.applianceType')}>
-            <SelectValue placeholder={t('ui.selectAnOption')} />
+          <SelectTrigger className="w-full" aria-label={tShared('ui.applianceType')}>
+            <SelectValue placeholder={tShared('ui.selectAnOption')} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="all">{t('ui.allAppliances')}</SelectItem>
+              <SelectItem value="all">{t('inventory.allAppliances')}</SelectItem>
               {appliances.map((item) => (
                 <SelectItem key={item} value={item}>
                   {translateLabel(item)}
@@ -307,17 +309,17 @@ export function PartsPage({ section }: { section: Section }) {
           </SelectContent>
         </Select>
         <Select value={status} onValueChange={(value) => setStatus(value)}>
-          <SelectTrigger className="w-full" aria-label={t('ui.status')}>
-            <SelectValue placeholder={t('ui.selectAnOption')} />
+          <SelectTrigger className="w-full" aria-label={tShared('ui.status')}>
+            <SelectValue placeholder={tShared('ui.selectAnOption')} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="all">{t('ui.allStatuses')}</SelectItem>
+              <SelectItem value="all">{tShared('ui.allStatuses')}</SelectItem>
               {section === 'inventory' ? (
                 <>
-                  <SelectItem value="low">{t('ui.lowStock')}</SelectItem>
-                  <SelectItem value="empty">{t('ui.outOfStock')}</SelectItem>
-                  <SelectItem value="inactive">{t('ui.inactive')}</SelectItem>
+                  <SelectItem value="low">{t('tables.lowStock')}</SelectItem>
+                  <SelectItem value="empty">{t('tables.outOfStock')}</SelectItem>
+                  <SelectItem value="inactive">{t('tables.inactive')}</SelectItem>
                 </>
               ) : (
                 Object.entries(section === 'purchases' ? purchaseLabels : needLabels).map(
@@ -334,7 +336,7 @@ export function PartsPage({ section }: { section: Section }) {
       </div>
       <Panel
         title={title}
-        subtitle={t('labels.sampleDataInventoryOperationsAreRecordedSeparatelyFrom')}
+        subtitle={t('inventory.sampleDataInventoryOperationsAreRecordedSeparatelyFrom')}
       >
         {section === 'inventory' ? (
           <DataTable
@@ -366,7 +368,7 @@ export function PartsPage({ section }: { section: Section }) {
           : section === 'purchases'
             ? purchases.length
             : needs.length) === 0 ? (
-          <EmptyState text={t('labels.noRecordsToDisplayCreateARequestOr')} />
+          <EmptyState text={t('inventory.noRecordsToDisplayCreateARequestOr')} />
         ) : null}
       </Panel>
       {form ? (
@@ -374,11 +376,11 @@ export function PartsPage({ section }: { section: Section }) {
           title={
             form === 'part'
               ? editing
-                ? t('ui.editPart')
-                : t('ui.addPart')
+                ? t('inventory.editPart')
+                : t('inventory.addPart')
               : form === 'need'
-                ? t('ui.partRequestAndAvailabilityCheck')
-                : t('ui.requestStockReplenishment')
+                ? t('inventory.partRequestAndAvailabilityCheck')
+                : t('inventory.requestStockReplenishment')
           }
           onClose={() => setForm(null)}
         >
@@ -386,18 +388,18 @@ export function PartsPage({ section }: { section: Section }) {
             {form === 'part' ? (
               <>
                 <Label className="flex flex-col gap-2">
-                  {t('ui.partName')}
+                  {t('inventory.partName')}
                   <Input name="name" defaultValue={editing?.name} required maxLength={100} />
                 </Label>
                 <Label className="flex flex-col gap-2">
-                  {t('ui.uniqueCode')}
+                  {t('inventory.uniqueCode')}
                   <Input name="code" defaultValue={editing?.code} required maxLength={50} />
                 </Label>
                 <Label className="flex flex-col gap-2">
-                  {t('ui.applianceType')}
+                  {tShared('ui.applianceType')}
                   <Select name="appliance" defaultValue={editing?.appliance ?? appliances[0]}>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder={t('ui.selectAnOption')} />
+                      <SelectValue placeholder={tShared('ui.selectAnOption')} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -411,15 +413,15 @@ export function PartsPage({ section }: { section: Section }) {
                   </Select>
                 </Label>
                 <Label className="flex flex-col gap-2">
-                  {t('ui.compatibleBrandsAndModels')}
+                  {t('inventory.compatibleBrandsAndModels')}
                   <Input name="compatibility" defaultValue={editing?.compatibility} required />
                 </Label>
                 <Label className="flex flex-col gap-2">
-                  {t('ui.storageLocation')}
+                  {t('inventory.storageLocation')}
                   <Input name="location" defaultValue={editing?.location} required />
                 </Label>
                 <Label className="flex flex-col gap-2">
-                  {t('ui.minimumStock')}
+                  {t('inventory.minimumStock')}
                   <Input
                     name="minimum"
                     type="number"
@@ -431,7 +433,7 @@ export function PartsPage({ section }: { section: Section }) {
                 </Label>
                 {!editing ? (
                   <Label className="flex flex-col gap-2">
-                    {t('ui.openingStock')}
+                    {t('inventory.openingStock')}
                     <Input name="stock" type="number" min="0" step="1" defaultValue="0" required />
                   </Label>
                 ) : null}
@@ -439,10 +441,10 @@ export function PartsPage({ section }: { section: Section }) {
             ) : (
               <>
                 <Label className="flex flex-col gap-2">
-                  {t('ui.part')}
+                  {t('tables.part')}
                   <Select name="partId" required>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder={t('ui.selectAnOption')} />
+                      <SelectValue placeholder={tShared('ui.selectAnOption')} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -458,15 +460,15 @@ export function PartsPage({ section }: { section: Section }) {
                   </Select>
                 </Label>
                 <Label className="flex flex-col gap-2">
-                  {t('ui.quantity')}
+                  {t('tables.quantity')}
                   <Input name="quantity" type="number" min="1" step="1" defaultValue="1" required />
                 </Label>
                 {form === 'need' ? (
                   <Label className="col-span-full flex flex-col gap-2">
-                    {t('ui.customerOrder')}
+                    {tShared('ui.customerOrder')}
                     <Select name="jobId" required>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder={t('ui.selectAnOpenOrder')} />
+                        <SelectValue placeholder={t('inventory.selectAnOpenOrder')} />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
@@ -483,7 +485,7 @@ export function PartsPage({ section }: { section: Section }) {
                   </Label>
                 ) : (
                   <Label className="flex flex-col gap-2">
-                    {t('ui.suggestedSupplier')}
+                    {t('inventory.suggestedSupplier')}
                     <Input name="supplier" />
                   </Label>
                 )}
@@ -495,16 +497,16 @@ export function PartsPage({ section }: { section: Section }) {
               </Alert>
             ) : null}
             <div className="col-span-full flex gap-2">
-              <Button type="submit">{t('ui.save')}</Button>
+              <Button type="submit">{tShared('ui.save')}</Button>
               <Button type="button" variant="outline" onClick={() => setForm(null)}>
-                {t('ui.cancel2')}
+                {tShared('ui.cancel2')}
               </Button>
             </div>
           </form>
         </Modal>
       ) : null}
       {delivery ? (
-        <Modal title={t('ui.deliverPartToTechnician')} onClose={() => setDelivery('')}>
+        <Modal title={t('inventory.deliverPartToTechnician')} onClose={() => setDelivery('')}>
           <form
             className="flex flex-col gap-4 p-6"
             onSubmit={(event) => {
@@ -515,10 +517,10 @@ export function PartsPage({ section }: { section: Section }) {
             }}
           >
             <Label className="flex flex-col gap-2">
-              {t('ui.recipient')}
+              {t('inventory.recipient')}
               <Select name="technicianId" required>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t('ui.selectTechnician')} />
+                  <SelectValue placeholder={tShared('ui.selectTechnician')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -532,12 +534,12 @@ export function PartsPage({ section }: { section: Section }) {
               </Select>
             </Label>
             {error ? <p role="alert">{translateLabel(error)}</p> : null}
-            <Button type="submit">{t('ui.recordDelivery')}</Button>
+            <Button type="submit">{t('inventory.recordDelivery')}</Button>
           </form>
         </Modal>
       ) : null}
       {receiving ? (
-        <Modal title={t('ui.recordPurchaseGoodsReceipt')} onClose={() => setReceiving('')}>
+        <Modal title={t('inventory.recordPurchaseGoodsReceipt')} onClose={() => setReceiving('')}>
           <form
             className="flex flex-col gap-4 p-6"
             onSubmit={(event) => {
@@ -566,7 +568,7 @@ export function PartsPage({ section }: { section: Section }) {
           >
             {data.purchases.find((p) => p.id === receiving)?.status === 'approved' ? (
               <Label className="flex flex-col gap-2">
-                {t('ui.supplier')}
+                {t('tables.supplier')}
                 <Input
                   name="supplier"
                   required
@@ -575,7 +577,7 @@ export function PartsPage({ section }: { section: Section }) {
               </Label>
             ) : (
               <Label className="flex flex-col gap-2">
-                {t('ui.quantityReceivedInThisDelivery')}
+                {t('inventory.quantityReceivedInThisDelivery')}
                 <Input
                   type="number"
                   name="quantity"
@@ -591,7 +593,7 @@ export function PartsPage({ section }: { section: Section }) {
               </Label>
             )}
             {error ? <p role="alert">{translateLabel(error)}</p> : null}
-            <Button type="submit">{t('ui.submit')}</Button>
+            <Button type="submit">{t('inventory.submit')}</Button>
           </form>
         </Modal>
       ) : null}

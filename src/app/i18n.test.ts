@@ -17,10 +17,23 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { I18nextProvider } from 'react-i18next';
 import { createI18n } from '../shared/i18n/create-i18n.ts';
-import { buildResources } from '../shared/i18n/resources.ts';
+import {
+  buildResources,
+  registerTranslationLabels,
+  translateRegisteredLabel,
+  type TranslationBundle,
+} from '../shared/i18n/resources.ts';
 import { customersTranslations } from '../features/customers/i18n/resources.ts';
 import { useCustomersTranslation } from '../features/customers/i18n/use-customers-translation.ts';
 import { translationBundles } from './i18n.ts';
+import { useRequestsTranslation } from '../features/requests/i18n/use-requests-translation.ts';
+import { useDispatchTranslation } from '../features/dispatch/i18n/use-dispatch-translation.ts';
+import { useTechniciansTranslation } from '../features/technicians/i18n/use-technicians-translation.ts';
+import { useFinanceTranslation } from '../features/finance/i18n/use-finance-translation.ts';
+import { usePartsTranslation } from '../features/parts/i18n/use-parts-translation.ts';
+import { useOverviewTranslation } from '../features/overview/i18n/use-overview-translation.ts';
+import { useReportsTranslation } from '../features/reports/i18n/use-reports-translation.ts';
+import { useSettingsTranslation } from '../features/settings/i18n/use-settings-translation.ts';
 
 function flatten(value: unknown, prefix = ''): Record<string, string> {
   assert.ok(value && typeof value === 'object' && !Array.isArray(value));
@@ -88,8 +101,8 @@ test('live language changes update direction and persistence while preserving re
     assert.equal(translateLabel('همه وضعیت‌ها'), 'All statuses');
     assert.equal(translateLabel('یخچال'), 'Refrigerator');
     assert.equal(translateLabel('مریم احمدی'), 'مریم احمدی');
-    assert.equal(i18n.t('requests.count', { count: 1 }), '1 request');
-    assert.equal(i18n.t('requests.count', { count: 2 }), '2 requests');
+    assert.equal(i18n.t('customers:directory.count', { count: 1 }), '1 sample customer');
+    assert.equal(i18n.t('customers:directory.count', { count: 2 }), '2 sample customers');
     assert.deepEqual(initialData, records);
     blocked = true;
     await i18n.changeLanguage('fa');
@@ -114,14 +127,23 @@ test('unsupported saved language falls back to Persian', () => {
 });
 
 test('feature catalogs keep matching keys and placeholders', () => {
-  const english = flatten(customersTranslations.locales.en);
-  const persian = flatten(customersTranslations.locales.fa);
-  assert.deepEqual(Object.keys(english).sort(), Object.keys(persian).sort());
-  for (const [key, value] of Object.entries(english)) {
-    assert.ok(value.trim() && persian[key]?.trim(), key);
-    const placeholders = (message: string) =>
-      [...message.matchAll(/{{([^}]+)}}/g)].map((m) => m[1]).sort();
-    assert.deepEqual(placeholders(value), placeholders(persian[key]), key);
+  for (const bundle of translationBundles as readonly TranslationBundle[]) {
+    const english = flatten(bundle.locales.en);
+    const persian = flatten(bundle.locales.fa);
+    assert.deepEqual(Object.keys(english).sort(), Object.keys(persian).sort());
+    for (const [key, value] of Object.entries(english)) {
+      assert.ok(value.trim() && persian[key]?.trim(), key);
+      const placeholders = (message: string) =>
+        [...message.matchAll(/{{([^}]+)}}/g)].map((m) => m[1]).sort();
+      assert.deepEqual(placeholders(value), placeholders(persian[key]), key);
+    }
+    for (const [label, key] of Object.entries(bundle.labels ?? {})) {
+      assert.ok(
+        english[key] && persian[key],
+        `${bundle.namespace}: missing compatibility key ${key}`,
+      );
+      assert.notEqual(translateRegisteredLabel(i18n, label), key);
+    }
   }
 });
 
@@ -130,6 +152,111 @@ test('registration rejects namespace collisions before overwriting translations'
   assert.throws(
     () => buildResources([{ ...customersTranslations, namespace: '__proto__' }]),
     /Invalid/,
+  );
+  assert.throws(
+    () =>
+      registerTranslationLabels(i18n, [
+        { ...customersTranslations, labels: { duplicate: 'title' } },
+        { ...customersTranslations, namespace: 'parts', labels: { duplicate: 'other' } },
+      ]),
+    /Duplicate translation label/,
+  );
+});
+
+test('feature model labels translate through isolated registered bundles', async () => {
+  const english = await createI18n('en', translationBundles);
+  const persian = await createI18n('fa', translationBundles);
+  assert.equal(
+    translateRegisteredLabel(english, 'در انتظار استعلام'),
+    'Awaiting availability check',
+  );
+  assert.equal(translateRegisteredLabel(persian, 'در انتظار استعلام'), 'در انتظار استعلام');
+  assert.equal(translateRegisteredLabel(english, 'قطعه پیدا نشد.'), 'Part not found.');
+  assert.equal(translateRegisteredLabel(english, 'مریم احمدی'), 'مریم احمدی');
+  assert.equal(translateRegisteredLabel(english, '__proto__'), '__proto__');
+});
+
+test('every feature hook uses its own namespace and follows the provider locale', async () => {
+  const instance = await createI18n('en', translationBundles);
+  const probes = [
+    {
+      namespace: 'requests',
+      key: 'list.requestList',
+      useText: () => useRequestsTranslation()('list.requestList'),
+    },
+    {
+      namespace: 'dispatch',
+      key: 'schedule.scheduleDate',
+      useText: () => useDispatchTranslation()('schedule.scheduleDate'),
+    },
+    {
+      namespace: 'technicians',
+      key: 'assignments.assignedOrders',
+      useText: () => useTechniciansTranslation()('assignments.assignedOrders'),
+    },
+    {
+      namespace: 'finance',
+      key: 'ledger.receipts',
+      useText: () => useFinanceTranslation()('ledger.receipts'),
+    },
+    {
+      namespace: 'parts',
+      key: 'inventory.partName',
+      useText: () => usePartsTranslation()('inventory.partName'),
+    },
+    {
+      namespace: 'overview',
+      key: 'summary.businessOverview',
+      useText: () => useOverviewTranslation()('summary.businessOverview'),
+    },
+    {
+      namespace: 'reports',
+      key: 'performance.performanceReports',
+      useText: () => useReportsTranslation()('performance.performanceReports'),
+    },
+    {
+      namespace: 'settings',
+      key: 'company.companyName',
+      useText: () => useSettingsTranslation()('company.companyName'),
+    },
+    { namespace: 'customers', key: 'title', useText: () => useCustomersTranslation()('title') },
+  ];
+  for (const language of ['en', 'fa', 'en'] as const) {
+    await instance.changeLanguage(language);
+    for (const { namespace, key, useText } of probes) {
+      function Probe() {
+        return createElement('span', null, useText());
+      }
+      const bundle = translationBundles.find((item) => item.namespace === namespace)!;
+      const expected = flatten(bundle.locales[language])[key];
+      assert.equal(
+        renderToStaticMarkup(
+          createElement(I18nextProvider, { i18n: instance }, createElement(Probe)),
+        ),
+        `<span>${expected}</span>`,
+        `${namespace} in ${language}`,
+      );
+    }
+  }
+  assert.equal(
+    instance.getFixedT('en', 'dispatch')('schedule.summary', { count: 1 }),
+    'Daily schedule · 1 visit · Tehran local time',
+  );
+  assert.equal(
+    instance.getFixedT('en', 'dispatch')('schedule.summary', { count: 2 }),
+    'Daily schedule · 2 visits · Tehran local time',
+  );
+  assert.equal(
+    instance.getFixedT('en', 'requests')('editor.requestDetailsId', { id: 'JOB-1' }),
+    'Request details: JOB-1',
+  );
+  assert.equal(
+    instance.getFixedT('en', 'finance')('chart.point', {
+      date: 'Today',
+      incoming: 100,
+      outgoing: 50,
+    }),
+    'Today: received 100, paid 50 toman',
   );
 });
 

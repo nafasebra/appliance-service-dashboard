@@ -3,8 +3,12 @@ import { initReactI18next } from 'react-i18next';
 import en from './locales/en/translation.json' with { type: 'json' };
 import fa from './locales/fa/translation.json' with { type: 'json' };
 import { legacyLabelKeys } from './legacy-labels.ts';
-import { translationOptions, type TranslationBundle } from './resources.ts';
-import type { ParseKeys } from 'i18next';
+import {
+  translationOptions,
+  registerTranslationLabels,
+  translateRegisteredLabel,
+  type TranslationBundle,
+} from './resources.ts';
 
 export type { Language } from './resources.ts';
 import type { Language } from './resources.ts';
@@ -27,9 +31,11 @@ export const i18n = instance;
 export const sharedTranslations = {
   namespace: 'translation',
   locales: { en, fa },
+  labels: legacyLabelKeys,
 } as const satisfies TranslationBundle;
 
 void i18n.use(initReactI18next).init(translationOptions(readLanguage(), [sharedTranslations]));
+registerTranslationLabels(i18n, [sharedTranslations]);
 
 function applyLanguage(language: string) {
   const supported = resolveLanguage(language);
@@ -50,9 +56,7 @@ i18n.on('languageChanged', applyLanguage);
 applyLanguage(i18n.language);
 
 export function translateLabel(label: string): string {
-  const key = Object.hasOwn(legacyLabelKeys, label) ? legacyLabelKeys[label] : label;
-  // Compatibility input is dynamic; exists validates it before the typed lookup.
-  return i18n.exists(key) ? i18n.t(key as ParseKeys<'translation'>) : label;
+  return translateRegisteredLabel(i18n, label);
 }
 
 export function getLocale(): string {

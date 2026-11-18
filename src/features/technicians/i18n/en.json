@@ -1,0 +1,67 @@
+{
+  "assignments": {
+    "allOpenOrders": "All open orders",
+    "assignedOrders": "Assigned orders",
+    "filterByOrderStatus": "Filter by order status",
+    "filterByTechnician": "Filter by technician",
+    "lengthOpenOrders": "{{length}} open orders",
+    "scheduled": "Scheduled",
+    "techniciansActiveOrders": "Technicians' active orders",
+    "trackAssignedOpenOrdersVisitTimesAndProgress": "Track assigned open orders, visit times, and progress."
+  },
+  "finance": {
+    "allTechnicians": "All technicians",
+    "amountPayable": "Amount payable",
+    "basedOnEachCompletedOrderSBalance": "Based on each completed order's balance",
+    "completedServiceSharesRecordedPayoutsAndEachTechnician": "Completed service shares, recorded payouts, and each technician's outstanding balance.",
+    "completedServiceValueMinusCommission": "Completed service value minus commission",
+    "enterAPositiveWholeAmountWithinTheOrder": "Enter a positive whole amount within the order's outstanding balance.",
+    "noCompletedOrdersHaveARemainingPayableBalance": "No completed orders have a remaining payable balance.",
+    "noPayoutsRecorded": "No payouts recorded.",
+    "orderBalance": "Order balance:",
+    "ordersEligibleForPayout": "Orders eligible for payout",
+    "paid3": "Paid",
+    "payoutDate": "Payout date",
+    "recordPayout": "Record payout",
+    "recordTechnicianPayout": "Record technician payout",
+    "serviceValue": "Service value",
+    "teamAccounts": "Team accounts",
+    "technicianPayoutHistory": "Technician payout history",
+    "technicianShare": "Technician share",
+    "technicianShares": "Technician shares",
+    "thisRecordsAnEntryInTheDemoLedger": "This records an entry in the demo ledger. No bank transfer is made.",
+    "totalRecordedPayouts": "Total recorded payouts"
+  },
+  "management": {
+    "addTechnician": "Add technician",
+    "editTechnician": "Edit technician",
+    "forExampleRefrigeratorAndFreezerRepairs": "For example, refrigerator and freezer repairs",
+    "fullName": "Full name",
+    "lengthTechnicians": "{{length}} technicians",
+    "namePhoneSpecialtyOrServiceArea": "Name, phone, specialty, or service area…",
+    "openOrders": "Open orders",
+    "searchTechnicians": "Search technicians",
+    "serviceArea": "Service area",
+    "specialty": "Specialty",
+    "teamContactDetailsSpecialtiesAndServiceAreas": "Team contact details, specialties, and service areas.",
+    "teamMembers": "Team members",
+    "technicianName": "Technician name"
+  },
+  "specialties": {
+    "assignOrChangeSpecialty": "Assign or change specialty",
+    "chooseAnExistingSpecialty": "Choose an existing specialty",
+    "existingSpecialties": "Existing specialties",
+    "saveSpecialty": "Save specialty",
+    "searchSpecialties": "Search specialties",
+    "searchSpecialties2": "Search specialties…",
+    "selectOrEnterANewSpecialty": "Select or enter a new specialty",
+    "specialtyTitle": "Specialty title",
+    "specialtyUpdatedForName": "Specialty updated for {{name}}.",
+    "teamExpertise": "Team expertise",
+    "technicianCount": "Technician count",
+    "viewTheTeamSExpertiseAndAssignEach": "View the team's expertise and assign each technician's specialty."
+  },
+  "validation": {
+    "enterTheTechnicianSNamePhoneSpecialtyAnd": "Enter the technician's name, phone, specialty, and service area."
+  }
+}

@@ -1,3 +1,4 @@
+import { useRequestsTranslation } from './i18n/use-requests-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useState } from 'react';
 import { Plus, Search, SlidersHorizontal } from 'lucide-react';
@@ -21,7 +22,8 @@ import {
 import { useTranslation } from 'react-i18next';
 
 export function RequestsPage() {
-  const { t } = useTranslation();
+  const t = useRequestsTranslation();
+  const { t: tShared } = useTranslation();
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const [query, setQuery] = useState('');
@@ -37,38 +39,38 @@ export function RequestsPage() {
   return (
     <>
       <PageHeading
-        title={t('ui.serviceRequests')}
-        description={t('ui.followEachRequestFromTheFirstCallTo')}
+        title={tShared('ui.serviceRequests')}
+        description={t('list.followEachRequestFromTheFirstCallTo')}
         action={
           <Button
             className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
             onClick={() => setEditor('new')}
           >
             <Plus size={18} />
-            {t('ui.createRequest')}
+            {t('list.createRequest')}
           </Button>
         }
       />
       <Panel
-        title={t('ui.requestList')}
-        subtitle={t('ui.lengthRequestsInThisView', { length: filtered.length })}
+        title={t('list.requestList')}
+        subtitle={t('list.lengthRequestsInThisView', { length: filtered.length })}
       >
         <div className="flex items-center gap-3 pt-0 px-5.5 pb-5 flex-wrap max-mobile:px-4.5">
           <Label className="flex w-85 max-w-full items-center gap-2.5 rounded-md border border-border py-0 px-2.75 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring [&_input]:w-full [&_input]:border-0 [&_input]:bg-transparent [&_input]:py-2.75 [&_input]:px-0 [&_input]:text-2xs [&_input]:outline-hidden dark:border-border dark:bg-muted dark:text-primary-foreground">
             <Search size={18} />
             <Input
               className="border-0 shadow-none focus-visible:ring-0"
-              aria-label={t('ui.searchRequests')}
+              aria-label={t('list.searchRequests')}
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder={t('ui.searchCustomerApplianceOrRequestId')}
+              placeholder={t('list.searchCustomerApplianceOrRequestId')}
             />
           </Label>
           <div className="flex items-center gap-1.75 text-muted-foreground">
             <SlidersHorizontal aria-hidden="true" size={17} />
             <Select value={status} onValueChange={setStatus}>
               <SelectTrigger
-                aria-label={t('ui.filterByStatus')}
+                aria-label={t('list.filterByStatus')}
                 size="sm"
                 className="min-w-36 text-2xs"
               >
@@ -76,7 +78,7 @@ export function RequestsPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="all">{t('ui.allStatuses')}</SelectItem>
+                  <SelectItem value="all">{tShared('ui.allStatuses')}</SelectItem>
                   {Object.entries(statusLabels).map(([key, label]) => (
                     <SelectItem key={key} value={key}>
                       {translateLabel(label)}

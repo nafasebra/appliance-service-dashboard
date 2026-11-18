@@ -10,10 +10,10 @@ export function downloadTransactionsCsv(
   const rows = [
     [
       i18next.t('ui.date'),
-      i18next.t('ui.type'),
+      i18next.t('finance:ledger.type'),
       i18next.t('ui.description'),
-      i18next.t('ui.requests'),
-      i18next.t('ui.amountToman'),
+      i18next.t('finance:export.requests'),
+      i18next.t('finance:register.amountToman'),
     ],
     ...transactions.map((item) => [
       item.date,

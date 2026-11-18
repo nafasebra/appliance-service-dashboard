@@ -1,3 +1,4 @@
+import { useFinanceTranslation } from '../i18n/use-finance-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
@@ -12,7 +13,6 @@ import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
 import { money, dateLabel } from '@/shared/lib/format';
 import { downloadCsv } from '@/shared/utils/csv';
-import { useTranslation } from 'react-i18next';
 
 export function CustomerStatement({
   customerId,
@@ -23,7 +23,7 @@ export function CustomerStatement({
   onClose: () => void;
   onReceipt: (jobId: string) => void;
 }) {
-  const { t } = useTranslation();
+  const t = useFinanceTranslation();
   const customers = useDemo((state) => state.customers);
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
@@ -68,7 +68,7 @@ export function CustomerStatement({
       },
       {
         id: 'خدمات قطعی',
-        header: 'خدمات قطعی',
+        header: t('statement.finalizedServices'),
         accessorFn: ({ row }) => row.charge,
         cell: ({
           row: {
@@ -88,7 +88,7 @@ export function CustomerStatement({
       },
       {
         id: 'بدهی',
-        header: 'بدهی',
+        header: t('statement.outstandingBalance'),
         accessorFn: ({ row }) => row.outstanding,
         cell: ({
           row: {
@@ -117,7 +117,7 @@ export function CustomerStatement({
         }) =>
           job.status !== 'cancelled' && job.total > row.receipts ? (
             <Button size="sm" variant="outline" onClick={() => onReceipt(job.id)}>
-              {t('ui.recordReceipt')}
+              {t('statement.recordReceipt')}
             </Button>
           ) : (
             '—'
@@ -155,10 +155,10 @@ export function CustomerStatement({
     [t],
   );
   return (
-    <Modal title={t('account.statement', { name: customer?.name ?? '' })} onClose={onClose}>
+    <Modal title={t('statement.statement', { name: customer?.name ?? '' })} onClose={onClose}>
       <div className="flex flex-col gap-5 p-6">
         <p className="text-sm">
-          {t('account.summary', {
+          {t('statement.summary', {
             charge: money(account.charge),
             receipts: money(account.receipts),
             outstanding: money(account.outstanding),
@@ -175,8 +175,8 @@ export function CustomerStatement({
                   'تاریخ',
                   'خدمات قطعی',
                   'دریافت',
-                  t('ui.outstandingDebt'),
-                  t('ui.advanceCredit'),
+                  t('statement.outstandingDebt'),
+                  t('statement.advanceCredit'),
                 ],
                 ...orders.map((job) => {
                   const row = getOrderAccount(job, transactions);
@@ -194,24 +194,26 @@ export function CustomerStatement({
             )
           }
         >
-          {t('ui.exportStatementCsv')}
+          {t('statement.exportStatementCsv')}
         </Button>
-        <h3 className="font-semibold">{t('ui.orderAccountDetails')}</h3>
+        <h3 className="font-semibold">{t('statement.orderAccountDetails')}</h3>
         <DataTable
           data={orderRows}
           getRowId={({ job }) => String(job.id)}
           columns={orderColumns}
           emptyMessage={null}
         />
-        {!orders.length ? <EmptyState text={t('labels.noOrdersRecordedForThisCustomer')} /> : null}
-        <h3 className="font-semibold">{t('ui.customerReceiptHistory')}</h3>
+        {!orders.length ? (
+          <EmptyState text={t('statement.noOrdersRecordedForThisCustomer')} />
+        ) : null}
+        <h3 className="font-semibold">{t('statement.customerReceiptHistory')}</h3>
         <DataTable
           data={receipts}
           getRowId={(item) => String(item.id)}
           columns={receiptColumns}
           emptyMessage={null}
         />
-        {!receipts.length ? <EmptyState text={t('labels.noReceiptsRecorded')} /> : null}
+        {!receipts.length ? <EmptyState text={t('statement.noReceiptsRecorded')} /> : null}
       </div>
     </Modal>
   );

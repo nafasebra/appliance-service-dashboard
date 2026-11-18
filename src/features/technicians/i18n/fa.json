@@ -1,0 +1,67 @@
+{
+  "assignments": {
+    "allOpenOrders": "همه سفارش‌های باز",
+    "assignedOrders": "سفارش‌های تخصیص‌یافته",
+    "filterByOrderStatus": "فیلتر وضعیت سفارش",
+    "filterByTechnician": "فیلتر تعمیرکار",
+    "lengthOpenOrders": "{{length}} سفارش باز",
+    "scheduled": "برنامه‌ریزی‌شده",
+    "techniciansActiveOrders": "سفارش‌های در دست انجام تعمیرکاران",
+    "trackAssignedOpenOrdersVisitTimesAndProgress": "پیگیری سفارش‌های باز تخصیص‌یافته، زمان مراجعه و وضعیت رسیدگی."
+  },
+  "finance": {
+    "allTechnicians": "همه تعمیرکاران",
+    "amountPayable": "مانده قابل پرداخت",
+    "basedOnEachCompletedOrderSBalance": "براساس مانده هر سفارش تکمیل‌شده",
+    "completedServiceSharesRecordedPayoutsAndEachTechnician": "سهم خدمات تکمیل‌شده، پرداخت‌های ثبت‌شده و مانده قابل تسویه هر تعمیرکار.",
+    "completedServiceValueMinusCommission": "ارزش خدمات تکمیل‌شده منهای کمیسیون",
+    "enterAPositiveWholeAmountWithinTheOrder": "مبلغ باید عدد صحیح مثبت و حداکثر برابر مانده سفارش باشد.",
+    "noCompletedOrdersHaveARemainingPayableBalance": "سفارش تکمیل‌شده‌ای با مانده قابل پرداخت وجود ندارد.",
+    "noPayoutsRecorded": "پرداختی ثبت نشده است.",
+    "orderBalance": "مانده سفارش:",
+    "ordersEligibleForPayout": "سفارش‌های قابل تسویه",
+    "paid3": "پرداخت‌شده",
+    "payoutDate": "تاریخ پرداخت",
+    "recordPayout": "ثبت پرداخت",
+    "recordTechnicianPayout": "ثبت پرداخت به تعمیرکار",
+    "serviceValue": "ارزش خدمات",
+    "teamAccounts": "حساب اعضای تیم",
+    "technicianPayoutHistory": "تاریخچه پرداخت به تعمیرکاران",
+    "technicianShare": "سهم تعمیرکار",
+    "technicianShares": "سهم تعمیرکاران",
+    "thisRecordsAnEntryInTheDemoLedger": "ثبت در دفتر مالی نمونه است و انتقال بانکی انجام نمی‌دهد.",
+    "totalRecordedPayouts": "مجموع پرداخت‌های ثبت‌شده"
+  },
+  "management": {
+    "addTechnician": "افزودن تعمیرکار",
+    "editTechnician": "ویرایش تعمیرکار",
+    "forExampleRefrigeratorAndFreezerRepairs": "مثلاً تعمیر یخچال و فریزر",
+    "fullName": "نام و نام خانوادگی",
+    "lengthTechnicians": "{{length}} تعمیرکار",
+    "namePhoneSpecialtyOrServiceArea": "نام، تلفن، تخصص یا محدوده…",
+    "openOrders": "سفارش باز",
+    "searchTechnicians": "جستجوی تعمیرکار",
+    "serviceArea": "محدوده فعالیت",
+    "specialty": "تخصص",
+    "teamContactDetailsSpecialtiesAndServiceAreas": "اطلاعات تماس، تخصص و محدوده فعالیت اعضای تیم.",
+    "teamMembers": "اعضای تیم",
+    "technicianName": "نام تعمیرکار"
+  },
+  "specialties": {
+    "assignOrChangeSpecialty": "تعیین یا تغییر تخصص",
+    "chooseAnExistingSpecialty": "انتخاب از تخصص‌های موجود",
+    "existingSpecialties": "تخصص‌های موجود",
+    "saveSpecialty": "ثبت تخصص",
+    "searchSpecialties": "جستجوی تخصص",
+    "searchSpecialties2": "جستجوی تخصص…",
+    "selectOrEnterANewSpecialty": "انتخاب یا ورود تخصص جدید",
+    "specialtyTitle": "عنوان تخصص",
+    "specialtyUpdatedForName": "تخصص {{name}} به‌روزرسانی شد.",
+    "teamExpertise": "پوشش تخصصی تیم",
+    "technicianCount": "تعداد تعمیرکار",
+    "viewTheTeamSExpertiseAndAssignEach": "مشاهده پوشش تخصصی تیم و تعیین حوزه تخصص هر تعمیرکار."
+  },
+  "validation": {
+    "enterTheTechnicianSNamePhoneSpecialtyAnd": "نام، تلفن، تخصص و محدوده فعالیت را کامل وارد کنید."
+  }
+}

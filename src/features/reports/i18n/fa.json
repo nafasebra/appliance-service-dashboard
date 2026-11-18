@@ -1,0 +1,15 @@
+{
+  "performance": {
+    "anOverviewOfServicesTeamPerformanceAndCash": "تصویری از خدمات، عملکرد تیم و گردش مالی تمام داده‌های نمونه.",
+    "commissionAndTechnicianSharesAreBasedOnCompleted": "کمیسیون و سهم تعمیرکار بر اساس خدمات تکمیل‌شده",
+    "completed2": "تکمیل‌شده",
+    "count_one": "{{count}} درخواست",
+    "count_other": "{{count}} درخواست",
+    "daysWithTransactionsMillionToman": "روزهای دارای تراکنش · میلیون تومان",
+    "performanceReports": "گزارش‌های عملکرد",
+    "receiptsAndPayments": "گردش دریافت و پرداخت",
+    "requestsByAppliance": "درخواست‌ها به تفکیک دستگاه",
+    "technicianBalance": "مانده تعمیرکار",
+    "technicianPerformanceAndAccounts": "عملکرد و حساب تعمیرکاران"
+  }
+}

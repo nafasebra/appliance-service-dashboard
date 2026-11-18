@@ -1,0 +1,37 @@
+{
+  "editor": {
+    "amountsMustBeNonNegativeWholeNumbersCommission": "Amounts must be non-negative whole numbers. Commission cannot exceed the service amount.",
+    "applianceBrand": "Appliance brand",
+    "changingStatusDoesNotMeanPaymentWasCollected": "Changing status does not mean payment was collected. Record receipts and payouts in Finance.",
+    "companyShareSampleToman": "Company share (sample toman)",
+    "createNewRequest": "Create new request",
+    "describeTheApplianceProblem": "Describe the appliance problem…",
+    "enterTheServiceAmountBeforeCompletingTheRequest": "Enter the service amount before completing the request.",
+    "forExampleSamsung": "For example, Samsung",
+    "priority": "Priority",
+    "problemDescription": "Problem description",
+    "requestDetailsId": "Request details: {{id}}",
+    "saveRequest": "Save request",
+    "selectATechnicianForThisStatus": "Select a technician for this status.",
+    "serviceAmountSampleToman": "Service amount (sample toman)",
+    "visitDate": "Visit date",
+    "visitDateJalali": "Visit date (Jalali)",
+    "visitTime": "Visit time"
+  },
+  "list": {
+    "createRequest": "Create request",
+    "filterByStatus": "Filter by status",
+    "followEachRequestFromTheFirstCallTo": "Follow each request from the first call to the completed repair.",
+    "lengthRequestsInThisView": "{{length}} requests in this view",
+    "requestList": "Request list",
+    "searchCustomerApplianceOrRequestId": "Search customer, appliance, or request ID…",
+    "searchRequests": "Search requests"
+  },
+  "table": {
+    "details": "Details",
+    "detailsForId": "Details for {{id}}",
+    "notAssigned": "Not assigned",
+    "requestAppliance": "Request / appliance",
+    "visitTime": "Visit time"
+  }
+}

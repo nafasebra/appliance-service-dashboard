@@ -7,7 +7,7 @@ export function getPartJobLabel(id: string, jobs: Job[], customers: Customer[]):
   const job = jobs.find((item) => item.id === id);
   return job
     ? `${job.id} · ${customers.find((customer) => customer.id === job.customerId)?.name ?? ''} · ${translateLabel(job.appliance)}`
-    : i18next.t('ui.idOrderUnavailable', { id });
+    : i18next.t('parts:orders.idOrderUnavailable', { id });
 }
 
 export function matchesPart(

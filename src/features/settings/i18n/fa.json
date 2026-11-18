@@ -1,0 +1,35 @@
+{
+  "company": {
+    "appearance": "ظاهر برنامه",
+    "branchName": "نام شعبه",
+    "companyAddress": "نشانی شرکت",
+    "companyAndBranchDetails": "مشخصات شرکت و شعبه",
+    "companyCommissionIsRecordedAsAnAmountOn": "کمیسیون شرکت در هر سفارش به‌صورت مبلغ ثبت می‌شود؛ تغییر پیش‌فرض‌ها مبالغ و تسویه‌های قبلی را تغییر نمی‌دهد.",
+    "companyName": "نام شرکت",
+    "companyPhone": "شماره تماس شرکت",
+    "dark": "تاریک",
+    "defaultPriority": "اولویت پیش‌فرض",
+    "defaultVisitTime": "ساعت پیش‌فرض مراجعه",
+    "discardChanges": "لغو تغییرات",
+    "latinBrandName": "نام لاتین برند",
+    "light": "روشن",
+    "manageCompanyDetailsOrderDefaultsAndDashboardAppearance": "مشخصات شرکت، پیش‌فرض‌های سفارش و ظاهر داشبورد را مدیریت کنید.",
+    "newOrderDefaults": "پیش‌فرض‌های ثبت سفارش",
+    "resetForm": "بازیابی فرم",
+    "restoreDefaults": "بازیابی پیش‌فرض‌ها",
+    "restoreDefaultSettings": "بازیابی تنظیمات پیش‌فرض؟",
+    "saveChanges": "ذخیره تغییرات",
+    "settingsInThisDemoAreStoredInThe": "تنظیمات این نسخه در مرورگر فعلی نگهداری می‌شوند.",
+    "settingsSaved": "تنظیمات ذخیره شد.",
+    "theCompanyNameAppearsInTheSidebarAnd": "نام شرکت در منوی کناری و فوتر و نام شعبه در هدر نمایش داده می‌شود.",
+    "theFormWillReturnToItsDefaultsSelect": "مقادیر فرم به پیش‌فرض برمی‌گردند. برای اعمال، ذخیره تغییرات را بزنید. سفارش‌ها و اطلاعات مالی حذف نمی‌شوند.",
+    "theme": "پوسته",
+    "themeChangesApplyImmediatelyAndAreSavedFor": "انتخاب پوسته فوراً اعمال و برای همین مرورگر ذخیره می‌شود.",
+    "theseDefaultsApplyOnlyToNewOrdersAnd": "این مقادیر فقط روی سفارش‌های جدید اعمال می‌شوند و در فرم سفارش قابل تغییرند.",
+    "youHaveUnsavedChanges": "تغییرات ذخیره‌نشده دارید."
+  },
+  "validation": {
+    "browserStorageIsUnavailableSettingsWereNotSaved": "ذخیره‌سازی مرورگر در دسترس نیست؛ تنظیمات ذخیره نشد.",
+    "checkTheCompanyNameBranchAndVisitTime": "نام شرکت، شعبه و ساعت مراجعه را بررسی کنید."
+  }
+}

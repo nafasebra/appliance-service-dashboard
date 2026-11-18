@@ -1,0 +1,15 @@
+{
+  "performance": {
+    "anOverviewOfServicesTeamPerformanceAndCash": "An overview of services, team performance, and cash movement across all sample data.",
+    "commissionAndTechnicianSharesAreBasedOnCompleted": "Commission and technician shares are based on completed services",
+    "completed2": "Completed",
+    "count_one": "{{count}} request",
+    "count_other": "{{count}} requests",
+    "daysWithTransactionsMillionToman": "Days with transactions · Million toman",
+    "performanceReports": "Performance reports",
+    "receiptsAndPayments": "Receipts and payments",
+    "requestsByAppliance": "Requests by appliance",
+    "technicianBalance": "Technician balance",
+    "technicianPerformanceAndAccounts": "Technician performance and accounts"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schedule": {
+    "chooseATechnicianForTheseRequests": "برای این درخواست‌ها تعمیرکار انتخاب کنید",
+    "dispatchScheduleDate": "تاریخ برنامه اعزام",
+    "noVisitsScheduledForThisDay": "مراجعه‌ای برای این روز ثبت نشده است.",
+    "scheduleDate": "تاریخ برنامه",
+    "summary_one": "نمای برنامه روزانه · {{count}} مراجعه · ساعت‌ها براساس زمان محلی تهران در این نمونه",
+    "summary_other": "نمای برنامه روزانه · {{count}} مراجعه · ساعت‌ها براساس زمان محلی تهران در این نمونه",
+    "viewEachTechnicianSVisitScheduleAndAssign": "برنامه مراجعه هر تعمیرکار را ببینید و درخواست‌ها را تخصیص دهید."
+  }
+}

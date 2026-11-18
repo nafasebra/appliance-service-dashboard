@@ -1,3 +1,4 @@
+import { useFinanceTranslation } from './i18n/use-finance-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
@@ -13,7 +14,8 @@ import { TransactionDialog } from './components/transaction-dialog';
 import { useTranslation } from 'react-i18next';
 
 export function ReceivablesPage() {
-  const { t } = useTranslation();
+  const t = useFinanceTranslation();
+  const { t: tShared } = useTranslation();
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const transactions = useDemo((state) => state.transactions);
@@ -33,7 +35,7 @@ export function ReceivablesPage() {
             row.account.outstanding > 0 &&
             `${row.job.id} ${row.customer?.name ?? ''}`.includes(query.trim()),
         ),
-    [jobs, customers, transactions, query, t],
+    [jobs, customers, transactions, query, t, tShared],
   );
   const receivableColumns = useMemo<DataTableColumn<(typeof rows)[number]>[]>(
     () => [
@@ -54,7 +56,7 @@ export function ReceivablesPage() {
       },
       {
         id: 'تاریخ خدمت',
-        header: 'تاریخ خدمت',
+        header: t('receivables.serviceDate'),
         accessorFn: ({ job }) => job.date,
         cell: ({
           row: {
@@ -64,7 +66,7 @@ export function ReceivablesPage() {
       },
       {
         id: 'مبلغ قطعی',
-        header: 'مبلغ قطعی',
+        header: t('receivables.finalAmount'),
         accessorFn: ({ account }) => account.charge,
         cell: ({
           row: {
@@ -114,25 +116,25 @@ export function ReceivablesPage() {
           },
         }) => (
           <Button size="sm" onClick={() => setReceiptJob(job.id)}>
-            {t('ui.recordReceipt')}
+            {t('statement.recordReceipt')}
           </Button>
         ),
       },
     ],
-    [setReceiptJob, t],
+    [setReceiptJob, t, tShared],
   );
   return (
     <>
       <PageHeading
-        title={t('ui.customerReceivables')}
-        description={t('ui.completedOrdersWhoseFullAmountHasNotYet')}
+        title={tShared('ui.customerReceivables')}
+        description={t('receivables.completedOrdersWhoseFullAmountHasNotYet')}
         action={
           <Button
             variant="outline"
             onClick={() =>
               downloadCsv(
                 [
-                  ['سفارش', 'مشتری', t('ui.serviceAmount'), 'دریافت', 'مانده'],
+                  ['سفارش', 'مشتری', tShared('ui.serviceAmount'), 'دریافت', 'مانده'],
                   ...rows.map((row) => [
                     row.job.id,
                     row.customer?.name ?? '',
@@ -145,20 +147,20 @@ export function ReceivablesPage() {
               )
             }
           >
-            {t('ui.exportCsv')}
+            {t('ledger.exportCsv')}
           </Button>
         }
       />
       <Input
         className="mb-4 max-w-sm"
-        aria-label={t('ui.searchReceivables')}
-        placeholder={t('ui.customerNameOrOrderId')}
+        aria-label={t('receivables.searchReceivables')}
+        placeholder={t('receivables.customerNameOrOrderId')}
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
       <Panel
-        title={t('ui.ordersWithOutstandingBalances')}
-        subtitle={t('ui.displayedBalanceReduce', {
+        title={t('receivables.ordersWithOutstandingBalances')}
+        subtitle={t('receivables.displayedBalanceReduce', {
           reduce: money(rows.reduce((sum, row) => sum + row.account.outstanding, 0)),
         })}
       >
@@ -168,7 +170,9 @@ export function ReceivablesPage() {
           columns={receivableColumns}
           emptyMessage={null}
         />
-        {!rows.length ? <EmptyState text={t('labels.noReceivablesMatchTheseFilters')} /> : null}
+        {!rows.length ? (
+          <EmptyState text={t('receivables.noReceivablesMatchTheseFilters')} />
+        ) : null}
       </Panel>
       {receiptJob ? (
         <TransactionDialog

@@ -1,3 +1,4 @@
+import { useRequestsTranslation } from '../i18n/use-requests-translation';
 import { translateLabel } from '@/shared/i18n';
 import { JobStatusBadge } from '@/entities/service/ui/job-status-badge';
 import { useMemo } from 'react';
@@ -23,14 +24,15 @@ export function ApplianceIcon({ appliance }: { appliance: string }) {
 }
 
 export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job) => void }) {
-  const { t } = useTranslation();
+  const t = useRequestsTranslation();
+  const { t: tShared } = useTranslation();
   const customers = useDemo((state) => state.customers);
   const technicians = useDemo((state) => state.technicians);
   const jobColumns = useMemo<DataTableColumn<(typeof jobs)[number]>[]>(
     () => [
       {
         id: 'درخواست / دستگاه',
-        header: 'درخواست / دستگاه',
+        header: t('table.requestAppliance'),
         accessorFn: (job) => `${job.appliance} ${job.brand} ${job.id}`,
         cell: ({ row: { original: job } }) => (
           <div className="flex gap-2.5 items-center min-w-33.75">
@@ -46,7 +48,10 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
               </small>
             </div>
             {job.priority === 'urgent' && (
-              <span className="w-1.25 h-1.25 rounded-full bg-secondary" title={t('ui.urgent')} />
+              <span
+                className="w-1.25 h-1.25 rounded-full bg-secondary"
+                title={tShared('ui.urgent')}
+              />
             )}
           </div>
         ),
@@ -70,12 +75,12 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
         accessorFn: (job) => technicians.find((item) => item.id === job.technicianId)?.name,
         cell: ({ row: { original: job } }) =>
           technicians.find((item) => item.id === job.technicianId)?.name ?? (
-            <span className="text-muted-foreground">{t('ui.notAssigned')}</span>
+            <span className="text-muted-foreground">{t('table.notAssigned')}</span>
           ),
       },
       {
         id: 'زمان مراجعه',
-        header: 'زمان مراجعه',
+        header: t('table.visitTime'),
         accessorFn: (job) => `${job.date}T${job.time}`,
         cell: ({ row: { original: job } }) => (
           <>
@@ -98,20 +103,20 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
         accessorFn: (job) => job.total,
         cell: ({ row: { original: job } }) => (
           <span className="whitespace-nowrap">
-            {job.total ? money(job.total) : t('ui.notSpecified')}
+            {job.total ? money(job.total) : tShared('ui.notSpecified')}
           </span>
         ),
       },
       {
         id: 'جزئیات',
-        header: 'جزئیات',
+        header: t('table.details'),
         enableSorting: false,
         cell: ({ row: { original: job } }) => (
           <Button
             variant="ghost"
             size="icon-sm"
             className="grid place-items-center h-7.75 w-7.75 border border-transparent rounded-md text-muted-foreground bg-transparent shrink-0 [&:hover]:bg-accent [&:hover]:border-border dark:[&:hover]:bg-accent dark:[&:hover]:border-border"
-            aria-label={t('ui.detailsForId', { id: job.id })}
+            aria-label={t('table.detailsForId', { id: job.id })}
             onClick={() => onSelect(job)}
           >
             <ArrowUpLeft size={18} />
@@ -119,7 +124,7 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
         ),
       },
     ],
-    [customers, technicians, onSelect, t],
+    [customers, technicians, onSelect, t, tShared],
   );
   if (!jobs.length) return <EmptyState />;
   return (

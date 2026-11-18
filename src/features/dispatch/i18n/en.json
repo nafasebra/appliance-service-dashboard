@@ -1,0 +1,11 @@
+{
+  "schedule": {
+    "chooseATechnicianForTheseRequests": "Choose a technician for these requests",
+    "dispatchScheduleDate": "Dispatch schedule date",
+    "noVisitsScheduledForThisDay": "No visits scheduled for this day.",
+    "scheduleDate": "Schedule date",
+    "summary_one": "Daily schedule · {{count}} visit · Tehran local time",
+    "summary_other": "Daily schedule · {{count}} visits · Tehran local time",
+    "viewEachTechnicianSVisitScheduleAndAssign": "View each technician's visit schedule and assign requests."
+  }
+}

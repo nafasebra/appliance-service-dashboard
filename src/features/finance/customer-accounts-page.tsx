@@ -1,3 +1,4 @@
+import { useFinanceTranslation } from './i18n/use-finance-translation';
 import { useMemo, useState } from 'react';
 import { Wallet } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
@@ -20,7 +21,8 @@ import { TransactionDialog } from './components/transaction-dialog';
 import { useTranslation } from 'react-i18next';
 
 export function CustomerAccountsPage() {
-  const { t } = useTranslation();
+  const t = useFinanceTranslation();
+  const { t: tShared } = useTranslation();
   const customers = useDemo((state) => state.customers);
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
@@ -34,7 +36,7 @@ export function CustomerAccountsPage() {
         customer,
         ...getCustomerAccount(customer.id, jobs, transactions),
       })),
-    [customers, jobs, transactions, t],
+    [customers, jobs, transactions, t, tShared],
   );
   const filtered = useMemo(
     () =>
@@ -48,7 +50,7 @@ export function CustomerAccountsPage() {
                 ? row.credit > 0
                 : row.outstanding === 0 && row.credit === 0)),
       ),
-    [accounts, query, status, t],
+    [accounts, query, status, t, tShared],
   );
   const accountColumns = useMemo<DataTableColumn<(typeof filtered)[number]>[]>(
     () => [
@@ -65,90 +67,90 @@ export function CustomerAccountsPage() {
       },
       {
         id: 'خدمات قطعی',
-        header: 'خدمات قطعی',
+        header: t('statement.finalizedServices'),
         accessorFn: (row) => row.charge,
         cell: ({ row: { original: row } }) => money(row.charge),
       },
       {
         id: 'کل دریافت',
-        header: 'کل دریافت',
+        header: t('accounts.totalReceived'),
         accessorFn: (row) => row.receipts,
         cell: ({ row: { original: row } }) => money(row.receipts),
       },
       {
         id: 'بدهی',
-        header: 'بدهی',
+        header: t('statement.outstandingBalance'),
         accessorFn: (row) => row.outstanding,
         cell: ({ row: { original: row } }) => money(row.outstanding),
       },
       {
         id: 'بستانکاری',
-        header: 'بستانکاری',
+        header: t('accounts.credit'),
         accessorFn: (row) => row.credit,
         cell: ({ row: { original: row } }) => money(row.credit),
       },
       {
         id: 'صورت‌حساب',
-        header: 'صورت‌حساب',
+        header: t('accounts.statement'),
         enableSorting: false,
         cell: ({ row: { original: row } }) => (
           <Button variant="outline" size="sm" onClick={() => setSelected(row.customer.id)}>
-            {t('ui.viewStatement')}
+            {t('accounts.viewStatement')}
           </Button>
         ),
       },
     ],
-    [setSelected, t],
+    [setSelected, t, tShared],
   );
   return (
     <>
       <PageHeading
-        title={t('ui.customerAccounts')}
-        description={t('ui.detailedStatementsReceiptsAndBalancesForEachCustomer')}
+        title={tShared('ui.customerAccounts')}
+        description={t('accounts.detailedStatementsReceiptsAndBalancesForEachCustomer')}
       />
       <div className="mb-6 grid gap-4 md:grid-cols-3">
         <StatCard
-          title={t('ui.finalizedServices')}
+          title={t('statement.finalizedServices')}
           value={money(accounts.reduce((sum, row) => sum + row.charge, 0))}
-          detail={t('labels.totalCompletedOrders')}
+          detail={t('accounts.totalCompletedOrders')}
           icon={<Wallet />}
         />
         <StatCard
-          title={t('ui.customerReceivables')}
+          title={tShared('ui.customerReceivables')}
           value={money(accounts.reduce((sum, row) => sum + row.outstanding, 0))}
-          detail={t('labels.outstandingBalanceByOrder')}
+          detail={t('accounts.outstandingBalanceByOrder')}
           icon={<Wallet />}
         />
         <StatCard
-          title={t('ui.advanceCredit')}
+          title={t('statement.advanceCredit')}
           value={money(accounts.reduce((sum, row) => sum + row.credit, 0))}
-          detail={t('labels.receiptsExceedingEachOrderSFinalizedServiceAmount')}
+          detail={t('accounts.receiptsExceedingEachOrderSFinalizedServiceAmount')}
           icon={<Wallet />}
         />
       </div>
       <div className="mb-4 flex flex-wrap gap-3">
         <Input
-          aria-label={t('ui.searchCustomerAccounts')}
+          aria-label={t('accounts.searchCustomerAccounts')}
           className="max-w-sm"
-          placeholder={t('ui.customerNameOrPhone')}
+          placeholder={t('accounts.customerNameOrPhone')}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
         <Select value={status} onValueChange={setStatus}>
-          <SelectTrigger aria-label={t('ui.accountStatus')}>
+          <SelectTrigger aria-label={t('accounts.accountStatus')}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="all">{t('ui.allAccounts')}</SelectItem>
-              <SelectItem value="debtor">{t('ui.outstandingBalance')}</SelectItem>
-              <SelectItem value="credit">{t('ui.advanceCreditBalance')}</SelectItem>
-              <SelectItem value="clear">{t('ui.noOutstandingBalance')}</SelectItem>
+              <SelectItem value="all">{t('accounts.allAccounts')}</SelectItem>
+              <SelectItem value="debtor">{t('accounts.outstandingBalance')}</SelectItem>
+              <SelectItem value="credit">{t('accounts.advanceCreditBalance')}</SelectItem>
+              <SelectItem value="clear">{t('accounts.noOutstandingBalance')}</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
       </div>
-      <Panel title={t('ui.customerAccountLedger')}>
+      <Panel title={t('accounts.customerAccountLedger')}>
         <DataTable
           data={filtered}
           getRowId={(row) => String(row.customer.id)}

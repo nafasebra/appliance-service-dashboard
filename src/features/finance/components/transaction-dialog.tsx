@@ -1,3 +1,4 @@
+import { useFinanceTranslation } from '../i18n/use-finance-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useRef, useState, type FormEvent } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
@@ -31,7 +32,8 @@ export function TransactionDialog({
   initialJobId?: string;
   onClose: () => void;
 }) {
-  const { t } = useTranslation();
+  const t = useFinanceTranslation();
+  const { t: tShared } = useTranslation();
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const transactions = useDemo((state) => state.transactions);
@@ -75,16 +77,20 @@ export function TransactionDialog({
 
   return (
     <Modal
-      title={kind === 'receipt' ? t('ui.recordCustomerReceipt') : t('ui.recordCompanyExpense')}
+      title={
+        kind === 'receipt'
+          ? t('transaction.recordCustomerReceipt')
+          : t('transaction.recordCompanyExpense')
+      }
       onClose={onClose}
     >
       <form onSubmit={submit} className="grid gap-4 p-6 sm:grid-cols-2">
         {kind === 'receipt' ? (
           <div className="col-span-full flex flex-col gap-2">
-            <Label htmlFor="receipt-job">{t('ui.customerOrder')}</Label>
+            <Label htmlFor="receipt-job">{tShared('ui.customerOrder')}</Label>
             <Select value={jobId} onValueChange={setJobId} required>
               <SelectTrigger id="receipt-job" className="w-full">
-                <SelectValue placeholder={t('ui.selectAnOrderWithARemainingBalance')} />
+                <SelectValue placeholder={t('transaction.selectAnOrderWithARemainingBalance')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -99,15 +105,15 @@ export function TransactionDialog({
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
-              {t('ui.collectibleBalance')} {money(remaining)}
+              {t('transaction.collectibleBalance')} {money(remaining)}
               {selectedJob && selectedJob.status !== 'completed'
-                ? t('ui.thisReceiptWillBeShownAsAnAdvance')
+                ? t('transaction.thisReceiptWillBeShownAsAnAdvance')
                 : ''}
             </p>
           </div>
         ) : null}
         <div className="flex flex-col gap-2">
-          <Label htmlFor="transaction-amount">{t('ui.amountToman2')}</Label>
+          <Label htmlFor="transaction-amount">{tShared('ui.amountToman2')}</Label>
           <Input
             id="transaction-amount"
             name="amount"
@@ -119,16 +125,16 @@ export function TransactionDialog({
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Label>{t('ui.date')}</Label>
+          <Label>{tShared('ui.date')}</Label>
           <JalaliDatePicker
             value={date}
             onValueChange={setDate}
             required
-            aria-label={t('ui.transactionDate')}
+            aria-label={t('transaction.transactionDate')}
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="transaction-method">{t('ui.paymentMethod')}</Label>
+          <Label htmlFor="transaction-method">{t('transaction.paymentMethod')}</Label>
           <Select
             value={method}
             onValueChange={(value) => {
@@ -150,11 +156,13 @@ export function TransactionDialog({
           </Select>
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="transaction-reference">{t('ui.trackingDocumentReferenceOptional')}</Label>
+          <Label htmlFor="transaction-reference">
+            {t('transaction.trackingDocumentReferenceOptional')}
+          </Label>
           <Input id="transaction-reference" name="reference" maxLength={100} />
         </div>
         <div className="col-span-full flex flex-col gap-2">
-          <Label htmlFor="transaction-description">{t('ui.transactionDescription')}</Label>
+          <Label htmlFor="transaction-description">{t('transaction.transactionDescription')}</Label>
           <Input id="transaction-description" name="description" required maxLength={150} />
         </div>
         {error ? (
@@ -164,10 +172,10 @@ export function TransactionDialog({
         ) : null}
         <div className="col-span-full flex gap-2">
           <Button type="submit" disabled={kind === 'receipt' && remaining <= 0}>
-            {t('ui.recordTransaction')}
+            {t('transaction.recordTransaction')}
           </Button>
           <Button type="button" variant="outline" onClick={onClose}>
-            {t('ui.cancel2')}
+            {tShared('ui.cancel2')}
           </Button>
         </div>
       </form>

@@ -1,3 +1,4 @@
+import { useTechniciansTranslation } from './i18n/use-technicians-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState, type FormEvent } from 'react';
 import { getFormText } from '@/shared/utils/form';
@@ -14,7 +15,8 @@ import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { useTranslation } from 'react-i18next';
 
 export function TechnicianManagementPage() {
-  const { t } = useTranslation();
+  const t = useTechniciansTranslation();
+  const { t: tShared } = useTranslation();
   const technicians = useDemo((state) => state.technicians);
   const jobs = useDemo((state) => state.jobs);
   const saveTechnician = useDemo((state) => state.saveTechnician);
@@ -26,7 +28,7 @@ export function TechnicianManagementPage() {
       technicians.filter((tech) =>
         `${tech.name} ${tech.phone} ${tech.specialty} ${tech.area}`.includes(query.trim()),
       ),
-    [technicians, query, t],
+    [technicians, query, t, tShared],
   );
   const editing = editor && editor !== 'new' ? editor : undefined;
 
@@ -48,7 +50,7 @@ export function TechnicianManagementPage() {
     () => [
       {
         id: 'نام تعمیرکار',
-        header: 'نام تعمیرکار',
+        header: t('management.technicianName'),
         accessorFn: (tech) => tech.name,
       },
       {
@@ -59,17 +61,17 @@ export function TechnicianManagementPage() {
       },
       {
         id: 'تخصص',
-        header: 'تخصص',
+        header: t('management.specialty'),
         accessorFn: (tech) => tech.specialty,
       },
       {
         id: 'محدوده',
-        header: 'محدوده',
+        header: t('management.serviceArea'),
         accessorFn: (tech) => tech.area,
       },
       {
         id: 'سفارش باز',
-        header: 'سفارش باز',
+        header: t('management.openOrders'),
         accessorFn: (tech) =>
           jobs.filter(
             (job) =>
@@ -94,18 +96,18 @@ export function TechnicianManagementPage() {
               setEditor(tech);
             }}
           >
-            {t('ui.edit')}
+            {tShared('ui.edit')}
           </Button>
         ),
       },
     ],
-    [jobs, setError, setEditor, t],
+    [jobs, setError, setEditor, t, tShared],
   );
   return (
     <>
       <PageHeading
-        title={t('ui.technicianManagement')}
-        description={t('ui.teamContactDetailsSpecialtiesAndServiceAreas')}
+        title={tShared('ui.technicianManagement')}
+        description={t('management.teamContactDetailsSpecialtiesAndServiceAreas')}
         action={
           <Button
             onClick={() => {
@@ -114,20 +116,20 @@ export function TechnicianManagementPage() {
             }}
           >
             <Plus />
-            {t('ui.addTechnician')}
+            {t('management.addTechnician')}
           </Button>
         }
       />
       <Input
         className="mb-4 max-w-sm"
-        aria-label={t('ui.searchTechnicians')}
-        placeholder={t('ui.namePhoneSpecialtyOrServiceArea')}
+        aria-label={t('management.searchTechnicians')}
+        placeholder={t('management.namePhoneSpecialtyOrServiceArea')}
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
       <Panel
-        title={t('ui.teamMembers')}
-        subtitle={t('ui.lengthTechnicians', { length: filtered.length })}
+        title={t('management.teamMembers')}
+        subtitle={t('management.lengthTechnicians', { length: filtered.length })}
       >
         <DataTable
           data={filtered}
@@ -139,16 +141,16 @@ export function TechnicianManagementPage() {
       </Panel>
       {editor ? (
         <Modal
-          title={editing ? t('ui.editTechnician') : t('ui.addTechnician')}
+          title={editing ? t('management.editTechnician') : t('management.addTechnician')}
           onClose={() => setEditor(null)}
         >
           <form onSubmit={submit} className="grid gap-4 p-6 sm:grid-cols-2">
             <Label className="flex flex-col gap-2">
-              {t('ui.fullName')}
+              {t('management.fullName')}
               <Input name="name" required maxLength={100} defaultValue={editing?.name} />
             </Label>
             <Label className="flex flex-col gap-2">
-              {t('ui.phone')}
+              {tShared('ui.phone')}
               <Input
                 name="phone"
                 type="tel"
@@ -159,17 +161,17 @@ export function TechnicianManagementPage() {
               />
             </Label>
             <Label className="flex flex-col gap-2">
-              {t('ui.specialty')}
+              {t('management.specialty')}
               <Input
                 name="specialty"
                 required
                 maxLength={150}
                 defaultValue={editing?.specialty}
-                placeholder={t('ui.forExampleRefrigeratorAndFreezerRepairs')}
+                placeholder={t('management.forExampleRefrigeratorAndFreezerRepairs')}
               />
             </Label>
             <Label className="flex flex-col gap-2">
-              {t('ui.serviceArea')}
+              {t('management.serviceArea')}
               <Input name="area" required maxLength={150} defaultValue={editing?.area} />
             </Label>
             {error ? (
@@ -178,9 +180,9 @@ export function TechnicianManagementPage() {
               </Alert>
             ) : null}
             <div className="col-span-full flex gap-2">
-              <Button type="submit">{t('ui.save')}</Button>
+              <Button type="submit">{tShared('ui.save')}</Button>
               <Button type="button" variant="outline" onClick={() => setEditor(null)}>
-                {t('ui.cancel2')}
+                {tShared('ui.cancel2')}
               </Button>
             </div>
           </form>

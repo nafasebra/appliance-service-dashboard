@@ -1,3 +1,4 @@
+import { useSettingsTranslation } from './i18n/use-settings-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useState, type FormEvent } from 'react';
 import { Building2, Save } from 'lucide-react';
@@ -41,7 +42,8 @@ import {
 import { useTranslation } from 'react-i18next';
 
 export function SettingsPage() {
-  const { t } = useTranslation();
+  const t = useSettingsTranslation();
+  const { t: tShared } = useTranslation();
   const settings = useCompanySettings((state) => state.settings);
   const saveSettings = useCompanySettings((state) => state.saveSettings);
   const theme = useTheme((state) => state.theme);
@@ -77,21 +79,21 @@ export function SettingsPage() {
   return (
     <>
       <PageHeading
-        title={t('ui.settings')}
-        description={t('ui.manageCompanyDetailsOrderDefaultsAndDashboardAppearance')}
+        title={tShared('ui.settings')}
+        description={t('company.manageCompanyDetailsOrderDefaultsAndDashboardAppearance')}
       />
       <form onSubmit={submit} className="flex flex-col gap-6">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Building2 className="size-5" />
-              {t('ui.companyAndBranchDetails')}
+              {t('company.companyAndBranchDetails')}
             </CardTitle>
-            <CardDescription>{t('ui.theCompanyNameAppearsInTheSidebarAnd')}</CardDescription>
+            <CardDescription>{t('company.theCompanyNameAppearsInTheSidebarAnd')}</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="company-name">{t('ui.companyName')}</Label>
+              <Label htmlFor="company-name">{t('company.companyName')}</Label>
               <Input
                 id="company-name"
                 value={draft.companyName}
@@ -101,7 +103,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="brand-name">{t('ui.latinBrandName')}</Label>
+              <Label htmlFor="brand-name">{t('company.latinBrandName')}</Label>
               <Input
                 id="brand-name"
                 dir="ltr"
@@ -112,7 +114,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="branch-name">{t('ui.branchName')}</Label>
+              <Label htmlFor="branch-name">{t('company.branchName')}</Label>
               <Input
                 id="branch-name"
                 value={draft.branchName}
@@ -122,7 +124,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="company-phone">{t('ui.companyPhone')}</Label>
+              <Label htmlFor="company-phone">{t('company.companyPhone')}</Label>
               <Input
                 id="company-phone"
                 type="tel"
@@ -133,7 +135,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2 md:col-span-2">
-              <Label htmlFor="company-address">{t('ui.companyAddress')}</Label>
+              <Label htmlFor="company-address">{t('company.companyAddress')}</Label>
               <Textarea
                 id="company-address"
                 value={draft.address}
@@ -145,12 +147,12 @@ export function SettingsPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>{t('ui.newOrderDefaults')}</CardTitle>
-            <CardDescription>{t('ui.theseDefaultsApplyOnlyToNewOrdersAnd')}</CardDescription>
+            <CardTitle>{t('company.newOrderDefaults')}</CardTitle>
+            <CardDescription>{t('company.theseDefaultsApplyOnlyToNewOrdersAnd')}</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="default-time">{t('ui.defaultVisitTime')}</Label>
+              <Label htmlFor="default-time">{t('company.defaultVisitTime')}</Label>
               <TimePicker
                 id="default-time"
                 value={draft.defaultVisitTime}
@@ -159,7 +161,7 @@ export function SettingsPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="default-priority">{t('ui.defaultPriority')}</Label>
+              <Label htmlFor="default-priority">{t('company.defaultPriority')}</Label>
               <Select
                 value={draft.defaultPriority}
                 onValueChange={(value) => {
@@ -171,8 +173,8 @@ export function SettingsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="normal">{t('ui.normal')}</SelectItem>
-                    <SelectItem value="urgent">{t('ui.urgent')}</SelectItem>
+                    <SelectItem value="normal">{tShared('ui.normal')}</SelectItem>
+                    <SelectItem value="urgent">{tShared('ui.urgent')}</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -180,7 +182,7 @@ export function SettingsPage() {
           </CardContent>
           <CardFooter>
             <p className="text-sm text-muted-foreground">
-              {t('ui.companyCommissionIsRecordedAsAnAmountOn')}
+              {t('company.companyCommissionIsRecordedAsAnAmountOn')}
             </p>
           </CardFooter>
         </Card>
@@ -191,13 +193,13 @@ export function SettingsPage() {
         ) : null}
         {saved ? (
           <Alert>
-            <AlertDescription>{t('ui.settingsSaved')}</AlertDescription>
+            <AlertDescription>{t('company.settingsSaved')}</AlertDescription>
           </Alert>
         ) : null}
         <div className="flex flex-wrap items-center gap-3">
           <Button type="submit" disabled={!dirty}>
             <Save className="size-4" />
-            {t('ui.saveChanges')}
+            {t('company.saveChanges')}
           </Button>
           <Button
             type="button"
@@ -209,23 +211,23 @@ export function SettingsPage() {
               setSaved(false);
             }}
           >
-            {t('ui.discardChanges')}
+            {t('company.discardChanges')}
           </Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button type="button" variant="ghost">
-                {t('ui.restoreDefaults')}
+                {t('company.restoreDefaults')}
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>{t('ui.restoreDefaultSettings')}</AlertDialogTitle>
+                <AlertDialogTitle>{t('company.restoreDefaultSettings')}</AlertDialogTitle>
                 <AlertDialogDescription>
-                  {t('ui.theFormWillReturnToItsDefaultsSelect')}
+                  {t('company.theFormWillReturnToItsDefaultsSelect')}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>{t('ui.cancel2')}</AlertDialogCancel>
+                <AlertDialogCancel>{tShared('ui.cancel2')}</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => {
                     setDraft({ ...defaultCompanySettings });
@@ -233,23 +235,27 @@ export function SettingsPage() {
                     setError('');
                   }}
                 >
-                  {t('ui.resetForm')}
+                  {t('company.resetForm')}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
           {dirty ? (
-            <span className="text-sm text-muted-foreground">{t('ui.youHaveUnsavedChanges')}</span>
+            <span className="text-sm text-muted-foreground">
+              {t('company.youHaveUnsavedChanges')}
+            </span>
           ) : null}
         </div>
       </form>
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle>{t('ui.appearance')}</CardTitle>
-          <CardDescription>{t('ui.themeChangesApplyImmediatelyAndAreSavedFor')}</CardDescription>
+          <CardTitle>{t('company.appearance')}</CardTitle>
+          <CardDescription>
+            {t('company.themeChangesApplyImmediatelyAndAreSavedFor')}
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <Label htmlFor="settings-theme">{t('ui.theme')}</Label>
+          <Label htmlFor="settings-theme">{t('company.theme')}</Label>
           <Select
             value={theme}
             onValueChange={(value) => {
@@ -261,15 +267,15 @@ export function SettingsPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="light">{t('ui.light')}</SelectItem>
-                <SelectItem value="dark">{t('ui.dark')}</SelectItem>
+                <SelectItem value="light">{t('company.light')}</SelectItem>
+                <SelectItem value="dark">{t('company.dark')}</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
         </CardContent>
       </Card>
       <p className="mt-4 text-xs text-muted-foreground">
-        {t('ui.settingsInThisDemoAreStoredInThe')}
+        {t('company.settingsInThisDemoAreStoredInThe')}
       </p>
     </>
   );

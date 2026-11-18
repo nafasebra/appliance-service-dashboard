@@ -1,3 +1,4 @@
+import { useTechniciansTranslation } from './i18n/use-technicians-translation';
 import { useState } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
 import type { Job } from '@/entities/service/model/types';
@@ -15,7 +16,8 @@ import {
 import { useTranslation } from 'react-i18next';
 
 export function TechnicianJobsPage() {
-  const { t } = useTranslation();
+  const t = useTechniciansTranslation();
+  const { t: tShared } = useTranslation();
   const technicians = useDemo((state) => state.technicians);
   const jobs = useDemo((state) => state.jobs);
   const [technicianId, setTechnicianId] = useState('all');
@@ -31,17 +33,17 @@ export function TechnicianJobsPage() {
   return (
     <>
       <PageHeading
-        title={t('ui.techniciansActiveOrders')}
-        description={t('ui.trackAssignedOpenOrdersVisitTimesAndProgress')}
+        title={t('assignments.techniciansActiveOrders')}
+        description={t('assignments.trackAssignedOpenOrdersVisitTimesAndProgress')}
       />
       <div className="mb-4 flex flex-wrap gap-3">
         <Select value={technicianId} onValueChange={(value) => setTechnicianId(value)}>
-          <SelectTrigger className="w-full" aria-label={t('ui.filterByTechnician')}>
-            <SelectValue placeholder={t('ui.selectAnOption')} />
+          <SelectTrigger className="w-full" aria-label={t('assignments.filterByTechnician')}>
+            <SelectValue placeholder={tShared('ui.selectAnOption')} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="all">{t('ui.allTechnicians')}</SelectItem>
+              <SelectItem value="all">{t('finance.allTechnicians')}</SelectItem>
               {technicians.map((tech) => (
                 <SelectItem value={tech.id} key={tech.id}>
                   {tech.name}
@@ -51,22 +53,22 @@ export function TechnicianJobsPage() {
           </SelectContent>
         </Select>
         <Select value={status} onValueChange={(value) => setStatus(value)}>
-          <SelectTrigger className="w-full" aria-label={t('ui.filterByOrderStatus')}>
-            <SelectValue placeholder={t('ui.selectAnOption')} />
+          <SelectTrigger className="w-full" aria-label={t('assignments.filterByOrderStatus')}>
+            <SelectValue placeholder={tShared('ui.selectAnOption')} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="all">{t('ui.allOpenOrders')}</SelectItem>
-              <SelectItem value="new">{t('ui.awaitingDispatch')}</SelectItem>
-              <SelectItem value="scheduled">{t('ui.scheduled')}</SelectItem>
-              <SelectItem value="working">{t('ui.inProgress')}</SelectItem>
+              <SelectItem value="all">{t('assignments.allOpenOrders')}</SelectItem>
+              <SelectItem value="new">{tShared('ui.awaitingDispatch')}</SelectItem>
+              <SelectItem value="scheduled">{t('assignments.scheduled')}</SelectItem>
+              <SelectItem value="working">{tShared('ui.inProgress')}</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
       </div>
       <Panel
-        title={t('ui.assignedOrders')}
-        subtitle={t('ui.lengthOpenOrders', { length: active.length })}
+        title={t('assignments.assignedOrders')}
+        subtitle={t('assignments.lengthOpenOrders', { length: active.length })}
       >
         <JobTable jobs={active} onSelect={setSelected} />
       </Panel>

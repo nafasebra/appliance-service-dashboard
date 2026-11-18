@@ -1,3 +1,4 @@
+import { useTechniciansTranslation } from './i18n/use-technicians-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState, type FormEvent } from 'react';
 import { getJobPayable } from './utils/technician-finance';
@@ -24,7 +25,8 @@ import { toIsoDate } from '@/shared/lib/date';
 import { useTranslation } from 'react-i18next';
 
 export function TechnicianFinancePage() {
-  const { t } = useTranslation();
+  const t = useTechniciansTranslation();
+  const { t: tShared } = useTranslation();
   const technicians = useDemo((state) => state.technicians);
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
@@ -35,22 +37,22 @@ export function TechnicianFinancePage() {
   const [error, setError] = useState('');
   const members = useMemo(
     () => technicians.filter((tech) => technicianId === 'all' || tech.id === technicianId),
-    [technicians, technicianId, t],
+    [technicians, technicianId, t, tShared],
   );
   const assigned = useMemo(
     () => jobs.filter((job) => members.some((tech) => tech.id === job.technicianId)),
-    [jobs, members, t],
+    [jobs, members, t, tShared],
   );
   const related = useMemo(
     () =>
       transactions.filter((transaction) => assigned.some((job) => job.id === transaction.jobId)),
-    [transactions, assigned, t],
+    [transactions, assigned, t, tShared],
   );
   const finance = summarizeFinance(assigned, related);
   const payouts = useMemo(
     () =>
       related.filter((item) => item.kind === 'payout').sort((a, b) => b.date.localeCompare(a.date)),
-    [related, t],
+    [related, t, tShared],
   );
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -61,7 +63,7 @@ export function TechnicianFinancePage() {
       amount <= 0 ||
       amount > getJobPayable(jobId, jobs, transactions)
     ) {
-      setError('ui.enterAPositiveWholeAmountWithinTheOrder');
+      setError('technicians:finance.enterAPositiveWholeAmountWithinTheOrder');
       return;
     }
     const failure = addTransaction({
@@ -85,7 +87,7 @@ export function TechnicianFinancePage() {
         );
         return { tech, techJobs, summary };
       }),
-    [members, assigned, related, t],
+    [members, assigned, related, t, tShared],
   );
   const memberColumns = useMemo<DataTableColumn<(typeof memberRows)[number]>[]>(
     () => [
@@ -96,7 +98,7 @@ export function TechnicianFinancePage() {
       },
       {
         id: 'ارزش خدمات',
-        header: 'ارزش خدمات',
+        header: t('finance.serviceValue'),
         accessorFn: ({ summary }) => summary.serviceValue,
         cell: ({
           row: {
@@ -116,7 +118,7 @@ export function TechnicianFinancePage() {
       },
       {
         id: 'سهم تعمیرکار',
-        header: 'سهم تعمیرکار',
+        header: t('finance.technicianShare'),
         accessorFn: ({ summary }) => summary.serviceValue - summary.commission,
         cell: ({
           row: {
@@ -126,7 +128,7 @@ export function TechnicianFinancePage() {
       },
       {
         id: 'پرداخت‌شده',
-        header: 'پرداخت‌شده',
+        header: t('finance.paid3'),
         accessorFn: ({ summary }) => summary.payouts,
         cell: ({
           row: {
@@ -145,11 +147,11 @@ export function TechnicianFinancePage() {
         }) => money(summary.payable),
       },
     ],
-    [t],
+    [t, tShared],
   );
   const payableJobs = useMemo(
     () => assigned.filter((job) => getJobPayable(job.id, jobs, transactions) > 0),
-    [assigned, jobs, transactions, t],
+    [assigned, jobs, transactions, t, tShared],
   );
   const payableJobColumns = useMemo<DataTableColumn<(typeof payableJobs)[number]>[]>(
     () => [
@@ -188,12 +190,12 @@ export function TechnicianFinancePage() {
               setJobId(job.id);
             }}
           >
-            {t('ui.recordPayout')}
+            {t('finance.recordPayout')}
           </Button>
         ),
       },
     ],
-    [technicians, jobs, transactions, setError, setDate, setJobId, t],
+    [technicians, jobs, transactions, setError, setDate, setJobId, t, tShared],
   );
   const payoutColumns = useMemo<DataTableColumn<(typeof payouts)[number]>[]>(
     () => [
@@ -229,21 +231,21 @@ export function TechnicianFinancePage() {
         cell: ({ row: { original: item } }) => money(item.amount),
       },
     ],
-    [technicians, jobs, t],
+    [technicians, jobs, t, tShared],
   );
   return (
     <>
       <PageHeading
-        title={t('ui.technicianFinances')}
-        description={t('ui.completedServiceSharesRecordedPayoutsAndEachTechnician')}
+        title={tShared('ui.technicianFinances')}
+        description={t('finance.completedServiceSharesRecordedPayoutsAndEachTechnician')}
       />
       <Select value={technicianId} onValueChange={(value) => setTechnicianId(value)}>
-        <SelectTrigger aria-label={t('ui.selectTechnician')} className="mb-4">
-          <SelectValue placeholder={t('ui.selectAnOption')} />
+        <SelectTrigger aria-label={tShared('ui.selectTechnician')} className="mb-4">
+          <SelectValue placeholder={tShared('ui.selectAnOption')} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem value="all">{t('ui.allTechnicians')}</SelectItem>
+            <SelectItem value="all">{t('finance.allTechnicians')}</SelectItem>
             {technicians.map((tech) => (
               <SelectItem key={tech.id} value={tech.id}>
                 {tech.name}
@@ -254,25 +256,25 @@ export function TechnicianFinancePage() {
       </Select>
       <div className="mb-6 grid gap-4 md:grid-cols-3">
         <StatCard
-          title={t('ui.technicianShares')}
+          title={t('finance.technicianShares')}
           value={money(finance.serviceValue - finance.commission)}
-          detail={t('labels.completedServiceValueMinusCommission')}
+          detail={t('finance.completedServiceValueMinusCommission')}
           icon={<Wallet />}
         />
         <StatCard
-          title={t('ui.paid3')}
+          title={t('finance.paid3')}
           value={money(finance.payouts)}
-          detail={t('labels.totalRecordedPayouts')}
+          detail={t('finance.totalRecordedPayouts')}
           icon={<Wallet />}
         />
         <StatCard
-          title={t('ui.amountPayable')}
+          title={t('finance.amountPayable')}
           value={money(finance.payable)}
-          detail={t('labels.basedOnEachCompletedOrderSBalance')}
+          detail={t('finance.basedOnEachCompletedOrderSBalance')}
           icon={<Wallet />}
         />
       </div>
-      <Panel title={t('ui.teamAccounts')}>
+      <Panel title={t('finance.teamAccounts')}>
         <DataTable
           data={memberRows}
           getRowId={({ tech }) => String(tech.id)}
@@ -282,7 +284,7 @@ export function TechnicianFinancePage() {
         {!members.length ? <EmptyState /> : null}
       </Panel>
       <div className="mt-6">
-        <Panel title={t('ui.ordersEligibleForPayout')}>
+        <Panel title={t('finance.ordersEligibleForPayout')}>
           <DataTable
             data={payableJobs}
             getRowId={(job) => String(job.id)}
@@ -290,29 +292,29 @@ export function TechnicianFinancePage() {
             emptyMessage={null}
           />
           {!assigned.some((job) => getJobPayable(job.id, jobs, transactions) > 0) ? (
-            <EmptyState text={t('labels.noCompletedOrdersHaveARemainingPayableBalance')} />
+            <EmptyState text={t('finance.noCompletedOrdersHaveARemainingPayableBalance')} />
           ) : null}
         </Panel>
       </div>
       <div className="mt-6">
-        <Panel title={t('ui.technicianPayoutHistory')}>
+        <Panel title={t('finance.technicianPayoutHistory')}>
           <DataTable
             data={payouts}
             getRowId={(item) => String(item.id)}
             columns={payoutColumns}
             emptyMessage={null}
           />
-          {!payouts.length ? <EmptyState text={t('labels.noPayoutsRecorded')} /> : null}
+          {!payouts.length ? <EmptyState text={t('finance.noPayoutsRecorded')} /> : null}
         </Panel>
       </div>
       {jobId ? (
-        <Modal title={t('ui.recordTechnicianPayout')} onClose={() => setJobId('')}>
+        <Modal title={t('finance.recordTechnicianPayout')} onClose={() => setJobId('')}>
           <form onSubmit={submit} className="flex flex-col gap-4 p-6">
             <p>
-              {t('ui.orderBalance')} {money(getJobPayable(jobId, jobs, transactions))}
+              {t('finance.orderBalance')} {money(getJobPayable(jobId, jobs, transactions))}
             </p>
             <Label className="flex flex-col gap-2">
-              {t('ui.amountToman2')}
+              {tShared('ui.amountToman2')}
               <Input
                 name="amount"
                 type="number"
@@ -323,11 +325,11 @@ export function TechnicianFinancePage() {
               />
             </Label>
             <Label className="flex flex-col gap-2">
-              {t('ui.payoutDate')}
+              {t('finance.payoutDate')}
               <JalaliDatePicker name="date" value={date} onValueChange={setDate} required />
             </Label>
             <Label className="flex flex-col gap-2">
-              {t('ui.description')}
+              {tShared('ui.description')}
               <Input name="description" required maxLength={150} />
             </Label>
             {error ? (
@@ -336,12 +338,12 @@ export function TechnicianFinancePage() {
               </Alert>
             ) : null}
             <p className="text-xs text-muted-foreground">
-              {t('ui.thisRecordsAnEntryInTheDemoLedger')}
+              {t('finance.thisRecordsAnEntryInTheDemoLedger')}
             </p>
             <div className="flex gap-2">
-              <Button type="submit">{t('ui.recordPayout')}</Button>
+              <Button type="submit">{t('finance.recordPayout')}</Button>
               <Button type="button" variant="outline" onClick={() => setJobId('')}>
-                {t('ui.cancel2')}
+                {tShared('ui.cancel2')}
               </Button>
             </div>
           </form>

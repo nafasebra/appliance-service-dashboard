@@ -1,3 +1,4 @@
+import { useOverviewTranslation } from './i18n/use-overview-translation';
 import { translateLabel } from '@/shared/i18n';
 import { cn } from '@/shared/lib/utils';
 import { useState } from 'react';
@@ -25,7 +26,8 @@ import { Badge } from '@/shared/ui/badge';
 import { useTranslation } from 'react-i18next';
 
 export function OverviewPage() {
-  const { t } = useTranslation();
+  const t = useOverviewTranslation();
+  const { t: tShared } = useTranslation();
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
   const technicians = useDemo((state) => state.technicians);
@@ -36,15 +38,15 @@ export function OverviewPage() {
   return (
     <>
       <PageHeading
-        title={t('ui.businessOverview')}
-        description={t('ui.everythingYouNeedForAnOrganizedWorkingDay')}
+        title={t('summary.businessOverview')}
+        description={t('summary.everythingYouNeedForAnOrganizedWorkingDay')}
         action={
           <Button
             className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
             onClick={() => setEditor('new')}
           >
             <Plus size={18} />
-            {t('ui.newRequest')}
+            {tShared('ui.newRequest')}
           </Button>
         }
       />
@@ -52,15 +54,15 @@ export function OverviewPage() {
         <div>
           <span className="flex items-center gap-1.75 text-muted-foreground text-3xs dark:text-muted-foreground">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
-            {t('ui.serviceOperationsCenter')}
+            {t('summary.serviceOperationsCenter')}
           </span>
-          <h2>{t('ui.betterServiceThroughClearerCoordination')}</h2>
-          <p>{t('overview.openRequests', { count: active.length })}</p>
+          <h2>{t('summary.betterServiceThroughClearerCoordination')}</h2>
+          <p>{t('summary.openRequests', { count: active.length })}</p>
           <Link
             to="/dispatch"
             className="flex gap-2.25 items-center text-2xs text-primary mt-5 font-bold dark:text-primary"
           >
-            {t('ui.viewDispatchSchedule')} <ArrowLeft size={16} />
+            {t('summary.viewDispatchSchedule')} <ArrowLeft size={16} />
           </Link>
         </div>
         <div
@@ -82,51 +84,51 @@ export function OverviewPage() {
       </div>
       <div className="grid grid-cols-4 gap-4.25 mb-5.75 max-tablet:grid-cols-2 max-mobile:gap-2.75 max-compact:gap-2">
         <StatCard
-          title={t('ui.openRequests')}
+          title={t('summary.openRequests')}
           value={active.length}
-          detail={t('ui.lengthAwaitingAssignment', {
+          detail={t('summary.lengthAwaitingAssignment', {
             length: jobs.filter((job) => job.status === 'new').length,
           })}
           icon={<ClipboardList size={20} />}
         />
         <StatCard
-          title={t('ui.technicians')}
+          title={t('summary.technicians')}
           value={technicians.length}
-          detail={t('labels.viewCapacityOnTheDispatchPage')}
+          detail={t('summary.viewCapacityOnTheDispatchPage')}
           icon={<Wrench size={20} />}
         />
         <StatCard
-          title={t('ui.commissionOnCompletedServices')}
+          title={t('summary.commissionOnCompletedServices')}
           value={money(finance.commission)}
-          detail={t('labels.independentOfCustomerReceipts')}
+          detail={t('summary.independentOfCustomerReceipts')}
           icon={<Wallet size={20} />}
           accent
         />
         <StatCard
-          title={t('ui.netCashFlow')}
+          title={tShared('ui.netCashFlow')}
           value={money(finance.cashFlow)}
-          detail={t('labels.receiptsMinusAllPayments')}
+          detail={t('summary.receiptsMinusAllPayments')}
           icon={<ArrowDownLeft size={20} />}
         />
       </div>
       <div className="grid grid-cols-[1.45fr_1fr] gap-5.25 mb-5.75 max-tablet:grid-cols-1">
         <Panel
-          title={t('ui.cashMovement')}
-          subtitle={t('labels.latestDaysWithTransactions')}
+          title={t('summary.cashMovement')}
+          subtitle={t('summary.latestDaysWithTransactions')}
           action={
             <Link
               className="inline-flex gap-1.75 items-center text-primary text-2xs border-0 bg-none whitespace-nowrap"
               to="/finance"
             >
-              {t('ui.financialDetails')} <ArrowLeft size={15} />
+              {t('summary.financialDetails')} <ArrowLeft size={15} />
             </Link>
           }
         >
           <CashChart />
         </Panel>
         <Panel
-          title={t('ui.requestStatuses')}
-          subtitle={t('labels.fromCreationToServiceCompletion')}
+          title={t('summary.requestStatuses')}
+          subtitle={t('summary.fromCreationToServiceCompletion')}
         >
           <div className="flex items-center justify-evenly gap-6 pt-6 px-6 pb-5 min-h-48.25 max-desktop:gap-4 max-desktop:px-4.5 max-tablet:justify-center max-tablet:gap-11.25 max-mobile:gap-6 max-compact:gap-4.5">
             <div
@@ -137,7 +139,7 @@ export function OverviewPage() {
             >
               <div>
                 <strong>{jobs.length}</strong>
-                <span>{t('ui.totalRequests')}</span>
+                <span>{tShared('ui.totalRequests')}</span>
               </div>
             </div>
             <div className="flex flex-1 flex-col gap-4.25 min-w-33.75 max-w-52.5 [&_>_div]:flex [&_>_div]:justify-between [&_>_div]:items-center [&_>_div]:gap-4 [&_>_div]:text-2xs [&_>_div_>_span]:flex [&_>_div_>_span]:items-center [&_>_div_>_span]:gap-1.75 [&_>_div_>_span]:text-muted-foreground [&_strong]:text-muted-foreground [&_strong]:text-xs max-desktop:min-w-27.5 max-desktop:[&_>_div_>_span]:text-3xs max-tablet:min-w-40 max-mobile:min-w-33.75">
@@ -163,19 +165,19 @@ export function OverviewPage() {
             className="flex items-center justify-center gap-2 border-t border-t-border mt-5.5 p-3.25 text-2xs text-muted-foreground dark:border-border"
             to="/requests"
           >
-            {t('ui.manageAllRequests')} <ArrowLeft size={16} />
+            {t('summary.manageAllRequests')} <ArrowLeft size={16} />
           </Link>
         </Panel>
       </div>
       <Panel
-        title={t('ui.recentRequests')}
-        subtitle={t('labels.quicklyTrackServicesAndProgress')}
+        title={t('summary.recentRequests')}
+        subtitle={t('summary.quicklyTrackServicesAndProgress')}
         action={
           <Link
             to="/requests"
             className="inline-flex gap-1.75 items-center text-primary text-2xs border-0 bg-none whitespace-nowrap"
           >
-            {t('ui.allRequests')} <ArrowLeft size={15} />
+            {t('summary.allRequests')} <ArrowLeft size={15} />
           </Link>
         }
       >
@@ -183,8 +185,8 @@ export function OverviewPage() {
       </Panel>
       <div className="grid grid-cols-[1.65fr_1fr] gap-5.5 mt-5.75 max-tablet:grid-cols-1 max-mobile:gap-4">
         <Panel
-          title={t('ui.awaitingAttention')}
-          subtitle={t('labels.requestsThatNeedYourAttention')}
+          title={t('summary.awaitingAttention')}
+          subtitle={t('summary.requestsThatNeedYourAttention')}
         >
           <div className="[&_>_button]:flex [&_>_button]:items-center [&_>_button]:gap-3 [&_>_button]:w-full [&_>_button]:bg-white [&_>_button]:border-0 [&_>_button]:border-t [&_>_button]:border-t-border [&_>_button]:py-4 [&_>_button]:px-5.5 [&_>_button]:text-start [&_>_button]:h-auto [&_>_button:hover]:bg-muted [&_strong]:text-2xs [&_strong]:text-muted-foreground [&_strong]:font-medium [&_small]:block [&_small]:text-3xs [&_small]:text-muted-foreground [&_small]:mt-1.5 [&_.badge]:ms-auto max-mobile:[&_>_button]:px-4.25 max-mobile:[&_>_button]:gap-2.25 max-mobile:[&_strong]:text-3xs dark:[&_>_button]:bg-card dark:[&_>_button]:border-border dark:[&_>_button]:text-foreground dark:[&_>_button:hover]:bg-accent dark:[&_>_button:hover]:border-border">
             {active.length ? (
@@ -224,16 +226,18 @@ export function OverviewPage() {
                 </Button>
               ))
             ) : (
-              <p className="p-6 text-muted-foreground">{t('ui.allRequestsHaveBeenHandled')}</p>
+              <p className="p-6 text-muted-foreground">{t('summary.allRequestsHaveBeenHandled')}</p>
             )}
           </div>
         </Panel>
         <div className="bg-accent border border-border rounded-lg p-6.75 flex flex-col justify-center [&_h2]:text-primary [&_h2]:text-lg [&_h2]:mt-1.5 [&_h2]:mx-0 [&_h2]:mb-3.5 [&_p]:text-muted-foreground [&_p]:text-ui [&_p]:leading-loose [&_a]:text-primary [&_a]:text-2xs [&_a]:flex [&_a]:items-center [&_a]:gap-2 [&_a]:mt-6 max-mobile:p-5.75 dark:[&_h2]:text-primary dark:[&_a]:text-primary dark:[&_p]:text-muted-foreground dark:bg-accent dark:border-border">
-          <span className="text-muted-foreground text-3xs mb-2.5">{t('ui.financialClarity')}</span>
-          <h2>{t('ui.aClearAccountForEveryService')}</h2>
-          <p>{t('ui.trackCompanyCommissionTechnicianBalancesAndActualCash')}</p>
+          <span className="text-muted-foreground text-3xs mb-2.5">
+            {t('summary.financialClarity')}
+          </span>
+          <h2>{t('summary.aClearAccountForEveryService')}</h2>
+          <p>{t('summary.trackCompanyCommissionTechnicianBalancesAndActualCash')}</p>
           <Link to="/finance">
-            {t('ui.goToFinance')} <ArrowLeft size={17} />
+            {t('summary.goToFinance')} <ArrowLeft size={17} />
           </Link>
         </div>
       </div>

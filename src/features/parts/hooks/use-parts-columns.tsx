@@ -1,3 +1,4 @@
+import { usePartsTranslation } from '../i18n/use-parts-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo } from 'react';
 import type { Customer, Job, Technician } from '@/entities/service/model/types';
@@ -49,13 +50,14 @@ export function usePartsColumns({
   needAction,
   setDelivery,
 }: PartsColumnOptions) {
-  const { t } = useTranslation();
+  const t = usePartsTranslation();
+  const { t: tShared } = useTranslation();
   const inventoryColumns = useMemo(
     () =>
       inventoryColumn.columns([
         inventoryColumn.accessor((part) => part.name, {
           id: 'قطعه / کد',
-          header: 'قطعه / کد',
+          header: t('tables.partCode'),
           cell: ({ row: { original: part } }) => (
             <>
               <strong>{part.name}</strong>
@@ -67,7 +69,7 @@ export function usePartsColumns({
         }),
         inventoryColumn.accessor((part) => part.appliance, {
           id: 'دستگاه و سازگاری',
-          header: 'دستگاه و سازگاری',
+          header: t('tables.applianceAndCompatibility'),
           cell: ({ row: { original: part } }) => (
             <>
               {translateLabel(part.appliance)}
@@ -75,31 +77,34 @@ export function usePartsColumns({
             </>
           ),
         }),
-        inventoryColumn.accessor((part) => part.location, { id: 'محل', header: 'محل' }),
+        inventoryColumn.accessor((part) => part.location, {
+          id: 'محل',
+          header: t('tables.location'),
+        }),
         inventoryColumn.accessor((part) => part.stock, {
           id: 'فیزیکی',
-          header: 'فیزیکی',
+          header: t('tables.physicalStock'),
           cell: ({ cell }) => cell.getValue(),
         }),
         inventoryColumn.accessor((part) => reservedQuantity(data, part.id), {
           id: 'رزرو',
-          header: 'رزرو',
+          header: t('tables.reserved'),
           cell: ({ cell }) => cell.getValue(),
         }),
         inventoryColumn.accessor((part) => availableQuantity(data, part.id), {
           id: 'قابل تخصیص',
-          header: 'قابل تخصیص',
+          header: t('tables.available'),
           cell: ({ cell }) => cell.getValue(),
         }),
         inventoryColumn.accessor(
           (part) =>
             !part.active
-              ? t('ui.inactive')
+              ? t('tables.inactive')
               : availableQuantity(data, part.id) === 0
-                ? t('ui.outOfStock')
+                ? t('tables.outOfStock')
                 : availableQuantity(data, part.id) <= part.minimum
-                  ? t('ui.lowStock')
-                  : t('ui.inStock'),
+                  ? t('tables.lowStock')
+                  : t('tables.inStock'),
           {
             id: 'وضعیت',
             header: 'وضعیت',
@@ -120,7 +125,7 @@ export function usePartsColumns({
                   setForm('part');
                 }}
               >
-                {t('ui.edit')}
+                {tShared('ui.edit')}
               </Button>
               <Button
                 variant="ghost"
@@ -134,20 +139,20 @@ export function usePartsColumns({
                   }))
                 }
               >
-                {part.active ? t('ui.inactive') : t('ui.active')}
+                {part.active ? t('tables.inactive') : t('tables.active')}
               </Button>
             </div>
           ),
         }),
       ]),
-    [data, setEditing, setForm, act, t],
+    [data, setEditing, setForm, act, t, tShared],
   );
   const purchaseColumns = useMemo(
     () =>
       purchaseColumn.columns([
         purchaseColumn.accessor(
           (purchase) => data.parts.find((p) => p.id === purchase.partId)?.name,
-          { id: 'قطعه', header: 'قطعه' },
+          { id: 'قطعه', header: t('tables.part') },
         ),
         purchaseColumn.accessor(
           (purchase) =>
@@ -157,16 +162,16 @@ export function usePartsColumns({
                   jobs,
                   customers,
                 )
-              : t('ui.replenishInventory'),
-          { id: 'مرتبط با درخواست', header: 'مرتبط با درخواست' },
+              : t('tables.replenishInventory'),
+          { id: 'مرتبط با درخواست', header: t('tables.relatedRequest') },
         ),
-        purchaseColumn.accessor((purchase) => purchase.supplier || t('ui.notSpecified'), {
+        purchaseColumn.accessor((purchase) => purchase.supplier || tShared('ui.notSpecified'), {
           id: 'تأمین‌کننده',
-          header: 'تأمین‌کننده',
+          header: t('tables.supplier'),
         }),
         purchaseColumn.accessor((purchase) => purchase.quantity, {
           id: 'تعداد خرید',
-          header: 'تعداد خرید',
+          header: t('tables.purchaseQuantity'),
           cell: ({ cell }) => cell.getValue(),
         }),
         purchaseColumn.accessor((purchase) => purchase.received, {
@@ -177,7 +182,7 @@ export function usePartsColumns({
         purchaseColumn.accessor(
           (purchase) =>
             purchase.received > 0 && purchase.status === 'ordered'
-              ? t('ui.partiallyReceived')
+              ? t('statuses.purchases.partiallyReceived')
               : translateLabel(purchaseLabels[purchase.status]),
           {
             id: 'وضعیت',
@@ -185,7 +190,7 @@ export function usePartsColumns({
             cell: ({ row: { original: purchase } }) => (
               <Badge variant="secondary">
                 {purchase.received > 0 && purchase.status === 'ordered'
-                  ? t('ui.partiallyReceived')
+                  ? t('statuses.purchases.partiallyReceived')
                   : translateLabel(purchaseLabels[purchase.status])}
               </Badge>
             ),
@@ -209,17 +214,17 @@ export function usePartsColumns({
                     }))
                   }
                 >
-                  {t('ui.approvePurchase')}
+                  {t('tables.approvePurchase')}
                 </Button>
               ) : null}
               {purchase.status === 'approved' ? (
                 <Button size="sm" onClick={() => setReceiving(purchase.id)}>
-                  {t('ui.placePurchaseOrder')}
+                  {t('tables.placePurchaseOrder')}
                 </Button>
               ) : null}
               {purchase.status === 'ordered' ? (
                 <Button size="sm" onClick={() => setReceiving(purchase.id)}>
-                  {t('ui.receiveGoods')}
+                  {t('tables.receiveGoods')}
                 </Button>
               ) : null}
               {['pending', 'approved'].includes(purchase.status) ? (
@@ -235,21 +240,21 @@ export function usePartsColumns({
                     }))
                   }
                 >
-                  {t('ui.cancel')}
+                  {t('tables.cancel')}
                 </Button>
               ) : null}
             </div>
           ),
         }),
       ]),
-    [data, jobs, customers, act, setReceiving, t],
+    [data, jobs, customers, act, setReceiving, t, tShared],
   );
   const needColumns = useMemo(
     () =>
       needColumn.columns([
         needColumn.accessor((need) => data.parts.find((p) => p.id === need.partId)?.name, {
           id: 'قطعه',
-          header: 'قطعه',
+          header: t('tables.part'),
         }),
         needColumn.accessor((need) => getPartJobLabel(need.jobId, jobs, customers), {
           id: 'سفارش مشتری',
@@ -257,12 +262,12 @@ export function usePartsColumns({
         }),
         needColumn.accessor((need) => need.quantity, {
           id: 'تعداد',
-          header: 'تعداد',
+          header: t('tables.quantity'),
           cell: ({ cell }) => cell.getValue(),
         }),
         needColumn.accessor((need) => availableQuantity(data, need.partId), {
           id: 'قابل تخصیص',
-          header: 'قابل تخصیص',
+          header: t('tables.available'),
           cell: ({ cell }) => cell.getValue(),
         }),
         needColumn.accessor((need) => translateLabel(needLabels[need.status]), {
@@ -272,7 +277,7 @@ export function usePartsColumns({
         }),
         needColumn.accessor(
           (need) => technicians.find((t) => t.id === need.technicianId)?.name ?? '—',
-          { id: 'تحویل‌گیرنده', header: 'تحویل‌گیرنده' },
+          { id: 'تحویل‌گیرنده', header: t('tables.recipient') },
         ),
         needColumn.display({
           id: 'عملیات',
@@ -295,12 +300,12 @@ export function usePartsColumns({
                   }
                   disabled={need.status === 'available'}
                 >
-                  {t('ui.checkAvailability')}
+                  {t('tables.checkAvailability')}
                 </Button>
               ) : null}
               {need.status === 'available' ? (
                 <Button size="sm" onClick={() => needAction(need.id, 'reserved')}>
-                  {t('ui.reserveForOrder')}
+                  {t('tables.reserveForOrder')}
                 </Button>
               ) : null}
               {need.status === 'unavailable' ? (
@@ -332,38 +337,38 @@ export function usePartsColumns({
                     }))
                   }
                 >
-                  {t('ui.sendToProcurement')}
+                  {t('tables.sendToProcurement')}
                 </Button>
               ) : null}
               {need.status === 'reserved' ? (
                 <Button size="sm" onClick={() => setDelivery(need.id)}>
-                  {t('ui.deliverToTechnician')}
+                  {t('tables.deliverToTechnician')}
                 </Button>
               ) : null}
               {need.status === 'delivered' ? (
                 <>
                   <Button size="sm" onClick={() => needAction(need.id, 'used')}>
-                    {t('ui.recordConsumption')}
+                    {t('tables.recordConsumption')}
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => needAction(need.id, 'returned')}
                   >
-                    {t('ui.returnToInventory')}
+                    {t('tables.returnToInventory')}
                   </Button>
                 </>
               ) : null}
               {['pending', 'available', 'unavailable', 'reserved'].includes(need.status) ? (
                 <Button size="sm" variant="ghost" onClick={() => needAction(need.id, 'cancelled')}>
-                  {t('ui.cancel')}
+                  {t('tables.cancel')}
                 </Button>
               ) : null}
             </div>
           ),
         }),
       ]),
-    [data, jobs, customers, technicians, needAction, act, setDelivery, t],
+    [data, jobs, customers, technicians, needAction, act, setDelivery, t, tShared],
   );
   return { inventoryColumns, purchaseColumns, needColumns };
 }

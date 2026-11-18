@@ -10,23 +10,25 @@ The Vite application is client-rendered and uses i18next/react-i18next. Previous
 all messages lived in one `translation` namespace, including feature copy, and
 `legacy-labels.ts` translated existing Persian labels at presentation boundaries.
 
-| Feature     | Responsibility                                                  | Namespace                           |
-| ----------- | --------------------------------------------------------------- | ----------------------------------- |
-| customers   | Directory, contact search, customer service history             | `customers` (reference implemented) |
-| requests    | Request search, editor, job table                               | `requests` (future migration)       |
-| dispatch    | Technician schedules and assignment                             | `dispatch` (future migration)       |
-| technicians | Management, specialties, open jobs, balances                    | `technicians` (future migration)    |
-| finance     | Cash ledger, customer accounts, receivables, receipts, expenses | `finance` (future migration)        |
-| parts       | Inventory, availability, procurement, allocations               | `parts` (future migration)          |
-| overview    | Dashboard summary                                               | `overview` (future migration)       |
-| reports     | Operational and financial reports                               | `reports` (future migration)        |
-| settings    | Company and workflow preferences                                | `settings` (future migration)       |
+| Feature     | Responsibility                                                  | Namespace     |
+| ----------- | --------------------------------------------------------------- | ------------- |
+| customers   | Directory, contact search, customer service history             | `customers`   |
+| requests    | Request search, editor, job table                               | `requests`    |
+| dispatch    | Technician schedules and assignment                             | `dispatch`    |
+| technicians | Management, specialties, open jobs, balances                    | `technicians` |
+| finance     | Cash ledger, customer accounts, receivables, receipts, expenses | `finance`     |
+| parts       | Inventory, availability, procurement, allocations               | `parts`       |
+| overview    | Dashboard summary                                               | `overview`    |
+| reports     | Operational and financial reports                               | `reports`     |
+| settings    | Company and workflow preferences                                | `settings`    |
 
 The shared service entity owns records and pure accounting rules; its domain data
 is not moved into feature catalogs. The app owns the shell, navigation, and resource
 composition. Global controls, pagination, and formatting messages remain shared.
-Only customers has migrated. Other feature messages stay in the legacy shared
-catalog until their migration is approved; this is a transitional location.
+All nine features own their translations. Shared catalogs contain global controls,
+navigation, appliance names, service/payment statuses, and validation messages used
+across service workflows. Page-specific headings, forms, tables, and inventory
+statuses live in their feature catalog.
 
 ## Directory structure
 
@@ -41,6 +43,8 @@ src/
       resources.ts                  Bundle and local namespace type declaration
       use-customers-translation.ts  Namespace-bound hook
       translation.type-test.ts      Compile-time contract checks
+  features/<other-feature>/i18n/     Same JSON, bundle and hook structure
+    legacy-labels.ts                Only when existing model labels need a mapping
   shared/i18n/
     resources.ts                    Bundle contracts, resource builder, options
     create-i18n.ts                  Isolated instance factory
@@ -81,6 +85,9 @@ and i18next formatting options. Keep JSX `const t = useCustomersTranslation()` c
 in this convention: the extraction plugin normalizes them for CLI analysis only.
 The CLI derives the feature namespace from the hook name and writes to the feature
 directory. PascalCase hook names correspond to lowercase feature names.
+Use `const { t: tShared } = useTranslation()` for global controls alongside the
+feature hook; keep feature copy on `t`. Non-React utilities can use an explicit
+qualified key such as `i18next.t('parts:orders.idOrderUnavailable', { id })`.
 
 Each feature augments `FeatureResources` locally with its canonical JSON type.
 The shared `CustomTypeOptions` declaration combines it with the existing default
@@ -95,8 +102,7 @@ placeholder parity is verified at runtime in tests.
 
 - Put feature copy in that feature's `i18n/fa.json` and `i18n/en.json`. Use nested
   business concepts (`directory`, `search`, `history`) and descriptive, stable keys.
-  Keep only genuinely global copy in `shared/i18n/locales`. Preserve unmigrated
-  catalogs until each feature is approved for migration.
+  Keep only genuinely global copy in `shared/i18n/locales`.
 - Use the dedicated feature hook. Include `t` in memo dependencies
   when memoized columns or derived labels contain translations.
 - Translate complete sentences with interpolation. Use i18next `_one` and `_other`
@@ -104,8 +110,13 @@ placeholder parity is verified at runtime in tests.
 - Render plain counts directly. Currency and dates use shared formatters; the
   language changes their presentation without changing currency or timezone.
 - Keep customer names, addresses, descriptions, IDs, and saved business records
-  unchanged. `legacy-labels.ts` maps existing predefined Persian labels and model
-  validation messages at the presentation boundary. New copy should use keys directly.
+  unchanged. Feature-local `legacy-labels.ts` maps existing predefined Persian labels
+  and model errors to typed local keys. The bundle registers these labels with an
+  instance-specific lookup; shared infrastructure never imports feature code.
+  The shared mapping contains global labels only. New copy should use keys directly.
+- Store deferred validation messages as qualified keys (`requests:editor...`) and
+  resolve them when rendering. The extractor preserves these keys and the dynamic
+  model-label mappings through its analysis plugin.
 - Shared UI receives translated props or uses shared translations for its own
   controls; it must not depend on a particular feature namespace. Reused request
   editors/tables still own their existing translations independently of customers.
@@ -141,6 +152,7 @@ convert toman, or migrate existing records.
 Run `npm run i18n:extract` after introducing keys, inspect the resource diff, and
 complete both JSON catalogs. Extraction preserves dynamically resolved legacy
 labels. Run `npm run i18n:check` and `npm test`; tests enforce matching nonempty
-catalogs and interpolation variables, language persistence, direction changes,
+catalogs and interpolation variables in every bundle, typed feature hook namespaces,
+instance-specific label mappings, language persistence, direction changes,
 pluralization, and preservation of business data. Review desktop/mobile layouts,
 keyboard navigation, and both themes in each language when browser access is available.

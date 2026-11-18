@@ -1,3 +1,4 @@
+import { useRequestsTranslation } from '../i18n/use-requests-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useState, type FormEvent } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
@@ -21,7 +22,8 @@ import { JalaliDatePicker, TimePicker } from '@/shared/ui/date-time-picker';
 import { useTranslation } from 'react-i18next';
 
 export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) {
-  const { t } = useTranslation();
+  const t = useRequestsTranslation();
+  const { t: tShared } = useTranslation();
   const settings = useCompanySettings((state) => state.settings);
   const customers = useDemo((state) => state.customers);
   const technicians = useDemo((state) => state.technicians);
@@ -37,11 +39,11 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
     const selectedTechnician = String(form.get('technicianId') ?? '');
     const technicianId = selectedTechnician === '__unassigned' ? '' : selectedTechnician;
     if (!validateAmounts(total, commission))
-      return setError('ui.amountsMustBeNonNegativeWholeNumbersCommission');
+      return setError('requests:editor.amountsMustBeNonNegativeWholeNumbersCommission');
     if (['scheduled', 'working', 'completed'].includes(status) && !technicianId)
-      return setError('ui.selectATechnicianForThisStatus');
+      return setError('requests:editor.selectATechnicianForThisStatus');
     if (status === 'completed' && total === 0)
-      return setError('ui.enterTheServiceAmountBeforeCompletingTheRequest');
+      return setError('requests:editor.enterTheServiceAmountBeforeCompletingTheRequest');
     const saveError = saveJob({
       id: job?.id ?? `SR-${crypto.randomUUID().slice(0, 6).toUpperCase()}`,
       customerId: String(form.get('customerId')),
@@ -61,7 +63,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
   }
   return (
     <Modal
-      title={job ? t('ui.requestDetailsId', { id: job.id }) : t('ui.createNewRequest')}
+      title={job ? t('editor.requestDetailsId', { id: job.id }) : t('editor.createNewRequest')}
       onClose={onClose}
     >
       <form
@@ -69,10 +71,10 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
         className="grid grid-cols-2 gap-4.5 p-5.75 [&_label]:flex [&_label]:flex-col [&_label]:gap-2.25 [&_label]:text-ui [&_input]:border [&_input]:border-border [&_input]:rounded-md [&_input]:p-2.5 [&_input]:text-xs [&_input]:w-full [&_input]:bg-white [&_select]:border [&_select]:border-border [&_select]:rounded-md [&_select]:p-2.5 [&_select]:text-xs [&_select]:w-full [&_select]:bg-white [&_textarea]:border [&_textarea]:border-border [&_textarea]:rounded-md [&_textarea]:p-2.5 [&_textarea]:text-xs [&_textarea]:w-full [&_textarea]:bg-white [&_input[type='date']]:direction-ltr [&_input[type='time']]:direction-ltr [&_textarea]:min-h-19.5 [&_textarea]:resize-y max-mobile:gap-3.5 max-mobile:p-4.5 max-compact:grid-cols-1 dark:[&_input]:bg-muted dark:[&_input]:border-border dark:[&_input]:text-primary-foreground dark:[&_select]:bg-muted dark:[&_select]:border-border dark:[&_select]:text-primary-foreground dark:[&_textarea]:bg-muted dark:[&_textarea]:border-border dark:[&_textarea]:text-primary-foreground"
       >
         <Label className="flex flex-col gap-2 text-ui">
-          {t('ui.customer')}
+          {tShared('ui.customer')}
           <Select name="customerId" defaultValue={job?.customerId ?? customers[0]?.id} required>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={t('ui.selectAnOption')} />
+              <SelectValue placeholder={tShared('ui.selectAnOption')} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -86,10 +88,10 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           </Select>
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          {t('ui.applianceType')}
+          {tShared('ui.applianceType')}
           <Select name="appliance" defaultValue={job?.appliance ?? appliances[0]}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={t('ui.selectAnOption')} />
+              <SelectValue placeholder={tShared('ui.selectAnOption')} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -103,62 +105,62 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           </Select>
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          {t('ui.applianceBrand')}
+          {t('editor.applianceBrand')}
           <Input
             name="brand"
             defaultValue={job?.brand}
             required
             maxLength={50}
-            placeholder={t('ui.forExampleSamsung')}
+            placeholder={t('editor.forExampleSamsung')}
           />
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          {t('ui.priority')}
+          {t('editor.priority')}
           <Select name="priority" defaultValue={job?.priority ?? settings.defaultPriority}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={t('ui.selectAnOption')} />
+              <SelectValue placeholder={tShared('ui.selectAnOption')} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="normal">{t('ui.normal')}</SelectItem>
-                <SelectItem value="urgent">{t('ui.urgent')}</SelectItem>
+                <SelectItem value="normal">{tShared('ui.normal')}</SelectItem>
+                <SelectItem value="urgent">{tShared('ui.urgent')}</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
         </Label>
         <Label className="col-span-full flex flex-col gap-2 text-ui">
-          {t('ui.problemDescription')}
+          {t('editor.problemDescription')}
           <Textarea
             name="issue"
             defaultValue={job?.issue}
             required
             maxLength={500}
-            placeholder={t('ui.describeTheApplianceProblem')}
+            placeholder={t('editor.describeTheApplianceProblem')}
           />
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          {t('ui.visitDateJalali')}
+          {t('editor.visitDateJalali')}
           <JalaliDatePicker
             name="date"
             value={date}
             onValueChange={setDate}
-            aria-label={t('ui.visitDate')}
+            aria-label={t('editor.visitDate')}
             required
           />
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          {t('ui.visitTime')}
+          {t('editor.visitTime')}
           <TimePicker name="time" defaultValue={job?.time ?? settings.defaultVisitTime} required />
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          {t('ui.technician')}
+          {tShared('ui.technician')}
           <Select name="technicianId" defaultValue={job?.technicianId || '__unassigned'}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={t('ui.unassigned')} />
+              <SelectValue placeholder={tShared('ui.unassigned')} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="__unassigned">{t('ui.unassigned')}</SelectItem>
+                <SelectItem value="__unassigned">{tShared('ui.unassigned')}</SelectItem>
 
                 {technicians.map((item) => (
                   <SelectItem key={item.id} value={item.id}>
@@ -170,10 +172,10 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           </Select>
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          {t('ui.status')}
+          {tShared('ui.status')}
           <Select name="status" defaultValue={job?.status ?? 'new'}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={t('ui.selectAnOption')} />
+              <SelectValue placeholder={tShared('ui.selectAnOption')} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -187,7 +189,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           </Select>
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          {t('ui.serviceAmountSampleToman')}
+          {t('editor.serviceAmountSampleToman')}
           <Input
             name="total"
             type="number"
@@ -198,7 +200,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           />
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
-          {t('ui.companyShareSampleToman')}
+          {t('editor.companyShareSampleToman')}
           <Input
             name="commission"
             type="number"
@@ -209,7 +211,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           />
         </Label>
         <p className="text-2xs text-muted-foreground leading-loose col-span-full">
-          {t('ui.changingStatusDoesNotMeanPaymentWasCollected')}
+          {t('editor.changingStatusDoesNotMeanPaymentWasCollected')}
         </p>
         {error && (
           <p
@@ -224,7 +226,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
             type="submit"
           >
-            {t('ui.saveRequest')}
+            {t('editor.saveRequest')}
           </Button>
           <Button
             type="button"
@@ -232,7 +234,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground"
             onClick={onClose}
           >
-            {t('ui.cancel2')}
+            {tShared('ui.cancel2')}
           </Button>
         </div>
       </form>

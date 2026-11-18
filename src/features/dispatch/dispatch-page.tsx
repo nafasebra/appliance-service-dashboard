@@ -1,3 +1,4 @@
+import { useDispatchTranslation } from './i18n/use-dispatch-translation';
 import { translateLabel } from '@/shared/i18n';
 import { JobStatusBadge } from '@/entities/service/ui/job-status-badge';
 import { cn } from '@/shared/lib/utils';
@@ -15,7 +16,8 @@ import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 import { useTranslation } from 'react-i18next';
 
 export function DispatchPage() {
-  const { t } = useTranslation();
+  const t = useDispatchTranslation();
+  const { t: tShared } = useTranslation();
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const technicians = useDemo((state) => state.technicians);
@@ -25,13 +27,13 @@ export function DispatchPage() {
   return (
     <>
       <PageHeading
-        title={t('ui.schedulingAndDispatch')}
-        description={t('ui.viewEachTechnicianSVisitScheduleAndAssign')}
+        title={tShared('ui.schedulingAndDispatch')}
+        description={t('schedule.viewEachTechnicianSVisitScheduleAndAssign')}
         action={
           <Label className="flex flex-col gap-1.75 text-2xs text-muted-foreground">
-            {t('ui.scheduleDate')}
+            {t('schedule.scheduleDate')}
             <JalaliDatePicker
-              aria-label={t('ui.dispatchScheduleDate')}
+              aria-label={t('schedule.dispatchScheduleDate')}
               value={date}
               onValueChange={setDate}
             />
@@ -40,22 +42,22 @@ export function DispatchPage() {
       />
       <div className="flex gap-2.5 items-center py-4 px-4.75 border border-border rounded-md text-muted-foreground bg-accent text-ui mb-6 [&_button]:ms-auto max-mobile:flex-wrap max-mobile:leading-loose max-mobile:[&_>_span]:flex-1 max-mobile:[&_button]:ms-7.5 dark:bg-accent dark:border-border">
         <Clock3 size={20} />
-        <span>{t('dispatch.summary', { count: visits.length })}</span>
+        <span>{t('schedule.summary', { count: visits.length })}</span>
         <Button
           variant="link"
           className="inline-flex gap-1.75 items-center text-primary text-2xs border-0 bg-none whitespace-nowrap"
           onClick={() => setEditor('new')}
         >
           <Plus size={16} />
-          {t('ui.newRequest')}
+          {tShared('ui.newRequest')}
         </Button>
       </div>
       <div className="grid grid-cols-3 gap-4.5 items-start max-desktop:grid-cols-2 max-mobile:grid-cols-1">
         {[
           {
             id: '',
-            name: t('ui.unassigned'),
-            specialty: t('ui.chooseATechnicianForTheseRequests'),
+            name: tShared('ui.unassigned'),
+            specialty: t('schedule.chooseATechnicianForTheseRequests'),
           },
           ...technicians,
         ].map((tech) => {
@@ -109,7 +111,7 @@ export function DispatchPage() {
                     </Button>
                   ))
                 ) : (
-                  <EmptyState text={t('labels.noVisitsScheduledForThisDay')} />
+                  <EmptyState text={t('schedule.noVisitsScheduledForThisDay')} />
                 )}
               </div>
             </Panel>

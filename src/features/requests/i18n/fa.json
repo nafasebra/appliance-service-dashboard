@@ -1,0 +1,37 @@
+{
+  "editor": {
+    "amountsMustBeNonNegativeWholeNumbersCommission": "مبلغ‌ها باید عدد صحیح و نامنفی باشند و کمیسیون از مبلغ خدمت بیشتر نباشد.",
+    "applianceBrand": "برند دستگاه",
+    "changingStatusDoesNotMeanPaymentWasCollected": "تغییر وضعیت به معنی دریافت پول نیست. دریافت و پرداخت در بخش مالی ثبت می‌شود.",
+    "companyShareSampleToman": "سهم شرکت (تومان نمونه)",
+    "createNewRequest": "ثبت درخواست جدید",
+    "describeTheApplianceProblem": "مشکل دستگاه را توضیح دهید…",
+    "enterTheServiceAmountBeforeCompletingTheRequest": "برای تکمیل درخواست، مبلغ خدمت را ثبت کنید.",
+    "forExampleSamsung": "مثلاً سامسونگ",
+    "priority": "اولویت",
+    "problemDescription": "شرح مشکل",
+    "requestDetailsId": "جزئیات درخواست {{id}}",
+    "saveRequest": "ذخیره درخواست",
+    "selectATechnicianForThisStatus": "برای این وضعیت، یک تعمیرکار انتخاب کنید.",
+    "serviceAmountSampleToman": "مبلغ خدمت (تومان نمونه)",
+    "visitDate": "تاریخ مراجعه",
+    "visitDateJalali": "تاریخ مراجعه (جلالی)",
+    "visitTime": "ساعت مراجعه"
+  },
+  "list": {
+    "createRequest": "ثبت درخواست",
+    "filterByStatus": "فیلتر وضعیت",
+    "followEachRequestFromTheFirstCallTo": "از اولین تماس تا پایان تعمیر، جریان کار را دنبال کنید.",
+    "lengthRequestsInThisView": "{{length}} درخواست در این نمایش",
+    "requestList": "لیست درخواست‌ها",
+    "searchCustomerApplianceOrRequestId": "جستجوی مشتری، دستگاه یا کد درخواست…",
+    "searchRequests": "جستجوی درخواست"
+  },
+  "table": {
+    "details": "جزئیات",
+    "detailsForId": "جزئیات {{id}}",
+    "notAssigned": "تخصیص داده نشده",
+    "requestAppliance": "درخواست / دستگاه",
+    "visitTime": "زمان مراجعه"
+  }
+}

@@ -42,10 +42,11 @@ Read the relevant local skill before related work:
   `.skills/tanstack-table/react/getting-started/SKILL.md`; load the feature/state
   references needed for the change.
 
-Feature-local i18n is being introduced incrementally. Customers is the reference:
-keep its messages and typed hook in `features/customers/i18n/`. Compose bundles in
+Every feature owns its messages and typed hook in `features/<feature>/i18n/`,
+following the customers reference. Compose bundles in
 `app/i18n.ts`; shared infrastructure must receive bundles rather than import features.
-Migrate additional features only after user approval of the reference architecture.
+Keep global controls, navigation and shared domain messages in `shared/i18n/`.
+Feature model-label compatibility maps belong to the feature bundle.
 
 Sources and project-specific compatibility notes are in `.skills/README.md`.
 User instructions and this project's constraints take precedence over skill defaults.
