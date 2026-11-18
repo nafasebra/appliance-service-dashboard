@@ -12,7 +12,7 @@ import { translateLabel } from '@/shared/i18n';
 import { dateLabel, money } from '@/shared/lib/format';
 import { Button } from '@/shared/ui/button';
 import type { DataTableColumn } from '@/shared/ui/data-table';
-import { useCartableTranslation } from '../i18n/use-cartable-translation';
+import { useCartableTranslation } from './use-cartable-translation';
 import type { WorkflowQueue } from '../model/workflow-queues';
 import type { WorkflowDialogMode } from '../components/workflow-dialog';
 

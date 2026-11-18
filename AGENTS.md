@@ -44,8 +44,9 @@ Read the relevant local skill before related work:
   `.skills/tanstack-table/react/getting-started/SKILL.md`; load the feature/state
   references needed for the change.
 
-Every feature owns its messages and typed hook in `features/<feature>/i18n/`,
-following the customers reference. Compose bundles in
+Every feature owns its messages and bundles in `features/<feature>/i18n/` and its
+typed translation hook in `features/<feature>/hooks/`, following the customers
+reference. Shared translation hooks live in `shared/hooks/`. Compose bundles in
 `app/i18n.ts`; shared infrastructure must receive bundles rather than import features.
 Keep generic controls in `shared/i18n/locales/{fa,en}/common.json` and access them
 through `useSharedTranslation()`. Shell copy belongs in `features/dashboard/i18n/` with

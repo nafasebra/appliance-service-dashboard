@@ -21,7 +21,7 @@ import {
   SelectValue,
 } from '@/shared/ui/select';
 import { getWorkflowAccount } from '../model/workflow-queues';
-import { useCartableTranslation } from '../i18n/use-cartable-translation';
+import { useCartableTranslation } from '../hooks/use-cartable-translation';
 
 export function WorkflowPaymentDialog({
   job,

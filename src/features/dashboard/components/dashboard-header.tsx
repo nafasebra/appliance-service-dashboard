@@ -1,4 +1,4 @@
-import { useDashboardTranslation } from '@/features/dashboard/i18n/use-dashboard-translation';
+import { useDashboardTranslation } from '@/features/dashboard/hooks/use-dashboard-translation';
 import { translateLabel } from '@/shared/i18n';
 import { Link, useRouterState } from '@tanstack/react-router';
 import { navigation } from '@/features/dashboard/const/navigation';

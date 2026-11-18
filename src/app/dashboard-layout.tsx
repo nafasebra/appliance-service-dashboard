@@ -1,5 +1,5 @@
-import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
-import { useDashboardTranslation } from '@/features/dashboard/i18n/use-dashboard-translation';
+import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
+import { useDashboardTranslation } from '@/features/dashboard/hooks/use-dashboard-translation';
 import { useState } from 'react';
 import { Link, Outlet } from '@tanstack/react-router';
 import { AlertTriangle } from 'lucide-react';

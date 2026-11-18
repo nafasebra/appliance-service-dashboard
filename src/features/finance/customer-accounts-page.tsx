@@ -1,4 +1,4 @@
-import { useFinanceTranslation } from './i18n/use-finance-translation';
+import { useFinanceTranslation } from './hooks/use-finance-translation';
 import { useMemo, useState } from 'react';
 import { Wallet } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';

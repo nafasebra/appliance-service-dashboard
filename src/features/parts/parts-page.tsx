@@ -1,4 +1,4 @@
-import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
+import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
 import {
   PurchaseStatus,
   availableQuantity,
@@ -10,7 +10,7 @@ import {
   type Part,
 } from '@/features/parts/model/parts';
 import { JobStatus, appliances } from '@/entities/service/model/types';
-import { usePartsTranslation } from './i18n/use-parts-translation';
+import { usePartsTranslation } from './hooks/use-parts-translation';
 import { translateLabel } from '@/shared/i18n';
 import { usePartsColumns } from './hooks/use-parts-columns';
 import { useCallback, useMemo, useState, type FormEvent } from 'react';

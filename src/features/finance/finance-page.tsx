@@ -1,6 +1,6 @@
-import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
+import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
 import { JobStatus, type Transaction } from '@/entities/service/model/types';
-import { useFinanceTranslation } from './i18n/use-finance-translation';
+import { useFinanceTranslation } from './hooks/use-finance-translation';
 import { translateLabel } from '@/shared/i18n';
 import { cn } from '@/shared/lib/utils';
 import { downloadTransactionsCsv } from './utils/transaction-csv';

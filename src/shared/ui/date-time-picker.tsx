@@ -1,4 +1,4 @@
-import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
+import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
 import { lazy, Suspense, useState, type ComponentProps } from 'react';
 import { CalendarIcon } from 'lucide-react';
 import { formatJalaliDate, parseIsoDate, toIsoDate } from '@/shared/lib/date';

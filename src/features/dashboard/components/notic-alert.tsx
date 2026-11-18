@@ -1,4 +1,4 @@
-import { useDashboardTranslation } from '@/features/dashboard/i18n/use-dashboard-translation';
+import { useDashboardTranslation } from '@/features/dashboard/hooks/use-dashboard-translation';
 import { FlaskConical } from 'lucide-react';
 
 export function NoticAlert() {

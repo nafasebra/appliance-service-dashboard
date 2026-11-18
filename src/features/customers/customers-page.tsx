@@ -9,7 +9,7 @@ import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
-import { useCustomersTranslation } from './i18n/use-customers-translation';
+import { useCustomersTranslation } from './hooks/use-customers-translation';
 
 export function CustomersPage() {
   const t = useCustomersTranslation();

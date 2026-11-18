@@ -1,5 +1,5 @@
-import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
-import { useRequestsTranslation } from '../i18n/use-requests-translation';
+import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
+import { useRequestsTranslation } from '../hooks/use-requests-translation';
 import { translateLabel } from '@/shared/i18n';
 import { JobStatusBadge } from '@/entities/service/ui/job-status-badge';
 import { useMemo } from 'react';

@@ -1,4 +1,4 @@
-import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
+import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/shared/store/theme-store';
 import { Button } from '@/shared/ui/button';

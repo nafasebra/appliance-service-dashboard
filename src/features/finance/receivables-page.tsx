@@ -1,5 +1,5 @@
 import { JobStatus } from '../../entities/service/model/types.ts';
-import { useFinanceTranslation } from './i18n/use-finance-translation';
+import { useFinanceTranslation } from './hooks/use-finance-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState } from 'react';
 import { useDemo } from '@/shared/store/demo-store';

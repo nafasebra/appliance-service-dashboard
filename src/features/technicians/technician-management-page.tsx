@@ -1,6 +1,6 @@
-import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
+import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
 import { JobStatus, type Technician } from '@/entities/service/model/types';
-import { useTechniciansTranslation } from './i18n/use-technicians-translation';
+import { useTechniciansTranslation } from './hooks/use-technicians-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState, type FormEvent } from 'react';
 import { getFormText } from '@/shared/utils/form';

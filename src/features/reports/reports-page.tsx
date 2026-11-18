@@ -1,6 +1,6 @@
-import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
+import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
 import { JobStatus, appliances } from '@/entities/service/model/types';
-import { useReportsTranslation } from './i18n/use-reports-translation';
+import { useReportsTranslation } from './hooks/use-reports-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo } from 'react';
 import { useDemo } from '@/shared/store/demo-store';

@@ -1,4 +1,4 @@
-import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
+import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
 import {
   PurchaseStatus,
   availableQuantity,
@@ -11,7 +11,7 @@ import {
   type PartsData,
   NeedStatus,
 } from '../model/parts.ts';
-import { usePartsTranslation } from '../i18n/use-parts-translation';
+import { usePartsTranslation } from './use-parts-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo } from 'react';
 import type { Customer, Job, Technician } from '@/entities/service/model/types';

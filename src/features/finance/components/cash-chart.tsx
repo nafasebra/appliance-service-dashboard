@@ -1,4 +1,4 @@
-import { useFinanceTranslation } from '../i18n/use-finance-translation';
+import { useFinanceTranslation } from '../hooks/use-finance-translation';
 import { useDemo } from '@/shared/store/demo-store';
 import { getCashChartData } from '../utils/cash-chart';
 import { dateLabel } from '@/shared/lib/format';

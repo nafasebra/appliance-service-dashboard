@@ -1,4 +1,4 @@
-import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
+import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
 import { translateLabel } from '@/shared/i18n';
 import { cn } from '@/shared/lib/utils';
 import type { ReactNode } from 'react';

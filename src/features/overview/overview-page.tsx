@@ -1,5 +1,5 @@
 import { JobStatus, statusLabels, type Job } from '@/entities/service/model/types';
-import { useOverviewTranslation } from './i18n/use-overview-translation';
+import { useOverviewTranslation } from './hooks/use-overview-translation';
 import { translateLabel } from '@/shared/i18n';
 import { cn } from '@/shared/lib/utils';
 import { useState } from 'react';

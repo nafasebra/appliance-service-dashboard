@@ -1,5 +1,5 @@
 import { JobStatus, type Job } from '@/entities/service/model/types';
-import { useDispatchTranslation } from './i18n/use-dispatch-translation';
+import { useDispatchTranslation } from './hooks/use-dispatch-translation';
 import { translateLabel } from '@/shared/i18n';
 import { JobStatusBadge } from '@/entities/service/ui/job-status-badge';
 import { cn } from '@/shared/lib/utils';

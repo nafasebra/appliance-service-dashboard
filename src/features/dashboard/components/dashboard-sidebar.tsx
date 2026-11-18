@@ -1,5 +1,5 @@
-import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
-import { useDashboardTranslation } from '@/features/dashboard/i18n/use-dashboard-translation';
+import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
+import { useDashboardTranslation } from '@/features/dashboard/hooks/use-dashboard-translation';
 import { JobStatus } from '@/entities/service/model/types';
 import { translateLabel } from '@/shared/i18n';
 import { Link } from '@tanstack/react-router';

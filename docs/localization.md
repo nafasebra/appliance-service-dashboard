@@ -40,27 +40,30 @@ they do not import another feature's translation hook.
 ```text
 src/
   app/i18n.ts                       Composes the feature bundle list
-  features/dashboard/i18n/
-    {fa,en}.json                    Shell messages, namespace dashboard
-    resources.ts                    Shell bundle and namespace type
-    use-dashboard-translation.ts    Typed shell translation hook
+  features/dashboard/
+    i18n/{fa,en}.json               Shell messages, namespace dashboard
+    i18n/resources.ts               Shell bundle and namespace type
+    hooks/use-dashboard-translation.ts
   features/customers/
     customers-page.tsx
     i18n/
       fa.json                       Persian business messages
       en.json                       English business messages
       resources.ts                  Bundle and local namespace type declaration
-      use-customers-translation.ts  Namespace-bound hook
       translation.type-test.ts      Compile-time contract checks
-  features/<other-feature>/i18n/     Same JSON, bundle and hook structure
+    hooks/
+      use-customers-translation.ts  Namespace-bound hook
+  features/<other-feature>/i18n/     Same JSON and bundle structure
     legacy-labels.ts                Only when existing model labels need a mapping
+  features/<other-feature>/hooks/   Feature-owned translation hooks
+  shared/hooks/
+    use-shared-translation.ts       Typed common translation hook
   shared/i18n/
     resources.ts                    Bundle contracts, resource builder, options
     create-i18n.ts                  Isolated instance factory
     i18next.d.ts                    Shared i18next type augmentation
     index.ts                       Existing browser singleton and compatibility API
     provider.tsx                   Provider accepting an explicit instance
-    use-shared-translation.ts       Typed common translation hook
     locales/{fa,en}/common.json
 ```
 
@@ -92,7 +95,9 @@ function CustomersPage() {
 
 The hook returns i18next's `TFunction<'customers'>` through `useTranslation`, so it
 subscribes to provider language changes and supports normal interpolation, plurals,
-and i18next formatting options. Keep JSX `const t = useCustomersTranslation()` calls
+and formatting. Translation hooks belong in the owning feature's `hooks/` folder;
+the `i18n/` folder holds catalogs, resource registration, and compatibility mappings.
+Keep JSX `const t = useCustomersTranslation()` calls
 in this convention: the extraction plugin normalizes them for CLI analysis only.
 The CLI derives the feature namespace from the hook name and writes to the feature
 directory. PascalCase hook names correspond to lowercase feature names.

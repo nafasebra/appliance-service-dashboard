@@ -36,6 +36,9 @@
 
 ## وضعیت مشترک برنامه
 
+هوک‌های ترجمه هر feature در پوشه `hooks/` همان feature و هوک عمومی ترجمه در
+`shared/hooks/` قرار دارند؛ فایل‌های JSON و ثبت منابع ترجمه در `i18n/` باقی می‌مانند.
+
 کاتالوگ مشترک ترجمه فقط کنترل‌های عمومی را در `shared/i18n/locales/{fa,en}/common.json`
 نگه می‌دارد و هوک آن `useSharedTranslation` است. متن پوسته با `useDashboardTranslation`
 در `features/dashboard/i18n/` قرار دارد. نام دستگاه‌ها، وضعیت سفارش و خطاهای اختصاصی در feature

@@ -1,4 +1,4 @@
-import { useDashboardTranslation } from '@/features/dashboard/i18n/use-dashboard-translation';
+import { useDashboardTranslation } from '@/features/dashboard/hooks/use-dashboard-translation';
 import { JobStatus } from '@/entities/service/model/types';
 import { Link } from '@tanstack/react-router';
 import { Bell } from 'lucide-react';

@@ -25,7 +25,7 @@ import {
   useCartableTranslation,
   useCartableQueueDescription,
   useWorkflowFailureMessage,
-} from './i18n/use-cartable-translation';
+} from './hooks/use-cartable-translation';
 
 const queuePaths = {
   inbox: '/cartable',

@@ -1,4 +1,4 @@
-import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
+import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
 import { translateLabel } from '@/shared/i18n';
 import { statusLabels, JobStatus } from '../model/types';
 import { Badge } from '@/shared/ui/badge';

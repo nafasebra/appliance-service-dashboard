@@ -1,5 +1,5 @@
-import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
-import { useSettingsTranslation } from './i18n/use-settings-translation';
+import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
+import { useSettingsTranslation } from './hooks/use-settings-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useState, type FormEvent } from 'react';
 import { Building2, Save } from 'lucide-react';

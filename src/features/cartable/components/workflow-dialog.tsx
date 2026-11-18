@@ -21,7 +21,7 @@ import {
 import {
   useCartableTranslation,
   useWorkflowFailureMessage,
-} from '../i18n/use-cartable-translation';
+} from '../hooks/use-cartable-translation';
 
 export type WorkflowDialogMode = 'assign' | 'start' | 'complete' | 'cancel' | 'details';
 

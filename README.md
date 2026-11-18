@@ -195,7 +195,8 @@ Persian and English are available from the header language selector, with automa
 RTL/LTR layout and a saved browser preference. Translations live in standard nested
 JSON files managed with i18next/react-i18next. Each feature owns its messages under
 `src/features/<feature>/i18n/{fa,en}.json` and exposes a typed hook such as
-`useCustomersTranslation()`. Generic controls use `useSharedTranslation()` with
+`hooks/use-customers-translation.ts`. Generic controls use `useSharedTranslation()`
+from `shared/hooks/` with
 `src/shared/i18n/locales/{fa,en}/common.json`. Shell messages use
 `useDashboardTranslation()` with `src/features/dashboard/i18n/{fa,en}.json`. The Jalali
 calendar and existing business records are

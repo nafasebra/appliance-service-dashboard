@@ -1,5 +1,5 @@
-import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
-import { useTechniciansTranslation } from './i18n/use-technicians-translation';
+import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
+import { useTechniciansTranslation } from './hooks/use-technicians-translation';
 import { getOrderAccount } from '@/entities/service/model/customer-account';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState, type FormEvent } from 'react';

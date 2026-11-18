@@ -1,4 +1,4 @@
-import { useTechniciansTranslation } from './i18n/use-technicians-translation';
+import { useTechniciansTranslation } from './hooks/use-technicians-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState, type FormEvent } from 'react';
 import { useDemo } from '@/shared/store/demo-store';

@@ -1,4 +1,4 @@
-import { useDashboardTranslation } from '@/features/dashboard/i18n/use-dashboard-translation';
+import { useDashboardTranslation } from '@/features/dashboard/hooks/use-dashboard-translation';
 import { createRootRoute, Link } from '@tanstack/react-router';
 import { DashboardLayout } from '@/app/dashboard-layout';
 import { Button } from '@/shared/ui/button';
