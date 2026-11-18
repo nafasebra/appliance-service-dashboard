@@ -1,8 +1,8 @@
+import { useAppTranslation } from '@/app/i18n/use-app-translation';
 import { createRootRoute, Link } from '@tanstack/react-router';
 import { DashboardLayout } from '@/app/dashboard-layout';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { useTranslation } from 'react-i18next';
 
 export const rootRoute = createRootRoute({
   component: RootLayout,
@@ -14,18 +14,18 @@ function RootLayout() {
 }
 
 function NotFoundPage() {
-  const { t } = useTranslation();
+  const t = useAppTranslation();
   return (
     <Card className="mx-auto mt-20 w-full max-w-xl">
       <CardHeader>
-        <CardTitle className="text-2xl">{t('ui.pageNotFound')}</CardTitle>
+        <CardTitle className="text-2xl">{t('notFound.pageNotFound')}</CardTitle>
       </CardHeader>
       <CardContent>
         <p className="mb-6 text-muted-foreground">
-          {t('ui.thisAddressDoesNotExistInTheApplication')}
+          {t('notFound.thisAddressDoesNotExistInTheApplication')}
         </p>
         <Button asChild>
-          <Link to="/">{t('ui.backToHome')}</Link>
+          <Link to="/">{t('notFound.backToHome')}</Link>
         </Button>
       </CardContent>
     </Card>

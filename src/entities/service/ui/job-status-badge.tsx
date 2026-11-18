@@ -1,8 +1,8 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import { translateLabel } from '@/shared/i18n';
 import { statusLabels, JobStatus } from '../model/types';
 import { Badge } from '@/shared/ui/badge';
 import { cn } from '@/shared/lib/utils';
-import { useTranslation } from 'react-i18next';
 
 export function JobStatusBadge({
   status,
@@ -11,7 +11,7 @@ export function JobStatusBadge({
   status: JobStatus;
   showDot?: boolean;
 }) {
-  useTranslation();
+  useSharedTranslation();
   return (
     <Badge
       className={cn(

@@ -1,0 +1,70 @@
+{
+  "actions": {
+    "cancel2": "Cancel",
+    "close": "Close",
+    "edit": "Edit",
+    "save": "Save"
+  },
+  "appTitle": "Appliance Repair Service Dashboard",
+  "dialog": {
+    "titleDialog": "{{title}} dialog"
+  },
+  "fields": {
+    "actions": "Actions",
+    "amount": "Amount",
+    "amountToman2": "Amount (toman)",
+    "balance": "Balance",
+    "date": "Date",
+    "description": "Description",
+    "notSpecified": "Not specified",
+    "phone": "Phone",
+    "status": "Status"
+  },
+  "filters": {
+    "allStatuses": "All statuses"
+  },
+  "format": {
+    "valueToman": "{{value}} toman"
+  },
+  "language": "Language",
+  "languages": {
+    "english": "English",
+    "persian": "فارسی"
+  },
+  "layout": {
+    "workspaceServiceManagement": "Workspace / Service management"
+  },
+  "pagination": {
+    "page": "Page {{page}} of {{pages}}",
+    "range": "{{start}}–{{end}} of {{total}} records"
+  },
+  "select": {
+    "loadingCalendar": "Loading calendar…",
+    "selectAnOption": "Select an option",
+    "selectDate": "Select date"
+  },
+  "sidebar": {
+    "closeMenu": "Close menu",
+    "toggleMenu": "Toggle menu"
+  },
+  "storage": {
+    "browserStorageIsUnavailable": "Browser storage is unavailable",
+    "changesWillNotBeSavedAfterYouClose": "Changes will not be saved after you close the page."
+  },
+  "table": {
+    "ascendingSwitchToDescending": "Ascending; switch to descending",
+    "breadcrumb": "Breadcrumb",
+    "descendingClearSorting": "Descending; clear sorting",
+    "firstPage": "First page",
+    "lastPage": "Last page",
+    "more": "More",
+    "nextPage": "Next page",
+    "noRecordsToDisplay": "No records to display.",
+    "noResultsFoundTryDifferentFilters": "No results found. Try different filters.",
+    "numberOfRowsPerPage": "Number of rows per page",
+    "previousPage": "Previous page",
+    "rowsPerPage": "Rows per page",
+    "sortAscending": "Sort ascending",
+    "tablePagination": "Table pagination"
+  }
+}

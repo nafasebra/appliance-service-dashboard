@@ -14,21 +14,21 @@ import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Label } from '@/shared/ui/label';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
-import { useTranslation } from 'react-i18next';
 
 export function DispatchPage() {
   const t = useDispatchTranslation();
-  const { t: tShared } = useTranslation();
+
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const technicians = useDemo((state) => state.technicians);
   const [date, setDate] = useState('2026-11-16');
   const [editor, setEditor] = useState<Job | 'new' | null>(null);
   const visits = jobs.filter((job) => job.date === date && job.status !== JobStatus.Cancelled);
+
   return (
     <>
       <PageHeading
-        title={tShared('ui.schedulingAndDispatch')}
+        title={t('navigation.schedulingAndDispatch')}
         description={t('schedule.viewEachTechnicianSVisitScheduleAndAssign')}
         action={
           <Label className="flex flex-col gap-1.75 text-2xs text-muted-foreground">
@@ -50,14 +50,14 @@ export function DispatchPage() {
           onClick={() => setEditor('new')}
         >
           <Plus size={16} />
-          {tShared('ui.newRequest')}
+          {t('common.newRequest')}
         </Button>
       </div>
       <div className="grid grid-cols-3 gap-4.5 items-start max-desktop:grid-cols-2 max-mobile:grid-cols-1">
         {[
           {
             id: '',
-            name: tShared('ui.unassigned'),
+            name: t('common.unassigned'),
             specialty: t('schedule.chooseATechnicianForTheseRequests'),
           },
           ...technicians,

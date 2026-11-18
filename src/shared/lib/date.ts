@@ -33,5 +33,5 @@ export function formatJalaliDate(value: string): string {
         month: 'long',
         day: 'numeric',
       }).format(date)
-    : i18next.t('ui.selectDate');
+    : i18next.t('select.selectDate');
 }

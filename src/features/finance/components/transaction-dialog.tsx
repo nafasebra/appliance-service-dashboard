@@ -1,3 +1,4 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import { JobStatus, type Transaction } from '@/entities/service/model/types';
 import { useFinanceTranslation } from '../i18n/use-finance-translation';
 import { translateLabel } from '@/shared/i18n';
@@ -22,7 +23,6 @@ import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 import { toIsoDate } from '@/shared/lib/date';
 import { money } from '@/shared/lib/format';
 import { getFormText } from '@/shared/utils/form';
-import { useTranslation } from 'react-i18next';
 
 export function TransactionDialog({
   kind,
@@ -34,7 +34,7 @@ export function TransactionDialog({
   onClose: () => void;
 }) {
   const t = useFinanceTranslation();
-  const { t: tShared } = useTranslation();
+  const tShared = useSharedTranslation();
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const transactions = useDemo((state) => state.transactions);
@@ -89,7 +89,7 @@ export function TransactionDialog({
       <form onSubmit={submit} className="grid gap-4 p-6 sm:grid-cols-2">
         {kind === 'receipt' ? (
           <div className="col-span-full flex flex-col gap-2">
-            <Label htmlFor="receipt-job">{tShared('ui.customerOrder')}</Label>
+            <Label htmlFor="receipt-job">{t('common.customerOrder')}</Label>
             <Select value={jobId} onValueChange={setJobId} required>
               <SelectTrigger id="receipt-job" className="w-full">
                 <SelectValue placeholder={t('transaction.selectAnOrderWithARemainingBalance')} />
@@ -115,7 +115,7 @@ export function TransactionDialog({
           </div>
         ) : null}
         <div className="flex flex-col gap-2">
-          <Label htmlFor="transaction-amount">{tShared('ui.amountToman2')}</Label>
+          <Label htmlFor="transaction-amount">{tShared('fields.amountToman2')}</Label>
           <Input
             id="transaction-amount"
             name="amount"
@@ -127,7 +127,7 @@ export function TransactionDialog({
           />
         </div>
         <div className="flex flex-col gap-2">
-          <Label>{tShared('ui.date')}</Label>
+          <Label>{tShared('fields.date')}</Label>
           <JalaliDatePicker
             value={date}
             onValueChange={setDate}
@@ -177,7 +177,7 @@ export function TransactionDialog({
             {t('transaction.recordTransaction')}
           </Button>
           <Button type="button" variant="outline" onClick={onClose}>
-            {tShared('ui.cancel2')}
+            {tShared('actions.cancel2')}
           </Button>
         </div>
       </form>

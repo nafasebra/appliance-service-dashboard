@@ -1,4 +1,24 @@
 {
+  "actions": {
+    "newRequest": "New request"
+  },
+  "appliances": {
+    "airConditioner": "Air conditioner",
+    "dishwasher": "Dishwasher",
+    "refrigerator": "Refrigerator",
+    "stove": "Stove",
+    "washingMachine": "Washing machine"
+  },
+  "common": {
+    "applianceType": "Appliance type",
+    "customer": "Customer",
+    "customerOrder": "Customer order",
+    "order": "Order",
+    "serviceAmount": "Service amount",
+    "technician": "Technician",
+    "totalRequests": "Total requests",
+    "unassigned": "Unassigned"
+  },
   "editor": {
     "amountsMustBeNonNegativeWholeNumbersCommission": "Amounts must be non-negative whole numbers. Commission cannot exceed the service amount.",
     "applianceBrand": "Appliance brand",
@@ -27,11 +47,35 @@
     "searchCustomerApplianceOrRequestId": "Search customer, appliance, or request ID…",
     "searchRequests": "Search requests"
   },
+  "navigation": {
+    "serviceRequests": "Service requests"
+  },
+  "priorities": {
+    "normal": "Normal",
+    "urgent": "Urgent"
+  },
+  "statuses": {
+    "accepted": "Accepted, awaiting assignment",
+    "awaitingDispatch": "Awaiting dispatch",
+    "awaitingReview": "Awaiting review",
+    "cancelled": "Cancelled",
+    "completed": "Completed",
+    "inProgress": "In progress",
+    "scheduled": "Scheduled"
+  },
   "table": {
     "details": "Details",
     "detailsForId": "Details for {{id}}",
     "notAssigned": "Not assigned",
     "requestAppliance": "Request / appliance",
     "visitTime": "Visit time"
+  },
+  "validation": {
+    "aCompletedRequestWithFinancialTransactionsMustRemain": "A completed request with financial transactions must remain completed. Define transaction reversal or voiding before making financial corrections.",
+    "anOrderWithFinancialTransactionsCannotBeTransferred": "An order with financial transactions cannot be transferred to another customer.",
+    "anOrderWithReceiptsCannotBeCancelledOr": "An order with receipts cannot be cancelled or reduced below the amount collected without financial corrections.",
+    "orderDetailsAreInvalid": "Order details are invalid.",
+    "theTechnicianCannotBeChangedAfterAPayout": "The technician cannot be changed after a payout is recorded.",
+    "theTechnicianSShareCannotBeLessThan": "The technician's share cannot be less than the payouts already recorded for this request."
   }
 }

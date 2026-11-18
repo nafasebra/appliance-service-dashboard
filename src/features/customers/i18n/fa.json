@@ -16,6 +16,9 @@
     "open": "سوابق {{name}}",
     "title": "سوابق {{name}}"
   },
+  "navigation": {
+    "customers": "مشتریان"
+  },
   "search": {
     "label": "جستجوی مشتری",
     "placeholder": "جستجوی نام، تلفن یا آدرس…"

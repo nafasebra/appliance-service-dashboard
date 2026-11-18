@@ -1,6 +1,6 @@
 import type { ParseKeys } from 'i18next';
 
-// Existing model labels and errors are translated without changing saved records.
+// Compatibility labels stay with their message owner; stored records are unchanged.
 export const partsLabelKeys = {
   'درخواست قطعه پیدا نشد.': 'validation.partRequestNotFound',
   'تأیید خرید': 'tables.approvePurchase',
@@ -27,4 +27,9 @@ export const partsLabelKeys = {
   'اطلاعات قطعات معتبر نیست؛ موجودی و مقادیر را بررسی کنید.':
     'validation.partDetailsAreInvalidCheckStockAndQuantities',
   'ثبت اطلاعات انجام نشد.': 'validation.theChangesCouldNotBeSaved',
+  'قطعات و موجودی': 'navigation.partsAndInventory',
+  'نیاز قطعه و استعلام': 'navigation.partNeedsAndAvailability',
+  'تأمین و خرید': 'navigation.procurementAndPurchasing',
+  'تخصیص و تحویل': 'navigation.allocationAndDelivery',
+  'مدیریت قطعات': 'navigation.partsManagement',
 } as const satisfies Readonly<Record<string, ParseKeys<'parts'>>>;

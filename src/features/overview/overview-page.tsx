@@ -24,11 +24,10 @@ import { PageHeading, Panel, StatCard } from '@/shared/ui/primitives';
 import { money } from '@/shared/lib/format';
 import { Button } from '@/shared/ui/button';
 import { Badge } from '@/shared/ui/badge';
-import { useTranslation } from 'react-i18next';
 
 export function OverviewPage() {
   const t = useOverviewTranslation();
-  const { t: tShared } = useTranslation();
+
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
   const technicians = useDemo((state) => state.technicians);
@@ -49,7 +48,7 @@ export function OverviewPage() {
             onClick={() => setEditor('new')}
           >
             <Plus size={18} />
-            {tShared('ui.newRequest')}
+            {t('common.newRequest')}
           </Button>
         }
       />
@@ -108,7 +107,7 @@ export function OverviewPage() {
           accent
         />
         <StatCard
-          title={tShared('ui.netCashFlow')}
+          title={t('common.netCashFlow')}
           value={money(finance.cashFlow)}
           detail={t('summary.receiptsMinusAllPayments')}
           icon={<ArrowDownLeft size={20} />}
@@ -142,7 +141,7 @@ export function OverviewPage() {
             >
               <div>
                 <strong>{jobs.length}</strong>
-                <span>{tShared('ui.totalRequests')}</span>
+                <span>{t('common.totalRequests')}</span>
               </div>
             </div>
             <div className="flex flex-1 flex-col gap-4.25 min-w-33.75 max-w-52.5 [&_>_div]:flex [&_>_div]:justify-between [&_>_div]:items-center [&_>_div]:gap-4 [&_>_div]:text-2xs [&_>_div_>_span]:flex [&_>_div_>_span]:items-center [&_>_div_>_span]:gap-1.75 [&_>_div_>_span]:text-muted-foreground [&_strong]:text-muted-foreground [&_strong]:text-xs max-desktop:min-w-27.5 max-desktop:[&_>_div_>_span]:text-3xs max-tablet:min-w-40 max-mobile:min-w-33.75">

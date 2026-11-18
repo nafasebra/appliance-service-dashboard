@@ -1,3 +1,5 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
+import { useAppTranslation } from '@/app/i18n/use-app-translation';
 import { JobStatus } from '../../entities/service/model/types.ts';
 import { translateLabel } from '@/shared/i18n';
 import { Link } from '@tanstack/react-router';
@@ -34,7 +36,9 @@ import {
 import { useTranslation } from 'react-i18next';
 
 export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
-  const { t, i18n } = useTranslation();
+  const t = useAppTranslation();
+  const tShared = useSharedTranslation();
+  const { i18n } = useTranslation();
   const settings = useCompanySettings((state) => state.settings);
   const jobs = useDemo((state) => state.jobs);
   const resetDemo = useDemo((state) => state.resetDemo);
@@ -66,7 +70,7 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
           size="icon-sm"
           type="button"
           className="grid h-7.75 w-7.75 shrink-0 place-items-center rounded-md border border-transparent bg-transparent text-muted-foreground hover:border-border hover:bg-accent dark:hover:border-border dark:hover:bg-accent"
-          aria-label={t('ui.closeMenu')}
+          aria-label={tShared('sidebar.closeMenu')}
           onClick={closeSidebar}
         >
           <X size={19} />
@@ -119,10 +123,10 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
           <span className="mb-3.25 -mt-9.75 grid h-9.75 w-9.75 place-items-center rounded-lg border-1.25 border-white bg-muted text-primary dark:bg-accent dark:text-primary">
             <LifeBuoy size={23} />
           </span>
-          <strong>{t('ui.stayOneStepAhead')}</strong>
-          <p>{t('ui.howToUseTheDemo')}</p>
+          <strong>{t('guide.stayOneStepAhead')}</strong>
+          <p>{t('guide.howToUseTheDemo')}</p>
           <Button variant="outline" onClick={onOpenHelp}>
-            {t('ui.dashboardGuide')} <ArrowUpLeft size={16} />
+            {t('guide.dashboardGuide')} <ArrowUpLeft size={16} />
           </Button>
         </div>
 
@@ -133,20 +137,20 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
               className="flex h-auto items-center gap-2.25 border-0 bg-transparent py-4.75 px-2.25 text-2xs text-muted-foreground"
             >
               <RotateCcw size={17} />
-              {t('ui.resetSampleData')}
+              {t('reset.resetSampleData')}
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>{t('ui.resetSampleRecords')}</AlertDialogTitle>
+              <AlertDialogTitle>{t('reset.resetSampleRecords')}</AlertDialogTitle>
               <AlertDialogDescription>
-                {t('ui.requestsAndTransactionsAddedOrEditedInThis')}
+                {t('reset.requestsAndTransactionsAddedOrEditedInThis')}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>{t('ui.cancel2')}</AlertDialogCancel>
+              <AlertDialogCancel>{tShared('actions.cancel2')}</AlertDialogCancel>
               <AlertDialogAction variant="destructive" onClick={resetDemo}>
-                {t('ui.resetData')}
+                {t('reset.resetData')}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

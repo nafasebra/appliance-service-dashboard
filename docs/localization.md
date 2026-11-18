@@ -22,20 +22,28 @@ all messages lived in one `translation` namespace, including feature copy, and
 | reports     | Operational and financial reports                                     | `reports`     |
 | settings    | Company and workflow preferences                                      | `settings`    |
 | cartable    | Order review, assignment, repairs, collection, settlement and archive | `cartable`    |
+| app         | Shell, notifications, guide, theme controls, and navigation groups    | `app`         |
+| shared      | Generic controls, tables, date inputs and formatting                  | `common`      |
 
 The shared service entity owns records and pure accounting rules; its domain data
 is not moved into feature catalogs. The app owns the shell, navigation, and resource
 composition. Global controls, pagination, and formatting messages remain shared.
-All features own their translations. Shared catalogs contain global controls,
-navigation, appliance names, service/payment statuses, and validation messages used
-across service workflows. Page-specific headings, forms, tables, and inventory
-statuses live in their feature catalog.
+All features own their translations, including navigation labels, domain statuses,
+appliance labels and validation messages. The app owns its shell catalog. Shared
+`common.json` contains generic controls only, grouped by purpose (`actions`,
+`fields`, `table`, `pagination`, `select`, `storage`, and formatting). Features use
+their own contextual copy when the same business wording appears in several areas;
+they do not import another feature's translation hook.
 
 ## Directory structure
 
 ```text
 src/
   app/i18n.ts                       Composes the feature bundle list
+  app/i18n/
+    {fa,en}.json                    Shell messages, namespace app
+    resources.ts                    Shell bundle and namespace type
+    use-app-translation.ts          Typed shell translation hook
   features/customers/
     customers-page.tsx
     i18n/
@@ -52,7 +60,8 @@ src/
     i18next.d.ts                    Shared i18next type augmentation
     index.ts                       Existing browser singleton and compatibility API
     provider.tsx                   Provider accepting an explicit instance
-    locales/{fa,en}/translation.json
+    use-shared-translation.ts       Typed common translation hook
+    locales/{fa,en}/common.json
 ```
 
 ## Registration and loading
@@ -60,7 +69,8 @@ src/
 Each feature exports one bundle containing its namespace and both locales. Add it
 once to `translationBundles` in `app/i18n.ts`. Shared infrastructure receives bundles
 as inputs and does not import features. `buildResources` rejects duplicate or invalid
-namespaces before registration; `translation` is reserved by the shared bundle.
+namespaces before registration; `common` is reserved by the shared bundle and is
+the default namespace. The `app` namespace is registered by application composition.
 Use the feature directory name as its namespace. Identical leaf keys in different
 namespaces are safe. Registration can run again during HMR without duplicating listeners.
 
@@ -86,8 +96,9 @@ and i18next formatting options. Keep JSX `const t = useCustomersTranslation()` c
 in this convention: the extraction plugin normalizes them for CLI analysis only.
 The CLI derives the feature namespace from the hook name and writes to the feature
 directory. PascalCase hook names correspond to lowercase feature names.
-Use `const { t: tShared } = useTranslation()` for global controls alongside the
-feature hook; keep feature copy on `t`. Non-React utilities can use an explicit
+Use `const tShared = useSharedTranslation()` for generic controls alongside the
+feature hook; keep feature copy on `t`. Shell components use `useAppTranslation()`.
+The CLI recognizes both the `t` and `tShared` hook bindings. Non-React utilities can use an explicit
 qualified key such as `i18next.t('parts:orders.idOrderUnavailable', { id })`.
 
 Each feature augments `FeatureResources` locally with its canonical JSON type.
@@ -103,7 +114,8 @@ placeholder parity is verified at runtime in tests.
 
 - Put feature copy in that feature's `i18n/fa.json` and `i18n/en.json`. Use nested
   business concepts (`directory`, `search`, `history`) and descriptive, stable keys.
-  Keep only genuinely global copy in `shared/i18n/locales`.
+  Keep generic shared controls in `shared/i18n/locales/{fa,en}/common.json`. Shell
+  messages belong in `app/i18n/{fa,en}.json`; business messages stay with features.
 - Use the dedicated feature hook. Include `t` in memo dependencies
   when memoized columns or derived labels contain translations.
 - Translate complete sentences with interpolation. Use i18next `_one` and `_other`
@@ -114,7 +126,10 @@ placeholder parity is verified at runtime in tests.
   unchanged. Feature-local `legacy-labels.ts` maps existing predefined Persian labels
   and model errors to typed local keys. The bundle registers these labels with an
   instance-specific lookup; shared infrastructure never imports feature code.
-  The shared mapping contains global labels only. New copy should use keys directly.
+  The shared mapping contains generic UI labels only. Request statuses and appliance
+  names resolve through requests; finance statuses and validation through finance.
+  These lookups receive registered bundles and introduce no shared-to-feature imports.
+  New copy should use keys directly.
 - Store deferred validation messages as qualified keys (`requests:editor...`) and
   resolve them when rendering. The extractor preserves these keys and the dynamic
   model-label mappings through its analysis plugin.

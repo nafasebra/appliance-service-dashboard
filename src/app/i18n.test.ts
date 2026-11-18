@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import en from '../shared/i18n/locales/en/translation.json' with { type: 'json' };
-import fa from '../shared/i18n/locales/fa/translation.json' with { type: 'json' };
+import en from '../shared/i18n/locales/en/common.json' with { type: 'json' };
+import fa from '../shared/i18n/locales/fa/common.json' with { type: 'json' };
 import {
   i18n,
   getLocale,
@@ -34,6 +34,8 @@ import { usePartsTranslation } from '../features/parts/i18n/use-parts-translatio
 import { useOverviewTranslation } from '../features/overview/i18n/use-overview-translation.ts';
 import { useReportsTranslation } from '../features/reports/i18n/use-reports-translation.ts';
 import { useSettingsTranslation } from '../features/settings/i18n/use-settings-translation.ts';
+import { useAppTranslation } from './i18n/use-app-translation.ts';
+import { useSharedTranslation } from '../shared/i18n/use-shared-translation.ts';
 import { useCartableTranslation } from '../features/cartable/i18n/use-cartable-translation.ts';
 
 function flatten(value: unknown, prefix = ''): Record<string, string> {
@@ -180,6 +182,16 @@ test('feature model labels translate through isolated registered bundles', async
 test('every feature hook uses its own namespace and follows the provider locale', async () => {
   const instance = await createI18n('en', translationBundles);
   const probes = [
+    {
+      namespace: 'app',
+      key: 'notifications.notifications',
+      useText: () => useAppTranslation()('notifications.notifications'),
+    },
+    {
+      namespace: 'common',
+      key: 'actions.close',
+      useText: () => useSharedTranslation()('actions.close'),
+    },
     {
       namespace: 'cartable',
       key: 'queues.inbox.title',

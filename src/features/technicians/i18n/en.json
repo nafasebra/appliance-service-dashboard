@@ -9,6 +9,12 @@
     "techniciansActiveOrders": "Technicians' active orders",
     "trackAssignedOpenOrdersVisitTimesAndProgress": "Track assigned open orders, visit times, and progress."
   },
+  "common": {
+    "awaitingDispatch": "Awaiting dispatch",
+    "inProgress": "In progress",
+    "selectTechnician": "Select technician",
+    "technician": "Technician"
+  },
   "finance": {
     "allTechnicians": "All technicians",
     "amountPayable": "Amount payable",
@@ -46,6 +52,13 @@
     "teamContactDetailsSpecialtiesAndServiceAreas": "Team contact details, specialties, and service areas.",
     "teamMembers": "Team members",
     "technicianName": "Technician name"
+  },
+  "navigation": {
+    "activeOrders": "Active orders",
+    "technicianFinances": "Technician finances",
+    "technicianManagement": "Technician management",
+    "technicians": "Technicians",
+    "technicianSpecialties": "Technician specialties"
   },
   "specialties": {
     "assignOrChangeSpecialty": "Assign or change specialty",

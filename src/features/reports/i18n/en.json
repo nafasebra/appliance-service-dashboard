@@ -1,4 +1,7 @@
 {
+  "navigation": {
+    "reports": "Reports"
+  },
   "performance": {
     "anOverviewOfServicesTeamPerformanceAndCash": "An overview of services, team performance, and cash movement across all sample data.",
     "commissionAndTechnicianSharesAreBasedOnCompleted": "Commission and technician shares are based on completed services",

@@ -1,3 +1,4 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import {
   PurchaseStatus,
   availableQuantity,
@@ -34,8 +35,6 @@ import {
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { DataTable } from '@/shared/ui/data-table';
 
-import { useTranslation } from 'react-i18next';
-
 type Section = 'inventory' | 'needs' | 'purchases' | 'allocations';
 const sections = [
   { to: '/parts', label: 'قطعات و موجودی', section: 'inventory' },
@@ -46,7 +45,7 @@ const sections = [
 
 export function PartsPage({ section }: { section: Section }) {
   const t = usePartsTranslation();
-  const { t: tShared } = useTranslation();
+  const tShared = useSharedTranslation();
   const data = useParts((state) => state.data);
   const change = useParts((state) => state.change);
   const storageError = useParts((state) => state.storageError);
@@ -304,8 +303,8 @@ export function PartsPage({ section }: { section: Section }) {
           className="max-w-sm"
         />
         <Select value={appliance} onValueChange={(value) => setAppliance(value)}>
-          <SelectTrigger className="w-full" aria-label={tShared('ui.applianceType')}>
-            <SelectValue placeholder={tShared('ui.selectAnOption')} />
+          <SelectTrigger className="w-full" aria-label={t('common.applianceType')}>
+            <SelectValue placeholder={tShared('select.selectAnOption')} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -319,12 +318,12 @@ export function PartsPage({ section }: { section: Section }) {
           </SelectContent>
         </Select>
         <Select value={status} onValueChange={(value) => setStatus(value)}>
-          <SelectTrigger className="w-full" aria-label={tShared('ui.status')}>
-            <SelectValue placeholder={tShared('ui.selectAnOption')} />
+          <SelectTrigger className="w-full" aria-label={tShared('fields.status')}>
+            <SelectValue placeholder={tShared('select.selectAnOption')} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="all">{tShared('ui.allStatuses')}</SelectItem>
+              <SelectItem value="all">{tShared('filters.allStatuses')}</SelectItem>
               {section === 'inventory' ? (
                 <>
                   <SelectItem value="low">{t('tables.lowStock')}</SelectItem>
@@ -406,10 +405,10 @@ export function PartsPage({ section }: { section: Section }) {
                   <Input name="code" defaultValue={editing?.code} required maxLength={50} />
                 </Label>
                 <Label className="flex flex-col gap-2">
-                  {tShared('ui.applianceType')}
+                  {t('common.applianceType')}
                   <Select name="appliance" defaultValue={editing?.appliance ?? appliances[0]}>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder={tShared('ui.selectAnOption')} />
+                      <SelectValue placeholder={tShared('select.selectAnOption')} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -454,7 +453,7 @@ export function PartsPage({ section }: { section: Section }) {
                   {t('tables.part')}
                   <Select name="partId" required>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder={tShared('ui.selectAnOption')} />
+                      <SelectValue placeholder={tShared('select.selectAnOption')} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -475,7 +474,7 @@ export function PartsPage({ section }: { section: Section }) {
                 </Label>
                 {form === 'need' ? (
                   <Label className="col-span-full flex flex-col gap-2">
-                    {tShared('ui.customerOrder')}
+                    {t('common.customerOrder')}
                     <Select name="jobId" required>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder={t('inventory.selectAnOpenOrder')} />
@@ -510,9 +509,9 @@ export function PartsPage({ section }: { section: Section }) {
               </Alert>
             ) : null}
             <div className="col-span-full flex gap-2">
-              <Button type="submit">{tShared('ui.save')}</Button>
+              <Button type="submit">{tShared('actions.save')}</Button>
               <Button type="button" variant="outline" onClick={() => setForm(null)}>
-                {tShared('ui.cancel2')}
+                {tShared('actions.cancel2')}
               </Button>
             </div>
           </form>
@@ -537,7 +536,7 @@ export function PartsPage({ section }: { section: Section }) {
               {t('inventory.recipient')}
               <Select name="technicianId" required>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder={tShared('ui.selectTechnician')} />
+                  <SelectValue placeholder={t('common.selectTechnician')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>

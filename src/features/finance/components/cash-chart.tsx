@@ -2,11 +2,10 @@ import { useFinanceTranslation } from '../i18n/use-finance-translation';
 import { useDemo } from '@/shared/store/demo-store';
 import { getCashChartData } from '../utils/cash-chart';
 import { dateLabel } from '@/shared/lib/format';
-import { useTranslation } from 'react-i18next';
 
 export function CashChart() {
   const t = useFinanceTranslation();
-  const { t: tShared } = useTranslation();
+
   const transactions = useDemo((state) => state.transactions);
   const { points, max } = getCashChartData(transactions);
   return (
@@ -14,7 +13,7 @@ export function CashChart() {
       <div className="flex gap-4 items-center pt-0 px-6 pb-3 text-3xs text-muted-foreground [&_>_span]:flex [&_>_span]:gap-1.25 [&_>_span]:items-center [&_i]:h-1.75 [&_i]:w-1.75 [&_i]:rounded-xs [&_small]:ms-auto [&_small]:text-4xs">
         <span>
           <i className="bg-primary" />
-          {tShared('ui.received2')}
+          {t('common.received2')}
         </span>
         <span>
           <i className="bg-muted dark:bg-muted" />

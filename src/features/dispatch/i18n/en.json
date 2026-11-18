@@ -1,4 +1,11 @@
 {
+  "common": {
+    "newRequest": "New request",
+    "unassigned": "Unassigned"
+  },
+  "navigation": {
+    "schedulingAndDispatch": "Scheduling and dispatch"
+  },
   "schedule": {
     "chooseATechnicianForTheseRequests": "Choose a technician for these requests",
     "dispatchScheduleDate": "Dispatch schedule date",

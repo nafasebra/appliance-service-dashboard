@@ -1,3 +1,4 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import { useRequestsTranslation } from '../i18n/use-requests-translation';
 import { translateLabel } from '@/shared/i18n';
 import { JobStatusBadge } from '@/entities/service/ui/job-status-badge';
@@ -9,7 +10,6 @@ import { dateLabel, money } from '@/shared/lib/format';
 import { EmptyState } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
-import { useTranslation } from 'react-i18next';
 
 export function ApplianceIcon({ appliance }: { appliance: string }) {
   const Icon =
@@ -25,7 +25,7 @@ export function ApplianceIcon({ appliance }: { appliance: string }) {
 
 export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job) => void }) {
   const t = useRequestsTranslation();
-  const { t: tShared } = useTranslation();
+  const tShared = useSharedTranslation();
   const customers = useDemo((state) => state.customers);
   const technicians = useDemo((state) => state.technicians);
   const jobColumns = useMemo<DataTableColumn<(typeof jobs)[number]>[]>(
@@ -50,7 +50,7 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
             {job.priority === 'urgent' && (
               <span
                 className="w-1.25 h-1.25 rounded-full bg-secondary"
-                title={tShared('ui.urgent')}
+                title={t('priorities.urgent')}
               />
             )}
           </div>
@@ -103,7 +103,7 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
         accessorFn: (job) => job.total,
         cell: ({ row: { original: job } }) => (
           <span className="whitespace-nowrap">
-            {job.total ? money(job.total) : tShared('ui.notSpecified')}
+            {job.total ? money(job.total) : tShared('fields.notSpecified')}
           </span>
         ),
       },

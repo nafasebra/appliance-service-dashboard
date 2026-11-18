@@ -1,4 +1,12 @@
 {
+  "common": {
+    "netCashFlow": "خالص گردش نقدی",
+    "newRequest": "درخواست جدید",
+    "totalRequests": "کل درخواست‌ها"
+  },
+  "navigation": {
+    "overview": "نمای کلی"
+  },
   "summary": {
     "aClearAccountForEveryService": "هر خدمت، یک حساب روشن.",
     "allRequests": "همه درخواست‌ها",

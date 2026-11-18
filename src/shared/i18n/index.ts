@@ -1,7 +1,7 @@
 import instance from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import en from './locales/en/translation.json' with { type: 'json' };
-import fa from './locales/fa/translation.json' with { type: 'json' };
+import en from './locales/en/common.json' with { type: 'json' };
+import fa from './locales/fa/common.json' with { type: 'json' };
 import { legacyLabelKeys } from './legacy-labels.ts';
 import {
   translationOptions,
@@ -29,7 +29,7 @@ function readLanguage(): Language {
 
 export const i18n = instance;
 export const sharedTranslations = {
-  namespace: 'translation',
+  namespace: 'common',
   locales: { en, fa },
   labels: legacyLabelKeys,
 } as const satisfies TranslationBundle;

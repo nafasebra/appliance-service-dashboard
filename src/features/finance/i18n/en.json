@@ -25,6 +25,16 @@
     "receivedIncomingToman": "Received {{incoming}} toman",
     "viewChartValues": "View chart values"
   },
+  "common": {
+    "companyCommission": "Company commission",
+    "completedServiceValue": "Completed service value",
+    "customer": "Customer",
+    "customerOrder": "Customer order",
+    "netCashFlow": "Net cash flow",
+    "order": "Order",
+    "received2": "Received",
+    "serviceAmount": "Service amount"
+  },
   "export": {
     "requests": "requests"
   },
@@ -59,6 +69,25 @@
     "totalRecordedReceipts": "Total recorded receipts",
     "transactionType": "Transaction type",
     "type": "Type"
+  },
+  "navigation": {
+    "companyExpenses": "Company expenses",
+    "customerAccounts": "Customer accounts",
+    "customerReceipts": "Customer receipts",
+    "customerReceivables": "Customer receivables",
+    "transactionRegister": "Transaction register"
+  },
+  "paymentMethods": {
+    "bankTransfer": "Bank transfer",
+    "cardTerminal": "Card terminal",
+    "cash": "Cash"
+  },
+  "paymentStatuses": {
+    "amountNotFinalized": "Amount not finalized",
+    "fullyPaid": "Fully paid",
+    "overpaid": "Overpaid",
+    "partiallyPaid": "Partially paid",
+    "unpaid": "Unpaid"
   },
   "receivables": {
     "completedOrdersWhoseFullAmountHasNotYet": "Completed orders whose full amount has not yet been collected.",
@@ -113,5 +142,14 @@
     "trackingDocumentReferenceOptional": "Tracking / document reference (optional)",
     "transactionDate": "Transaction date",
     "transactionDescription": "Transaction description"
+  },
+  "validation": {
+    "collectBeforePayout": "Collect the customer's full balance before settling with the technician.",
+    "receiptsRequireANonCancelledOrderWithA": "Receipts require a non-cancelled order with a specified amount.",
+    "theAmountDateDescriptionOrOrderReferenceIs": "The amount, date, description, or order reference is invalid.",
+    "theOrderAssociatedWithThisReceiptWasNot": "The order associated with this receipt was not found.",
+    "theReceiptExceedsTheOrderSCollectibleBalance": "The receipt exceeds the order's collectible balance.",
+    "theTransactionCouldNotBeRecorded": "The transaction could not be recorded.",
+    "thisTransactionHasAlreadyBeenRecorded": "This transaction has already been recorded."
   }
 }

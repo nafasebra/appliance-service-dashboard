@@ -1,3 +1,4 @@
+import { useAppTranslation } from '@/app/i18n/use-app-translation';
 import { translateLabel } from '@/shared/i18n';
 import { Link, useRouterState } from '@tanstack/react-router';
 import { navigation } from '@/app/const';
@@ -15,13 +16,13 @@ import {
 } from '@/shared/ui/breadcrumb';
 import { SidebarTrigger } from '@/shared/ui/sidebar';
 import { useCompanySettings } from '@/shared/store/settings-store';
-import { useTranslation } from 'react-i18next';
 
 export function DashboardHeader() {
-  const { t } = useTranslation();
+  const t = useAppTranslation();
   const settings = useCompanySettings((state) => state.settings);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  const currentPage = navigation.find((item) => item.to === pathname)?.label ?? t('ui.dashboard');
+  const currentPage =
+    navigation.find((item) => item.to === pathname)?.label ?? t('navigation.dashboard');
 
   return (
     <>
@@ -35,13 +36,13 @@ export function DashboardHeader() {
             <BreadcrumbList className="text-ui max-mobile:text-2xs">
               {pathname === '/' ? (
                 <BreadcrumbItem>
-                  <BreadcrumbPage>{t('ui.dashboard')}</BreadcrumbPage>
+                  <BreadcrumbPage>{t('navigation.dashboard')}</BreadcrumbPage>
                 </BreadcrumbItem>
               ) : (
                 <>
                   <BreadcrumbItem className="max-phone:hidden">
                     <BreadcrumbLink asChild>
-                      <Link to="/">{t('ui.dashboard')}</Link>
+                      <Link to="/">{t('navigation.dashboard')}</Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="max-phone:hidden" />

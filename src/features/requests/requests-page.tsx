@@ -1,3 +1,4 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import { useRequestsTranslation } from './i18n/use-requests-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useState } from 'react';
@@ -19,11 +20,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/ui/select';
-import { useTranslation } from 'react-i18next';
 
 export function RequestsPage() {
   const t = useRequestsTranslation();
-  const { t: tShared } = useTranslation();
+  const tShared = useSharedTranslation();
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const [query, setQuery] = useState('');
@@ -39,7 +39,7 @@ export function RequestsPage() {
   return (
     <>
       <PageHeading
-        title={tShared('ui.serviceRequests')}
+        title={t('navigation.serviceRequests')}
         description={t('list.followEachRequestFromTheFirstCallTo')}
         action={
           <Button
@@ -78,7 +78,7 @@ export function RequestsPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="all">{tShared('ui.allStatuses')}</SelectItem>
+                  <SelectItem value="all">{tShared('filters.allStatuses')}</SelectItem>
                   {Object.entries(statusLabels).map(([key, label]) => (
                     <SelectItem key={key} value={key}>
                       {translateLabel(label)}

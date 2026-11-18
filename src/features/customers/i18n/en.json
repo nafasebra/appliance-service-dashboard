@@ -16,6 +16,9 @@
     "open": "History for {{name}}",
     "title": "History for {{name}}"
   },
+  "navigation": {
+    "customers": "Customers"
+  },
   "search": {
     "label": "Search customers",
     "placeholder": "Search name, phone, or address…"

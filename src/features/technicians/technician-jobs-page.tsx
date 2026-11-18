@@ -1,3 +1,4 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import { JobStatus, type Job } from '@/entities/service/model/types';
 import { useTechniciansTranslation } from './i18n/use-technicians-translation';
 import { useState } from 'react';
@@ -14,11 +15,9 @@ import {
   SelectItem,
 } from '@/shared/ui/select';
 
-import { useTranslation } from 'react-i18next';
-
 export function TechnicianJobsPage() {
   const t = useTechniciansTranslation();
-  const { t: tShared } = useTranslation();
+  const tShared = useSharedTranslation();
   const technicians = useDemo((state) => state.technicians);
   const jobs = useDemo((state) => state.jobs);
   const [technicianId, setTechnicianId] = useState('all');
@@ -42,7 +41,7 @@ export function TechnicianJobsPage() {
       <div className="mb-4 flex flex-wrap gap-3">
         <Select value={technicianId} onValueChange={(value) => setTechnicianId(value)}>
           <SelectTrigger className="w-full" aria-label={t('assignments.filterByTechnician')}>
-            <SelectValue placeholder={tShared('ui.selectAnOption')} />
+            <SelectValue placeholder={tShared('select.selectAnOption')} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -57,14 +56,14 @@ export function TechnicianJobsPage() {
         </Select>
         <Select value={status} onValueChange={(value) => setStatus(value)}>
           <SelectTrigger className="w-full" aria-label={t('assignments.filterByOrderStatus')}>
-            <SelectValue placeholder={tShared('ui.selectAnOption')} />
+            <SelectValue placeholder={tShared('select.selectAnOption')} />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectItem value="all">{t('assignments.allOpenOrders')}</SelectItem>
-              <SelectItem value="new">{tShared('ui.awaitingDispatch')}</SelectItem>
+              <SelectItem value="new">{t('common.awaitingDispatch')}</SelectItem>
               <SelectItem value="scheduled">{t('assignments.scheduled')}</SelectItem>
-              <SelectItem value="working">{tShared('ui.inProgress')}</SelectItem>
+              <SelectItem value="working">{t('common.inProgress')}</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>

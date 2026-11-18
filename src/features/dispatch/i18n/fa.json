@@ -1,4 +1,11 @@
 {
+  "common": {
+    "newRequest": "درخواست جدید",
+    "unassigned": "بدون تخصیص"
+  },
+  "navigation": {
+    "schedulingAndDispatch": "برنامه‌ریزی و اعزام"
+  },
   "schedule": {
     "chooseATechnicianForTheseRequests": "برای این درخواست‌ها تعمیرکار انتخاب کنید",
     "dispatchScheduleDate": "تاریخ برنامه اعزام",

@@ -1,3 +1,5 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
+import { useAppTranslation } from '@/app/i18n/use-app-translation';
 import { useState } from 'react';
 import { Link, Outlet } from '@tanstack/react-router';
 import { AlertTriangle } from 'lucide-react';
@@ -8,7 +10,6 @@ import { useDemo } from '@/shared/store/demo-store';
 import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
 import { Modal } from '@/shared/ui/primitives';
 import { SidebarInset, SidebarProvider } from '@/shared/ui/sidebar';
-import { useTranslation } from 'react-i18next';
 
 export function DashboardLayout() {
   return (
@@ -19,7 +20,8 @@ export function DashboardLayout() {
 }
 
 function DashboardShell() {
-  const { t } = useTranslation();
+  const t = useAppTranslation();
+  const tShared = useSharedTranslation();
   const [helpOpen, setHelpOpen] = useState(false);
   const storageError = useDemo((state) => state.storageError);
 
@@ -30,7 +32,7 @@ function DashboardShell() {
         to="."
         hash="main-content"
       >
-        {t('ui.skipToMainContent')}
+        {t('accessibility.skipToMainContent')}
       </Link>
 
       <DashboardSidebar onOpenHelp={() => setHelpOpen(true)} />
@@ -41,9 +43,9 @@ function DashboardShell() {
         {storageError ? (
           <Alert className="mx-9 mt-4 w-auto border-border bg-status-new text-muted-foreground max-mobile:mx-4.5 dark:border-border dark:bg-status-new dark:text-muted-foreground">
             <AlertTriangle />
-            <AlertTitle>{t('ui.browserStorageIsUnavailable')}</AlertTitle>
+            <AlertTitle>{tShared('storage.browserStorageIsUnavailable')}</AlertTitle>
             <AlertDescription className="text-inherit/80">
-              {t('ui.changesWillNotBeSavedAfterYouClose')}
+              {tShared('storage.changesWillNotBeSavedAfterYouClose')}
             </AlertDescription>
           </Alert>
         ) : null}
@@ -59,11 +61,11 @@ function DashboardShell() {
       </SidebarInset>
 
       {helpOpen ? (
-        <Modal title={t('ui.demoGuide')} onClose={() => setHelpOpen(false)}>
+        <Modal title={t('guide.demoGuide')} onClose={() => setHelpOpen(false)}>
           <div className="p-6 text-xs leading-loose text-muted-foreground [&_p]:mb-3.75">
-            <p>{t('ui.createAServiceRequestForASampleCustomer')}</p>
-            <p>{t('ui.chooseADateOnTheDispatchPageTo')}</p>
-            <p>{t('ui.thisDemoHasNoBackendDataStaysIn')}</p>
+            <p>{t('guide.createAServiceRequestForASampleCustomer')}</p>
+            <p>{t('guide.chooseADateOnTheDispatchPageTo')}</p>
+            <p>{t('guide.thisDemoHasNoBackendDataStaysIn')}</p>
           </div>
         </Modal>
       ) : null}

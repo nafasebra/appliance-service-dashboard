@@ -1,4 +1,9 @@
 {
+  "common": {
+    "applianceType": "نوع دستگاه",
+    "customerOrder": "سفارش مشتری",
+    "selectTechnician": "انتخاب تعمیرکار"
+  },
   "inventory": {
     "addPart": "تعریف قطعه",
     "allAppliances": "همه دستگاه‌ها",
@@ -39,6 +44,13 @@
     "suggestedSupplier": "تأمین‌کننده پیشنهادی",
     "thePartMustMatchTheApplianceTypeOf": "قطعه باید با نوع دستگاه یک سفارش باز سازگار باشد.",
     "uniqueCode": "کد یکتا"
+  },
+  "navigation": {
+    "allocationAndDelivery": "تخصیص و تحویل",
+    "partNeedsAndAvailability": "نیاز قطعه و استعلام",
+    "partsAndInventory": "قطعات و موجودی",
+    "partsManagement": "مدیریت قطعات",
+    "procurementAndPurchasing": "تأمین و خرید"
   },
   "orders": {
     "idOrderUnavailable": "{{id}} · سفارش در دسترس نیست"

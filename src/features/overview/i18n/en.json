@@ -1,4 +1,12 @@
 {
+  "common": {
+    "netCashFlow": "Net cash flow",
+    "newRequest": "New request",
+    "totalRequests": "Total requests"
+  },
+  "navigation": {
+    "overview": "Overview"
+  },
   "summary": {
     "aClearAccountForEveryService": "A clear account for every service.",
     "allRequests": "All requests",

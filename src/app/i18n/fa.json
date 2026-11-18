@@ -1,0 +1,49 @@
+{
+  "accessibility": {
+    "skipToMainContent": "رفتن به محتوای اصلی"
+  },
+  "appearance": {
+    "darkTheme": "پوسته تاریک",
+    "lightTheme": "پوسته روشن",
+    "switchToDarkTheme": "فعال‌کردن پوسته تاریک",
+    "switchToLightTheme": "فعال‌کردن پوسته روشن"
+  },
+  "footer": {
+    "builtForABetterCoordinatedTeam": "طراحی‌شده برای یک تیم هماهنگ‌تر",
+    "companynameSmartServiceManagement": "{{companyName}} · مدیریت هوشمند خدمات"
+  },
+  "guide": {
+    "chooseADateOnTheDispatchPageTo": "در صفحه اعزام، تاریخ روز را انتخاب کنید تا برنامه تعمیرکاران نمایش داده شود. دریافت از مشتری، هزینه و تسویه تعمیرکار در امور مالی ثبت می‌شود.",
+    "createAServiceRequestForASampleCustomer": "از «درخواست جدید» یک خدمت برای مشتریان نمونه ثبت کنید. با بازکردن ردیف درخواست، تعمیرکار، زمان مراجعه و وضعیت را تغییر دهید.",
+    "dashboardGuide": "راهنمای داشبورد",
+    "demoGuide": "راهنمای نسخه نمایشی",
+    "demoVersionSampleDataIsStoredInThis": "نسخه نمایشی · داده‌ها نمونه‌اند و در همین مرورگر ذخیره می‌شوند.",
+    "howToUseTheDemo": "راهنمای استفاده از نسخه نمایشی",
+    "stayOneStepAhead": "یک قدم جلوتر از کارها",
+    "thisDemoHasNoBackendDataStaysIn": "این نسخه بک‌اند ندارد. اطلاعات فقط در همین مرورگر ذخیره می‌شوند. تومان، وضعیت‌ها و جریان پرداخت، انتخاب‌های موقت برای نمایش‌اند."
+  },
+  "navigation": {
+    "accountingAndFinance": "حسابداری و امور مالی",
+    "businessManagement": "مدیریت کسب‌وکار",
+    "dashboard": "داشبورد",
+    "system": "سیستم"
+  },
+  "notFound": {
+    "backToHome": "بازگشت به صفحهٔ اصلی",
+    "pageNotFound": "صفحه پیدا نشد",
+    "thisAddressDoesNotExistInTheApplication": "آدرس واردشده در این برنامه وجود ندارد."
+  },
+  "notifications": {
+    "latestRequestsRequiringAttention": "آخرین درخواست‌های نیازمند بررسی",
+    "newApplianceRequest": "درخواست جدید {{appliance}}",
+    "noNewNotifications": "اعلان جدیدی ندارید.",
+    "notifications": "اعلان‌ها",
+    "viewNotifications": "مشاهده اعلان‌ها"
+  },
+  "reset": {
+    "requestsAndTransactionsAddedOrEditedInThis": "درخواست‌ها و تراکنش‌هایی که در این مرورگر اضافه یا ویرایش کرده‌اید با داده‌های اولیه جایگزین می‌شوند.",
+    "resetData": "بازنشانی داده‌ها",
+    "resetSampleData": "بازنشانی داده‌های نمونه",
+    "resetSampleRecords": "بازنشانی اطلاعات نمونه؟"
+  }
+}

@@ -1,3 +1,4 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import type { ReactTable, RowData } from '@tanstack/react-table';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import type { DataTableFeatures } from './data-table-features';
@@ -11,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from './select';
-import { useTranslation } from 'react-i18next';
 
 const pageSizes = [10, 20, 50];
 
@@ -20,7 +20,7 @@ export function DataTablePagination<TData extends RowData>({
 }: {
   table: ReactTable<DataTableFeatures, TData>;
 }) {
-  const { t } = useTranslation();
+  const t = useSharedTranslation();
   const { pageIndex, pageSize } = table.state.pagination;
   const total = table.getRowCount();
   const pageCount = table.getPageCount();
@@ -29,7 +29,7 @@ export function DataTablePagination<TData extends RowData>({
 
   return (
     <nav
-      aria-label={t('ui.tablePagination')}
+      aria-label={t('table.tablePagination')}
       className="flex flex-wrap items-center justify-between gap-3 border-t border-border p-4 text-xs text-muted-foreground"
     >
       <p role="status" aria-live="polite" aria-atomic="true">
@@ -37,12 +37,12 @@ export function DataTablePagination<TData extends RowData>({
       </p>
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2">
-          <span>{t('ui.rowsPerPage')}</span>
+          <span>{t('table.rowsPerPage')}</span>
           <Select
             value={String(pageSize)}
             onValueChange={(value) => table.setPageSize(Number(value))}
           >
-            <SelectTrigger size="sm" aria-label={t('ui.numberOfRowsPerPage')}>
+            <SelectTrigger size="sm" aria-label={t('table.numberOfRowsPerPage')}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -62,7 +62,7 @@ export function DataTablePagination<TData extends RowData>({
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label={t('ui.firstPage')}
+            aria-label={t('table.firstPage')}
             onClick={() => table.firstPage()}
             disabled={!table.getCanPreviousPage()}
           >
@@ -72,7 +72,7 @@ export function DataTablePagination<TData extends RowData>({
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label={t('ui.previousPage')}
+            aria-label={t('table.previousPage')}
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
@@ -82,7 +82,7 @@ export function DataTablePagination<TData extends RowData>({
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label={t('ui.nextPage')}
+            aria-label={t('table.nextPage')}
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
@@ -92,7 +92,7 @@ export function DataTablePagination<TData extends RowData>({
             type="button"
             variant="outline"
             size="icon-sm"
-            aria-label={t('ui.lastPage')}
+            aria-label={t('table.lastPage')}
             onClick={() => table.lastPage()}
             disabled={!table.getCanNextPage()}
           >

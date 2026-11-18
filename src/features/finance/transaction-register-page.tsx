@@ -14,11 +14,10 @@ import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money, dateLabel } from '@/shared/lib/format';
 import { downloadCsv } from '@/shared/utils/csv';
 import { TransactionDialog } from './components/transaction-dialog';
-import { useTranslation } from 'react-i18next';
 
 export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' }) {
   const t = useFinanceTranslation();
-  const { t: tShared } = useTranslation();
+
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const transactions = useDemo((state) => state.transactions);
@@ -45,7 +44,7 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
             ),
         )
         .sort((a, b) => b.item.date.localeCompare(a.item.date)),
-    [transactions, kind, jobs, customers, invalidRange, from, to, query, t, tShared],
+    [transactions, kind, jobs, customers, invalidRange, from, to, query, t],
   );
   const transactionColumns = useMemo<DataTableColumn<(typeof rows)[number]>[]>(
     () => [
@@ -116,9 +115,10 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
         }) => money(item.amount),
       },
     ],
-    [kind, t, tShared],
+    [kind, t],
   );
-  const title = kind === 'receipt' ? tShared('ui.customerReceipts') : tShared('ui.companyExpenses');
+  const title =
+    kind === 'receipt' ? t('navigation.customerReceipts') : t('navigation.companyExpenses');
   return (
     <>
       <PageHeading
@@ -187,8 +187,8 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
                 [
                   [
                     'تاریخ',
-                    tShared('ui.customer'),
-                    tShared('ui.order'),
+                    t('common.customer'),
+                    t('common.order'),
                     'شرح',
                     'روش',
                     'شماره سند',

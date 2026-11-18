@@ -1,3 +1,4 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import {
   PurchaseStatus,
   availableQuantity,
@@ -20,8 +21,6 @@ import { createColumnHelper } from '@tanstack/react-table';
 import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
-
-import { useTranslation } from 'react-i18next';
 
 const inventoryColumn = createColumnHelper<DataTableFeatures, Part>();
 const purchaseColumn = createColumnHelper<DataTableFeatures, PartPurchase>();
@@ -53,7 +52,7 @@ export function usePartsColumns({
   setDelivery,
 }: PartsColumnOptions) {
   const t = usePartsTranslation();
-  const { t: tShared } = useTranslation();
+  const tShared = useSharedTranslation();
   const inventoryColumns = useMemo(
     () =>
       inventoryColumn.columns([
@@ -127,7 +126,7 @@ export function usePartsColumns({
                   setForm('part');
                 }}
               >
-                {tShared('ui.edit')}
+                {tShared('actions.edit')}
               </Button>
               <Button
                 variant="ghost"
@@ -167,7 +166,7 @@ export function usePartsColumns({
               : t('tables.replenishInventory'),
           { id: 'مرتبط با درخواست', header: t('tables.relatedRequest') },
         ),
-        purchaseColumn.accessor((purchase) => purchase.supplier || tShared('ui.notSpecified'), {
+        purchaseColumn.accessor((purchase) => purchase.supplier || tShared('fields.notSpecified'), {
           id: 'تأمین‌کننده',
           header: t('tables.supplier'),
         }),

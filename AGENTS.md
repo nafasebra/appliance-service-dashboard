@@ -47,8 +47,11 @@ Read the relevant local skill before related work:
 Every feature owns its messages and typed hook in `features/<feature>/i18n/`,
 following the customers reference. Compose bundles in
 `app/i18n.ts`; shared infrastructure must receive bundles rather than import features.
-Keep global controls, navigation and shared domain messages in `shared/i18n/`.
-Feature model-label compatibility maps belong to the feature bundle.
+Keep generic controls in `shared/i18n/locales/{fa,en}/common.json` and access them
+through `useSharedTranslation()`. Shell copy belongs in `app/i18n/` with
+`useAppTranslation()`. Domain statuses, appliance labels and validation messages
+belong to feature catalogs; their compatibility maps register through feature bundles.
+Shared/entity renderers use the registered label lookup instead of importing features.
 
 Sources and project-specific compatibility notes are in `.skills/README.md`.
 User instructions and this project's constraints take precedence over skill defaults.

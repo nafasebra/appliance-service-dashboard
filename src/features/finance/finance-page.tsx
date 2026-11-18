@@ -1,3 +1,4 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import { JobStatus, type Transaction } from '@/entities/service/model/types';
 import { useFinanceTranslation } from './i18n/use-finance-translation';
 import { translateLabel } from '@/shared/i18n';
@@ -26,7 +27,6 @@ import {
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 import { toIsoDate } from '@/shared/lib/date';
-import { useTranslation } from 'react-i18next';
 
 const kindLabels = {
   receipt: 'دریافت از مشتری',
@@ -36,7 +36,7 @@ const kindLabels = {
 
 export function FinancePage() {
   const t = useFinanceTranslation();
-  const { t: tShared } = useTranslation();
+  const tShared = useSharedTranslation();
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
   const addTransaction = useDemo((state) => state.addTransaction);
@@ -143,7 +143,7 @@ export function FinancePage() {
   return (
     <>
       <PageHeading
-        title={tShared('ui.transactionRegister')}
+        title={t('navigation.transactionRegister')}
         description={t('ledger.clarityOnReceiptsPayoutsAndTheCompanyS')}
         action={
           <Button
@@ -172,7 +172,7 @@ export function FinancePage() {
           icon={<ArrowUpRight size={20} />}
         />
         <StatCard
-          title={tShared('ui.netCashFlow')}
+          title={t('common.netCashFlow')}
           value={money(finance.cashFlow)}
           detail={t('ledger.excludingOpeningBalance')}
           icon={<Wallet size={20} />}
@@ -187,7 +187,7 @@ export function FinancePage() {
       </div>
       <div className="flex items-center gap-7.5 p-5.5 bg-accent border border-border rounded-lg mb-5.5 [&_>_div]:shrink-0 [&_span]:block [&_span]:text-muted-foreground [&_span]:text-2xs [&_strong]:block [&_strong]:mt-2.75 [&_strong]:text-primary [&_strong]:text-base [&_p]:text-2xs [&_p]:text-muted-foreground [&_p]:leading-loose [&_p]:border-s [&_p]:border-s-border [&_p]:ps-6.25 max-tablet:flex-wrap max-tablet:gap-5 max-tablet:[&_p]:border-0 max-tablet:[&_p]:p-0 max-mobile:[&_strong]:text-sm dark:[&_strong]:text-primary dark:[&_p]:text-muted-foreground dark:[&_span]:text-muted-foreground dark:bg-accent dark:border-border">
         <div>
-          <span>{tShared('ui.completedServiceValue')}</span>
+          <span>{t('common.completedServiceValue')}</span>
           <strong>{money(finance.serviceValue)}</strong>
         </div>
         <div>
@@ -197,7 +197,7 @@ export function FinancePage() {
         <p>{t('ledger.tomanAndAllAmountsAreSampleValuesCommission')}</p>
       </div>
       <Panel
-        title={tShared('ui.transactionRegister')}
+        title={t('navigation.transactionRegister')}
         subtitle={t('ledger.allDemoTransactionsNoOpeningBalance')}
         action={
           <Button
@@ -255,7 +255,7 @@ export function FinancePage() {
               {t('ledger.transactionType')}
               <Select value={kind} onValueChange={(value) => setKind(value as Transaction['kind'])}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder={tShared('ui.selectAnOption')} />
+                  <SelectValue placeholder={tShared('select.selectAnOption')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -309,7 +309,7 @@ export function FinancePage() {
               />
             </Label>
             <Label className="flex flex-col gap-2 text-ui">
-              {tShared('ui.description')}
+              {tShared('fields.description')}
               <Input name="description" required maxLength={150} />
             </Label>
             <p className="text-2xs text-muted-foreground leading-loose col-span-full">
@@ -336,7 +336,7 @@ export function FinancePage() {
                 type="button"
                 onClick={() => setOpen(false)}
               >
-                {tShared('ui.cancel2')}
+                {tShared('actions.cancel2')}
               </Button>
             </div>
           </form>

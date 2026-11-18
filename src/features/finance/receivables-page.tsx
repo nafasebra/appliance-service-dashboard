@@ -12,11 +12,10 @@ import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money, dateLabel } from '@/shared/lib/format';
 import { downloadCsv } from '@/shared/utils/csv';
 import { TransactionDialog } from './components/transaction-dialog';
-import { useTranslation } from 'react-i18next';
 
 export function ReceivablesPage() {
   const t = useFinanceTranslation();
-  const { t: tShared } = useTranslation();
+
   const jobs = useDemo((state) => state.jobs);
   const customers = useDemo((state) => state.customers);
   const transactions = useDemo((state) => state.transactions);
@@ -36,7 +35,7 @@ export function ReceivablesPage() {
             row.account.outstanding > 0 &&
             `${row.job.id} ${row.customer?.name ?? ''}`.includes(query.trim()),
         ),
-    [jobs, customers, transactions, query, t, tShared],
+    [jobs, customers, transactions, query, t],
   );
   const receivableColumns = useMemo<DataTableColumn<(typeof rows)[number]>[]>(
     () => [
@@ -122,12 +121,12 @@ export function ReceivablesPage() {
         ),
       },
     ],
-    [setReceiptJob, t, tShared],
+    [setReceiptJob, t],
   );
   return (
     <>
       <PageHeading
-        title={tShared('ui.customerReceivables')}
+        title={t('navigation.customerReceivables')}
         description={t('receivables.completedOrdersWhoseFullAmountHasNotYet')}
         action={
           <Button
@@ -135,7 +134,7 @@ export function ReceivablesPage() {
             onClick={() =>
               downloadCsv(
                 [
-                  ['سفارش', 'مشتری', tShared('ui.serviceAmount'), 'دریافت', 'مانده'],
+                  ['سفارش', 'مشتری', t('common.serviceAmount'), 'دریافت', 'مانده'],
                   ...rows.map((row) => [
                     row.job.id,
                     row.customer?.name ?? '',

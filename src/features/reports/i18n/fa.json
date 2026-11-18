@@ -1,4 +1,7 @@
 {
+  "navigation": {
+    "reports": "گزارش‌ها"
+  },
   "performance": {
     "anOverviewOfServicesTeamPerformanceAndCash": "تصویری از خدمات، عملکرد تیم و گردش مالی تمام داده‌های نمونه.",
     "commissionAndTechnicianSharesAreBasedOnCompleted": "کمیسیون و سهم تعمیرکار بر اساس خدمات تکمیل‌شده",

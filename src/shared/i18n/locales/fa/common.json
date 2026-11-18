@@ -1,0 +1,70 @@
+{
+  "actions": {
+    "cancel2": "انصراف",
+    "close": "بستن",
+    "edit": "ویرایش",
+    "save": "ذخیره"
+  },
+  "appTitle": "مدیریت خدمات تعمیرات لوازم خانگی",
+  "dialog": {
+    "titleDialog": "پنجرهٔ {{title}}"
+  },
+  "fields": {
+    "actions": "عملیات",
+    "amount": "مبلغ",
+    "amountToman2": "مبلغ (تومان)",
+    "balance": "مانده",
+    "date": "تاریخ",
+    "description": "شرح",
+    "notSpecified": "تعیین نشده",
+    "phone": "تلفن",
+    "status": "وضعیت"
+  },
+  "filters": {
+    "allStatuses": "همه وضعیت‌ها"
+  },
+  "format": {
+    "valueToman": "{{value}} تومان"
+  },
+  "language": "زبان",
+  "languages": {
+    "english": "English",
+    "persian": "فارسی"
+  },
+  "layout": {
+    "workspaceServiceManagement": "فضای کاری / مدیریت خدمات"
+  },
+  "pagination": {
+    "page": "صفحه {{page}} از {{pages}}",
+    "range": "{{start}} تا {{end}} از {{total}} مورد"
+  },
+  "select": {
+    "loadingCalendar": "در حال بارگذاری تقویم…",
+    "selectAnOption": "انتخاب کنید",
+    "selectDate": "انتخاب تاریخ"
+  },
+  "sidebar": {
+    "closeMenu": "بستن منو",
+    "toggleMenu": "باز و بسته کردن منو"
+  },
+  "storage": {
+    "browserStorageIsUnavailable": "ذخیره‌سازی مرورگر در دسترس نیست",
+    "changesWillNotBeSavedAfterYouClose": "تغییرات پس از بستن صفحه حفظ نمی‌شوند."
+  },
+  "table": {
+    "ascendingSwitchToDescending": "صعودی؛ تغییر به نزولی",
+    "breadcrumb": "مسیر صفحه",
+    "descendingClearSorting": "نزولی؛ حذف مرتب‌سازی",
+    "firstPage": "صفحه اول",
+    "lastPage": "صفحه آخر",
+    "more": "موارد بیشتر",
+    "nextPage": "صفحه بعد",
+    "noRecordsToDisplay": "موردی برای نمایش وجود ندارد.",
+    "noResultsFoundTryDifferentFilters": "موردی پیدا نشد. فیلترها را تغییر دهید.",
+    "numberOfRowsPerPage": "تعداد ردیف در هر صفحه",
+    "previousPage": "صفحه قبل",
+    "rowsPerPage": "تعداد در صفحه",
+    "sortAscending": "مرتب‌سازی صعودی",
+    "tablePagination": "صفحه‌بندی جدول"
+  }
+}

@@ -17,11 +17,9 @@ import {
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 
-import { useTranslation } from 'react-i18next';
-
 export function TechnicianSpecialtiesPage() {
   const t = useTechniciansTranslation();
-  const { t: tShared } = useTranslation();
+
   const technicians = useDemo((state) => state.technicians);
   const saveTechnician = useDemo((state) => state.saveTechnician);
   const [query, setQuery] = useState('');
@@ -33,7 +31,7 @@ export function TechnicianSpecialtiesPage() {
       [...new Set(technicians.map((tech) => tech.specialty))].filter((name) =>
         name.includes(query.trim()),
       ),
-    [technicians, query, t, tShared],
+    [technicians, query, t],
   );
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -51,7 +49,7 @@ export function TechnicianSpecialtiesPage() {
         const members = technicians.filter((tech) => tech.specialty === name);
         return { name, members };
       }),
-    [specialties, technicians, t, tShared],
+    [specialties, technicians, t],
   );
   const specialtyColumns = useMemo<DataTableColumn<(typeof specialtyRows)[number]>[]>(
     () => [
@@ -76,12 +74,12 @@ export function TechnicianSpecialtiesPage() {
         accessorFn: ({ members }) => members.map((tech) => tech.name).join('، '),
       },
     ],
-    [t, tShared],
+    [t],
   );
   return (
     <>
       <PageHeading
-        title={tShared('ui.technicianSpecialties')}
+        title={t('navigation.technicianSpecialties')}
         description={t('specialties.viewTheTeamSExpertiseAndAssignEach')}
       />
       {error || message ? (
@@ -92,10 +90,10 @@ export function TechnicianSpecialtiesPage() {
       <Panel title={t('specialties.assignOrChangeSpecialty')}>
         <form onSubmit={submit} className="flex flex-wrap items-end gap-4 p-6">
           <Label className="flex flex-col gap-2">
-            {tShared('ui.technician')}
+            {t('common.technician')}
             <Select name="technicianId" required>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder={tShared('ui.selectTechnician')} />
+                <SelectValue placeholder={t('common.selectTechnician')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>

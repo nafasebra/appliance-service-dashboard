@@ -1,3 +1,4 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import { JobStatus, type Technician } from '@/entities/service/model/types';
 import { useTechniciansTranslation } from './i18n/use-technicians-translation';
 import { translateLabel } from '@/shared/i18n';
@@ -13,11 +14,9 @@ import { Label } from '@/shared/ui/label';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 
-import { useTranslation } from 'react-i18next';
-
 export function TechnicianManagementPage() {
   const t = useTechniciansTranslation();
-  const { t: tShared } = useTranslation();
+  const tShared = useSharedTranslation();
   const technicians = useDemo((state) => state.technicians);
   const jobs = useDemo((state) => state.jobs);
   const saveTechnician = useDemo((state) => state.saveTechnician);
@@ -99,7 +98,7 @@ export function TechnicianManagementPage() {
               setEditor(tech);
             }}
           >
-            {tShared('ui.edit')}
+            {tShared('actions.edit')}
           </Button>
         ),
       },
@@ -109,7 +108,7 @@ export function TechnicianManagementPage() {
   return (
     <>
       <PageHeading
-        title={tShared('ui.technicianManagement')}
+        title={t('navigation.technicianManagement')}
         description={t('management.teamContactDetailsSpecialtiesAndServiceAreas')}
         action={
           <Button
@@ -153,7 +152,7 @@ export function TechnicianManagementPage() {
               <Input name="name" required maxLength={100} defaultValue={editing?.name} />
             </Label>
             <Label className="flex flex-col gap-2">
-              {tShared('ui.phone')}
+              {tShared('fields.phone')}
               <Input
                 name="phone"
                 type="tel"
@@ -183,9 +182,9 @@ export function TechnicianManagementPage() {
               </Alert>
             ) : null}
             <div className="col-span-full flex gap-2">
-              <Button type="submit">{tShared('ui.save')}</Button>
+              <Button type="submit">{tShared('actions.save')}</Button>
               <Button type="button" variant="outline" onClick={() => setEditor(null)}>
-                {tShared('ui.cancel2')}
+                {tShared('actions.cancel2')}
               </Button>
             </div>
           </form>

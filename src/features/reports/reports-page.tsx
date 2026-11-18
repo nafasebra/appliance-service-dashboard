@@ -1,3 +1,4 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import { JobStatus, appliances } from '@/entities/service/model/types';
 import { useReportsTranslation } from './i18n/use-reports-translation';
 import { translateLabel } from '@/shared/i18n';
@@ -10,11 +11,10 @@ import { PageHeading, Panel } from '@/shared/ui/primitives';
 import { money } from '@/shared/lib/format';
 import { Progress } from '@/shared/ui/progress';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
-import { useTranslation } from 'react-i18next';
 
 export function ReportsPage() {
   const t = useReportsTranslation();
-  const { t: tShared } = useTranslation();
+  const tShared = useSharedTranslation();
   const jobs = useDemo((state) => state.jobs);
   const technicians = useDemo((state) => state.technicians);
   const transactions = useDemo((state) => state.transactions);
@@ -109,7 +109,10 @@ export function ReportsPage() {
         >
           <CashChart />
         </Panel>
-        <Panel title={t('performance.requestsByAppliance')} subtitle={tShared('ui.allStatuses')}>
+        <Panel
+          title={t('performance.requestsByAppliance')}
+          subtitle={tShared('filters.allStatuses')}
+        >
           <div className="pt-2 px-6 pb-6.25 flex flex-col gap-5.25 [&_>_div_>_div:first-child]:flex [&_>_div_>_div:first-child]:justify-between [&_>_div_>_div:first-child]:text-2xs [&_>_div_>_div:first-child]:text-muted-foreground [&_>_div_>_div:first-child]:mb-2.5 [&_strong]:font-normal">
             {appliances.map((appliance) => {
               const count = jobs.filter((job) => job.appliance === appliance).length;

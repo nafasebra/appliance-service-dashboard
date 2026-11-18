@@ -1,3 +1,4 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import { useTranslation } from 'react-i18next';
 import {
   Select,
@@ -9,7 +10,8 @@ import {
 } from '@/shared/ui/select';
 
 export function LanguageSwitcher() {
-  const { t, i18n } = useTranslation();
+  const tShared = useSharedTranslation();
+  const { i18n } = useTranslation();
 
   return (
     <Select
@@ -19,19 +21,19 @@ export function LanguageSwitcher() {
         void i18n.changeLanguage(language);
       }}
     >
-      <SelectTrigger size="sm" aria-label={t('language')}>
+      <SelectTrigger size="sm" aria-label={tShared('language')}>
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <SelectItem value="fa">
             <span lang="fa" dir="rtl">
-              {t('languages.persian')}
+              {tShared('languages.persian')}
             </span>
           </SelectItem>
           <SelectItem value="en">
             <span lang="en" dir="ltr">
-              {t('languages.english')}
+              {tShared('languages.english')}
             </span>
           </SelectItem>
         </SelectGroup>

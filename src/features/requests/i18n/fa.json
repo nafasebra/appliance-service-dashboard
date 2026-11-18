@@ -1,4 +1,24 @@
 {
+  "actions": {
+    "newRequest": "درخواست جدید"
+  },
+  "appliances": {
+    "airConditioner": "کولر گازی",
+    "dishwasher": "ظرفشویی",
+    "refrigerator": "یخچال",
+    "stove": "اجاق گاز",
+    "washingMachine": "لباسشویی"
+  },
+  "common": {
+    "applianceType": "نوع دستگاه",
+    "customer": "مشتری",
+    "customerOrder": "سفارش مشتری",
+    "order": "سفارش",
+    "serviceAmount": "مبلغ خدمت",
+    "technician": "تعمیرکار",
+    "totalRequests": "کل درخواست‌ها",
+    "unassigned": "بدون تخصیص"
+  },
   "editor": {
     "amountsMustBeNonNegativeWholeNumbersCommission": "مبلغ‌ها باید عدد صحیح و نامنفی باشند و کمیسیون از مبلغ خدمت بیشتر نباشد.",
     "applianceBrand": "برند دستگاه",
@@ -27,11 +47,35 @@
     "searchCustomerApplianceOrRequestId": "جستجوی مشتری، دستگاه یا کد درخواست…",
     "searchRequests": "جستجوی درخواست"
   },
+  "navigation": {
+    "serviceRequests": "درخواست‌های خدمات"
+  },
+  "priorities": {
+    "normal": "عادی",
+    "urgent": "فوری"
+  },
+  "statuses": {
+    "accepted": "تأییدشده، در انتظار تخصیص",
+    "awaitingDispatch": "در انتظار اعزام",
+    "awaitingReview": "در انتظار بررسی",
+    "cancelled": "لغو شده",
+    "completed": "تکمیل شده",
+    "inProgress": "در حال انجام",
+    "scheduled": "برنامه‌ریزی شده"
+  },
   "table": {
     "details": "جزئیات",
     "detailsForId": "جزئیات {{id}}",
     "notAssigned": "تخصیص داده نشده",
     "requestAppliance": "درخواست / دستگاه",
     "visitTime": "زمان مراجعه"
+  },
+  "validation": {
+    "aCompletedRequestWithFinancialTransactionsMustRemain": "درخواستی که تراکنش مالی دارد باید تکمیل‌شده باقی بماند. ابتدا برای اصلاح مالی، فرایند برگشت یا ابطال تراکنش تعریف کنید.",
+    "anOrderWithFinancialTransactionsCannotBeTransferred": "سفارش دارای تراکنش مالی را نمی‌توان به مشتری دیگری منتقل کرد.",
+    "anOrderWithReceiptsCannotBeCancelledOr": "سفارش دارای دریافت وجه را بدون اصلاح مالی نمی‌توان لغو کرد یا مبلغ آن را کمتر از دریافت ثبت‌شده قرار داد.",
+    "orderDetailsAreInvalid": "اطلاعات سفارش معتبر نیست.",
+    "theTechnicianCannotBeChangedAfterAPayout": "پس از ثبت پرداخت به تعمیرکار، امکان تغییر تعمیرکار این درخواست وجود ندارد.",
+    "theTechnicianSShareCannotBeLessThan": "سهم تعمیرکار نمی‌تواند از مجموع پرداخت‌های ثبت‌شده برای این درخواست کمتر باشد."
   }
 }

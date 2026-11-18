@@ -9,6 +9,12 @@
     "techniciansActiveOrders": "سفارش‌های در دست انجام تعمیرکاران",
     "trackAssignedOpenOrdersVisitTimesAndProgress": "پیگیری سفارش‌های باز تخصیص‌یافته، زمان مراجعه و وضعیت رسیدگی."
   },
+  "common": {
+    "awaitingDispatch": "در انتظار اعزام",
+    "inProgress": "در حال انجام",
+    "selectTechnician": "انتخاب تعمیرکار",
+    "technician": "تعمیرکار"
+  },
   "finance": {
     "allTechnicians": "همه تعمیرکاران",
     "amountPayable": "مانده قابل پرداخت",
@@ -46,6 +52,13 @@
     "teamContactDetailsSpecialtiesAndServiceAreas": "اطلاعات تماس، تخصص و محدوده فعالیت اعضای تیم.",
     "teamMembers": "اعضای تیم",
     "technicianName": "نام تعمیرکار"
+  },
+  "navigation": {
+    "activeOrders": "سفارش‌های در دست انجام",
+    "technicianFinances": "امور مالی تعمیرکاران",
+    "technicianManagement": "مدیریت تعمیرکاران",
+    "technicians": "تعمیرکاران",
+    "technicianSpecialties": "تخصص‌های تعمیرکاران"
   },
   "specialties": {
     "assignOrChangeSpecialty": "تعیین یا تغییر تخصص",

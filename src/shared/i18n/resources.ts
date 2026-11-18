@@ -64,7 +64,7 @@ export function translationOptions(
     fallbackLng: 'fa',
     supportedLngs: [...supportedLanguages],
     load: 'languageOnly',
-    defaultNS: 'translation',
+    defaultNS: 'common',
     ns: bundles.map(({ namespace }) => namespace),
     returnEmptyString: false,
     initAsync: false,

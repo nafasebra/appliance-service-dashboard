@@ -1,3 +1,4 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import { useSettingsTranslation } from './i18n/use-settings-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useState, type FormEvent } from 'react';
@@ -39,11 +40,10 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from '@/shared/ui/alert-dialog';
-import { useTranslation } from 'react-i18next';
 
 export function SettingsPage() {
   const t = useSettingsTranslation();
-  const { t: tShared } = useTranslation();
+  const tShared = useSharedTranslation();
   const settings = useCompanySettings((state) => state.settings);
   const saveSettings = useCompanySettings((state) => state.saveSettings);
   const theme = useTheme((state) => state.theme);
@@ -79,7 +79,7 @@ export function SettingsPage() {
   return (
     <>
       <PageHeading
-        title={tShared('ui.settings')}
+        title={t('navigation.settings')}
         description={t('company.manageCompanyDetailsOrderDefaultsAndDashboardAppearance')}
       />
       <form onSubmit={submit} className="flex flex-col gap-6">
@@ -173,8 +173,8 @@ export function SettingsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="normal">{tShared('ui.normal')}</SelectItem>
-                    <SelectItem value="urgent">{tShared('ui.urgent')}</SelectItem>
+                    <SelectItem value="normal">{t('common.normal')}</SelectItem>
+                    <SelectItem value="urgent">{t('common.urgent')}</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -227,7 +227,7 @@ export function SettingsPage() {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>{tShared('ui.cancel2')}</AlertDialogCancel>
+                <AlertDialogCancel>{tShared('actions.cancel2')}</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => {
                     setDraft({ ...defaultCompanySettings });

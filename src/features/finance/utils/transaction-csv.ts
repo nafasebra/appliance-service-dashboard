@@ -9,9 +9,9 @@ export function downloadTransactionsCsv(
 ): void {
   const rows = [
     [
-      i18next.t('ui.date'),
+      i18next.t('fields.date'),
       i18next.t('finance:ledger.type'),
-      i18next.t('ui.description'),
+      i18next.t('fields.description'),
       i18next.t('finance:export.requests'),
       i18next.t('finance:register.amountToman'),
     ],

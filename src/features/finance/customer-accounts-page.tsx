@@ -18,11 +18,10 @@ import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money } from '@/shared/lib/format';
 import { CustomerStatement } from './components/customer-statement';
 import { TransactionDialog } from './components/transaction-dialog';
-import { useTranslation } from 'react-i18next';
 
 export function CustomerAccountsPage() {
   const t = useFinanceTranslation();
-  const { t: tShared } = useTranslation();
+
   const customers = useDemo((state) => state.customers);
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
@@ -36,7 +35,7 @@ export function CustomerAccountsPage() {
         customer,
         ...getCustomerAccount(customer.id, jobs, transactions),
       })),
-    [customers, jobs, transactions, t, tShared],
+    [customers, jobs, transactions, t],
   );
   const filtered = useMemo(
     () =>
@@ -50,7 +49,7 @@ export function CustomerAccountsPage() {
                 ? row.credit > 0
                 : row.outstanding === 0 && row.credit === 0)),
       ),
-    [accounts, query, status, t, tShared],
+    [accounts, query, status, t],
   );
   const accountColumns = useMemo<DataTableColumn<(typeof filtered)[number]>[]>(
     () => [
@@ -100,12 +99,12 @@ export function CustomerAccountsPage() {
         ),
       },
     ],
-    [setSelected, t, tShared],
+    [setSelected, t],
   );
   return (
     <>
       <PageHeading
-        title={tShared('ui.customerAccounts')}
+        title={t('navigation.customerAccounts')}
         description={t('accounts.detailedStatementsReceiptsAndBalancesForEachCustomer')}
       />
       <div className="mb-6 grid gap-4 md:grid-cols-3">
@@ -116,7 +115,7 @@ export function CustomerAccountsPage() {
           icon={<Wallet />}
         />
         <StatCard
-          title={tShared('ui.customerReceivables')}
+          title={t('navigation.customerReceivables')}
           value={money(accounts.reduce((sum, row) => sum + row.outstanding, 0))}
           detail={t('accounts.outstandingBalanceByOrder')}
           icon={<Wallet />}

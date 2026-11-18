@@ -25,6 +25,16 @@
     "receivedIncomingToman": "دریافت {{incoming}} تومان",
     "viewChartValues": "مشاهده اعداد نمودار"
   },
+  "common": {
+    "companyCommission": "کمیسیون شرکت",
+    "completedServiceValue": "ارزش خدمات تکمیل‌شده",
+    "customer": "مشتری",
+    "customerOrder": "سفارش مشتری",
+    "netCashFlow": "خالص گردش نقدی",
+    "order": "سفارش",
+    "received2": "دریافت",
+    "serviceAmount": "مبلغ خدمت"
+  },
   "export": {
     "requests": "درخواست"
   },
@@ -59,6 +69,25 @@
     "totalRecordedReceipts": "کل دریافت ثبت‌شده",
     "transactionType": "نوع تراکنش",
     "type": "نوع"
+  },
+  "navigation": {
+    "companyExpenses": "هزینه‌های شرکت",
+    "customerAccounts": "حساب مشتریان",
+    "customerReceipts": "دریافت‌های مشتریان",
+    "customerReceivables": "مطالبات مشتریان",
+    "transactionRegister": "دفتر گردش مالی"
+  },
+  "paymentMethods": {
+    "bankTransfer": "واریز بانکی",
+    "cardTerminal": "کارت‌خوان",
+    "cash": "نقدی"
+  },
+  "paymentStatuses": {
+    "amountNotFinalized": "مبلغ نهایی نشده",
+    "fullyPaid": "پرداخت کامل",
+    "overpaid": "اضافه‌پرداخت",
+    "partiallyPaid": "پرداخت جزئی",
+    "unpaid": "پرداخت‌نشده"
   },
   "receivables": {
     "completedOrdersWhoseFullAmountHasNotYet": "سفارش‌های تکمیل‌شده‌ای که هنوز تمام مبلغ آن‌ها دریافت نشده است.",
@@ -113,5 +142,14 @@
     "trackingDocumentReferenceOptional": "شماره پیگیری / سند (اختیاری)",
     "transactionDate": "تاریخ تراکنش",
     "transactionDescription": "شرح تراکنش"
+  },
+  "validation": {
+    "collectBeforePayout": "پیش از تسویه تعمیرکار، مانده مشتری باید کامل دریافت شود.",
+    "receiptsRequireANonCancelledOrderWithA": "برای دریافت وجه، سفارش باید لغونشده و دارای مبلغ مشخص باشد.",
+    "theAmountDateDescriptionOrOrderReferenceIs": "مبلغ، تاریخ، شرح یا ارتباط تراکنش با سفارش معتبر نیست.",
+    "theOrderAssociatedWithThisReceiptWasNot": "سفارش مرتبط با دریافت وجه پیدا نشد.",
+    "theReceiptExceedsTheOrderSCollectibleBalance": "مبلغ دریافت از مانده قابل دریافت سفارش بیشتر است.",
+    "theTransactionCouldNotBeRecorded": "ثبت تراکنش انجام نشد.",
+    "thisTransactionHasAlreadyBeenRecorded": "این تراکنش قبلاً ثبت شده است."
   }
 }

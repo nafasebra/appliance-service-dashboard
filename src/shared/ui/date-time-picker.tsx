@@ -1,10 +1,10 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import { lazy, Suspense, useState, type ComponentProps } from 'react';
 import { CalendarIcon } from 'lucide-react';
 import { formatJalaliDate, parseIsoDate, toIsoDate } from '@/shared/lib/date';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
-import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
 
 const JalaliCalendar = lazy(() =>
@@ -24,9 +24,9 @@ function JalaliDatePicker({
   value,
   onValueChange,
   required,
-  'aria-label': ariaLabel = i18next.t('ui.selectDate'),
+  'aria-label': ariaLabel = i18next.t('select.selectDate'),
 }: JalaliDatePickerProps) {
-  const { t } = useTranslation();
+  const t = useSharedTranslation();
   const [open, setOpen] = useState(false);
   const selected = parseIsoDate(value);
 
@@ -51,7 +51,7 @@ function JalaliDatePicker({
           <Suspense
             fallback={
               <div className="grid h-75 w-70 place-items-center text-xs text-muted-foreground">
-                {t('ui.loadingCalendar')}
+                {t('select.loadingCalendar')}
               </div>
             }
           >

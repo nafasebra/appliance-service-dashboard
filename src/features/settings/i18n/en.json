@@ -1,4 +1,8 @@
 {
+  "common": {
+    "normal": "Normal",
+    "urgent": "Urgent"
+  },
   "company": {
     "appearance": "Appearance",
     "branchName": "Branch name",
@@ -27,6 +31,9 @@
     "themeChangesApplyImmediatelyAndAreSavedFor": "Theme changes apply immediately and are saved for this browser.",
     "theseDefaultsApplyOnlyToNewOrdersAnd": "These defaults apply only to new orders and can be changed in the order form.",
     "youHaveUnsavedChanges": "You have unsaved changes."
+  },
+  "navigation": {
+    "settings": "Settings"
   },
   "validation": {
     "browserStorageIsUnavailableSettingsWereNotSaved": "Browser storage is unavailable. Settings were not saved.",

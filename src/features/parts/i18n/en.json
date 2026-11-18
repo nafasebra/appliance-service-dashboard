@@ -1,4 +1,9 @@
 {
+  "common": {
+    "applianceType": "Appliance type",
+    "customerOrder": "Customer order",
+    "selectTechnician": "Select technician"
+  },
   "inventory": {
     "addPart": "Add part",
     "allAppliances": "All appliances",
@@ -39,6 +44,13 @@
     "suggestedSupplier": "Suggested supplier",
     "thePartMustMatchTheApplianceTypeOf": "The part must match the appliance type of an open order.",
     "uniqueCode": "Unique code"
+  },
+  "navigation": {
+    "allocationAndDelivery": "Allocation and delivery",
+    "partNeedsAndAvailability": "Part needs and availability",
+    "partsAndInventory": "Parts and inventory",
+    "partsManagement": "Parts management",
+    "procurementAndPurchasing": "Procurement and purchasing"
   },
   "orders": {
     "idOrderUnavailable": "{{id}} · Order unavailable"

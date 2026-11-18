@@ -1,12 +1,12 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import * as React from 'react';
 import { ChevronRight, MoreHorizontal } from 'lucide-react';
 import { Slot } from 'radix-ui';
 import { cn } from '@/shared/lib/utils';
-import { useTranslation } from 'react-i18next';
 
 function Breadcrumb(props: React.ComponentProps<'nav'>) {
-  const { t } = useTranslation();
-  return <nav aria-label={t('ui.breadcrumb')} data-slot="breadcrumb" {...props} />;
+  const t = useSharedTranslation();
+  return <nav aria-label={t('table.breadcrumb')} data-slot="breadcrumb" {...props} />;
 }
 
 function BreadcrumbList({ className, ...props }: React.ComponentProps<'ol'>) {
@@ -75,7 +75,7 @@ function BreadcrumbSeparator({ children, className, ...props }: React.ComponentP
 }
 
 function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<'span'>) {
-  const { t } = useTranslation();
+  const t = useSharedTranslation();
   return (
     <span
       data-slot="breadcrumb-ellipsis"
@@ -85,7 +85,7 @@ function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<'span'
       {...props}
     >
       <MoreHorizontal className="size-4" />
-      <span className="sr-only">{t('ui.more')}</span>
+      <span className="sr-only">{t('table.more')}</span>
     </span>
   );
 }

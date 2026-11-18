@@ -1,3 +1,4 @@
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import { useTechniciansTranslation } from './i18n/use-technicians-translation';
 import { getOrderAccount } from '@/entities/service/model/customer-account';
 import { translateLabel } from '@/shared/i18n';
@@ -23,11 +24,10 @@ import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money, dateLabel } from '@/shared/lib/format';
 import { toIsoDate } from '@/shared/lib/date';
-import { useTranslation } from 'react-i18next';
 
 export function TechnicianFinancePage() {
   const t = useTechniciansTranslation();
-  const { t: tShared } = useTranslation();
+  const tShared = useSharedTranslation();
   const technicians = useDemo((state) => state.technicians);
   const jobs = useDemo((state) => state.jobs);
   const transactions = useDemo((state) => state.transactions);
@@ -242,12 +242,12 @@ export function TechnicianFinancePage() {
   return (
     <>
       <PageHeading
-        title={tShared('ui.technicianFinances')}
+        title={t('navigation.technicianFinances')}
         description={t('finance.completedServiceSharesRecordedPayoutsAndEachTechnician')}
       />
       <Select value={technicianId} onValueChange={(value) => setTechnicianId(value)}>
-        <SelectTrigger aria-label={tShared('ui.selectTechnician')} className="mb-4">
-          <SelectValue placeholder={tShared('ui.selectAnOption')} />
+        <SelectTrigger aria-label={t('common.selectTechnician')} className="mb-4">
+          <SelectValue placeholder={tShared('select.selectAnOption')} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
@@ -320,7 +320,7 @@ export function TechnicianFinancePage() {
               {t('finance.orderBalance')} {money(getJobPayable(jobId, jobs, transactions))}
             </p>
             <Label className="flex flex-col gap-2">
-              {tShared('ui.amountToman2')}
+              {tShared('fields.amountToman2')}
               <Input
                 name="amount"
                 type="number"
@@ -335,7 +335,7 @@ export function TechnicianFinancePage() {
               <JalaliDatePicker name="date" value={date} onValueChange={setDate} required />
             </Label>
             <Label className="flex flex-col gap-2">
-              {tShared('ui.description')}
+              {tShared('fields.description')}
               <Input name="description" required maxLength={150} />
             </Label>
             {error ? (
@@ -349,7 +349,7 @@ export function TechnicianFinancePage() {
             <div className="flex gap-2">
               <Button type="submit">{t('finance.recordPayout')}</Button>
               <Button type="button" variant="outline" onClick={() => setJobId('')}>
-                {tShared('ui.cancel2')}
+                {tShared('actions.cancel2')}
               </Button>
             </div>
           </form>

@@ -1,4 +1,8 @@
 {
+  "common": {
+    "normal": "عادی",
+    "urgent": "فوری"
+  },
   "company": {
     "appearance": "ظاهر برنامه",
     "branchName": "نام شعبه",
@@ -27,6 +31,9 @@
     "themeChangesApplyImmediatelyAndAreSavedFor": "انتخاب پوسته فوراً اعمال و برای همین مرورگر ذخیره می‌شود.",
     "theseDefaultsApplyOnlyToNewOrdersAnd": "این مقادیر فقط روی سفارش‌های جدید اعمال می‌شوند و در فرم سفارش قابل تغییرند.",
     "youHaveUnsavedChanges": "تغییرات ذخیره‌نشده دارید."
+  },
+  "navigation": {
+    "settings": "تنظیمات"
   },
   "validation": {
     "browserStorageIsUnavailableSettingsWereNotSaved": "ذخیره‌سازی مرورگر در دسترس نیست؛ تنظیمات ذخیره نشد.",
