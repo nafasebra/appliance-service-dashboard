@@ -188,6 +188,9 @@ Persian RTL UI -> feature hooks/use cases -> API adapters -> backend -> database
 
 - Prefer small, cohesive functions and components with descriptive names.
 - Use explicit domain types; avoid `any`, unexplained type assertions, and redundant state.
+- Use the existing string enums for job, payment, part-need and purchase statuses
+  in comparisons, assignments and label maps. Preserve enum string values because
+  browser records and translations depend on them.
 - Extract repeated logic when it has a real shared purpose. Avoid generic frameworks
   for a single use case, unexplained constants, dead code, and commented-out code.
 - Keep domain calculations pure and independent of React and browser APIs.

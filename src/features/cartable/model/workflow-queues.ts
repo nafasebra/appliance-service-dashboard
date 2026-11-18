@@ -1,4 +1,5 @@
-import type { Job, Transaction } from '../../../entities/service/model/types.ts';
+import { JobStatus, type Job, type Transaction } from '../../../entities/service/model/types.ts';
+
 import { getOrderAccount } from '../../../entities/service/model/customer-account.ts';
 
 export const workflowQueues = [
@@ -19,15 +20,16 @@ export function getWorkflowAccount(job: Job, transactions: Transaction[]) {
   );
   return {
     ...account,
-    payable: job.status === 'completed' ? Math.max(0, job.total - job.commission - payouts) : 0,
+    payable:
+      job.status === JobStatus.Completed ? Math.max(0, job.total - job.commission - payouts) : 0,
   };
 }
 
 export function getWorkflowQueue(job: Job, transactions: Transaction[]): WorkflowQueue {
-  if (job.status === 'new') return 'inbox';
-  if (job.status === 'accepted') return 'assignment';
-  if (job.status === 'scheduled' || job.status === 'working') return 'active';
-  if (job.status === 'cancelled') return 'archive';
+  if (job.status === JobStatus.New) return 'inbox';
+  if (job.status === JobStatus.Accepted) return 'assignment';
+  if (job.status === JobStatus.Scheduled || job.status === JobStatus.Working) return 'active';
+  if (job.status === JobStatus.Cancelled) return 'archive';
   const account = getWorkflowAccount(job, transactions);
   if (account.outstanding > 0) return 'collection';
   if (account.payable > 0) return 'settlement';

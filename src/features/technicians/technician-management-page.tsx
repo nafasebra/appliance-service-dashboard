@@ -1,10 +1,11 @@
+import { JobStatus, type Technician } from '@/entities/service/model/types';
 import { useTechniciansTranslation } from './i18n/use-technicians-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState, type FormEvent } from 'react';
 import { getFormText } from '@/shared/utils/form';
 import { Plus } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
-import type { Technician } from '@/entities/service/model/types';
+
 import { PageHeading, Panel, Modal, EmptyState } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
@@ -75,12 +76,14 @@ export function TechnicianManagementPage() {
         accessorFn: (tech) =>
           jobs.filter(
             (job) =>
-              job.technicianId === tech.id && !['completed', 'cancelled'].includes(job.status),
+              job.technicianId === tech.id &&
+              ![JobStatus.Completed, JobStatus.Cancelled].includes(job.status),
           ).length,
         cell: ({ row: { original: tech } }) =>
           jobs.filter(
             (job) =>
-              job.technicianId === tech.id && !['completed', 'cancelled'].includes(job.status),
+              job.technicianId === tech.id &&
+              ![JobStatus.Completed, JobStatus.Cancelled].includes(job.status),
           ).length,
       },
       {

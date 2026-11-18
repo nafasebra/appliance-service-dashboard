@@ -1,3 +1,4 @@
+import { JobStatus } from '../../entities/service/model/types.ts';
 import { Link } from '@tanstack/react-router';
 import { Bell } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
@@ -11,7 +12,7 @@ import { translateLabel } from '@/shared/i18n';
 export function NotificationButton() {
   const { t } = useTranslation();
   const jobs = useDemo((state) => state.jobs);
-  const newJobs = jobs.filter((job) => job.status === 'new');
+  const newJobs = jobs.filter((job) => job.status === JobStatus.New);
 
   return (
     <Popover>

@@ -1,3 +1,4 @@
+import { JobStatus, type Job } from '@/entities/service/model/types';
 import { useDispatchTranslation } from './i18n/use-dispatch-translation';
 import { translateLabel } from '@/shared/i18n';
 import { JobStatusBadge } from '@/entities/service/ui/job-status-badge';
@@ -5,7 +6,7 @@ import { cn } from '@/shared/lib/utils';
 import { useState } from 'react';
 import { Clock3, MapPin, Plus } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
-import { type Job } from '@/entities/service/model/types';
+
 import { JobEditor } from '@/features/requests/job-components';
 import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';
 
@@ -23,7 +24,7 @@ export function DispatchPage() {
   const technicians = useDemo((state) => state.technicians);
   const [date, setDate] = useState('2026-11-16');
   const [editor, setEditor] = useState<Job | 'new' | null>(null);
-  const visits = jobs.filter((job) => job.date === date && job.status !== 'cancelled');
+  const visits = jobs.filter((job) => job.date === date && job.status !== JobStatus.Cancelled);
   return (
     <>
       <PageHeading

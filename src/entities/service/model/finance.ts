@@ -1,7 +1,7 @@
-import type { Job, Transaction } from './types.ts';
+import { JobStatus, type Job, type Transaction } from './types.ts';
 
 export function summarizeFinance(jobs: Job[], transactions: Transaction[]) {
-  const completed = jobs.filter((job) => job.status === 'completed');
+  const completed = jobs.filter((job) => job.status === JobStatus.Completed);
   const serviceValue = completed.reduce((sum, job) => sum + job.total, 0);
   const commission = completed.reduce((sum, job) => sum + job.commission, 0);
   const receipts = transactions

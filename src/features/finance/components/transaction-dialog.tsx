@@ -1,8 +1,9 @@
+import { JobStatus, type Transaction } from '@/entities/service/model/types';
 import { useFinanceTranslation } from '../i18n/use-finance-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useRef, useState, type FormEvent } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
-import type { Transaction } from '@/entities/service/model/types';
+
 import { paymentMethodLabels, getOrderAccount } from '@/entities/service/model/customer-account';
 import { Modal } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
@@ -46,7 +47,8 @@ export function TransactionDialog({
   const submitting = useRef(false);
   const selectedJob = jobs.find((job) => job.id === jobId);
   const eligible = jobs.filter(
-    (job) => job.status !== 'cancelled' && job.total > getOrderAccount(job, transactions).receipts,
+    (job) =>
+      job.status !== JobStatus.Cancelled && job.total > getOrderAccount(job, transactions).receipts,
   );
   const remaining = selectedJob
     ? selectedJob.total - getOrderAccount(selectedJob, transactions).receipts
@@ -106,7 +108,7 @@ export function TransactionDialog({
             </Select>
             <p className="text-xs text-muted-foreground">
               {t('transaction.collectibleBalance')} {money(remaining)}
-              {selectedJob && selectedJob.status !== 'completed'
+              {selectedJob && selectedJob.status !== JobStatus.Completed
                 ? t('transaction.thisReceiptWillBeShownAsAnAdvance')
                 : ''}
             </p>

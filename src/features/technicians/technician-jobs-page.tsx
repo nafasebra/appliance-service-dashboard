@@ -1,7 +1,8 @@
+import { JobStatus, type Job } from '@/entities/service/model/types';
 import { useTechniciansTranslation } from './i18n/use-technicians-translation';
 import { useState } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
-import type { Job } from '@/entities/service/model/types';
+
 import { JobTable, JobEditor } from '@/features/requests/job-components';
 import { PageHeading, Panel } from '@/shared/ui/primitives';
 import {
@@ -26,7 +27,9 @@ export function TechnicianJobsPage() {
   const active = jobs.filter(
     (job) =>
       job.technicianId &&
-      ['new', 'accepted', 'scheduled', 'working'].includes(job.status) &&
+      [JobStatus.New, JobStatus.Accepted, JobStatus.Scheduled, JobStatus.Working].includes(
+        job.status,
+      ) &&
       (technicianId === 'all' || job.technicianId === technicianId) &&
       (status === 'all' || job.status === status),
   );

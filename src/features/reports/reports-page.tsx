@@ -1,8 +1,9 @@
+import { JobStatus, appliances } from '@/entities/service/model/types';
 import { useReportsTranslation } from './i18n/use-reports-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
-import { appliances } from '@/entities/service/model/types';
+
 import { summarizeFinance } from '@/entities/service/model/finance';
 import { CashChart } from '@/features/finance/cash-chart';
 import { PageHeading, Panel } from '@/shared/ui/primitives';
@@ -54,12 +55,13 @@ export function ReportsPage() {
       {
         id: 'تکمیل‌شده',
         header: t('performance.completed2'),
-        accessorFn: ({ assigned }) => assigned.filter((job) => job.status === 'completed').length,
+        accessorFn: ({ assigned }) =>
+          assigned.filter((job) => job.status === JobStatus.Completed).length,
         cell: ({
           row: {
             original: { assigned },
           },
-        }) => assigned.filter((job) => job.status === 'completed').length,
+        }) => assigned.filter((job) => job.status === JobStatus.Completed).length,
       },
       {
         id: 'ارزش خدمات تکمیل‌شده',

@@ -1,3 +1,4 @@
+import { JobStatus } from '../../entities/service/model/types.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { useDemo } from './demo-store.ts';
@@ -23,18 +24,18 @@ Object.defineProperty(globalThis, 'localStorage', {
 test('workflow actions persist acceptance and reject repeated transitions without extra writes', () => {
   useDemo.setState({ ...structuredClone(initialData), storageError: false });
   const advance = useDemo.getState().advanceJob;
-  assert.equal(advance('SR-1048', 'new', { type: 'accept' }), null);
+  assert.equal(advance('SR-1048', JobStatus.New, { type: 'accept' }), null);
   const accepted = useDemo.getState().jobs;
   const persisted = saved.get('hamyar-service-demo-v1');
   assert.equal(
     JSON.parse(persisted!).jobs.find((job: { id: string }) => job.id === 'SR-1048').status,
-    'accepted',
+    JobStatus.Accepted,
   );
-  assert.equal(advance('SR-1048', 'new', { type: 'accept' })?.code, 'stale');
+  assert.equal(advance('SR-1048', JobStatus.New, { type: 'accept' })?.code, 'stale');
   assert.equal(useDemo.getState().jobs, accepted);
   assert.equal(saved.get('hamyar-service-demo-v1'), persisted);
   assert.equal(
-    advance('SR-1048', 'accepted', {
+    advance('SR-1048', JobStatus.Accepted, {
       type: 'assign',
       technicianId: 't1',
       date: '2026-11-18',
@@ -42,7 +43,10 @@ test('workflow actions persist acceptance and reject repeated transitions withou
     }),
     null,
   );
-  assert.equal(useDemo.getState().jobs.find((job) => job.id === 'SR-1048')?.status, 'scheduled');
+  assert.equal(
+    useDemo.getState().jobs.find((job) => job.id === 'SR-1048')?.status,
+    JobStatus.Scheduled,
+  );
 });
 
 test('rejected and throwing inventory callbacks leave state and storage untouched', () => {

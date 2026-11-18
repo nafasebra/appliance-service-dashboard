@@ -1,4 +1,4 @@
-import type { DemoData, Job, JobStatus } from './types.ts';
+import { type DemoData, type Job, JobStatus } from './types.ts';
 import { isDemoData, validateJobUpdate } from './validation.ts';
 import { validateAmounts } from './finance.ts';
 
@@ -35,35 +35,44 @@ export function applyJobWorkflow(
   let next: Job;
   switch (action.type) {
     case 'accept':
-      if (job.status !== 'new') return { ok: false, failure: { code: 'invalidTransition' } };
-      next = { ...job, status: 'accepted' };
+      if (job.status !== JobStatus.New)
+        return { ok: false, failure: { code: 'invalidTransition' } };
+      next = { ...job, status: JobStatus.Accepted };
       break;
     case 'assign':
-      if (job.status !== 'accepted') return { ok: false, failure: { code: 'invalidTransition' } };
+      if (job.status !== JobStatus.Accepted)
+        return { ok: false, failure: { code: 'invalidTransition' } };
       if (!data.technicians.some((item) => item.id === action.technicianId))
         return { ok: false, failure: { code: 'invalidAssignment' } };
       next = {
         ...job,
-        status: 'scheduled',
+        status: JobStatus.Scheduled,
         technicianId: action.technicianId,
         date: action.date,
         time: action.time,
       };
       break;
     case 'start':
-      if (job.status !== 'scheduled') return { ok: false, failure: { code: 'invalidTransition' } };
-      next = { ...job, status: 'working' };
+      if (job.status !== JobStatus.Scheduled)
+        return { ok: false, failure: { code: 'invalidTransition' } };
+      next = { ...job, status: JobStatus.Working };
       break;
     case 'complete':
-      if (job.status !== 'working') return { ok: false, failure: { code: 'invalidTransition' } };
+      if (job.status !== JobStatus.Working)
+        return { ok: false, failure: { code: 'invalidTransition' } };
       if (!validateAmounts(action.total, action.commission) || action.total === 0)
         return { ok: false, failure: { code: 'invalidAmount' } };
-      next = { ...job, status: 'completed', total: action.total, commission: action.commission };
+      next = {
+        ...job,
+        status: JobStatus.Completed,
+        total: action.total,
+        commission: action.commission,
+      };
       break;
     case 'cancel':
-      if (job.status === 'completed' || job.status === 'cancelled')
+      if (job.status === JobStatus.Completed || job.status === JobStatus.Cancelled)
         return { ok: false, failure: { code: 'invalidTransition' } };
-      next = { ...job, status: 'cancelled' };
+      next = { ...job, status: JobStatus.Cancelled };
       break;
   }
   const financialFailure = validateJobUpdate(job, next, data.transactions);

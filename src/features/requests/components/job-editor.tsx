@@ -3,7 +3,7 @@ import { translateLabel } from '@/shared/i18n';
 import { useState, type FormEvent } from 'react';
 import { useDemo } from '@/shared/store/demo-store';
 import { useCompanySettings } from '@/shared/store/settings-store';
-import { appliances, statusLabels, type Job, type JobStatus } from '@/entities/service/model/types';
+import { appliances, statusLabels, type Job, JobStatus } from '@/entities/service/model/types';
 import { validateAmounts } from '@/entities/service/model/finance';
 import { Modal } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
@@ -40,9 +40,12 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
     const technicianId = selectedTechnician === '__unassigned' ? '' : selectedTechnician;
     if (!validateAmounts(total, commission))
       return setError('requests:editor.amountsMustBeNonNegativeWholeNumbersCommission');
-    if (['scheduled', 'working', 'completed'].includes(status) && !technicianId)
+    if (
+      [JobStatus.Scheduled, JobStatus.Working, JobStatus.Completed].includes(status) &&
+      !technicianId
+    )
       return setError('requests:editor.selectATechnicianForThisStatus');
-    if (status === 'completed' && total === 0)
+    if (status === JobStatus.Completed && total === 0)
       return setError('requests:editor.enterTheServiceAmountBeforeCompletingTheRequest');
     const saveError = saveJob({
       id: job?.id ?? `SR-${crypto.randomUUID().slice(0, 6).toUpperCase()}`,
@@ -173,7 +176,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
         </Label>
         <Label className="flex flex-col gap-2 text-ui">
           {tShared('ui.status')}
-          <Select name="status" defaultValue={job?.status ?? 'new'}>
+          <Select name="status" defaultValue={job?.status ?? JobStatus.New}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder={tShared('ui.selectAnOption')} />
             </SelectTrigger>

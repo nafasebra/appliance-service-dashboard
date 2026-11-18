@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { initialData } from './demo-data.ts';
-import type { DemoData, JobStatus } from './types.ts';
+import { type DemoData, JobStatus } from './types.ts';
 import { applyJobWorkflow, type JobWorkflowAction } from './job-workflow.ts';
 import { appendTransaction } from './customer-account.ts';
 import { isDemoData } from './validation.ts';
@@ -29,18 +29,18 @@ test('request progresses through acceptance, assignment, repair, collection, set
       data.transactions,
     );
   assert.equal(queue(), 'inbox');
-  data = advance(data, 'new', { type: 'accept' });
+  data = advance(data, JobStatus.New, { type: 'accept' });
   assert.equal(queue(), 'assignment');
   assert.ok(isDemoData(data));
-  data = advance(data, 'accepted', {
+  data = advance(data, JobStatus.Accepted, {
     type: 'assign',
     technicianId: 't1',
     date: '2026-11-18',
     time: '10:30',
   });
   assert.equal(queue(), 'active');
-  data = advance(data, 'scheduled', { type: 'start' });
-  data = advance(data, 'working', { type: 'complete', total: 1000, commission: 200 });
+  data = advance(data, JobStatus.Scheduled, { type: 'start' });
+  data = advance(data, JobStatus.Working, { type: 'complete', total: 1000, commission: 200 });
   assert.equal(queue(), 'collection');
   assert.deepEqual(data.transactions, original.transactions);
   data = appendTransaction(data, {
@@ -113,16 +113,16 @@ test('stale, invalid and skipped transitions leave input data untouched', () => 
   const data = seed(),
     before = structuredClone(data);
   for (const [expected, action] of [
-    ['new', { type: 'start' }],
-    ['new', { type: 'complete', total: 1000, commission: 0 }],
-    ['new', { type: 'assign', technicianId: 't1', date: '2026-11-18', time: '10:00' }],
-    ['accepted', { type: 'accept' }],
+    [JobStatus.New, { type: 'start' }],
+    [JobStatus.New, { type: 'complete', total: 1000, commission: 0 }],
+    [JobStatus.New, { type: 'assign', technicianId: 't1', date: '2026-11-18', time: '10:00' }],
+    [JobStatus.Accepted, { type: 'accept' }],
   ] as [JobStatus, JobWorkflowAction][])
     assert.equal(applyJobWorkflow(data, jobId, expected, action).ok, false);
-  assert.equal(applyJobWorkflow(data, 'missing', 'new', { type: 'accept' }).ok, false);
-  const accepted = advance(data, 'new', { type: 'accept' });
+  assert.equal(applyJobWorkflow(data, 'missing', JobStatus.New, { type: 'accept' }).ok, false);
+  const accepted = advance(data, JobStatus.New, { type: 'accept' });
   assert.equal(
-    applyJobWorkflow(accepted, jobId, 'accepted', {
+    applyJobWorkflow(accepted, jobId, JobStatus.Accepted, {
       type: 'assign',
       technicianId: 'missing',
       date: '2026-11-18',
@@ -131,7 +131,7 @@ test('stale, invalid and skipped transitions leave input data untouched', () => 
     false,
   );
   assert.equal(
-    applyJobWorkflow(accepted, jobId, 'accepted', {
+    applyJobWorkflow(accepted, jobId, JobStatus.Accepted, {
       type: 'assign',
       technicianId: 't1',
       date: '2026-02-30',
@@ -143,14 +143,14 @@ test('stale, invalid and skipped transitions leave input data untouched', () => 
 });
 
 test('completion requires valid amounts and cancellation respects receipts', () => {
-  let data = advance(seed(), 'new', { type: 'accept' });
-  data = advance(data, 'accepted', {
+  let data = advance(seed(), JobStatus.New, { type: 'accept' });
+  data = advance(data, JobStatus.Accepted, {
     type: 'assign',
     technicianId: 't1',
     date: '2026-11-18',
     time: '10:00',
   });
-  data = advance(data, 'scheduled', { type: 'start' });
+  data = advance(data, JobStatus.Scheduled, { type: 'start' });
   for (const [total, commission] of [
     [0, 0],
     [100, 101],
@@ -159,10 +159,10 @@ test('completion requires valid amounts and cancellation respects receipts', () 
     [NaN, 0],
   ])
     assert.equal(
-      applyJobWorkflow(data, jobId, 'working', { type: 'complete', total, commission }).ok,
+      applyJobWorkflow(data, jobId, JobStatus.Working, { type: 'complete', total, commission }).ok,
       false,
     );
-  const cancelled = advance(data, 'working', { type: 'cancel' });
+  const cancelled = advance(data, JobStatus.Working, { type: 'cancel' });
   assert.equal(
     getWorkflowQueue(
       cancelled.jobs.find((job) => job.id === jobId)!,
@@ -182,8 +182,12 @@ test('completion requires valid amounts and cancellation respects receipts', () 
     date: '2026-11-18',
     description: 'Customer advance',
   });
-  assert.equal(applyJobWorkflow(paid, jobId, 'working', { type: 'cancel' }).ok, false);
-  const completed = advance(paid, 'working', { type: 'complete', total: 1000, commission: 1000 });
+  assert.equal(applyJobWorkflow(paid, jobId, JobStatus.Working, { type: 'cancel' }).ok, false);
+  const completed = advance(paid, JobStatus.Working, {
+    type: 'complete',
+    total: 1000,
+    commission: 1000,
+  });
   const fullyPaid = appendTransaction(completed, {
     id: 'remainder',
     kind: 'receipt',

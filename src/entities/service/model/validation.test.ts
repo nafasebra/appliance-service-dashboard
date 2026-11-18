@@ -1,3 +1,4 @@
+import { JobStatus } from './types.ts';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { initialData } from './demo-data.ts';
@@ -5,6 +6,7 @@ import { isDemoData, validateJobUpdate } from './validation.ts';
 
 test('accepts the complete demo seed', () => {
   assert.equal(isDemoData(structuredClone(initialData)), true);
+  assert.equal(isDemoData(JSON.parse(JSON.stringify(initialData))), true);
 });
 
 test('rejects malformed records and broken references', () => {
@@ -36,9 +38,9 @@ test('persisted receipts obey the same order limits as newly recorded receipts',
   receipt.amount = job.total + 1;
   assert.equal(isDemoData(invalid), false);
   receipt.amount = 1;
-  job.status = 'cancelled';
+  job.status = JobStatus.Cancelled;
   assert.equal(isDemoData(invalid), false);
-  job.status = 'new';
+  job.status = JobStatus.New;
   job.total = 0;
   job.commission = 0;
   assert.equal(isDemoData(invalid), false);
@@ -57,8 +59,11 @@ test('protects a job after financial transactions are recorded', () => {
   assert.ok(previous);
 
   assert.match(
-    validateJobUpdate(previous, { ...previous, status: 'cancelled' }, initialData.transactions) ??
-      '',
+    validateJobUpdate(
+      previous,
+      { ...previous, status: JobStatus.Cancelled },
+      initialData.transactions,
+    ) ?? '',
     /تکمیل‌شده/,
   );
   assert.match(

@@ -1,8 +1,5 @@
-import { usePartsTranslation } from '../i18n/use-parts-translation';
-import { translateLabel } from '@/shared/i18n';
-import { useMemo } from 'react';
-import type { Customer, Job, Technician } from '@/entities/service/model/types';
 import {
+  PurchaseStatus,
   availableQuantity,
   reservedQuantity,
   needLabels,
@@ -11,8 +8,13 @@ import {
   type PartNeed,
   type PartPurchase,
   type PartsData,
-  type NeedStatus,
-} from '../model/parts';
+  NeedStatus,
+} from '../model/parts.ts';
+import { usePartsTranslation } from '../i18n/use-parts-translation';
+import { translateLabel } from '@/shared/i18n';
+import { useMemo } from 'react';
+import type { Customer, Job, Technician } from '@/entities/service/model/types';
+
 import { getPartJobLabel } from '../utils/part-filters';
 import { createColumnHelper } from '@tanstack/react-table';
 import type { DataTableFeatures } from '@/shared/ui/data-table-features';
@@ -181,7 +183,7 @@ export function usePartsColumns({
         }),
         purchaseColumn.accessor(
           (purchase) =>
-            purchase.received > 0 && purchase.status === 'ordered'
+            purchase.received > 0 && purchase.status === PurchaseStatus.Ordered
               ? t('statuses.purchases.partiallyReceived')
               : translateLabel(purchaseLabels[purchase.status]),
           {
@@ -189,7 +191,7 @@ export function usePartsColumns({
             header: 'وضعیت',
             cell: ({ row: { original: purchase } }) => (
               <Badge variant="secondary">
-                {purchase.received > 0 && purchase.status === 'ordered'
+                {purchase.received > 0 && purchase.status === PurchaseStatus.Ordered
                   ? t('statuses.purchases.partiallyReceived')
                   : translateLabel(purchaseLabels[purchase.status])}
               </Badge>
@@ -202,14 +204,14 @@ export function usePartsColumns({
           enableSorting: false,
           cell: ({ row: { original: purchase } }) => (
             <div className="flex gap-2">
-              {purchase.status === 'pending' ? (
+              {purchase.status === PurchaseStatus.Pending ? (
                 <Button
                   size="sm"
                   onClick={() =>
                     act((current) => ({
                       ...current,
                       purchases: current.purchases.map((p) =>
-                        p.id === purchase.id ? { ...p, status: 'approved' } : p,
+                        p.id === purchase.id ? { ...p, status: PurchaseStatus.Approved } : p,
                       ),
                     }))
                   }
@@ -217,17 +219,17 @@ export function usePartsColumns({
                   {t('tables.approvePurchase')}
                 </Button>
               ) : null}
-              {purchase.status === 'approved' ? (
+              {purchase.status === PurchaseStatus.Approved ? (
                 <Button size="sm" onClick={() => setReceiving(purchase.id)}>
                   {t('tables.placePurchaseOrder')}
                 </Button>
               ) : null}
-              {purchase.status === 'ordered' ? (
+              {purchase.status === PurchaseStatus.Ordered ? (
                 <Button size="sm" onClick={() => setReceiving(purchase.id)}>
                   {t('tables.receiveGoods')}
                 </Button>
               ) : null}
-              {['pending', 'approved'].includes(purchase.status) ? (
+              {[PurchaseStatus.Pending, PurchaseStatus.Approved].includes(purchase.status) ? (
                 <Button
                   size="sm"
                   variant="ghost"
@@ -235,7 +237,7 @@ export function usePartsColumns({
                     act((current) => ({
                       ...current,
                       purchases: current.purchases.map((p) =>
-                        p.id === purchase.id ? { ...p, status: 'cancelled' } : p,
+                        p.id === purchase.id ? { ...p, status: PurchaseStatus.Cancelled } : p,
                       ),
                     }))
                   }
@@ -285,7 +287,9 @@ export function usePartsColumns({
           enableSorting: false,
           cell: ({ row: { original: need } }) => (
             <div className="flex flex-wrap gap-2">
-              {['pending', 'unavailable', 'available'].includes(need.status) ? (
+              {[NeedStatus.Pending, NeedStatus.Unavailable, NeedStatus.Available].includes(
+                need.status,
+              ) ? (
                 <Button
                   size="sm"
                   variant="outline"
@@ -294,27 +298,29 @@ export function usePartsColumns({
                       need.id,
                       availableQuantity(data, need.partId) >= need.quantity &&
                         data.parts.find((p) => p.id === need.partId)?.active
-                        ? 'available'
-                        : 'unavailable',
+                        ? NeedStatus.Available
+                        : NeedStatus.Unavailable,
                     )
                   }
-                  disabled={need.status === 'available'}
+                  disabled={need.status === NeedStatus.Available}
                 >
                   {t('tables.checkAvailability')}
                 </Button>
               ) : null}
-              {need.status === 'available' ? (
-                <Button size="sm" onClick={() => needAction(need.id, 'reserved')}>
+              {need.status === NeedStatus.Available ? (
+                <Button size="sm" onClick={() => needAction(need.id, NeedStatus.Reserved)}>
                   {t('tables.reserveForOrder')}
                 </Button>
               ) : null}
-              {need.status === 'unavailable' ? (
+              {need.status === NeedStatus.Unavailable ? (
                 <Button
                   size="sm"
                   variant="outline"
                   disabled={data.purchases.some(
                     (p) =>
-                      p.needId === need.id && p.status !== 'cancelled' && p.status !== 'received',
+                      p.needId === need.id &&
+                      p.status !== PurchaseStatus.Cancelled &&
+                      p.status !== PurchaseStatus.Received,
                   )}
                   onClick={() =>
                     act((current) => ({
@@ -331,7 +337,7 @@ export function usePartsColumns({
                           ),
                           received: 0,
                           supplier: '',
-                          status: 'pending',
+                          status: PurchaseStatus.Pending,
                         },
                       ],
                     }))
@@ -340,27 +346,36 @@ export function usePartsColumns({
                   {t('tables.sendToProcurement')}
                 </Button>
               ) : null}
-              {need.status === 'reserved' ? (
+              {need.status === NeedStatus.Reserved ? (
                 <Button size="sm" onClick={() => setDelivery(need.id)}>
                   {t('tables.deliverToTechnician')}
                 </Button>
               ) : null}
-              {need.status === 'delivered' ? (
+              {need.status === NeedStatus.Delivered ? (
                 <>
-                  <Button size="sm" onClick={() => needAction(need.id, 'used')}>
+                  <Button size="sm" onClick={() => needAction(need.id, NeedStatus.Used)}>
                     {t('tables.recordConsumption')}
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => needAction(need.id, 'returned')}
+                    onClick={() => needAction(need.id, NeedStatus.Returned)}
                   >
                     {t('tables.returnToInventory')}
                   </Button>
                 </>
               ) : null}
-              {['pending', 'available', 'unavailable', 'reserved'].includes(need.status) ? (
-                <Button size="sm" variant="ghost" onClick={() => needAction(need.id, 'cancelled')}>
+              {[
+                NeedStatus.Pending,
+                NeedStatus.Available,
+                NeedStatus.Unavailable,
+                NeedStatus.Reserved,
+              ].includes(need.status) ? (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => needAction(need.id, NeedStatus.Cancelled)}
+                >
                   {t('tables.cancel')}
                 </Button>
               ) : null}

@@ -1,3 +1,4 @@
+import { JobStatus } from '../../entities/service/model/types.ts';
 import { translateLabel } from '@/shared/i18n';
 import { Link } from '@tanstack/react-router';
 import { ArrowUpLeft, LifeBuoy, RotateCcw, Wrench, X } from 'lucide-react';
@@ -41,7 +42,7 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
   let newJobCount = 0;
 
   for (const job of jobs) {
-    if (job.status === 'new') newJobCount += 1;
+    if (job.status === JobStatus.New) newJobCount += 1;
   }
 
   return (

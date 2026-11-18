@@ -1,4 +1,11 @@
-export type JobStatus = 'new' | 'accepted' | 'scheduled' | 'working' | 'completed' | 'cancelled';
+export enum JobStatus {
+  New = 'new',
+  Accepted = 'accepted',
+  Scheduled = 'scheduled',
+  Working = 'working',
+  Completed = 'completed',
+  Cancelled = 'cancelled',
+}
 export type Appliance = 'یخچال' | 'لباسشویی' | 'ظرفشویی' | 'کولر گازی' | 'اجاق گاز';
 export interface Customer {
   id: string;
@@ -44,11 +51,11 @@ export interface DemoData {
   transactions: Transaction[];
 }
 export const statusLabels: Record<JobStatus, string> = {
-  new: 'در انتظار بررسی',
-  accepted: 'تأییدشده، در انتظار تخصیص',
-  scheduled: 'برنامه‌ریزی شده',
-  working: 'در حال انجام',
-  completed: 'تکمیل شده',
-  cancelled: 'لغو شده',
+  [JobStatus.New]: 'در انتظار بررسی',
+  [JobStatus.Accepted]: 'تأییدشده، در انتظار تخصیص',
+  [JobStatus.Scheduled]: 'برنامه‌ریزی شده',
+  [JobStatus.Working]: 'در حال انجام',
+  [JobStatus.Completed]: 'تکمیل شده',
+  [JobStatus.Cancelled]: 'لغو شده',
 };
 export const appliances: Appliance[] = ['یخچال', 'لباسشویی', 'ظرفشویی', 'کولر گازی', 'اجاق گاز'];

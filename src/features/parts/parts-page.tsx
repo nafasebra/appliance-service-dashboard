@@ -1,3 +1,14 @@
+import {
+  PurchaseStatus,
+  availableQuantity,
+  needLabels,
+  purchaseLabels,
+  transitionNeed,
+  receivePurchase,
+  NeedStatus,
+  type Part,
+} from '@/features/parts/model/parts';
+import { JobStatus, appliances } from '@/entities/service/model/types';
 import { usePartsTranslation } from './i18n/use-parts-translation';
 import { translateLabel } from '@/shared/i18n';
 import { usePartsColumns } from './hooks/use-parts-columns';
@@ -7,16 +18,7 @@ import { getFormText } from '@/shared/utils/form';
 import { Package, Plus } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
 import { useParts } from '@/shared/store/parts-store';
-import { appliances } from '@/entities/service/model/types';
-import {
-  availableQuantity,
-  needLabels,
-  purchaseLabels,
-  transitionNeed,
-  receivePurchase,
-  type NeedStatus,
-  type Part,
-} from '@/features/parts/model/parts';
+
 import { PageHeading, Panel, EmptyState, Modal, StatCard } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
@@ -92,7 +94,12 @@ export function PartsPage({ section }: { section: Section }) {
           matchesPart(need.partId, data.parts, appliance, search) &&
           (status === 'all' || need.status === status) &&
           (section !== 'allocations' ||
-            ['reserved', 'delivered', 'used', 'returned'].includes(need.status)),
+            [
+              NeedStatus.Reserved,
+              NeedStatus.Delivered,
+              NeedStatus.Used,
+              NeedStatus.Returned,
+            ].includes(need.status)),
       ),
     [data, appliance, search, status, section, t, tShared],
   );
@@ -142,8 +149,8 @@ export function PartsPage({ section }: { section: Section }) {
       const part = data.parts.find((item) => item.id === partId);
       if (
         !job ||
-        job.status === 'cancelled' ||
-        job.status === 'completed' ||
+        job.status === JobStatus.Cancelled ||
+        job.status === JobStatus.Completed ||
         job.appliance !== part?.appliance
       ) {
         setError('parts:inventory.thePartMustMatchTheApplianceTypeOf');
@@ -159,7 +166,7 @@ export function PartsPage({ section }: { section: Section }) {
               partId,
               jobId: job.id,
               quantity,
-              status: 'pending',
+              status: NeedStatus.Pending,
               technicianId: '',
             },
           ],
@@ -179,7 +186,7 @@ export function PartsPage({ section }: { section: Section }) {
               quantity,
               received: 0,
               supplier: getFormText(fields, 'supplier'),
-              status: 'pending',
+              status: PurchaseStatus.Pending,
             },
           ],
         }))
@@ -195,7 +202,10 @@ export function PartsPage({ section }: { section: Section }) {
         return;
       }
       const job = jobs.find((item) => item.id === need.jobId);
-      if (next === 'reserved' && (!job || ['cancelled', 'completed'].includes(job.status))) {
+      if (
+        next === NeedStatus.Reserved &&
+        (!job || [JobStatus.Cancelled, JobStatus.Completed].includes(job.status))
+      ) {
         setError('parts:inventory.partsCanOnlyBeReservedForOpenOrders');
         return;
       }
@@ -266,7 +276,7 @@ export function PartsPage({ section }: { section: Section }) {
         <StatCard
           title={t('inventory.onTheWay')}
           value={data.purchases.reduce(
-            (sum, p) => sum + (p.status === 'ordered' ? p.quantity - p.received : 0),
+            (sum, p) => sum + (p.status === PurchaseStatus.Ordered ? p.quantity - p.received : 0),
             0,
           )}
           detail={t('inventory.orderedPurchasesNotYetReceived')}
@@ -473,7 +483,10 @@ export function PartsPage({ section }: { section: Section }) {
                       <SelectContent>
                         <SelectGroup>
                           {jobs
-                            .filter((job) => !['completed', 'cancelled'].includes(job.status))
+                            .filter(
+                              (job) =>
+                                ![JobStatus.Completed, JobStatus.Cancelled].includes(job.status),
+                            )
                             .map((job) => (
                               <SelectItem key={job.id} value={job.id}>
                                 {getPartJobLabel(job.id, jobs, customers)}
@@ -512,7 +525,11 @@ export function PartsPage({ section }: { section: Section }) {
             onSubmit={(event) => {
               event.preventDefault();
               const technicianId = String(new FormData(event.currentTarget).get('technicianId'));
-              if (act((current) => transitionNeed(current, delivery, 'delivered', technicianId)))
+              if (
+                act((current) =>
+                  transitionNeed(current, delivery, NeedStatus.Delivered, technicianId),
+                )
+              )
                 setDelivery('');
             }}
           >
@@ -547,14 +564,14 @@ export function PartsPage({ section }: { section: Section }) {
               const fields = new FormData(event.currentTarget);
               const purchase = data.purchases.find((p) => p.id === receiving)!;
               const ok =
-                purchase.status === 'approved'
+                purchase.status === PurchaseStatus.Approved
                   ? act((current) => ({
                       ...current,
                       purchases: current.purchases.map((p) =>
                         p.id === receiving
                           ? {
                               ...p,
-                              status: 'ordered',
+                              status: PurchaseStatus.Ordered,
                               supplier: String(fields.get('supplier')).trim(),
                             }
                           : p,
@@ -566,7 +583,7 @@ export function PartsPage({ section }: { section: Section }) {
               if (ok) setReceiving('');
             }}
           >
-            {data.purchases.find((p) => p.id === receiving)?.status === 'approved' ? (
+            {data.purchases.find((p) => p.id === receiving)?.status === PurchaseStatus.Approved ? (
               <Label className="flex flex-col gap-2">
                 {t('tables.supplier')}
                 <Input

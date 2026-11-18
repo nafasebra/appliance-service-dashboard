@@ -1,5 +1,6 @@
+import { JobStatus, type Job, type Transaction } from '@/entities/service/model/types';
 import { useRef, useState, type FormEvent } from 'react';
-import type { Job, Transaction } from '@/entities/service/model/types';
+
 import { paymentMethodLabels } from '@/entities/service/model/customer-account';
 import { useDemo } from '@/shared/store/demo-store';
 import { translateLabel } from '@/shared/i18n';
@@ -45,7 +46,7 @@ export function WorkflowPaymentDialog({
   const account = current ? getWorkflowAccount(current, transactions) : null;
   const limit = (kind === 'receipt' ? account?.outstanding : account?.payable) ?? 0;
   const blocked =
-    current?.status !== 'completed' ||
+    current?.status !== JobStatus.Completed ||
     limit <= 0 ||
     (kind === 'payout' && account?.outstanding !== 0);
 

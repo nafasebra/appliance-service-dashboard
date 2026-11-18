@@ -1,3 +1,4 @@
+import { JobStatus, type Transaction } from '@/entities/service/model/types';
 import { useFinanceTranslation } from './i18n/use-finance-translation';
 import { translateLabel } from '@/shared/i18n';
 import { cn } from '@/shared/lib/utils';
@@ -7,7 +8,7 @@ import { Plus, ArrowDownLeft, ArrowUpRight, Wallet, HandCoins, Download } from '
 import { useDemo } from '@/shared/store/demo-store';
 import { summarizeFinance } from '@/entities/service/model/finance';
 import { getOrderAccount } from '@/entities/service/model/customer-account';
-import type { Transaction } from '@/entities/service/model/types';
+
 import { PageHeading, Panel, StatCard, Modal, EmptyState } from '@/shared/ui/primitives';
 import { money, dateLabel } from '@/shared/lib/format';
 import { Badge } from '@/shared/ui/badge';
@@ -66,7 +67,7 @@ export function FinancePage() {
       const paid = transactions
         .filter((item) => item.kind === 'payout' && item.jobId === jobId)
         .reduce((sum, item) => sum + item.amount, 0);
-      if (job.status !== 'completed' || amount > job.total - job.commission - paid)
+      if (job.status !== JobStatus.Completed || amount > job.total - job.commission - paid)
         return setError('finance:ledger.payoutsMustBeWithinTheTechnicianSRemaining');
     }
     const failure = addTransaction({
@@ -284,7 +285,7 @@ export function FinancePage() {
                         .filter(
                           (job) =>
                             kind !== 'payout' ||
-                            (job.status === 'completed' &&
+                            (job.status === JobStatus.Completed &&
                               getOrderAccount(job, transactions).outstanding === 0),
                         )
                         .map((job) => (

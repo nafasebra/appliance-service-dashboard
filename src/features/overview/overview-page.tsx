@@ -1,3 +1,4 @@
+import { JobStatus, statusLabels, type Job } from '@/entities/service/model/types';
 import { useOverviewTranslation } from './i18n/use-overview-translation';
 import { translateLabel } from '@/shared/i18n';
 import { cn } from '@/shared/lib/utils';
@@ -16,7 +17,7 @@ import {
 } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
 import { summarizeFinance } from '@/entities/service/model/finance';
-import { statusLabels, type Job } from '@/entities/service/model/types';
+
 import { JobTable, JobEditor } from '@/features/requests/job-components';
 import { CashChart } from '@/features/finance/cash-chart';
 import { PageHeading, Panel, StatCard } from '@/shared/ui/primitives';
@@ -34,7 +35,9 @@ export function OverviewPage() {
   const customers = useDemo((state) => state.customers);
   const [editor, setEditor] = useState<Job | 'new' | null>(null);
   const finance = summarizeFinance(jobs, transactions);
-  const active = jobs.filter((job) => !['completed', 'cancelled'].includes(job.status));
+  const active = jobs.filter(
+    (job) => ![JobStatus.Completed, JobStatus.Cancelled].includes(job.status),
+  );
   return (
     <>
       <PageHeading
@@ -87,7 +90,7 @@ export function OverviewPage() {
           title={t('summary.openRequests')}
           value={active.length}
           detail={t('summary.lengthAwaitingAssignment', {
-            length: jobs.filter((job) => job.status === 'new').length,
+            length: jobs.filter((job) => job.status === JobStatus.New).length,
           })}
           icon={<ClipboardList size={20} />}
         />
@@ -134,7 +137,7 @@ export function OverviewPage() {
             <div
               className="w-32.5 h-32.5 rounded-full grid place-items-center shrink-0 [&_>_div]:w-26.75 [&_>_div]:h-26.75 [&_>_div]:rounded-full [&_>_div]:bg-white [&_>_div]:flex [&_>_div]:items-center [&_>_div]:justify-center [&_>_div]:flex-col [&_strong]:text-3xl [&_strong]:text-primary [&_span]:text-4xs [&_span]:text-muted-foreground [&_span]:mt-1.75 max-desktop:w-26.25 max-desktop:h-26.25 max-desktop:[&_>_div]:w-21.25 max-desktop:[&_>_div]:h-21.25 max-tablet:w-32.5 max-tablet:h-32.5 max-tablet:[&_>_div]:w-26.75 max-tablet:[&_>_div]:h-26.75 max-compact:w-25.75 max-compact:h-25.75 max-compact:[&_>_div]:w-20.75 max-compact:[&_>_div]:h-20.75 dark:[&_strong]:text-primary dark:[&_>_div]:bg-card"
               style={{
-                background: `conic-gradient(var(--primary) ${jobs.length ? (jobs.filter((job) => job.status === 'completed').length / jobs.length) * 100 : 0}%, #edf0f4 0)`,
+                background: `conic-gradient(var(--primary) ${jobs.length ? (jobs.filter((job) => job.status === JobStatus.Completed).length / jobs.length) * 100 : 0}%, #edf0f4 0)`,
               }}
             >
               <div>
@@ -143,15 +146,23 @@ export function OverviewPage() {
               </div>
             </div>
             <div className="flex flex-1 flex-col gap-4.25 min-w-33.75 max-w-52.5 [&_>_div]:flex [&_>_div]:justify-between [&_>_div]:items-center [&_>_div]:gap-4 [&_>_div]:text-2xs [&_>_div_>_span]:flex [&_>_div_>_span]:items-center [&_>_div_>_span]:gap-1.75 [&_>_div_>_span]:text-muted-foreground [&_strong]:text-muted-foreground [&_strong]:text-xs max-desktop:min-w-27.5 max-desktop:[&_>_div_>_span]:text-3xs max-tablet:min-w-40 max-mobile:min-w-33.75">
-              {(['completed', 'working', 'scheduled', 'accepted', 'new'] as const).map((status) => (
+              {(
+                [
+                  JobStatus.Completed,
+                  JobStatus.Working,
+                  JobStatus.Scheduled,
+                  JobStatus.Accepted,
+                  JobStatus.New,
+                ] as const
+              ).map((status) => (
                 <div key={status}>
                   <span>
                     <i
                       className={cn(
                         'size-1.75 rounded-sm bg-muted',
-                        status === 'completed' && 'bg-status-completed-foreground',
-                        status === 'working' && 'bg-status-new-foreground',
-                        status === 'scheduled' && 'bg-status-scheduled-foreground',
+                        status === JobStatus.Completed && 'bg-status-completed-foreground',
+                        status === JobStatus.Working && 'bg-status-new-foreground',
+                        status === JobStatus.Scheduled && 'bg-status-scheduled-foreground',
                       )}
                     />
                     {translateLabel(statusLabels[status])}
@@ -210,14 +221,14 @@ export function OverviewPage() {
                   <Badge
                     className={cn(
                       'inline-flex items-center gap-1 rounded-md px-2 py-1 text-3xs whitespace-nowrap',
-                      job.status === 'new' && 'bg-status-new text-status-new-foreground',
-                      job.status === 'scheduled' &&
+                      job.status === JobStatus.New && 'bg-status-new text-status-new-foreground',
+                      job.status === JobStatus.Scheduled &&
                         'bg-status-scheduled text-status-scheduled-foreground',
-                      job.status === 'working' &&
+                      job.status === JobStatus.Working &&
                         'bg-status-working text-status-working-foreground',
-                      job.status === 'completed' &&
+                      job.status === JobStatus.Completed &&
                         'bg-status-completed text-status-completed-foreground',
-                      job.status === 'cancelled' &&
+                      job.status === JobStatus.Cancelled &&
                         'bg-status-cancelled text-status-cancelled-foreground',
                     )}
                   >

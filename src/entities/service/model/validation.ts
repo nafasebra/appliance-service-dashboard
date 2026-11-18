@@ -1,4 +1,5 @@
 import {
+  JobStatus,
   appliances,
   type Customer,
   type DemoData,
@@ -7,7 +8,7 @@ import {
   type Transaction,
 } from './types.ts';
 
-const jobStatuses = new Set(['new', 'accepted', 'scheduled', 'working', 'completed', 'cancelled']);
+const jobStatuses = new Set<string>(Object.values(JobStatus));
 const priorities = new Set(['normal', 'urgent']);
 const transactionKinds = new Set(['receipt', 'payout', 'expense']);
 const applianceNames = new Set<string>(appliances);
@@ -145,8 +146,9 @@ export function isDemoData(value: unknown): value is DemoData {
       (job) =>
         !customerIds.has(job.customerId) ||
         (job.technicianId !== '' && !technicianIds.has(job.technicianId)) ||
-        (['scheduled', 'working', 'completed'].includes(job.status) && job.technicianId === '') ||
-        (job.status === 'completed' && job.total === 0),
+        ([JobStatus.Scheduled, JobStatus.Working, JobStatus.Completed].includes(job.status) &&
+          job.technicianId === '') ||
+        (job.status === JobStatus.Completed && job.total === 0),
     )
   ) {
     return false;
@@ -163,11 +165,11 @@ export function isDemoData(value: unknown): value is DemoData {
     const job = jobsById.get(transaction.jobId);
     if (!job) return false;
     if (transaction.kind === 'receipt') {
-      if (job.status === 'cancelled' || job.total <= 0) return false;
+      if (job.status === JobStatus.Cancelled || job.total <= 0) return false;
       receiptsByJob.set(job.id, (receiptsByJob.get(job.id) ?? 0) + transaction.amount);
     }
     if (transaction.kind === 'payout') {
-      if (job.status !== 'completed') return false;
+      if (job.status !== JobStatus.Completed) return false;
       payoutsByJob.set(job.id, (payoutsByJob.get(job.id) ?? 0) + transaction.amount);
     }
   }
@@ -193,8 +195,8 @@ export function validateJobUpdate(
 
   if (
     linkedTransactions.length > 0 &&
-    previous.status === 'completed' &&
-    next.status !== 'completed'
+    previous.status === JobStatus.Completed &&
+    next.status !== JobStatus.Completed
   ) {
     return 'درخواستی که تراکنش مالی دارد باید تکمیل‌شده باقی بماند. ابتدا برای اصلاح مالی، فرایند برگشت یا ابطال تراکنش تعریف کنید.';
   }
@@ -211,7 +213,7 @@ export function validateJobUpdate(
   );
   if (linkedTransactions.length > 0 && next.customerId !== previous.customerId)
     return 'سفارش دارای تراکنش مالی را نمی‌توان به مشتری دیگری منتقل کرد.';
-  if (receipts > 0 && (next.status === 'cancelled' || next.total < receipts))
+  if (receipts > 0 && (next.status === JobStatus.Cancelled || next.total < receipts))
     return 'سفارش دارای دریافت وجه را بدون اصلاح مالی نمی‌توان لغو کرد یا مبلغ آن را کمتر از دریافت ثبت‌شده قرار داد.';
 
   return null;

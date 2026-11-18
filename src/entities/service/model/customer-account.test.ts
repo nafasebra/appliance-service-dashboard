@@ -1,7 +1,14 @@
+import { JobStatus } from './types.ts';
+import {
+  PaymentStatus,
+  appendTransaction,
+  getCustomerAccount,
+  getOrderAccount,
+} from './customer-account.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { initialData } from './demo-data.ts';
-import { appendTransaction, getCustomerAccount, getOrderAccount } from './customer-account.ts';
+
 import { validateJobUpdate } from './validation.ts';
 
 test('customer account keeps receivables separate from advances on another job', () => {
@@ -33,8 +40,8 @@ test('customer account keeps receivables separate from advances on another job',
     outstanding: 1000000,
     credit: 500000,
   });
-  assert.equal(getOrderAccount(completed, data.transactions).status, 'partial');
-  assert.equal(getOrderAccount(open, data.transactions).status, 'unfinalized');
+  assert.equal(getOrderAccount(completed, data.transactions).status, PaymentStatus.Partial);
+  assert.equal(getOrderAccount(open, data.transactions).status, PaymentStatus.Unfinalized);
 });
 
 test('receipt validation rejects duplicate entries, overpayment and invalid references', () => {
@@ -82,7 +89,7 @@ test('partial payments use latest ledger balance and fully paid orders leave rec
       data.jobs.find((job) => job.id === receipt.jobId)!,
       data.transactions,
     ).status,
-    'paid',
+    PaymentStatus.Paid,
   );
 });
 
@@ -115,6 +122,6 @@ test('recorded receipts protect customer ownership, amount and cancellation', ()
   };
   assert.ok(validateJobUpdate(job, { ...job, customerId: 'c1' }, [receipt]));
   assert.ok(validateJobUpdate(job, { ...job, total: 499999 }, [receipt]));
-  assert.ok(validateJobUpdate(job, { ...job, status: 'cancelled' }, [receipt]));
+  assert.ok(validateJobUpdate(job, { ...job, status: JobStatus.Cancelled }, [receipt]));
   assert.equal(validateJobUpdate(job, { ...job, total: 1000000 }, [receipt]), null);
 });

@@ -1,8 +1,8 @@
-import type { Job, Transaction } from '@/entities/service/model/types';
+import { JobStatus, type Job, type Transaction } from '@/entities/service/model/types';
 
 export function getJobPayable(id: string, jobs: Job[], transactions: Transaction[]): number {
   const job = jobs.find((item) => item.id === id);
-  if (!job || job.status !== 'completed') return 0;
+  if (!job || job.status !== JobStatus.Completed) return 0;
   return (
     job.total -
     job.commission -

@@ -1,3 +1,4 @@
+import { JobStatus } from '../../entities/service/model/types.ts';
 import { useFinanceTranslation } from './i18n/use-finance-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo, useState } from 'react';
@@ -24,7 +25,7 @@ export function ReceivablesPage() {
   const rows = useMemo(
     () =>
       jobs
-        .filter((job) => job.status === 'completed')
+        .filter((job) => job.status === JobStatus.Completed)
         .map((job) => ({
           job,
           customer: customers.find((customer) => customer.id === job.customerId),

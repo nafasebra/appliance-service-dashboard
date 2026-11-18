@@ -12,7 +12,8 @@ accounting integration.
 
 Use **Node.js 22.18 or newer** for the complete development and test workflow.
 The package engine range is `^20.19.0 || >=22.12.0`, but the tests use Node’s native
-TypeScript stripping, which is unavailable in Node 20.
+TypeScript transformation (`--experimental-transform-types`) to run string enums
+directly, which is unavailable in Node 20.
 
 ```sh
 npm ci

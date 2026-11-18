@@ -11,15 +11,16 @@ export interface Part {
   minimum: number;
   active: boolean;
 }
-export type NeedStatus =
-  | 'pending'
-  | 'available'
-  | 'unavailable'
-  | 'reserved'
-  | 'delivered'
-  | 'used'
-  | 'returned'
-  | 'cancelled';
+export enum NeedStatus {
+  Pending = 'pending',
+  Available = 'available',
+  Unavailable = 'unavailable',
+  Reserved = 'reserved',
+  Delivered = 'delivered',
+  Used = 'used',
+  Returned = 'returned',
+  Cancelled = 'cancelled',
+}
 export interface PartNeed {
   id: string;
   partId: string;
@@ -28,7 +29,13 @@ export interface PartNeed {
   status: NeedStatus;
   technicianId: string;
 }
-export type PurchaseStatus = 'pending' | 'approved' | 'ordered' | 'received' | 'cancelled';
+export enum PurchaseStatus {
+  Pending = 'pending',
+  Approved = 'approved',
+  Ordered = 'ordered',
+  Received = 'received',
+  Cancelled = 'cancelled',
+}
 export interface PartPurchase {
   id: string;
   partId: string;
@@ -44,25 +51,26 @@ export interface PartsData {
   purchases: PartPurchase[];
 }
 export const needLabels: Record<NeedStatus, string> = {
-  pending: 'در انتظار استعلام',
-  available: 'موجود — قابل رزرو',
-  unavailable: 'نیازمند تأمین',
-  reserved: 'رزروشده',
-  delivered: 'تحویل تعمیرکار',
-  used: 'مصرف‌شده',
-  returned: 'برگشت به انبار',
-  cancelled: 'لغوشده',
+  [NeedStatus.Pending]: 'در انتظار استعلام',
+  [NeedStatus.Available]: 'موجود — قابل رزرو',
+  [NeedStatus.Unavailable]: 'نیازمند تأمین',
+  [NeedStatus.Reserved]: 'رزروشده',
+  [NeedStatus.Delivered]: 'تحویل تعمیرکار',
+  [NeedStatus.Used]: 'مصرف‌شده',
+  [NeedStatus.Returned]: 'برگشت به انبار',
+  [NeedStatus.Cancelled]: 'لغوشده',
 };
 export const purchaseLabels: Record<PurchaseStatus, string> = {
-  pending: 'در انتظار تأیید',
-  approved: 'تأیید خرید',
-  ordered: 'سفارش‌داده‌شده',
-  received: 'دریافت کامل',
-  cancelled: 'لغوشده',
+  [PurchaseStatus.Pending]: 'در انتظار تأیید',
+  [PurchaseStatus.Approved]: 'تأیید خرید',
+  [PurchaseStatus.Ordered]: 'سفارش‌داده‌شده',
+  [PurchaseStatus.Received]: 'دریافت کامل',
+  [PurchaseStatus.Cancelled]: 'لغوشده',
 };
 export function reservedQuantity(data: PartsData, partId: string): number {
   return data.needs.reduce(
-    (sum, need) => sum + (need.partId === partId && need.status === 'reserved' ? need.quantity : 0),
+    (sum, need) =>
+      sum + (need.partId === partId && need.status === NeedStatus.Reserved ? need.quantity : 0),
     0,
   );
 }
@@ -82,24 +90,29 @@ export function transitionNeed(
   const part = data.parts.find((item) => item.id === need.partId);
   if (!part) throw new Error('قطعه پیدا نشد.');
   const allowed: Record<NeedStatus, NeedStatus[]> = {
-    pending: ['available', 'unavailable', 'cancelled'],
-    available: ['reserved', 'unavailable', 'cancelled'],
-    unavailable: ['available', 'unavailable', 'cancelled'],
-    reserved: ['delivered', 'cancelled'],
-    delivered: ['used', 'returned'],
-    used: [],
-    returned: [],
-    cancelled: [],
+    [NeedStatus.Pending]: [NeedStatus.Available, NeedStatus.Unavailable, NeedStatus.Cancelled],
+    [NeedStatus.Available]: [NeedStatus.Reserved, NeedStatus.Unavailable, NeedStatus.Cancelled],
+    [NeedStatus.Unavailable]: [NeedStatus.Available, NeedStatus.Unavailable, NeedStatus.Cancelled],
+    [NeedStatus.Reserved]: [NeedStatus.Delivered, NeedStatus.Cancelled],
+    [NeedStatus.Delivered]: [NeedStatus.Used, NeedStatus.Returned],
+    [NeedStatus.Used]: [],
+    [NeedStatus.Returned]: [],
+    [NeedStatus.Cancelled]: [],
   };
   if (!allowed[need.status].includes(status)) throw new Error('این تغییر وضعیت مجاز نیست.');
   if (
-    (status === 'available' || status === 'reserved') &&
+    (status === NeedStatus.Available || status === NeedStatus.Reserved) &&
     (!part.active || availableQuantity(data, part.id) < need.quantity)
   )
     throw new Error('موجودی قابل تخصیص کافی نیست یا قطعه غیرفعال است.');
-  if (status === 'delivered' && !technicianId)
+  if (status === NeedStatus.Delivered && !technicianId)
     throw new Error('تعمیرکار دریافت‌کننده را انتخاب کنید.');
-  const delta = status === 'delivered' ? -need.quantity : status === 'returned' ? need.quantity : 0;
+  const delta =
+    status === NeedStatus.Delivered
+      ? -need.quantity
+      : status === NeedStatus.Returned
+        ? need.quantity
+        : 0;
   if (part.stock + delta < 0) throw new Error('موجودی انبار کافی نیست.');
   return {
     ...data,
@@ -111,7 +124,7 @@ export function transitionNeed(
         ? {
             ...item,
             status,
-            technicianId: status === 'delivered' ? technicianId : item.technicianId,
+            technicianId: status === NeedStatus.Delivered ? technicianId : item.technicianId,
           }
         : item,
     ),
@@ -119,7 +132,7 @@ export function transitionNeed(
 }
 export function receivePurchase(data: PartsData, id: string, quantity: number): PartsData {
   const purchase = data.purchases.find((item) => item.id === id);
-  if (!purchase || purchase.status !== 'ordered')
+  if (!purchase || purchase.status !== PurchaseStatus.Ordered)
     throw new Error('فقط خرید سفارش‌داده‌شده قابل دریافت است.');
   if (
     !Number.isSafeInteger(quantity) ||
@@ -137,7 +150,10 @@ export function receivePurchase(data: PartsData, id: string, quantity: number): 
         ? {
             ...item,
             received: item.received + quantity,
-            status: item.received + quantity === item.quantity ? 'received' : 'ordered',
+            status:
+              item.received + quantity === item.quantity
+                ? PurchaseStatus.Received
+                : PurchaseStatus.Ordered,
           }
         : item,
     ),
@@ -242,7 +258,8 @@ export function isPartsData(value: unknown): value is PartsData {
         typeof n.status === 'string' &&
         Object.hasOwn(needLabels, n.status) &&
         typeof n.technicianId === 'string' &&
-        (!['delivered', 'used', 'returned'].includes(n.status) || text(n.technicianId)),
+        (![NeedStatus.Delivered, NeedStatus.Used, NeedStatus.Returned].includes(n.status) ||
+          text(n.technicianId)),
     )
   )
     return false;
@@ -261,7 +278,7 @@ export function isPartsData(value: unknown): value is PartsData {
         typeof p.supplier === 'string' &&
         typeof p.status === 'string' &&
         Object.hasOwn(purchaseLabels, p.status) &&
-        (p.status !== 'received' || p.received === p.quantity),
+        (p.status !== PurchaseStatus.Received || p.received === p.quantity),
     )
   )
     return false;

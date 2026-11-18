@@ -1,3 +1,4 @@
+import { JobStatus } from '../../../entities/service/model/types.ts';
 import { useFinanceTranslation } from '../i18n/use-finance-translation';
 import { translateLabel } from '@/shared/i18n';
 import { useMemo } from 'react';
@@ -115,7 +116,7 @@ export function CustomerStatement({
             original: { job, row },
           },
         }) =>
-          job.status !== 'cancelled' && job.total > row.receipts ? (
+          job.status !== JobStatus.Cancelled && job.total > row.receipts ? (
             <Button size="sm" variant="outline" onClick={() => onReceipt(job.id)}>
               {t('statement.recordReceipt')}
             </Button>

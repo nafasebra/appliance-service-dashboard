@@ -1,10 +1,12 @@
-import { useMemo } from 'react';
 import {
+  JobStatus,
   statusLabels,
   type Customer,
   type Job,
   type Technician,
 } from '@/entities/service/model/types';
+import { useMemo } from 'react';
+
 import { JobStatusBadge } from '@/entities/service/ui/job-status-badge';
 import { translateLabel } from '@/shared/i18n';
 import { dateLabel, money } from '@/shared/lib/format';
@@ -76,9 +78,9 @@ export function useCartableColumns(
         }) => (
           <div className="flex flex-col gap-1">
             <span>{technician?.name ?? '—'}</span>
-            {job.status === 'scheduled' ||
-            job.status === 'working' ||
-            job.status === 'completed' ? (
+            {job.status === JobStatus.Scheduled ||
+            job.status === JobStatus.Working ||
+            job.status === JobStatus.Completed ? (
               <span className="text-muted-foreground">
                 {dateLabel(job.date)} · <bdi>{job.time}</bdi>
               </span>
@@ -131,9 +133,11 @@ export function useCartableColumns(
             {queue === 'active' ? (
               <Button
                 size="sm"
-                onClick={() => onOpen(job, job.status === 'scheduled' ? 'start' : 'complete')}
+                onClick={() =>
+                  onOpen(job, job.status === JobStatus.Scheduled ? 'start' : 'complete')
+                }
               >
-                {t(job.status === 'scheduled' ? 'actions.start' : 'actions.complete')}
+                {t(job.status === JobStatus.Scheduled ? 'actions.start' : 'actions.complete')}
               </Button>
             ) : null}
             {queue === 'collection' ? (
@@ -149,7 +153,9 @@ export function useCartableColumns(
             <Button variant="outline" size="sm" onClick={() => onOpen(job, 'details')}>
               {t('actions.details')}
             </Button>
-            {['new', 'accepted', 'scheduled', 'working'].includes(job.status) ? (
+            {[JobStatus.New, JobStatus.Accepted, JobStatus.Scheduled, JobStatus.Working].includes(
+              job.status,
+            ) ? (
               <Button variant="ghost" size="sm" onClick={() => onOpen(job, 'cancel')}>
                 {t('actions.cancel')}
               </Button>
