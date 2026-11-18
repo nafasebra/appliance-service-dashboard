@@ -34,7 +34,7 @@ import { usePartsTranslation } from '../features/parts/i18n/use-parts-translatio
 import { useOverviewTranslation } from '../features/overview/i18n/use-overview-translation.ts';
 import { useReportsTranslation } from '../features/reports/i18n/use-reports-translation.ts';
 import { useSettingsTranslation } from '../features/settings/i18n/use-settings-translation.ts';
-import { useAppTranslation } from './i18n/use-app-translation.ts';
+import { useDashboardTranslation } from '../features/dashboard/i18n/use-dashboard-translation.ts';
 import { useSharedTranslation } from '../shared/i18n/use-shared-translation.ts';
 import { useCartableTranslation } from '../features/cartable/i18n/use-cartable-translation.ts';
 
@@ -183,9 +183,9 @@ test('every feature hook uses its own namespace and follows the provider locale'
   const instance = await createI18n('en', translationBundles);
   const probes = [
     {
-      namespace: 'app',
+      namespace: 'dashboard',
       key: 'notifications.notifications',
-      useText: () => useAppTranslation()('notifications.notifications'),
+      useText: () => useDashboardTranslation()('notifications.notifications'),
     },
     {
       namespace: 'common',

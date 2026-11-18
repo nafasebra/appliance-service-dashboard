@@ -1,4 +1,4 @@
-import { navigation } from '@/app/const';
+import { navigation } from '@/features/dashboard/const/navigation';
 
 export const isPartsRoute = (path: string) => path === '/parts' || path.startsWith('/part-');
 export const isTechnicianRoute = (path: string) =>

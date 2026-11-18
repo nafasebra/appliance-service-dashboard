@@ -14,9 +14,7 @@ export default defineConfig({
     output: (language, namespace) =>
       namespace === 'common'
         ? `src/shared/i18n/locales/${language}/common.json`
-        : namespace === 'app'
-          ? `src/app/i18n/${language}.json`
-          : `src/features/${namespace}/i18n/${language}.json`,
+        : `src/features/${namespace}/i18n/${language}.json`,
     primaryLanguage: 'fa',
     defaultNS: 'common',
     functions: ['t', '*.t', 'tShared'],

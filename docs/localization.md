@@ -22,7 +22,7 @@ all messages lived in one `translation` namespace, including feature copy, and
 | reports     | Operational and financial reports                                     | `reports`     |
 | settings    | Company and workflow preferences                                      | `settings`    |
 | cartable    | Order review, assignment, repairs, collection, settlement and archive | `cartable`    |
-| app         | Shell, notifications, guide, theme controls, and navigation groups    | `app`         |
+| dashboard   | Shell, notifications, guide and navigation groups                     | `dashboard`   |
 | shared      | Generic controls, tables, date inputs and formatting                  | `common`      |
 
 The shared service entity owns records and pure accounting rules; its domain data
@@ -40,10 +40,10 @@ they do not import another feature's translation hook.
 ```text
 src/
   app/i18n.ts                       Composes the feature bundle list
-  app/i18n/
-    {fa,en}.json                    Shell messages, namespace app
+  features/dashboard/i18n/
+    {fa,en}.json                    Shell messages, namespace dashboard
     resources.ts                    Shell bundle and namespace type
-    use-app-translation.ts          Typed shell translation hook
+    use-dashboard-translation.ts    Typed shell translation hook
   features/customers/
     customers-page.tsx
     i18n/
@@ -70,7 +70,7 @@ Each feature exports one bundle containing its namespace and both locales. Add i
 once to `translationBundles` in `app/i18n.ts`. Shared infrastructure receives bundles
 as inputs and does not import features. `buildResources` rejects duplicate or invalid
 namespaces before registration; `common` is reserved by the shared bundle and is
-the default namespace. The `app` namespace is registered by application composition.
+the default namespace. The `dashboard` namespace is registered by application composition.
 Use the feature directory name as its namespace. Identical leaf keys in different
 namespaces are safe. Registration can run again during HMR without duplicating listeners.
 
@@ -97,7 +97,8 @@ in this convention: the extraction plugin normalizes them for CLI analysis only.
 The CLI derives the feature namespace from the hook name and writes to the feature
 directory. PascalCase hook names correspond to lowercase feature names.
 Use `const tShared = useSharedTranslation()` for generic controls alongside the
-feature hook; keep feature copy on `t`. Shell components use `useAppTranslation()`.
+feature hook; keep feature copy on `t`. Shell components use `useDashboardTranslation()`.
+Generic language and theme controls live in `shared/components` and use the common catalog.
 The CLI recognizes both the `t` and `tShared` hook bindings. Non-React utilities can use an explicit
 qualified key such as `i18next.t('parts:orders.idOrderUnavailable', { id })`.
 
@@ -115,7 +116,7 @@ placeholder parity is verified at runtime in tests.
 - Put feature copy in that feature's `i18n/fa.json` and `i18n/en.json`. Use nested
   business concepts (`directory`, `search`, `history`) and descriptive, stable keys.
   Keep generic shared controls in `shared/i18n/locales/{fa,en}/common.json`. Shell
-  messages belong in `app/i18n/{fa,en}.json`; business messages stay with features.
+  messages belong in `features/dashboard/i18n/{fa,en}.json`; business messages stay with features.
 - Use the dedicated feature hook. Include `t` in memo dependencies
   when memoized columns or derived labels contain translations.
 - Translate complete sentences with interpolation. Use i18next `_one` and `_other`

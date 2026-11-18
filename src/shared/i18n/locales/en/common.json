@@ -5,6 +5,12 @@
     "edit": "Edit",
     "save": "Save"
   },
+  "appearance": {
+    "darkTheme": "Dark theme",
+    "lightTheme": "Light theme",
+    "switchToDarkTheme": "Switch to dark theme",
+    "switchToLightTheme": "Switch to light theme"
+  },
   "appTitle": "Appliance Repair Service Dashboard",
   "dialog": {
     "titleDialog": "{{title}} dialog"

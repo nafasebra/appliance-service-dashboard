@@ -67,8 +67,9 @@ integrity information are recorded in `package-lock.json`.
 
 ```text
 src/
-  app/                    Entry point, routes, layout, and navigation
+  app/                    Entry point, routes, providers, and layout composition
   features/               Business pages and workflows
+    dashboard/            Shell components, hooks, navigation, and shell translations
     customers/
     dispatch/
     finance/
@@ -83,6 +84,7 @@ src/
     service/model/        Records, financial rules, validation, and sample data
     service/ui/           Reusable service-domain presentation
   shared/
+    components/           Reusable language and theme controls
     store/                Zustand stores and integration tests
     ui/                   Local shadcn primitives and shared DataTable
     lib/                  Formatting, dates, and class-name helpers
@@ -195,7 +197,7 @@ JSON files managed with i18next/react-i18next. Each feature owns its messages un
 `src/features/<feature>/i18n/{fa,en}.json` and exposes a typed hook such as
 `useCustomersTranslation()`. Generic controls use `useSharedTranslation()` with
 `src/shared/i18n/locales/{fa,en}/common.json`. Shell messages use
-`useAppTranslation()` with `src/app/i18n/{fa,en}.json`. The Jalali
+`useDashboardTranslation()` with `src/features/dashboard/i18n/{fa,en}.json`. The Jalali
 calendar and existing business records are
 preserved in both languages. See [localization conventions](docs/localization.md)
 for adding messages and running extraction and validation.

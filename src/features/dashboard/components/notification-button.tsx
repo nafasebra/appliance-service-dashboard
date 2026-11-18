@@ -1,5 +1,5 @@
-import { useAppTranslation } from '@/app/i18n/use-app-translation';
-import { JobStatus } from '../../entities/service/model/types.ts';
+import { useDashboardTranslation } from '@/features/dashboard/i18n/use-dashboard-translation';
+import { JobStatus } from '@/entities/service/model/types';
 import { Link } from '@tanstack/react-router';
 import { Bell } from 'lucide-react';
 import { useDemo } from '@/shared/store/demo-store';
@@ -10,7 +10,7 @@ import { dateLabel } from '@/shared/lib/format';
 import { translateLabel } from '@/shared/i18n';
 
 export function NotificationButton() {
-  const t = useAppTranslation();
+  const t = useDashboardTranslation();
   const jobs = useDemo((state) => state.jobs);
   const newJobs = jobs.filter((job) => job.status === JobStatus.New);
 

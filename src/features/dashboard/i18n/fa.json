@@ -2,16 +2,6 @@
   "accessibility": {
     "skipToMainContent": "رفتن به محتوای اصلی"
   },
-  "appearance": {
-    "darkTheme": "پوسته تاریک",
-    "lightTheme": "پوسته روشن",
-    "switchToDarkTheme": "فعال‌کردن پوسته تاریک",
-    "switchToLightTheme": "فعال‌کردن پوسته روشن"
-  },
-  "footer": {
-    "builtForABetterCoordinatedTeam": "طراحی‌شده برای یک تیم هماهنگ‌تر",
-    "companynameSmartServiceManagement": "{{companyName}} · مدیریت هوشمند خدمات"
-  },
   "guide": {
     "chooseADateOnTheDispatchPageTo": "در صفحه اعزام، تاریخ روز را انتخاب کنید تا برنامه تعمیرکاران نمایش داده شود. دریافت از مشتری، هزینه و تسویه تعمیرکار در امور مالی ثبت می‌شود.",
     "createAServiceRequestForASampleCustomer": "از «درخواست جدید» یک خدمت برای مشتریان نمونه ثبت کنید. با بازکردن ردیف درخواست، تعمیرکار، زمان مراجعه و وضعیت را تغییر دهید.",

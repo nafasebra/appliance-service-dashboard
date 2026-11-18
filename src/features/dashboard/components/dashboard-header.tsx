@@ -1,11 +1,11 @@
-import { useAppTranslation } from '@/app/i18n/use-app-translation';
+import { useDashboardTranslation } from '@/features/dashboard/i18n/use-dashboard-translation';
 import { translateLabel } from '@/shared/i18n';
 import { Link, useRouterState } from '@tanstack/react-router';
-import { navigation } from '@/app/const';
-import { NotificationButton } from '@/app/components/notification-button';
-import { LanguageSwitcher } from './language-switcher';
-import { ThemeToggleButton } from '@/app/components/theme-toggle-button';
-import { NoticAlert } from '@/app/components/notic-alert';
+import { navigation } from '@/features/dashboard/const/navigation';
+import { NotificationButton } from '@/features/dashboard/components/notification-button';
+import { LanguageSwitcher } from '@/shared/components/language-switcher';
+import { ThemeToggleButton } from '@/shared/components/theme-toggle-button';
+import { NoticAlert } from '@/features/dashboard/components/notic-alert';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,7 +18,7 @@ import { SidebarTrigger } from '@/shared/ui/sidebar';
 import { useCompanySettings } from '@/shared/store/settings-store';
 
 export function DashboardHeader() {
-  const t = useAppTranslation();
+  const t = useDashboardTranslation();
   const settings = useCompanySettings((state) => state.settings);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const currentPage =

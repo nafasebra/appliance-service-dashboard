@@ -2,16 +2,6 @@
   "accessibility": {
     "skipToMainContent": "Skip to main content"
   },
-  "appearance": {
-    "darkTheme": "Dark theme",
-    "lightTheme": "Light theme",
-    "switchToDarkTheme": "Switch to dark theme",
-    "switchToLightTheme": "Switch to light theme"
-  },
-  "footer": {
-    "builtForABetterCoordinatedTeam": "Built for a better coordinated team",
-    "companynameSmartServiceManagement": "{{companyName}} · Smart service management"
-  },
   "guide": {
     "chooseADateOnTheDispatchPageTo": "Choose a date on the dispatch page to view technician schedules. Record customer receipts, expenses, and technician payouts in Finance.",
     "createAServiceRequestForASampleCustomer": "Create a service request for a sample customer using New request. Open a request to change its technician, visit time, or status.",

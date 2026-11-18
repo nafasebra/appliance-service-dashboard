@@ -1,5 +1,5 @@
 import { requestsTranslations } from '../features/requests/i18n/resources.ts';
-import { appTranslations } from './i18n/resources.ts';
+import { dashboardTranslations } from '../features/dashboard/i18n/resources.ts';
 import { cartableTranslations } from '../features/cartable/i18n/resources.ts';
 import { dispatchTranslations } from '../features/dispatch/i18n/resources.ts';
 import { techniciansTranslations } from '../features/technicians/i18n/resources.ts';
@@ -15,7 +15,7 @@ import { buildResources, registerTranslationLabels } from '../shared/i18n/resour
 // App composition owns feature dependencies. One entry registers both locales.
 export const translationBundles = [
   sharedTranslations,
-  appTranslations,
+  dashboardTranslations,
   cartableTranslations,
   customersTranslations,
   requestsTranslations,

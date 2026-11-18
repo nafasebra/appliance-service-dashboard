@@ -1,12 +1,12 @@
 import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
-import { useAppTranslation } from '@/app/i18n/use-app-translation';
-import { JobStatus } from '../../entities/service/model/types.ts';
+import { useDashboardTranslation } from '@/features/dashboard/i18n/use-dashboard-translation';
+import { JobStatus } from '@/entities/service/model/types';
 import { translateLabel } from '@/shared/i18n';
 import { Link } from '@tanstack/react-router';
 import { ArrowUpLeft, LifeBuoy, RotateCcw, Wrench, X } from 'lucide-react';
-import { navigationGroups } from '@/app/utils/navigation';
+import { navigationGroups } from '@/features/dashboard/utils/navigation';
 import { useCompanySettings } from '@/shared/store/settings-store';
-import { useDashboardSidebar } from '@/app/hooks/use-dashboard-sidebar';
+import { useDashboardSidebar } from '@/features/dashboard/hooks/use-dashboard-sidebar';
 import { useDemo } from '@/shared/store/demo-store';
 import {
   AlertDialog,
@@ -36,7 +36,7 @@ import {
 import { useTranslation } from 'react-i18next';
 
 export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
-  const t = useAppTranslation();
+  const t = useDashboardTranslation();
   const tShared = useSharedTranslation();
   const { i18n } = useTranslation();
   const settings = useCompanySettings((state) => state.settings);
@@ -119,13 +119,17 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
       </SidebarContent>
 
       <SidebarFooter className="pt-11.25">
-        <div className="relative rounded-lg border border-border bg-linear-130 from-accent to-card pt-5 px-3.5 pb-3.5 [&_button]:flex [&_button]:w-full [&_button]:items-center [&_button]:justify-between [&_button]:rounded-md [&_button]:border [&_button]:border-border [&_button]:bg-white [&_button]:p-2.25 [&_button]:text-2xs [&_p]:mt-2 [&_p]:mx-0 [&_p]:mb-4 [&_p]:text-2xs [&_p]:text-muted-foreground [&_strong]:text-xs dark:bg-none dark:border-border dark:bg-muted dark:text-primary-foreground dark:[&_button]:border-border dark:[&_button]:bg-muted dark:[&_button]:text-primary-foreground dark:[&_button:hover]:border-border dark:[&_button:hover]:bg-muted dark:[&_button:hover]:text-white dark:[&_strong]:text-primary-foreground">
-          <span className="mb-3.25 -mt-9.75 grid h-9.75 w-9.75 place-items-center rounded-lg border-1.25 border-white bg-muted text-primary dark:bg-accent dark:text-primary">
+        <div className="relative rounded-lg border border-border bg-linear-130 from-accent to-card px-3.5 pt-5 pb-3.5 text-card-foreground">
+          <span className="mb-3.25 -mt-9.75 grid size-9.75 place-items-center rounded-lg border border-border bg-accent text-accent-foreground">
             <LifeBuoy size={23} />
           </span>
-          <strong>{t('guide.stayOneStepAhead')}</strong>
-          <p>{t('guide.howToUseTheDemo')}</p>
-          <Button variant="outline" onClick={onOpenHelp}>
+          <strong className="text-xs text-foreground">{t('guide.stayOneStepAhead')}</strong>
+          <p className="mt-2 mb-4 text-2xs text-muted-foreground">{t('guide.howToUseTheDemo')}</p>
+          <Button
+            variant="outline"
+            className="w-full justify-between border-border bg-card p-2.25 text-2xs text-foreground hover:bg-accent hover:text-accent-foreground"
+            onClick={onOpenHelp}
+          >
             {t('guide.dashboardGuide')} <ArrowUpLeft size={16} />
           </Button>
         </div>

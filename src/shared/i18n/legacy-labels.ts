@@ -2,6 +2,10 @@ import type { ParseKeys } from 'i18next';
 
 // Compatibility labels stay with their message owner; stored records are unchanged.
 export const legacyLabelKeys = {
+  'فعال‌کردن پوسته روشن': 'appearance.switchToLightTheme',
+  'فعال‌کردن پوسته تاریک': 'appearance.switchToDarkTheme',
+  'پوسته روشن': 'appearance.lightTheme',
+  'پوسته تاریک': 'appearance.darkTheme',
   'مسیر صفحه': 'table.breadcrumb',
   'فضای کاری / مدیریت خدمات': 'layout.workspaceServiceManagement',
   'موردی پیدا نشد. فیلترها را تغییر دهید.': 'table.noResultsFoundTryDifferentFilters',

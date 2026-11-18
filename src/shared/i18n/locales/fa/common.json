@@ -5,6 +5,12 @@
     "edit": "ویرایش",
     "save": "ذخیره"
   },
+  "appearance": {
+    "darkTheme": "پوسته تاریک",
+    "lightTheme": "پوسته روشن",
+    "switchToDarkTheme": "فعال‌کردن پوسته تاریک",
+    "switchToLightTheme": "فعال‌کردن پوسته روشن"
+  },
   "appTitle": "مدیریت خدمات تعمیرات لوازم خانگی",
   "dialog": {
     "titleDialog": "پنجرهٔ {{title}}"

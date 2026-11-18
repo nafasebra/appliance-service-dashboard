@@ -1,4 +1,4 @@
-import { useAppTranslation } from '@/app/i18n/use-app-translation';
+import { useDashboardTranslation } from '@/features/dashboard/i18n/use-dashboard-translation';
 import { createRootRoute, Link } from '@tanstack/react-router';
 import { DashboardLayout } from '@/app/dashboard-layout';
 import { Button } from '@/shared/ui/button';
@@ -14,7 +14,7 @@ function RootLayout() {
 }
 
 function NotFoundPage() {
-  const t = useAppTranslation();
+  const t = useDashboardTranslation();
   return (
     <Card className="mx-auto mt-20 w-full max-w-xl">
       <CardHeader>

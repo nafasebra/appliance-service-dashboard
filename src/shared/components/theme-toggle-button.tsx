@@ -1,10 +1,10 @@
-import { useAppTranslation } from '@/app/i18n/use-app-translation';
+import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/shared/store/theme-store';
 import { Button } from '@/shared/ui/button';
 
 export function ThemeToggleButton() {
-  const t = useAppTranslation();
+  const t = useSharedTranslation();
   const theme = useTheme((state) => state.theme);
   const toggleTheme = useTheme((state) => state.toggleTheme);
   const isDark = theme === 'dark';

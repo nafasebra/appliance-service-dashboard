@@ -48,8 +48,8 @@ Every feature owns its messages and typed hook in `features/<feature>/i18n/`,
 following the customers reference. Compose bundles in
 `app/i18n.ts`; shared infrastructure must receive bundles rather than import features.
 Keep generic controls in `shared/i18n/locales/{fa,en}/common.json` and access them
-through `useSharedTranslation()`. Shell copy belongs in `app/i18n/` with
-`useAppTranslation()`. Domain statuses, appliance labels and validation messages
+through `useSharedTranslation()`. Shell copy belongs in `features/dashboard/i18n/` with
+`useDashboardTranslation()`. Domain statuses, appliance labels and validation messages
 belong to feature catalogs; their compatibility maps register through feature bundles.
 Shared/entity renderers use the registered label lookup instead of importing features.
 
@@ -71,6 +71,7 @@ src/
   app/                   Application entry, providers, routing, and page composition
   features/
     requests/            Request pages, editor and job table
+    dashboard/           Shell components, sidebar hook, navigation and shell translations
     cartable/            Review, assignment, active work, collection, settlement, archive
     dispatch/            Scheduling and dispatch
     customers/           Customer directory and history
@@ -84,6 +85,7 @@ src/
   shared/
     store/               Global Zustand stores and their integration tests
     ui/                  Local shadcn components and dashboard compositions
+    components/          Reusable language and theme controls
     lib/                 Formatting, theme, and shared utilities such as cn()
     api/                 Shared transport configuration and error handling
   styles/                Tailwind entry, global styles, and design tokens
@@ -92,6 +94,9 @@ src/
 Create directories when they contain real code. Do not generate empty modules or
 speculative abstractions. Features own their pages and behavior. Shared service
 records retain one demo store in shared/store; parts has a separate store there.
+Keep `app/` focused on entry, providers, routing and application composition.
+Dashboard shell components, hooks and navigation belong to `features/dashboard`;
+generic controls belong to `shared/components`. The dashboard has no page footer.
 
 | URL            | Page                                                      |
 | -------------- | --------------------------------------------------------- |

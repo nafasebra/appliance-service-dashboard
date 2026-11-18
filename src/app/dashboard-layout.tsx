@@ -1,11 +1,10 @@
 import { useSharedTranslation } from '@/shared/i18n/use-shared-translation';
-import { useAppTranslation } from '@/app/i18n/use-app-translation';
+import { useDashboardTranslation } from '@/features/dashboard/i18n/use-dashboard-translation';
 import { useState } from 'react';
 import { Link, Outlet } from '@tanstack/react-router';
 import { AlertTriangle } from 'lucide-react';
-import { DashboardHeader } from '@/app/components/dashboard-header';
-import { DashboardSidebar } from '@/app/components/dashboard-sidebar';
-import { DashboardFooter } from '@/app/components/dashboard-footer';
+import { DashboardHeader } from '@/features/dashboard/components/dashboard-header';
+import { DashboardSidebar } from '@/features/dashboard/components/dashboard-sidebar';
 import { useDemo } from '@/shared/store/demo-store';
 import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
 import { Modal } from '@/shared/ui/primitives';
@@ -20,7 +19,7 @@ export function DashboardLayout() {
 }
 
 function DashboardShell() {
-  const t = useAppTranslation();
+  const t = useDashboardTranslation();
   const tShared = useSharedTranslation();
   const [helpOpen, setHelpOpen] = useState(false);
   const storageError = useDemo((state) => state.storageError);
@@ -56,8 +55,6 @@ function DashboardShell() {
         >
           <Outlet />
         </main>
-
-        <DashboardFooter />
       </SidebarInset>
 
       {helpOpen ? (
