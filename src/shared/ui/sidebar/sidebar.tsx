@@ -1,12 +1,26 @@
 import { useSharedTranslation } from '@/shared/hooks';
 import * as React from 'react';
 import { PanelLeftIcon } from 'lucide-react';
-import { Slot } from 'radix-ui';
+import { Dialog as DialogPrimitive, Slot } from 'radix-ui';
 import { Button } from '@/shared/ui/button';
 import { cn } from '@/shared/lib';
 
-const MOBILE_BREAKPOINT = 762;
+import {
+  getSidebarMode,
+  getSidebarViewport,
+  sidebarMedia,
+  type SidebarMode,
+} from './sidebar-state.ts';
+
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b';
+
+function readViewport() {
+  if (typeof window === 'undefined') return 'desktop';
+  return getSidebarViewport(
+    window.matchMedia(sidebarMedia.mobile).matches,
+    window.matchMedia(sidebarMedia.desktop).matches,
+  );
+}
 
 type SidebarContextValue = {
   open: boolean;
@@ -14,6 +28,10 @@ type SidebarContextValue = {
   openMobile: boolean;
   setOpenMobile: React.Dispatch<React.SetStateAction<boolean>>;
   isMobile: boolean;
+  isTablet: boolean;
+  mode: SidebarMode;
+  triggerRef: React.RefObject<HTMLElement | null>;
+  sidebarStyle: React.CSSProperties | undefined;
   toggleSidebar: () => void;
 };
 
@@ -34,37 +52,60 @@ function SidebarProvider({
 }: React.ComponentProps<'div'> & { defaultOpen?: boolean }) {
   const [open, setOpen] = React.useState(defaultOpen);
   const [openMobile, setOpenMobile] = React.useState(false);
-  const [isMobile, setIsMobile] = React.useState(() =>
-    typeof window === 'undefined' ? false : window.innerWidth < MOBILE_BREAKPOINT,
-  );
+  const [viewport, setViewport] = React.useState(readViewport);
+  const triggerRef = React.useRef<HTMLElement | null>(null);
+  const isMobile = viewport === 'mobile';
+  const isTablet = viewport === 'tablet';
+  const mode = getSidebarMode(viewport, open, openMobile);
 
   React.useEffect(() => {
-    const media = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
-    const update = () => setIsMobile(media.matches);
+    const media = Object.values(sidebarMedia).map((query) => window.matchMedia(query));
+    const update = () => {
+      const next = readViewport();
+      setViewport(next);
+      if (next !== 'mobile') setOpenMobile(false);
+    };
     update();
-    media.addEventListener('change', update);
-    return () => media.removeEventListener('change', update);
+    media.forEach((query) => query.addEventListener('change', update));
+    return () => media.forEach((query) => query.removeEventListener('change', update));
   }, []);
 
   const toggleSidebar = React.useCallback(() => {
-    if (isMobile) setOpenMobile((value) => !value);
-    else setOpen((value) => !value);
-  }, [isMobile]);
+    if (isMobile) {
+      if (!openMobile) triggerRef.current = document.activeElement as HTMLElement | null;
+      setOpenMobile((value) => !value);
+    } else if (!isTablet) setOpen((value) => !value);
+  }, [isMobile, isTablet, openMobile]);
 
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === SIDEBAR_KEYBOARD_SHORTCUT && (event.metaKey || event.ctrlKey)) {
+      if (
+        !isTablet &&
+        event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
+        (event.metaKey || event.ctrlKey)
+      ) {
         event.preventDefault();
         toggleSidebar();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [toggleSidebar]);
+  }, [toggleSidebar, isTablet]);
 
   const value = React.useMemo(
-    () => ({ open, setOpen, openMobile, setOpenMobile, isMobile, toggleSidebar }),
-    [open, openMobile, isMobile, toggleSidebar],
+    () => ({
+      open,
+      setOpen,
+      openMobile,
+      setOpenMobile,
+      isMobile,
+      isTablet,
+      mode,
+      triggerRef,
+      sidebarStyle: style,
+      toggleSidebar,
+    }),
+    [open, openMobile, isMobile, isTablet, mode, style, toggleSidebar],
   );
 
   return (
@@ -72,14 +113,7 @@ function SidebarProvider({
       <div
         data-slot="sidebar-wrapper"
         className={cn('flex min-h-svh w-full', className)}
-        style={
-          {
-            '--sidebar-width': '244px',
-            '--sidebar-width-tablet': '217px',
-            '--sidebar-width-mobile': '244px',
-            ...style,
-          } as React.CSSProperties
-        }
+        style={style}
         {...props}
       >
         {children}
@@ -93,40 +127,71 @@ function Sidebar({
   className,
   children,
   dir,
+  style,
   ...props
 }: React.ComponentProps<'aside'> & { side?: 'left' | 'right' }) {
   const t = useSharedTranslation();
-  const { open, openMobile, setOpenMobile, isMobile } = useSidebar();
-  const visible = isMobile ? openMobile : open;
-  const closedTransform = side === 'right' ? 'translate-x-full' : '-translate-x-full';
+  const { mode, openMobile, setOpenMobile, isMobile, triggerRef, sidebarStyle } = useSidebar();
+  const iconOnly = mode === 'icon';
+
+  if (isMobile) {
+    return (
+      <DialogPrimitive.Root open={openMobile} onOpenChange={setOpenMobile}>
+        <DialogPrimitive.Portal>
+          <DialogPrimitive.Overlay className="fixed inset-0 z-40 bg-foreground/40" />
+          <DialogPrimitive.Content
+            asChild
+            aria-describedby={undefined}
+            onCloseAutoFocus={(event) => {
+              event.preventDefault();
+              if (triggerRef.current?.isConnected) triggerRef.current.focus();
+            }}
+          >
+            <aside
+              data-slot="sidebar"
+              data-side={side}
+              data-mode="full"
+              data-state="expanded"
+              dir={dir}
+              style={{ ...sidebarStyle, ...style }}
+              className={cn(
+                'fixed inset-y-0 z-50 flex w-(--sidebar-width-mobile) flex-col border-sidebar-border bg-sidebar text-sidebar-foreground',
+                side === 'right' ? 'right-0 border-l' : 'left-0 border-r',
+                className,
+              )}
+              {...props}
+            >
+              <DialogPrimitive.Title className="sr-only">
+                {t('sidebar.navigation')}
+              </DialogPrimitive.Title>
+              {children}
+            </aside>
+          </DialogPrimitive.Content>
+        </DialogPrimitive.Portal>
+      </DialogPrimitive.Root>
+    );
+  }
 
   return (
     <>
-      {isMobile && openMobile && (
-        <button
-          type="button"
-          aria-label={t('sidebar.closeMenu')}
-          className="fixed inset-0 z-40 bg-foreground/40"
-          onClick={() => setOpenMobile(false)}
-        />
-      )}
-      {!isMobile && (
-        <div
-          className={cn(
-            'w-(--sidebar-width) shrink-0 transition-[width] max-desktop:w-(--sidebar-width-tablet)',
-            !open && 'w-0! max-desktop:w-0!',
-          )}
-        />
-      )}
+      <div
+        aria-hidden="true"
+        className={cn(
+          'shrink-0 transition-[width] duration-200 motion-reduce:transition-none',
+          iconOnly ? 'w-(--sidebar-width-icon)' : 'w-(--sidebar-width)',
+        )}
+      />
       <aside
         data-slot="sidebar"
         data-side={side}
-        data-state={visible ? 'expanded' : 'collapsed'}
+        data-state={iconOnly ? 'collapsed' : 'expanded'}
+        data-mode={mode}
         dir={dir}
+        style={style}
         className={cn(
-          'fixed inset-y-0 z-50 flex w-(--sidebar-width) flex-col border-sidebar-border bg-sidebar text-sidebar-foreground transition-transform duration-200 max-desktop:w-(--sidebar-width-tablet) max-mobile:w-(--sidebar-width-mobile)',
+          'fixed inset-y-0 z-30 flex flex-col border-sidebar-border bg-sidebar text-sidebar-foreground transition-[width] duration-200 motion-reduce:transition-none',
+          iconOnly ? 'w-(--sidebar-width-icon)' : 'w-(--sidebar-width)',
           side === 'right' ? 'right-0 border-l' : 'left-0 border-r',
-          !visible && closedTransform,
           className,
         )}
         {...props}
@@ -139,23 +204,32 @@ function Sidebar({
 
 function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<typeof Button>) {
   const t = useSharedTranslation();
-  const { toggleSidebar, open, openMobile, isMobile } = useSidebar();
+  const { toggleSidebar, mode, isMobile, isTablet } = useSidebar();
+  if (isTablet) return null;
+  const label = isMobile
+    ? mode === 'hidden'
+      ? t('sidebar.openMenu')
+      : t('sidebar.closeMenu')
+    : mode === 'icon'
+      ? t('sidebar.expandMenu')
+      : t('sidebar.collapseMenu');
   return (
     <Button
       data-slot="sidebar-trigger"
       variant="ghost"
       size="icon-sm"
-      aria-label={t('sidebar.toggleMenu')}
-      aria-expanded={isMobile ? openMobile : open}
+      aria-label={label}
+      title={label}
+      aria-expanded={mode === 'full'}
       className={cn('size-8', className)}
       onClick={(event) => {
         onClick?.(event);
-        toggleSidebar();
+        if (!event.defaultPrevented) toggleSidebar();
       }}
       {...props}
     >
       <PanelLeftIcon className="rtl:rotate-180" />
-      <span className="sr-only">{t('sidebar.toggleMenu')}</span>
+      <span className="sr-only">{label}</span>
     </Button>
   );
 }
@@ -229,7 +303,7 @@ function SidebarMenuButton({
   return (
     <Comp
       data-slot="sidebar-menu-button"
-      className={cn('flex w-full items-center text-body font-normal', className)}
+      className={cn('flex w-full items-center text-body', className)}
       {...props}
     />
   );

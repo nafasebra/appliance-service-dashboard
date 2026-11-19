@@ -51,6 +51,10 @@
   },
   "sidebar": {
     "closeMenu": "Close menu",
+    "collapseMenu": "Collapse sidebar",
+    "expandMenu": "Expand sidebar",
+    "navigation": "Main navigation",
+    "openMenu": "Open menu",
     "toggleMenu": "Toggle menu"
   },
   "storage": {

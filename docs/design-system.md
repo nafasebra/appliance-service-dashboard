@@ -52,9 +52,28 @@ Shared Table applies `px-4 py-3` to header cells and `px-4 py-4` to body cells.
 Cell padding creates row spacing in native tables; padding on `tr` does not.
 Keep horizontal overflow scrollable and preserve DataTable sorting/pagination.
 
+## Responsive sidebar
+
+The existing `mobile` and `desktop` breakpoints define three ranges. At the
+default browser font size, mobile is below 761px, tablet is 761–1200px and desktop
+starts at 1201px. Sidebar media queries use the matching rem thresholds.
+
+| Range   | Modes                                          | Control                                                               |
+| ------- | ---------------------------------------------- | --------------------------------------------------------------------- |
+| Desktop | Full by default; icon rail when collapsed      | Header toggle or Ctrl/Cmd+B                                           |
+| Tablet  | Icon rail only                                 | Toggle is omitted; desktop preference stays unchanged                 |
+| Mobile  | Hidden by default; full modal drawer when open | Header toggle; close button, Escape, backdrop or navigation dismisses |
+
+The full, icon and mobile widths use `--sidebar-width`, `--sidebar-width-icon`
+and `--sidebar-width-mobile`. The icon rail retains all navigation, accessible
+names, hover titles, active states, request counts and compact help/reset actions.
+Desktop and mobile preferences are independent; leaving mobile closes its drawer.
+The modal traps focus and restores it to the opening control when dismissed.
+
 ## Sources
 
 - [Carbon productive typography and scale](https://www.carbondesignsystem.com/building-blocks/foundations/typography/overview)
 - [Tailwind font-size variables](https://tailwindcss.com/docs/font-size)
 - [Tailwind font-weight variables](https://tailwindcss.com/docs/font-weight)
 - [shadcn Table](https://ui.shadcn.com/docs/components/base/table)
+- [shadcn Sidebar](https://ui.shadcn.com/docs/components/base/sidebar)

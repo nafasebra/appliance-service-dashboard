@@ -51,6 +51,10 @@
   },
   "sidebar": {
     "closeMenu": "بستن منو",
+    "collapseMenu": "نمایش آیکون‌های منوی کناری",
+    "expandMenu": "نمایش کامل منوی کناری",
+    "navigation": "پیمایش اصلی",
+    "openMenu": "باز کردن منو",
     "toggleMenu": "باز و بسته کردن منو"
   },
   "storage": {

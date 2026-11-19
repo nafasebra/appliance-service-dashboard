@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "test": "tsx --tsconfig tsconfig.app.json --test src/entities/service/model/validation.test.ts src/app/tests/order-workflow.test.ts src/entities/service/model/customer-account.test.ts src/app/tests/stores.test.ts src/entities/inventory/model/parts.test.ts src/shared/lib/date.test.ts src/shared/lib/csv.test.ts src/shared/ui/data-table.test.ts src/app/i18n.test.ts src/features/finance/lib/cash-chart.test.ts src/entities/company/model/settings.test.ts src/shared/lib/utils.test.ts",
+    "test": "tsx --tsconfig tsconfig.app.json --test src/entities/service/model/validation.test.ts src/app/tests/order-workflow.test.ts src/entities/service/model/customer-account.test.ts src/app/tests/stores.test.ts src/entities/inventory/model/parts.test.ts src/shared/lib/date.test.ts src/shared/lib/csv.test.ts src/shared/ui/data-table.test.ts src/app/i18n.test.ts src/features/finance/lib/cash-chart.test.ts src/entities/company/model/settings.test.ts src/shared/lib/utils.test.ts src/shared/ui/sidebar/sidebar.test.ts",
     "i18n:extract": "i18next-cli extract",
     "i18n:check": "i18next-cli status && i18next-cli lint",
     "typecheck": "tsc -b",

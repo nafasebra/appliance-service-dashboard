@@ -96,6 +96,9 @@
 }
 
 :root {
+  --sidebar-width: 15.25rem;
+  --sidebar-width-icon: 4.5rem;
+  --sidebar-width-mobile: min(18rem, calc(100vw - 2rem));
   --background: #f6f8f7;
   --foreground: #24302d;
   --card: #ffffff;

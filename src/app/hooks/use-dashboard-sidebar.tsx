@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useSidebar } from '@/shared/ui/sidebar';
 
 export function useDashboardSidebar() {
-  const { isMobile, setOpen, setOpenMobile } = useSidebar();
+  const { isMobile, mode, setOpen, setOpenMobile } = useSidebar();
 
   const closeSidebar = useCallback(() => {
     if (isMobile) setOpenMobile(false);
@@ -13,5 +13,5 @@ export function useDashboardSidebar() {
     if (isMobile) setOpenMobile(false);
   }, [isMobile, setOpenMobile]);
 
-  return { closeSidebar, closeSidebarOnMobile };
+  return { closeSidebar, closeSidebarOnMobile, isMobile, isIconOnly: mode === 'icon' };
 }

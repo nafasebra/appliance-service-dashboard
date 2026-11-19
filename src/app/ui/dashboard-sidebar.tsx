@@ -1,13 +1,13 @@
 import { useSharedTranslation } from '@/shared/hooks';
 import { useDashboardTranslation } from '../hooks/use-dashboard-translation.tsx';
 import { JobStatus, useDemo } from '@/entities/service';
-import { translateLabel } from '../../shared/i18n/index.ts';
+import { translateLabel } from '@/shared/i18n';
 import { Link } from '@tanstack/react-router';
-import { ArrowUpLeft, LifeBuoy, RotateCcw, Wrench } from 'lucide-react';
+import { ArrowUpLeft, LifeBuoy, RotateCcw, Wrench, X } from 'lucide-react';
 import { navigationGroups } from '../lib/navigation.ts';
 import { useCompanySettings } from '@/entities/company';
 import { useDashboardSidebar } from '../hooks/use-dashboard-sidebar.tsx';
-
+import { cn } from '@/shared/lib';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -42,93 +42,170 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
   const settings = useCompanySettings((state) => state.settings);
   const jobs = useDemo((state) => state.jobs);
   const resetDemo = useDemo((state) => state.resetDemo);
-  const { closeSidebarOnMobile } = useDashboardSidebar();
-  let newJobCount = 0;
-
-  for (const job of jobs) {
-    if (job.status === JobStatus.New) newJobCount += 1;
-  }
+  const { closeSidebar, closeSidebarOnMobile, isIconOnly, isMobile } = useDashboardSidebar();
+  const newJobCount = jobs.filter((job) => job.status === JobStatus.New).length;
 
   return (
     <Sidebar
       id="dashboard-sidebar"
       side={i18n.dir() === 'rtl' ? 'right' : 'left'}
-      className="pt-7.75 px-4.5 pb-4 max-desktop:px-3.5"
+      className={cn('py-6', isIconOnly ? 'px-2' : 'px-4')}
     >
-      <SidebarHeader className="flex flex-row items-center gap-2 pt-0 px-2.25 pb-7 [&_>_a]:flex [&_>_a]:items-center [&_>_a]:gap-2.75 [&_strong]:text-section [&_strong]:tracking-tight [&_strong_span]:mt-1.75 [&_strong_span]:block [&_strong_span]:font-latin [&_strong_span]:text-caption [&_strong_span]:tracking-widest [&_strong_span]:text-muted-foreground">
-        <Link to="/" onClick={closeSidebarOnMobile}>
-          <span className="grid h-10.75 w-10.75 -rotate-7 place-items-center rounded-lg bg-primary text-white">
-            <Wrench size={24} />
+      <SidebarHeader
+        className={cn('flex items-center gap-2 pb-6', isIconOnly ? 'justify-center' : 'px-2')}
+      >
+        <Link
+          to="/"
+          onClick={closeSidebarOnMobile}
+          aria-label={settings.companyName}
+          title={isIconOnly ? settings.companyName : undefined}
+          className="flex min-w-0 items-center gap-3"
+        >
+          <span className="grid size-10 shrink-0 -rotate-7 place-items-center rounded-lg bg-primary text-primary-foreground">
+            <Wrench size={24} aria-hidden="true" />
           </span>
-          <strong className="min-w-0 truncate" title={settings.companyName}>
-            {settings.companyName}
-            <span className="text-sm">{settings.brandName}</span>
-          </strong>
+          {!isIconOnly && (
+            <strong
+              className="min-w-0 truncate text-section tracking-tight"
+              title={settings.companyName}
+            >
+              {settings.companyName}
+              <span className="mt-1 block text-body font-normal text-muted-foreground">
+                {settings.brandName}
+              </span>
+            </strong>
+          )}
         </Link>
+        {isMobile && (
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="ms-auto shrink-0"
+            aria-label={tShared('sidebar.closeMenu')}
+            onClick={closeSidebar}
+          >
+            <X aria-hidden="true" />
+          </Button>
+        )}
       </SidebarHeader>
 
       <SidebarContent>
-        {navigationGroups.map((group) => (
-          <SidebarGroup key={group.label}>
-            <SidebarGroupLabel className="mt-1 mx-3.5 mb-3 h-auto text-caption text-muted-foreground">
-              {translateLabel(group.label)}
-            </SidebarGroupLabel>
-            <SidebarGroupContent className="hide-scrollbar pb-4">
-              <SidebarMenu aria-label={translateLabel(group.label)} className="hide-scrollbar">
-                {group.items.map(({ to, label, icon: Icon }) => (
-                  <SidebarMenuItem key={to}>
-                    <SidebarMenuButton asChild>
-                      <Link
-                        to={to}
-                        activeOptions={{ exact: to === '/' || to === '/cartable' }}
-                        activeProps={{
-                          className:
-                            "relative flex min-h-11.5 items-center gap-3 rounded-md bg-sidebar-accent py-2.75 px-3.5 text-body font-medium text-sidebar-accent-foreground before:absolute before:-start-4.5 before:h-6 before:w-0.75 before:rounded-xs before:bg-primary before:content-['']",
-                        }}
-                        inactiveProps={{
-                          className:
-                            'flex min-h-11.5 items-center gap-3 rounded-md py-2.75 px-3.5 text-body text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
-                        }}
-                        onClick={closeSidebarOnMobile}
-                      >
-                        <Icon size={20} strokeWidth={1.7} />
-                        <span>{translateLabel(label)}</span>
-                        {to === '/requests' ? (
-                          <SidebarMenuBadge className="end-2 top-1/2 -translate-y-1/2 rounded-md bg-muted pt-1.5 pb-0.5 px-1.75 text-caption text-primary dark:bg-accent dark:text-primary">
-                            {newJobCount}
-                          </SidebarMenuBadge>
-                        ) : null}
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
+        <nav aria-label={tShared('sidebar.navigation')}>
+          {navigationGroups.map((group, index) => (
+            <SidebarGroup
+              key={group.label}
+              className={cn(isIconOnly && index > 0 && 'mt-3 border-t border-sidebar-border pt-3')}
+            >
+              <SidebarGroupLabel
+                className={
+                  isIconOnly ? 'sr-only' : 'mx-3 mb-3 mt-1 text-caption text-muted-foreground'
+                }
+              >
+                {translateLabel(group.label)}
+              </SidebarGroupLabel>
+              <SidebarGroupContent className={isIconOnly ? 'pb-0' : 'pb-4'}>
+                <SidebarMenu aria-label={translateLabel(group.label)}>
+                  {group.items.map(({ to, label, icon: Icon }) => (
+                    <SidebarMenuItem key={to}>
+                      <SidebarMenuButton asChild>
+                        <Link
+                          to={to}
+                          aria-label={translateLabel(label)}
+                          title={isIconOnly ? translateLabel(label) : undefined}
+                          aria-describedby={
+                            to === '/requests' && newJobCount > 0
+                              ? 'sidebar-request-count'
+                              : undefined
+                          }
+                          activeOptions={{ exact: to === '/' || to === '/cartable' }}
+                          className={cn(
+                            'relative flex min-h-11 items-center rounded-md transition-colors',
+                            isIconOnly ? 'justify-center px-2' : 'gap-3 px-3 py-3',
+                          )}
+                          activeProps={{
+                            className:
+                              'bg-sidebar-accent font-medium text-sidebar-accent-foreground',
+                          }}
+                          inactiveProps={{
+                            className:
+                              'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+                          }}
+                          onClick={closeSidebarOnMobile}
+                        >
+                          <Icon
+                            size={20}
+                            strokeWidth={1.7}
+                            className="shrink-0"
+                            aria-hidden="true"
+                          />
+                          <span className={isIconOnly ? 'sr-only' : undefined}>
+                            {translateLabel(label)}
+                          </span>
+                          {to === '/requests' && newJobCount > 0 && (
+                            <SidebarMenuBadge
+                              id="sidebar-request-count"
+                              className={cn(
+                                'rounded-md bg-muted px-1.5 text-primary',
+                                isIconOnly
+                                  ? 'end-0 top-0 min-w-4 text-center'
+                                  : 'end-2 top-1/2 -translate-y-1/2 py-0.5',
+                              )}
+                            >
+                              {newJobCount}
+                            </SidebarMenuBadge>
+                          )}
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          ))}
+        </nav>
       </SidebarContent>
 
-      <SidebarFooter className="pt-11.25">
-        <div className="relative rounded-lg border border-border bg-linear-130 from-accent to-card px-3.5 pt-5 pb-3.5 text-card-foreground">
-          <span className="mb-3.25 -mt-9.75 grid size-9.75 place-items-center rounded-lg border border-border bg-accent text-accent-foreground">
-            <LifeBuoy size={23} />
-          </span>
-          <strong className="text-caption text-foreground">{t('guide.stayOneStepAhead')}</strong>
-          <p className="mt-2 mb-4 text-caption text-muted-foreground">
-            {t('guide.howToUseTheDemo')}
-          </p>
-          <Button variant="outline" onClick={onOpenHelp}>
-            {t('guide.dashboardGuide')} <ArrowUpLeft size={16} />
+      <SidebarFooter
+        className={cn(
+          'flex flex-col gap-3',
+          isIconOnly ? 'items-center border-t border-sidebar-border pt-3' : 'pt-10',
+        )}
+      >
+        {isIconOnly ? (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onOpenHelp}
+            aria-label={t('guide.dashboardGuide')}
+            title={t('guide.dashboardGuide')}
+          >
+            <LifeBuoy aria-hidden="true" />
           </Button>
-        </div>
-
-        <div className="my-3 h-px w-full bg-white/20" />
+        ) : (
+          <div className="relative rounded-lg border border-border bg-linear-130 from-accent to-card px-3.5 pb-3.5 pt-5 text-card-foreground">
+            <span className="-mt-10 mb-3 grid size-10 place-items-center rounded-lg border border-border bg-accent text-accent-foreground">
+              <LifeBuoy size={23} aria-hidden="true" />
+            </span>
+            <strong className="text-caption text-foreground">{t('guide.stayOneStepAhead')}</strong>
+            <p className="mb-4 mt-2 text-caption text-muted-foreground">
+              {t('guide.howToUseTheDemo')}
+            </p>
+            <Button variant="outline" onClick={onOpenHelp} className="w-full justify-between">
+              {t('guide.dashboardGuide')} <ArrowUpLeft size={16} aria-hidden="true" />
+            </Button>
+          </div>
+        )}
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="ghost">
-              <RotateCcw size={17} />
-              {t('reset.resetSampleData')}
+            <Button
+              variant="ghost"
+              size={isIconOnly ? 'icon' : 'default'}
+              aria-label={t('reset.resetSampleData')}
+              title={isIconOnly ? t('reset.resetSampleData') : undefined}
+            >
+              <RotateCcw size={17} aria-hidden="true" />
+              {!isIconOnly && t('reset.resetSampleData')}
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
