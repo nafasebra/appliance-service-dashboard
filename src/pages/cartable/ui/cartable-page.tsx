@@ -116,8 +116,8 @@ export function CartablePage({ queue }: { queue: WorkflowQueue }) {
           >
             <Card className={item === queue ? 'border-primary bg-accent' : ''}>
               <CardContent className="flex items-center justify-between gap-3">
-                <span className="text-sm">{t(`queues.${item}.title`)}</span>
-                <strong className="text-xl tabular-nums">
+                <span className="text-body">{t(`queues.${item}.title`)}</span>
+                <strong className="text-page-title tabular-nums">
                   {entries.filter((entry) => entry.queue === item).length}
                 </strong>
               </CardContent>

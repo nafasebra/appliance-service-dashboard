@@ -77,9 +77,9 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
     >
       <form
         onSubmit={submit}
-        className="grid grid-cols-2 gap-4.5 p-5.75 [&_label]:flex [&_label]:flex-col [&_label]:gap-2.25 [&_label]:text-ui [&_input]:border [&_input]:border-border [&_input]:rounded-md [&_input]:p-2.5 [&_input]:text-xs [&_input]:w-full [&_input]:bg-white [&_select]:border [&_select]:border-border [&_select]:rounded-md [&_select]:p-2.5 [&_select]:text-xs [&_select]:w-full [&_select]:bg-white [&_textarea]:border [&_textarea]:border-border [&_textarea]:rounded-md [&_textarea]:p-2.5 [&_textarea]:text-xs [&_textarea]:w-full [&_textarea]:bg-white [&_input[type='date']]:direction-ltr [&_input[type='time']]:direction-ltr [&_textarea]:min-h-19.5 [&_textarea]:resize-y max-mobile:gap-3.5 max-mobile:p-4.5 max-compact:grid-cols-1 dark:[&_input]:bg-muted dark:[&_input]:border-border dark:[&_input]:text-primary-foreground dark:[&_select]:bg-muted dark:[&_select]:border-border dark:[&_select]:text-primary-foreground dark:[&_textarea]:bg-muted dark:[&_textarea]:border-border dark:[&_textarea]:text-primary-foreground"
+        className="grid grid-cols-2 gap-4.5 p-5.75 [&_label]:flex [&_label]:flex-col [&_label]:gap-2.25 [&_input]:border [&_input]:border-border [&_input]:rounded-md [&_input]:p-2.5 [&_input]:w-full [&_input]:bg-white [&_select]:border [&_select]:border-border [&_select]:rounded-md [&_select]:p-2.5 [&_select]:w-full [&_select]:bg-white [&_textarea]:border [&_textarea]:border-border [&_textarea]:rounded-md [&_textarea]:p-2.5 [&_textarea]:w-full [&_textarea]:bg-white [&_input[type='date']]:direction-ltr [&_input[type='time']]:direction-ltr [&_textarea]:min-h-19.5 [&_textarea]:resize-y max-mobile:gap-3.5 max-mobile:p-4.5 max-compact:grid-cols-1 dark:[&_input]:bg-muted dark:[&_input]:border-border dark:[&_input]:text-primary-foreground dark:[&_select]:bg-muted dark:[&_select]:border-border dark:[&_select]:text-primary-foreground dark:[&_textarea]:bg-muted dark:[&_textarea]:border-border dark:[&_textarea]:text-primary-foreground"
       >
-        <Label className="flex flex-col gap-2 text-ui">
+        <Label className="flex flex-col gap-2">
           {t('common.customer')}
           <Select name="customerId" defaultValue={job?.customerId ?? customers[0]?.id} required>
             <SelectTrigger className="w-full">
@@ -96,7 +96,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             </SelectContent>
           </Select>
         </Label>
-        <Label className="flex flex-col gap-2 text-ui">
+        <Label className="flex flex-col gap-2">
           {t('common.applianceType')}
           <Select name="appliance" defaultValue={job?.appliance ?? appliances[0]}>
             <SelectTrigger className="w-full">
@@ -113,7 +113,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             </SelectContent>
           </Select>
         </Label>
-        <Label className="flex flex-col gap-2 text-ui">
+        <Label className="flex flex-col gap-2">
           {t('editor.applianceBrand')}
           <Input
             name="brand"
@@ -123,7 +123,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             placeholder={t('editor.forExampleSamsung')}
           />
         </Label>
-        <Label className="flex flex-col gap-2 text-ui">
+        <Label className="flex flex-col gap-2">
           {t('editor.priority')}
           <Select name="priority" defaultValue={job?.priority ?? settings.defaultPriority}>
             <SelectTrigger className="w-full">
@@ -137,7 +137,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             </SelectContent>
           </Select>
         </Label>
-        <Label className="col-span-full flex flex-col gap-2 text-ui">
+        <Label className="col-span-full flex flex-col gap-2">
           {t('editor.problemDescription')}
           <Textarea
             name="issue"
@@ -147,7 +147,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             placeholder={t('editor.describeTheApplianceProblem')}
           />
         </Label>
-        <Label className="flex flex-col gap-2 text-ui">
+        <Label className="flex flex-col gap-2">
           {t('editor.visitDateJalali')}
           <JalaliDatePicker
             name="date"
@@ -157,11 +157,11 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             required
           />
         </Label>
-        <Label className="flex flex-col gap-2 text-ui">
+        <Label className="flex flex-col gap-2">
           {t('editor.visitTime')}
           <TimePicker name="time" defaultValue={job?.time ?? settings.defaultVisitTime} required />
         </Label>
-        <Label className="flex flex-col gap-2 text-ui">
+        <Label className="flex flex-col gap-2">
           {t('common.technician')}
           <Select name="technicianId" defaultValue={job?.technicianId || '__unassigned'}>
             <SelectTrigger className="w-full">
@@ -180,7 +180,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             </SelectContent>
           </Select>
         </Label>
-        <Label className="flex flex-col gap-2 text-ui">
+        <Label className="flex flex-col gap-2">
           {tShared('fields.status')}
           <Select name="status" defaultValue={job?.status ?? JobStatus.New}>
             <SelectTrigger className="w-full">
@@ -197,7 +197,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             </SelectContent>
           </Select>
         </Label>
-        <Label className="flex flex-col gap-2 text-ui">
+        <Label className="flex flex-col gap-2">
           {t('editor.serviceAmountSampleToman')}
           <Input
             name="total"
@@ -208,7 +208,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             required
           />
         </Label>
-        <Label className="flex flex-col gap-2 text-ui">
+        <Label className="flex flex-col gap-2">
           {t('editor.companyShareSampleToman')}
           <Input
             name="commission"
@@ -219,20 +219,20 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
             required
           />
         </Label>
-        <p className="text-2xs text-muted-foreground leading-loose col-span-full">
+        <p className="text-caption text-muted-foreground leading-loose col-span-full">
           {t('editor.changingStatusDoesNotMeanPaymentWasCollected')}
         </p>
         {error && (
           <p
             role="alert"
-            className="bg-status-cancelled text-destructive p-2.5 rounded-md text-ui leading-loose dark:bg-status-cancelled dark:text-destructive col-span-full"
+            className="bg-status-cancelled text-destructive p-2.5 rounded-md text-body leading-loose dark:bg-status-cancelled dark:text-destructive col-span-full"
           >
             {translateLabel(error)}
           </p>
         )}
         <div className="flex gap-2.25 mt-1.25 col-span-full">
           <Button
-            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
+            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
             type="submit"
           >
             {t('editor.saveRequest')}
@@ -240,7 +240,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           <Button
             type="button"
             variant="outline"
-            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground"
+            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground"
             onClick={onClose}
           >
             {tShared('actions.cancel2')}

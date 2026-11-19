@@ -21,11 +21,37 @@
     var(--shadcn-muted) 2.1875rem,
     var(--shadcn-muted) 2.25rem
   );
-  --text-4xs: 0.5rem;
-  --text-3xs: 0.5625rem;
-  --text-2xs: 0.625rem;
-  --text-ui: 0.6875rem;
-  --text-body: 0.8125rem;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2rem;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 2.25rem;
+  /* Compact product roles; primitive scale remains compatible with shadcn. */
+  --text-caption: var(--text-xs);
+  --text-caption--line-height: var(--text-xs--line-height);
+  --text-body: var(--text-sm);
+  --text-body--line-height: var(--text-sm--line-height);
+  --text-section: var(--text-base);
+  --text-section--line-height: var(--text-base--line-height);
+  --text-page-title: var(--text-xl);
+  --text-page-title--line-height: var(--text-xl--line-height);
+  --text-metric: var(--text-2xl);
+  --text-metric--line-height: var(--text-2xl--line-height);
+  --text-editable: var(--text-base);
+  --text-editable--line-height: var(--text-base--line-height);
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
   --breakpoint-narrow: 23.75rem;
   --breakpoint-compact: 25.0625rem;
   --breakpoint-phone: 30rem;
@@ -154,7 +180,7 @@
     @apply border-border;
   }
   body {
-    @apply m-0 min-w-80 bg-background font-sans text-body text-foreground antialiased;
+    @apply m-0 min-w-80 bg-background font-sans text-body font-normal text-foreground antialiased;
   }
   button,
   input,
@@ -170,7 +196,20 @@
     @apply outline-2 outline-offset-4 outline-ring;
   }
   h1 {
-    @apply text-2xl font-bold leading-relaxed tracking-tight max-md:text-xl;
+    @apply text-page-title font-semibold tracking-tight;
+  }
+  h2 {
+    @apply text-section font-semibold;
+  }
+  h3 {
+    @apply text-body font-semibold;
+  }
+  strong,
+  b {
+    @apply font-semibold;
+  }
+  small {
+    @apply text-caption;
   }
 }
 @media (prefers-reduced-motion: reduce) {

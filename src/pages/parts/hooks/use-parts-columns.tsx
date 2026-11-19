@@ -74,7 +74,7 @@ export function usePartsColumns({
           cell: ({ row: { original: part } }) => (
             <>
               {translateLabel(part.appliance)}
-              <p className="text-xs text-muted-foreground">{part.compatibility}</p>
+              <p className="text-caption text-muted-foreground">{part.compatibility}</p>
             </>
           ),
         }),

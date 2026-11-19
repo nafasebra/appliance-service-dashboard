@@ -43,7 +43,7 @@ export function RequestsPage() {
         description={t('list.followEachRequestFromTheFirstCallTo')}
         action={
           <Button
-            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
+            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
             onClick={() => setEditor('new')}
           >
             <Plus size={18} />
@@ -56,7 +56,7 @@ export function RequestsPage() {
         subtitle={t('list.lengthRequestsInThisView', { length: filtered.length })}
       >
         <div className="flex items-center gap-3 pt-0 px-5.5 pb-5 flex-wrap max-mobile:px-4.5">
-          <Label className="flex w-85 max-w-full items-center gap-2.5 rounded-md border border-border py-0 px-2.75 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring [&_input]:w-full [&_input]:border-0 [&_input]:bg-transparent [&_input]:py-2.75 [&_input]:px-0 [&_input]:text-2xs [&_input]:outline-hidden dark:border-border dark:bg-muted dark:text-primary-foreground">
+          <Label className="flex w-85 max-w-full items-center gap-2.5 rounded-md border border-border py-0 px-2.75 text-muted-foreground focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring [&_input]:w-full [&_input]:border-0 [&_input]:bg-transparent [&_input]:py-2.75 [&_input]:px-0 [&_input]:outline-hidden dark:border-border dark:bg-muted dark:text-primary-foreground">
             <Search size={18} />
             <Input
               className="border-0 shadow-none focus-visible:ring-0"
@@ -69,11 +69,7 @@ export function RequestsPage() {
           <div className="flex items-center gap-1.75 text-muted-foreground">
             <SlidersHorizontal aria-hidden="true" size={17} />
             <Select value={status} onValueChange={setStatus}>
-              <SelectTrigger
-                aria-label={t('list.filterByStatus')}
-                size="sm"
-                className="min-w-36 text-2xs"
-              >
+              <SelectTrigger aria-label={t('list.filterByStatus')} size="sm" className="min-w-36">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

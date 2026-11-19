@@ -15,7 +15,7 @@ export function JobStatusBadge({
   return (
     <Badge
       className={cn(
-        'inline-flex items-center gap-1 rounded-md px-2 py-1 text-3xs whitespace-nowrap',
+        'inline-flex items-center gap-1 rounded-md px-2 py-1 text-caption whitespace-nowrap',
         status === JobStatus.New && 'bg-status-new text-status-new-foreground',
         status === JobStatus.Accepted && 'bg-accent text-accent-foreground',
         status === JobStatus.Scheduled && 'bg-status-scheduled text-status-scheduled-foreground',

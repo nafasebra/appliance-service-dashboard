@@ -172,7 +172,7 @@ function SidebarContent({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="sidebar-content"
-      className={cn('min-h-0 flex-1 overflow-y-auto', className)}
+      className={cn('min-h-0 flex-1 overflow-y-auto hide-scrollbar', className)}
       {...props}
     />
   );
@@ -196,7 +196,7 @@ function SidebarGroupLabel({ className, ...props }: React.ComponentProps<'div'>)
   return (
     <div
       data-slot="sidebar-group-label"
-      className={cn('text-xs text-sidebar-foreground/70', className)}
+      className={cn('text-caption text-sidebar-foreground/70', className)}
       {...props}
     />
   );
@@ -229,7 +229,7 @@ function SidebarMenuButton({
   return (
     <Comp
       data-slot="sidebar-menu-button"
-      className={cn('flex w-full items-center', className)}
+      className={cn('flex w-full items-center text-body font-normal', className)}
       {...props}
     />
   );
@@ -239,7 +239,10 @@ function SidebarMenuBadge({ className, ...props }: React.ComponentProps<'span'>)
   return (
     <span
       data-slot="sidebar-menu-badge"
-      className={cn('pointer-events-none absolute', className)}
+      className={cn(
+        'pointer-events-none absolute text-caption font-medium tabular-nums',
+        className,
+      )}
       {...props}
     />
   );

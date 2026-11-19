@@ -59,7 +59,7 @@ function DashboardShell() {
 
       {helpOpen ? (
         <Modal title={t('guide.demoGuide')} onClose={() => setHelpOpen(false)}>
-          <div className="p-6 text-xs leading-loose text-muted-foreground [&_p]:mb-3.75">
+          <div className="p-6 text-caption leading-loose text-muted-foreground [&_p]:mb-3.75">
             <p>{t('guide.createAServiceRequestForASampleCustomer')}</p>
             <p>{t('guide.chooseADateOnTheDispatchPageTo')}</p>
             <p>{t('guide.thisDemoHasNoBackendDataStaysIn')}</p>

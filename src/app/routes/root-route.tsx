@@ -18,7 +18,7 @@ function NotFoundPage() {
   return (
     <Card className="mx-auto mt-20 w-full max-w-xl">
       <CardHeader>
-        <CardTitle className="text-2xl">{t('notFound.pageNotFound')}</CardTitle>
+        <CardTitle className="text-page-title">{t('notFound.pageNotFound')}</CardTitle>
       </CardHeader>
       <CardContent>
         <p className="mb-6 text-muted-foreground">

@@ -25,7 +25,7 @@ export function NotificationButton() {
         >
           <Bell size={18} />
           {newJobs.length > 0 ? (
-            <span className="absolute -end-1 -top-1 grid min-h-4 min-w-4 place-items-center rounded-full bg-destructive px-1 text-3xs leading-none text-white">
+            <span className="absolute -end-1 -top-1 grid min-h-5 min-w-5 place-items-center rounded-full bg-destructive px-1 text-caption leading-none text-white">
               {newJobs.length}
             </span>
           ) : null}
@@ -37,14 +37,14 @@ export function NotificationButton() {
         className="w-85 p-0 max-narrow:w-[calc(100vw-32px)]"
       >
         <div className="border-b border-border px-4 py-3">
-          <h2 className="text-sm font-bold">{t('notifications.notifications')}</h2>
-          <p className="mt-1 text-2xs text-muted-foreground">
+          <h2 className="text-body font-semibold">{t('notifications.notifications')}</h2>
+          <p className="mt-1 text-caption text-muted-foreground">
             {t('notifications.latestRequestsRequiringAttention')}
           </p>
         </div>
         <div className="max-h-80 overflow-y-auto p-2">
           {newJobs.length === 0 ? (
-            <p className="px-3 py-8 text-center text-xs text-muted-foreground">
+            <p className="px-3 py-8 text-center text-caption text-muted-foreground">
               {t('notifications.noNewNotifications')}
             </p>
           ) : (
@@ -56,15 +56,15 @@ export function NotificationButton() {
               >
                 <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
                 <span className="min-w-0">
-                  <strong className="block truncate text-xs">
+                  <strong className="block truncate text-caption">
                     {t('notifications.newApplianceRequest', {
                       appliance: translateLabel(job.appliance),
                     })}
                   </strong>
-                  <span className="mt-1 block truncate text-2xs text-muted-foreground">
+                  <span className="mt-1 block truncate text-caption text-muted-foreground">
                     {job.issue}
                   </span>
-                  <span className="mt-1.5 block text-3xs text-muted-foreground">
+                  <span className="mt-1.5 block text-caption text-muted-foreground">
                     {dateLabel(job.date)} · {job.time}
                   </span>
                 </span>

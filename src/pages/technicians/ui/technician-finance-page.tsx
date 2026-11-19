@@ -341,7 +341,7 @@ export function TechnicianFinancePage() {
                 <AlertDescription>{translateLabel(error)}</AlertDescription>
               </Alert>
             ) : null}
-            <p className="text-xs text-muted-foreground">
+            <p className="text-caption text-muted-foreground">
               {t('finance.thisRecordsAnEntryInTheDemoLedger')}
             </p>
             <div className="flex gap-2">

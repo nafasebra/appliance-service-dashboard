@@ -33,7 +33,7 @@ export function DashboardHeader() {
             className="grid h-7.75 w-7.75 shrink-0 place-items-center rounded-md border border-transparent bg-transparent text-muted-foreground hover:border-border hover:bg-accent dark:hover:border-border dark:hover:bg-accent"
           />
           <Breadcrumb>
-            <BreadcrumbList className="text-ui max-mobile:text-2xs">
+            <BreadcrumbList className="text-body max-mobile:text-caption">
               {pathname === '/' ? (
                 <BreadcrumbItem>
                   <BreadcrumbPage>{t('navigation.dashboard')}</BreadcrumbPage>
@@ -56,7 +56,7 @@ export function DashboardHeader() {
             </BreadcrumbList>
           </Breadcrumb>
           <span className="h-6.25 w-px bg-border" />
-          <span className="flex items-center gap-1.75 text-2xs text-muted-foreground max-desktop:hidden [&_i]:h-1.5 [&_i]:w-1.5 [&_i]:rounded-full [&_i]:bg-primary">
+          <span className="flex items-center gap-1.75 text-caption text-muted-foreground max-desktop:hidden [&_i]:h-1.5 [&_i]:w-1.5 [&_i]:rounded-full [&_i]:bg-primary">
             <i />
             {settings.branchName}
           </span>

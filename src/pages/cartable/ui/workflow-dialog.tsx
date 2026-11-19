@@ -74,7 +74,7 @@ export function WorkflowDialog({
       onClose={onClose}
     >
       <form onSubmit={submit} className="grid gap-4 p-6 sm:grid-cols-2">
-        <dl className="col-span-full grid gap-2 rounded-lg bg-muted p-4 text-sm">
+        <dl className="col-span-full grid gap-2 rounded-lg bg-muted p-4 text-body">
           <dt className="font-medium">
             {customer?.name} · <bdi>{customer?.phone}</bdi>
           </dt>
@@ -108,7 +108,7 @@ export function WorkflowDialog({
                 </SelectContent>
               </Select>
               {!technicians.length ? (
-                <p className="text-sm text-muted-foreground">{t('dialog.noTechnicians')}</p>
+                <p className="text-body text-muted-foreground">{t('dialog.noTechnicians')}</p>
               ) : null}
             </div>
             <div className="flex flex-col gap-2">

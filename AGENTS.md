@@ -14,6 +14,7 @@ confirmed requirement or architectural decision changes:
 - Architecture, placement or imports: `docs/architecture.md`.
 - Orders, assignment, collection or settlement: `docs/order-workflow.md`.
 - Messages, translation hooks, namespaces or direction: `docs/localization.md`.
+- New UI, typography, spacing or component reviews: `.skills/design-system/SKILL.md`.
 - Relevant implementation guidance: `.skills/README.md`; load only the applicable
   skill and its needed references.
 

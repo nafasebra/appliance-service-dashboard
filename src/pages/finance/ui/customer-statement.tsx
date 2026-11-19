@@ -158,7 +158,7 @@ export function CustomerStatement({
   return (
     <Modal title={t('statement.statement', { name: customer?.name ?? '' })} onClose={onClose}>
       <div className="flex flex-col gap-5 p-6">
-        <p className="text-sm">
+        <p className="text-body">
           {t('statement.summary', {
             charge: money(account.charge),
             receipts: money(account.receipts),

@@ -50,7 +50,7 @@ function JalaliDatePicker({
         <PopoverContent align="start" className="w-auto p-0">
           <Suspense
             fallback={
-              <div className="grid h-75 w-70 place-items-center text-xs text-muted-foreground">
+              <div className="grid h-75 w-70 place-items-center text-caption text-muted-foreground">
                 {t('select.loadingCalendar')}
               </div>
             }

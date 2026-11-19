@@ -108,7 +108,7 @@ export function TransactionDialog({
                 </SelectGroup>
               </SelectContent>
             </Select>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-caption text-muted-foreground">
               {t('transaction.collectibleBalance')} {money(remaining)}
               {selectedJob && selectedJob.status !== JobStatus.Completed
                 ? t('transaction.thisReceiptWillBeShownAsAnAdvance')

@@ -30,7 +30,7 @@ export function DataTablePagination<TData extends RowData>({
   return (
     <nav
       aria-label={t('table.tablePagination')}
-      className="flex flex-wrap items-center justify-between gap-3 border-t border-border p-4 text-xs text-muted-foreground"
+      className="flex flex-wrap items-center justify-between gap-3 border-t border-border p-4 text-caption text-muted-foreground"
     >
       <p role="status" aria-live="polite" aria-atomic="true">
         {t('pagination.range', { start, end, total })}

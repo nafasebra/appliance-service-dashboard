@@ -42,7 +42,7 @@ export function OverviewPage() {
         description={t('summary.everythingYouNeedForAnOrganizedWorkingDay')}
         action={
           <Button
-            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground text-ui leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
+            className="inline-flex justify-center items-center gap-2 bg-white border border-border rounded-md py-2.5 px-3.75 text-muted-foreground leading-relaxed whitespace-nowrap [&:hover]:bg-accent dark:bg-muted dark:border-border dark:text-primary-foreground bg-primary text-white border-primary shadow-xs [&:hover]:bg-(--primary-dark) dark:bg-primary dark:[&:hover]:bg-primary"
             onClick={() => setEditor('new')}
           >
             <Plus size={18} />
@@ -50,9 +50,9 @@ export function OverviewPage() {
           </Button>
         }
       />
-      <div className="flex items-center justify-between overflow-hidden relative min-h-47 bg-accent border border-border rounded-lg py-6.25 px-7.75 mb-5.5 [&:before]:content-[''] [&:before]:absolute [&:before]:w-95 [&:before]:h-95 [&:before]:border [&:before]:border-border [&:before]:rounded-full [&:before]:-end-15.5 [&:before]:-top-22.5 [&_h2]:text-primary [&_h2]:text-2xl [&_h2]:mt-3.75 [&_h2]:tracking-tight [&_p]:text-ui [&_p]:text-muted-foreground [&_p]:mt-3 max-tablet:p-6 max-tablet:[&_h2]:text-xl max-mobile:min-h-41.25 max-mobile:[&_h2]:text-lg max-mobile:[&_p]:max-w-57.5 max-mobile:[&_p]:text-2xs max-mobile:[&_p]:leading-loose dark:bg-accent dark:border-border dark:[&::before]:border-border dark:[&_h2]:text-primary dark:[&_p]:text-muted-foreground">
+      <div className="flex items-center justify-between overflow-hidden relative min-h-47 bg-accent border border-border rounded-lg py-6.25 px-7.75 mb-5.5 [&:before]:content-[''] [&:before]:absolute [&:before]:w-95 [&:before]:h-95 [&:before]:border [&:before]:border-border [&:before]:rounded-full [&:before]:-end-15.5 [&:before]:-top-22.5 [&_h2]:text-primary [&_h2]:text-page-title [&_h2]:mt-3.75 [&_h2]:tracking-tight [&_p]:text-body [&_p]:text-muted-foreground [&_p]:mt-3 max-tablet:p-6 max-tablet:[&_h2]:text-page-title max-mobile:min-h-41.25 max-mobile:[&_h2]:text-section max-mobile:[&_p]:max-w-57.5 max-mobile:[&_p]:text-caption max-mobile:[&_p]:leading-loose dark:bg-accent dark:border-border dark:[&::before]:border-border dark:[&_h2]:text-primary dark:[&_p]:text-muted-foreground">
         <div>
-          <span className="flex items-center gap-1.75 text-muted-foreground text-3xs dark:text-muted-foreground">
+          <span className="flex items-center gap-1.75 text-muted-foreground text-caption dark:text-muted-foreground">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
             {t('summary.serviceOperationsCenter')}
           </span>
@@ -60,7 +60,7 @@ export function OverviewPage() {
           <p>{t('summary.openRequests', { count: active.length })}</p>
           <Link
             to="/dispatch"
-            className="flex gap-2.25 items-center text-2xs text-primary mt-5 font-bold dark:text-primary"
+            className="flex gap-2.25 items-center text-caption text-primary mt-5 font-bold dark:text-primary"
           >
             {t('summary.viewDispatchSchedule')} <ArrowLeft size={16} />
           </Link>
@@ -117,7 +117,7 @@ export function OverviewPage() {
           subtitle={t('summary.latestDaysWithTransactions')}
           action={
             <Link
-              className="inline-flex gap-1.75 items-center text-primary text-2xs border-0 bg-none whitespace-nowrap"
+              className="inline-flex gap-1.75 items-center text-primary text-caption border-0 bg-none whitespace-nowrap"
               to="/finance"
             >
               {t('summary.financialDetails')} <ArrowLeft size={15} />
@@ -132,7 +132,7 @@ export function OverviewPage() {
         >
           <div className="flex items-center justify-evenly gap-6 pt-6 px-6 pb-5 min-h-48.25 max-desktop:gap-4 max-desktop:px-4.5 max-tablet:justify-center max-tablet:gap-11.25 max-mobile:gap-6 max-compact:gap-4.5">
             <div
-              className="w-32.5 h-32.5 rounded-full grid place-items-center shrink-0 [&_>_div]:w-26.75 [&_>_div]:h-26.75 [&_>_div]:rounded-full [&_>_div]:bg-white [&_>_div]:flex [&_>_div]:items-center [&_>_div]:justify-center [&_>_div]:flex-col [&_strong]:text-3xl [&_strong]:text-primary [&_span]:text-4xs [&_span]:text-muted-foreground [&_span]:mt-1.75 max-desktop:w-26.25 max-desktop:h-26.25 max-desktop:[&_>_div]:w-21.25 max-desktop:[&_>_div]:h-21.25 max-tablet:w-32.5 max-tablet:h-32.5 max-tablet:[&_>_div]:w-26.75 max-tablet:[&_>_div]:h-26.75 max-compact:w-25.75 max-compact:h-25.75 max-compact:[&_>_div]:w-20.75 max-compact:[&_>_div]:h-20.75 dark:[&_strong]:text-primary dark:[&_>_div]:bg-card"
+              className="w-32.5 h-32.5 rounded-full grid place-items-center shrink-0 [&_>_div]:w-26.75 [&_>_div]:h-26.75 [&_>_div]:rounded-full [&_>_div]:bg-white [&_>_div]:flex [&_>_div]:items-center [&_>_div]:justify-center [&_>_div]:flex-col [&_strong]:text-metric [&_strong]:text-primary [&_span]:text-caption [&_span]:text-muted-foreground [&_span]:mt-1.75 max-desktop:w-26.25 max-desktop:h-26.25 max-desktop:[&_>_div]:w-21.25 max-desktop:[&_>_div]:h-21.25 max-tablet:w-32.5 max-tablet:h-32.5 max-tablet:[&_>_div]:w-26.75 max-tablet:[&_>_div]:h-26.75 max-compact:w-25.75 max-compact:h-25.75 max-compact:[&_>_div]:w-20.75 max-compact:[&_>_div]:h-20.75 dark:[&_strong]:text-primary dark:[&_>_div]:bg-card"
               style={{
                 background: `conic-gradient(var(--primary) ${jobs.length ? (jobs.filter((job) => job.status === JobStatus.Completed).length / jobs.length) * 100 : 0}%, #edf0f4 0)`,
               }}
@@ -142,7 +142,7 @@ export function OverviewPage() {
                 <span>{t('common.totalRequests')}</span>
               </div>
             </div>
-            <div className="flex flex-1 flex-col gap-4.25 min-w-33.75 max-w-52.5 [&_>_div]:flex [&_>_div]:justify-between [&_>_div]:items-center [&_>_div]:gap-4 [&_>_div]:text-2xs [&_>_div_>_span]:flex [&_>_div_>_span]:items-center [&_>_div_>_span]:gap-1.75 [&_>_div_>_span]:text-muted-foreground [&_strong]:text-muted-foreground [&_strong]:text-xs max-desktop:min-w-27.5 max-desktop:[&_>_div_>_span]:text-3xs max-tablet:min-w-40 max-mobile:min-w-33.75">
+            <div className="flex flex-1 flex-col gap-4.25 min-w-33.75 max-w-52.5 [&_>_div]:flex [&_>_div]:justify-between [&_>_div]:items-center [&_>_div]:gap-4 [&_>_div]:text-caption [&_>_div_>_span]:flex [&_>_div_>_span]:items-center [&_>_div_>_span]:gap-1.75 [&_>_div_>_span]:text-muted-foreground [&_strong]:text-muted-foreground [&_strong]:text-caption max-desktop:min-w-27.5 max-desktop:[&_>_div_>_span]:text-caption max-tablet:min-w-40 max-mobile:min-w-33.75">
               {(
                 [
                   JobStatus.Completed,
@@ -170,7 +170,7 @@ export function OverviewPage() {
             </div>
           </div>
           <Link
-            className="flex items-center justify-center gap-2 border-t border-t-border mt-5.5 p-3.25 text-2xs text-muted-foreground dark:border-border"
+            className="flex items-center justify-center gap-2 border-t border-t-border mt-5.5 p-3.25 text-caption text-muted-foreground dark:border-border"
             to="/requests"
           >
             {t('summary.manageAllRequests')} <ArrowLeft size={16} />
@@ -183,7 +183,7 @@ export function OverviewPage() {
         action={
           <Link
             to="/requests"
-            className="inline-flex gap-1.75 items-center text-primary text-2xs border-0 bg-none whitespace-nowrap"
+            className="inline-flex gap-1.75 items-center text-primary text-caption border-0 bg-none whitespace-nowrap"
           >
             {t('summary.allRequests')} <ArrowLeft size={15} />
           </Link>
@@ -196,7 +196,7 @@ export function OverviewPage() {
           title={t('summary.awaitingAttention')}
           subtitle={t('summary.requestsThatNeedYourAttention')}
         >
-          <div className="[&_>_button]:flex [&_>_button]:items-center [&_>_button]:gap-3 [&_>_button]:w-full [&_>_button]:bg-white [&_>_button]:border-0 [&_>_button]:border-t [&_>_button]:border-t-border [&_>_button]:py-4 [&_>_button]:px-5.5 [&_>_button]:text-start [&_>_button]:h-auto [&_>_button:hover]:bg-muted [&_strong]:text-2xs [&_strong]:text-muted-foreground [&_strong]:font-medium [&_small]:block [&_small]:text-3xs [&_small]:text-muted-foreground [&_small]:mt-1.5 [&_.badge]:ms-auto max-mobile:[&_>_button]:px-4.25 max-mobile:[&_>_button]:gap-2.25 max-mobile:[&_strong]:text-3xs dark:[&_>_button]:bg-card dark:[&_>_button]:border-border dark:[&_>_button]:text-foreground dark:[&_>_button:hover]:bg-accent dark:[&_>_button:hover]:border-border">
+          <div className="[&_>_button]:flex [&_>_button]:items-center [&_>_button]:gap-3 [&_>_button]:w-full [&_>_button]:bg-white [&_>_button]:border-0 [&_>_button]:border-t [&_>_button]:border-t-border [&_>_button]:py-4 [&_>_button]:px-5.5 [&_>_button]:text-start [&_>_button]:h-auto [&_>_button:hover]:bg-muted [&_strong]:text-caption [&_strong]:text-muted-foreground [&_strong]:font-medium [&_small]:block [&_small]:text-caption [&_small]:text-muted-foreground [&_small]:mt-1.5 [&_.badge]:ms-auto max-mobile:[&_>_button]:px-4.25 max-mobile:[&_>_button]:gap-2.25 max-mobile:[&_strong]:text-caption dark:[&_>_button]:bg-card dark:[&_>_button]:border-border dark:[&_>_button]:text-foreground dark:[&_>_button:hover]:bg-accent dark:[&_>_button:hover]:border-border">
             {active.length ? (
               active.slice(0, 3).map((job) => (
                 <Button
@@ -217,7 +217,7 @@ export function OverviewPage() {
                   </div>
                   <Badge
                     className={cn(
-                      'inline-flex items-center gap-1 rounded-md px-2 py-1 text-3xs whitespace-nowrap',
+                      'inline-flex items-center gap-1 rounded-md px-2 py-1 text-caption whitespace-nowrap',
                       job.status === JobStatus.New && 'bg-status-new text-status-new-foreground',
                       job.status === JobStatus.Scheduled &&
                         'bg-status-scheduled text-status-scheduled-foreground',
@@ -238,8 +238,8 @@ export function OverviewPage() {
             )}
           </div>
         </Panel>
-        <div className="bg-accent border border-border rounded-lg p-6.75 flex flex-col justify-center [&_h2]:text-primary [&_h2]:text-lg [&_h2]:mt-1.5 [&_h2]:mx-0 [&_h2]:mb-3.5 [&_p]:text-muted-foreground [&_p]:text-ui [&_p]:leading-loose [&_a]:text-primary [&_a]:text-2xs [&_a]:flex [&_a]:items-center [&_a]:gap-2 [&_a]:mt-6 max-mobile:p-5.75 dark:[&_h2]:text-primary dark:[&_a]:text-primary dark:[&_p]:text-muted-foreground dark:bg-accent dark:border-border">
-          <span className="text-muted-foreground text-3xs mb-2.5">
+        <div className="bg-accent border border-border rounded-lg p-6.75 flex flex-col justify-center [&_h2]:text-primary [&_h2]:text-section [&_h2]:mt-1.5 [&_h2]:mx-0 [&_h2]:mb-3.5 [&_p]:text-muted-foreground [&_p]:text-body [&_p]:leading-loose [&_a]:text-primary [&_a]:text-caption [&_a]:flex [&_a]:items-center [&_a]:gap-2 [&_a]:mt-6 max-mobile:p-5.75 dark:[&_h2]:text-primary dark:[&_a]:text-primary dark:[&_p]:text-muted-foreground dark:bg-accent dark:border-border">
+          <span className="text-muted-foreground text-caption mb-2.5">
             {t('summary.financialClarity')}
           </span>
           <h2>{t('summary.aClearAccountForEveryService')}</h2>

@@ -7,6 +7,11 @@ examples for this React/Vite dashboard.
 
 ## Entry points
 
+For new feature UI, shared components, typography or spacing reviews, start with
+the local [design-system skill](design-system/SKILL.md). It applies the project's
+[design-system reference](../docs/design-system.md) alongside the upstream skills
+below.
+
 | Task                                               | Start here                                                                                              | Upstream source                                                                                                         |
 | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | Layer placement, ownership, imports or migrations  | [FSD](fsd/SKILL.md)                                                                                     | [Official Feature-Sliced Design](https://github.com/feature-sliced/skills/tree/master/feature-sliced-design)            |

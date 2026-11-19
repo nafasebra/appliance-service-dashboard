@@ -51,7 +51,7 @@ function Calendar({
           'flex h-(--cell-size) w-full items-center justify-center px-(--cell-size)',
           defaultClassNames.month_caption,
         ),
-        caption_label: cn('text-sm font-medium select-none', defaultClassNames.caption_label),
+        caption_label: cn('text-body font-medium select-none', defaultClassNames.caption_label),
         month_grid: cn('w-full border-collapse', defaultClassNames.month_grid),
         weekdays: cn('flex', defaultClassNames.weekdays),
         weekday: cn(

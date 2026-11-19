@@ -185,7 +185,7 @@ export function SettingsPage() {
             </div>
           </CardContent>
           <CardFooter>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-body text-muted-foreground">
               {t('company.companyCommissionIsRecordedAsAnAmountOn')}
             </p>
           </CardFooter>
@@ -245,7 +245,7 @@ export function SettingsPage() {
             </AlertDialogContent>
           </AlertDialog>
           {dirty ? (
-            <span className="text-sm text-muted-foreground">
+            <span className="text-body text-muted-foreground">
               {t('company.youHaveUnsavedChanges')}
             </span>
           ) : null}
@@ -278,7 +278,7 @@ export function SettingsPage() {
           </Select>
         </CardContent>
       </Card>
-      <p className="mt-4 text-xs text-muted-foreground">
+      <p className="mt-4 text-caption text-muted-foreground">
         {t('company.settingsInThisDemoAreStoredInThe')}
       </p>
     </>
