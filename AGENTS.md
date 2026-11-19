@@ -1,254 +1,102 @@
 # Project instructions
 
-## Scope and source of truth
+## Scope and references
 
-These instructions apply to this project and its descendants. Read this file and
-`docs/project-context.md` before changing the project. Keep both up to date when the
-user confirms requirements or changes an architectural decision.
+This is a browser-local frontend demo for a home appliance repair company.
+The company dispatches technicians, collects customer payments, retains commission
+and pays technicians. Persian RTL is the default; English LTR is supported.
+Production policies and backend contracts remain undecided.
 
-The current phase is an interactive frontend demonstration. Connected pages
-and browser-local workflows are implemented; there is no production backend.
-Extend features within the user's requested scope. Distinguish implemented demo
-behavior from confirmed production requirements. User instructions take precedence.
+Read `docs/project-context.md` before implementation. Consult these references
+when the corresponding behavior changes, and update the owning document when a
+confirmed requirement or architectural decision changes:
 
-## Business scenario
+- Architecture, placement or imports: `docs/architecture.md`.
+- Orders, assignment, collection or settlement: `docs/order-workflow.md`.
+- Messages, translation hooks, namespaces or direction: `docs/localization.md`.
+- Relevant implementation guidance: `.skills/README.md`; load only the applicable
+  skill and its needed references.
 
-- The company provides household appliance repair services.
-- The company sends technicians to customers' homes.
-- The company earns a commission from the services performed.
-- The company collects the customer's payment, retains its commission, and pays
-  the technician. New payouts require full collection of the completed order.
-- The dashboard will support managing that operation and viewing company cash flow.
-- The user will define detailed features and workflows in later requests.
-- The interface is Persian and right-to-left by default.
+User instructions and the project constraints below take precedence over upstream
+skill examples. Keep scenario details in the context/workflow documents rather
+than duplicating them here.
 
-The expected high-level scenario is a service request, technician dispatch, work at
-the customer's home, and recording the associated financial activity. Exact order
-production statuses, assignment rules, commission calculation,
-refunds, settlements, and reporting definitions remain undecided. Do not invent
-them or treat example values as confirmed requirements.
+## Architecture
 
-## Project-local skills
+Follow FSD v2.1, pages first: `app -> pages -> features -> entities -> shared`.
 
-Read the relevant local skill before related work:
+- Keep route-specific behavior in its page slice. Extract responsibilities only
+  when they are actually reused and have a coherent boundary.
+- App owns routes, initialization, the global shell and cross-layer integration
+  tests. Business models and stores belong to Entities; Shared owns generic code
+  and the theme preference.
+- Consume another slice through its explicit `index.ts` API. Within a slice,
+  import implementation files directly. Shared UI uses component-sized APIs;
+  other Shared segments use segment APIs.
+- Keep dependencies downward and sibling slices independent. Inventory's type-only
+  `entities/service/@x/inventory.ts` contract is the documented entity exception.
+- Preserve the user's `hooks/` and `i18n/` segments. All React hook files use `.tsx`,
+  including hooks without JSX.
+- Use TanStack Router's typed `Link` and navigation for internal URLs. Route
+  definitions compose pages; business logic stays outside route adapters.
 
-- React: `.skills/react/SKILL.md`
-- Tailwind CSS v4: `.skills/tailwind/SKILL.md`
-- shadcn/ui: `.skills/shadcn/SKILL.md`
-- Frontend architecture: `.skills/frontend-architecture/SKILL.md` and its `PROJECT.md`
-- FSD placement, boundaries and migrations: `.skills/fsd/SKILL.md` and `docs/architecture.md`
-- Zustand stores, selectors and persistence: `.skills/zustand/SKILL.md`
-- Localization, new UI copy, or direction changes: `.skills/i18n/SKILL.md` and
-  `docs/localization.md`.
+## Data and financial invariants
 
-- TanStack Table changes: `.skills/tanstack-table/core/SKILL.md`, then
-  `.skills/tanstack-table/react/getting-started/SKILL.md`; load the feature/state
-  references needed for the change.
+- Preserve string enum values, localStorage keys and serialized record formats.
+  Validate stored records and references before accepting them.
+- Completing a job does not create a receipt or payout. New technician payouts
+  require full collection of the completed order. Existing transactions constrain
+  later job edits; retain those financial guards.
+- Keep service value, commission, technician payable, receivables and actual cash
+  flow distinct. Read the workflow document before changing their calculations.
+- Keep domain calculations pure. Business stores expose selector subscriptions;
+  transient forms, filters and dialogs stay local, and derived state stays derived.
+- Preserve storage-failure feedback, action input isolation and reset confirmation.
+  Demo changes must not imply real dispatch, notifications or bank payments.
+- Keep credentials out of frontend code. Future API integration must enforce
+  authorization, validation and financial consistency on the backend.
 
-Pages and reused features own their messages in their local `i18n/` directory
-and typed hooks in `hooks/`, following `pages/customers`. Shell messages live in
-`app/config/i18n/` with hooks in `app/hooks/`. Generic controls use
-`shared/i18n/locales/{fa,en}/common.json` and `useSharedTranslation()`.
-Compose bundles in `app/i18n.ts` through public APIs; Shared never imports slices.
-Read `docs/localization.md` before changing namespaces, hooks, or extraction.
+## UI and localization
 
-Sources and project-specific compatibility notes are in `.skills/README.md`.
-User instructions and this project's constraints take precedence over skill defaults.
-Do not run the shadcn CLI; use official component source directly.
+- Use the existing React/Vite/strict TypeScript stack, Tailwind v4 and locally
+  owned shadcn components. Obtain additional component source from the official
+  website/registry; do not run the shadcn CLI.
+- Put complete Tailwind utilities directly on elements, using standard utilities
+  and semantic tokens. Use `cn()` when classes need merging or conditions, rather
+  than for every static class string; reserve `cva` for real component variants.
+  Global CSS owns tokens, base rules and shared utilities.
+- Preserve Vazirmatn, both themes, RTL/LTR behavior, logical spacing, keyboard
+  access and accessible labels. Jalali calendars remain Jalali in both languages;
+  records store ISO calendar dates. Display language does not change currency.
+- The dashboard has no footer. Keep the removed sidebar copy `فضای آزمایشی شما`
+  absent and the guide control readable in dark mode.
+- Keep messages in the owning page/feature's `i18n/` and typed hooks in `hooks/`.
+  Shell messages belong to App; only generic messages belong to Shared. Compose
+  bundles in App through public APIs and preserve stored business text.
+- Use the shared `DataTable` public API with TanStack Table v9. Keep numeric/date
+  accessors raw, action columns unsortable, stable row IDs and memoized columns.
+  Shared processing sorts before pagination; preserve existing page reset behavior.
 
-## Frontend implementation
+## Verification
 
-Use React 19, TypeScript in strict mode, Vite, and Tailwind CSS v4 through
-`@tailwindcss/vite`. Use the existing `@/`
-alias for imports from `src`. Add dependencies only when a concrete requirement
-justifies them.
-
-Follow FSD v2.1, pages first. Read `docs/architecture.md` for the ownership map
-and rationale. Route-specific behavior belongs in `pages/<slice>`; extract only
-responsibilities genuinely reused by several consumers. Reused request editing
-and financial controls live in `features/requests` and `features/finance`.
-Service, inventory and company rules/stores belong in `entities`. App owns routing,
-the global shell, navigation, initialization and cross-layer integration tests.
-Shared owns generic UI, helpers, i18n infrastructure and theme preference.
-
-Use `ui/`, `model/`, `lib/` and other purpose-based segments as needed. Preserve
-the user's `hooks/` and `i18n/` conventions; all React hooks use `.tsx`.
-The dashboard has no page footer. Do not add empty layers or speculative slices.
-
-| URL            | Page                                                      |
-| -------------- | --------------------------------------------------------- |
-| `/`            | Overview and recent requests                              |
-| `/requests`    | Search, filter, create, and edit requests                 |
-| `/dispatch`    | Visits grouped by technician and selected date            |
-| `/technicians` | Technician specialties and payable balances               |
-| `/customers`   | Customer contact details and service history              |
-| `/finance`     | Receipts, payouts, expenses, and CSV export               |
-| `/reports`     | Service distribution, team performance, and cash movement |
-
-Dependency direction is `app -> pages -> features -> entities -> shared`.
-No upward dependencies or lateral slice imports. External consumers use explicit
-`index.ts` contracts; internal code imports its own implementation files directly.
-Shared UI has component-sized public APIs; other Shared segments expose segment
-APIs. Never add a giant Shared/UI barrel or wildcard exports. Inventory's type-only
-`entities/service/@x/inventory.ts` appliance reference is the sole entity exception.
-There is no Shared business-store exception. Run `npm run architecture:check`
-after moving code or changing imports. Keep domain calculations React-independent.
-
-Routing uses TanStack Router with code-based routes. Define page routes in
-`src/app/routes/` and register them in `src/app/router.ts`. The root route owns the
-shared layout and not-found fallback; `App.tsx` mounts `RouterProvider`. Use typed
-`Link` and router navigation for internal URLs. Keep feature business logic outside
-route definitions. New routes do not require a generator or a Vite router plugin.
-
-Keep transient UI state local. Use Zustand stores for data shared across pages:
-service records, parts, company settings and theme. Subscribe with selectors to the
-fields a component uses. Keep derived values derived
-instead of synchronizing duplicate state with effects.
-
-Tables use `shared/ui/data-table.tsx`, which combines the local shadcn Table
-primitives with TanStack Table v9. Features own typed column definitions and raw
-accessors; keep monetary and quantity accessors numeric and date accessors ISO.
-Memoize derived rows and column definitions, supply stable record IDs, and disable
-sorting for action columns. The shared component owns local sorting and accessible
-header controls; Persian text comparison lives in `shared/lib/table-sort.ts`.
-Client pagination uses the same shared feature registry: sort before slicing,
-default to 10 rows with 10/20/50 choices, reset the page on data/sort changes, and
-keep navigation controls in `shared/ui/data-table-pagination.tsx`.
-Use the public `DataTableColumn<T>` type at feature boundaries. Prefer the v9
-column helper for accessor-specific value inference. Parts table definitions live
-in `pages/parts/hooks/use-parts-columns.tsx`; keep workflow actions in the page
-and callbacks stable when column memos depend on them.
-
-## System design
-
-The application is client-only. `entities/service/model/service-store.ts` owns
-shared demo records through Zustand; `demo-data.ts` contains seed records,
-`types.ts` defines domain types, and `finance.ts` contains pure financial summaries.
-Demo changes persist under `hamyar-service-demo-v1` in localStorage. Reset requires
-the existing confirmation dialog. Preserve storage error feedback and validate
-persisted data before trusting it.
-
-There is no backend, authentication, database, bank integration, or production
-accounting system. Backend technology, deployment, and API contracts are undecided.
-Toman, Tehran, the sample reference date, and the demo workflow are provisional.
-Dates use a Jalali calendar in both interface languages and ISO dates in records.
-
-Current demo statuses are `new`, `accepted`, `scheduled`, `working`, `completed`, and
-`cancelled`. Commission is an explicit integer amount, not a configured percentage.
-Only completed jobs contribute to service value and commission totals. Actual
-receipts and disbursements are separate transactions; completion does not create a
-receipt. Technician payable is service value minus commission minus recorded
-payouts for that job. Cash flow is receipts minus payouts minus expenses and does
-not include an opening bank balance. Preserve these distinctions when extending UI.
-
-Cartable transition rules and payment queues are documented in
-`docs/order-workflow.md`; read it before changing workflow actions, assignment,
-collection, settlement or archive behavior. Persist workflow changes through the
-existing service store. Completing work must not create financial transactions.
-
-For future integration, use the following boundary:
-
-```text
-Persian RTL UI -> feature hooks/use cases -> API adapters -> backend -> database
-```
-
-- Keep network access in API adapters, outside presentation components. Validate
-  external data at the boundary and map it to explicit domain types.
-- Keep credentials and secrets out of frontend code and `VITE_*` environment variables.
-- Enforce authorization and authoritative financial calculations on the backend
-  when one is implemented. UI visibility alone is not an access-control boundary.
-- Treat customers, service requests, technicians, assignments, commissions,
-  payments, and settlements as candidate concepts, not an approved database schema.
-- Distinguish service value, company commission, technician payable, actual cash
-  received, and actual cash paid. Never label total service value as company revenue
-  or count receivables as cash flow without an agreed reporting definition.
-- Once currency and rounding rules are confirmed, use integer minor units or an
-  agreed decimal representation for money; avoid floating-point financial arithmetic.
-- Plan persisted financial changes around backend transactions, audit history, and
-  duplicate-request protection. Define cancellation and reversal rules before
-  implementing financial edits.
-- Define loading, empty, error, and success behavior with each data-backed feature.
-  Keep demo data clearly identified and isolated from real API adapters.
-
-## Clean code and UI conventions
-
-- Prefer small, cohesive functions and components with descriptive names.
-- Use explicit domain types; avoid `any`, unexplained type assertions, and redundant state.
-- Use the existing string enums for job, payment, part-need and purchase statuses
-  in comparisons, assignments and label maps. Preserve enum string values because
-  browser records and translations depend on them.
-- Extract repeated logic when it has a real shared purpose. Avoid generic frameworks
-  for a single use case, unexplained constants, dead code, and commented-out code.
-- Keep domain calculations pure and independent of React and browser APIs.
-- Use named exports for reusable modules; the existing app entry may use a default export.
-- Name React components in PascalCase and hooks with a `use` prefix. Follow existing
-  local file naming conventions consistently within each feature.
-- Use `.tsx` for React hook files in page, feature, app and shared `hooks/` folders, including
-  hooks without JSX. This is the user's project convention. Tests run through `tsx`.
-- Write comments to explain intent, constraints, or tradeoffs rather than restating code.
-- Use semantic HTML, associated form labels, keyboard access, visible focus states,
-  and accessible names for icon-only controls when adding UI.
-- Support Persian RTL and English LTR. Prefer logical spacing utilities such as
-  `ms-*`, `me-*`, `ps-*`, and `pe-*` where direction matters. Handle LTR identifiers
-  explicitly. Do not assume a currency, timezone, or calendar from display language.
-- Use the locally bundled Vazirmatn font as the primary interface typeface. Keep
-  Tahoma and Arial as fallbacks and load only the font weights the interface uses.
-- Maintain both light and dark themes. Theme changes use `data-theme` on the root
-  element, persist locally, and must preserve readable contrast and visible focus.
-- Use Tailwind utilities and shared design tokens. Introduce reusable UI primitives
-  when a pattern is reused, and keep feature-specific behavior inside its feature.
-- Keep component styling in Tailwind v4 utilities directly on the rendered elements;
-  global CSS contains only theme tokens and base rules. Do not introduce a central
-  class-recipe dictionary that hides utility strings from their components.
-- Prefer readable standard utilities and semantic theme tokens; use arbitrary values
-  and variants only when the design needs a value Tailwind does not provide. Keep
-  complete utility strings visible to Tailwind's scanner and use `cn()` for
-  conditional classes. Use `cva` only for genuine reusable component variants.
-- Use the locally owned shadcn/ui components in `src/shared/ui/` for standard
-  buttons, cards, dialogs, labels, inputs, selects, badges, tables, and progress.
-  Compose those components in feature code instead of recreating standard controls.
-  The source files and the `components.json` UI alias both point to `shared/ui`;
-  keep them aligned rather than creating a second component library.
-  Obtain additional component source from the official shadcn website/registry and
-  adapt imports and RTL alignment locally. Do not run the shadcn CLI unless the user
-  explicitly changes this instruction.
-- Preserve the removed sidebar copy `فضای آزمایشی شما`; do not reintroduce it.
-  Keep the dashboard-guide button readable in dark mode.
-- Theme initialization runs in `index.html` before React mounts; the Zustand store in
-  `shared/store/theme-store.ts` persists the toggle under `hamyar-service-theme`. First
-  visit uses the system preference; subsequent visits use the saved choice.
-
-## Formatting and newlines
-
-Prettier is the formatting authority. Use `.prettierrc.json`, `.prettierignore`, and
-`.editorconfig`; do not hand-format around them.
-
-- UTF-8 source files, LF line endings, two-space indentation, and a final newline.
-- Use blank lines to separate logical sections; let Prettier normalize their layout.
-- Run `npm run format` after edits and `npm run format:check` before delivery.
-- Do not manually format generated output, dependency directories, or the npm lockfile.
-  npm owns the lockfile; commit its updates when dependencies change.
-
-## Verification and handoff
-
-For application changes, run:
+Use Prettier and `.editorconfig`: UTF-8, LF, two spaces and a final newline.
+For application changes, run the existing scripts:
 
 ```sh
 npm run format
 npm run format:check
-npm run typecheck
 npm run architecture:check
+npm run typecheck
 npm test
 npm run i18n:check
 npm run build
 ```
 
-In Windows PowerShell environments that block `npm.ps1`, use `npm.cmd` instead.
-Documentation-only changes need a formatting check, not an application rebuild.
-For UI changes, verify relevant desktop/mobile layouts, RTL, light/dark themes,
-keyboard focus, and dialog behavior when browser access is available. Report any
-browser verification limitation honestly; a successful build does not prove visual QA.
-Use meaningful tests when business behavior is introduced, especially commission,
-rounding, settlement, and workflow rules. Do not add tests that only restate static
-markup or scaffold configuration. Report what changed, checks performed, and any
-remaining limitations. Record confirmed scenario and design changes in the docs.
+Use `npm.cmd` when PowerShell blocks `npm.ps1`. Run `i18n:extract` when adding or
+moving keys, then inspect both locale catalogs. Documentation-only work needs
+formatting and reference checks rather than an application rebuild; vendored
+upstream skill files are intentionally excluded from the normal formatting glob.
+
+Use meaningful tests for changed behavior. Verify affected layouts, languages,
+themes and keyboard interactions when browser access is available. Report actual
+checks and limitations; a successful build alone does not verify browser behavior.

@@ -21,7 +21,7 @@ project documentation, and local skills. It found:
 | Extraction assumed every business namespace lived in Features          | Derive catalog locations from colocated bundle declarations                          |
 
 The downloaded upstream frontend architecture skill matched the existing local
-copy. Its new project companion explains how FSD specializes its general advice.
+copy. The local skill index explains how FSD specializes its general advice.
 The official FSD skill is vendored in `.skills/fsd/`.
 
 ## Layers and ownership
