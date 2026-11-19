@@ -11,9 +11,8 @@ accounting integration.
 ## Getting started
 
 Use **Node.js 22.18 or newer** for the complete development and test workflow.
-The package engine range is `^20.19.0 || >=22.12.0`, but the tests use Node’s native
-TypeScript transformation (`--experimental-transform-types`) to run string enums
-directly, which is unavailable in Node 20.
+The package engine range is `^20.19.0 || >=22.12.0`. Tests use the `tsx` development
+loader (`node --import tsx --test`) to execute TypeScript enums and `.tsx` hooks.
 
 ```sh
 npm ci
@@ -195,7 +194,7 @@ Persian and English are available from the header language selector, with automa
 RTL/LTR layout and a saved browser preference. Translations live in standard nested
 JSON files managed with i18next/react-i18next. Each feature owns its messages under
 `src/features/<feature>/i18n/{fa,en}.json` and exposes a typed hook such as
-`hooks/use-customers-translation.ts`. Generic controls use `useSharedTranslation()`
+`hooks/use-customers-translation.tsx`. Generic controls use `useSharedTranslation()`
 from `shared/hooks/` with
 `src/shared/i18n/locales/{fa,en}/common.json`. Shell messages use
 `useDashboardTranslation()` with `src/features/dashboard/i18n/{fa,en}.json`. The Jalali

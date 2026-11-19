@@ -206,6 +206,8 @@ Persian RTL UI -> feature hooks/use cases -> API adapters -> backend -> database
 - Use named exports for reusable modules; the existing app entry may use a default export.
 - Name React components in PascalCase and hooks with a `use` prefix. Follow existing
   local file naming conventions consistently within each feature.
+- Use `.tsx` for React hook files in feature and shared `hooks/` folders, including
+  hooks without JSX. This is the user's project convention. Tests run through `tsx`.
 - Write comments to explain intent, constraints, or tradeoffs rather than restating code.
 - Use semantic HTML, associated form labels, keyboard access, visible focus states,
   and accessible names for icon-only controls when adding UI.

@@ -43,7 +43,7 @@ src/
   features/dashboard/
     i18n/{fa,en}.json               Shell messages, namespace dashboard
     i18n/resources.ts               Shell bundle and namespace type
-    hooks/use-dashboard-translation.ts
+    hooks/use-dashboard-translation.tsx
   features/customers/
     customers-page.tsx
     i18n/
@@ -52,12 +52,12 @@ src/
       resources.ts                  Bundle and local namespace type declaration
       translation.type-test.ts      Compile-time contract checks
     hooks/
-      use-customers-translation.ts  Namespace-bound hook
+      use-customers-translation.tsx Namespace-bound hook
   features/<other-feature>/i18n/     Same JSON and bundle structure
     legacy-labels.ts                Only when existing model labels need a mapping
   features/<other-feature>/hooks/   Feature-owned translation hooks
   shared/hooks/
-    use-shared-translation.ts       Typed common translation hook
+    use-shared-translation.tsx      Typed common translation hook
   shared/i18n/
     resources.ts                    Bundle contracts, resource builder, options
     create-i18n.ts                  Isolated instance factory

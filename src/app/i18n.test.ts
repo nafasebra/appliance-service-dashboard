@@ -24,19 +24,19 @@ import {
   type TranslationBundle,
 } from '../shared/i18n/resources.ts';
 import { customersTranslations } from '../features/customers/i18n/resources.ts';
-import { useCustomersTranslation } from '../features/customers/hooks/use-customers-translation.ts';
+import { useCustomersTranslation } from '../features/customers/hooks/use-customers-translation.tsx';
 import { translationBundles } from './i18n.ts';
-import { useRequestsTranslation } from '../features/requests/hooks/use-requests-translation.ts';
-import { useDispatchTranslation } from '../features/dispatch/hooks/use-dispatch-translation.ts';
-import { useTechniciansTranslation } from '../features/technicians/hooks/use-technicians-translation.ts';
-import { useFinanceTranslation } from '../features/finance/hooks/use-finance-translation.ts';
-import { usePartsTranslation } from '../features/parts/hooks/use-parts-translation.ts';
-import { useOverviewTranslation } from '../features/overview/hooks/use-overview-translation.ts';
-import { useReportsTranslation } from '../features/reports/hooks/use-reports-translation.ts';
-import { useSettingsTranslation } from '../features/settings/hooks/use-settings-translation.ts';
-import { useDashboardTranslation } from '../features/dashboard/hooks/use-dashboard-translation.ts';
-import { useSharedTranslation } from '../shared/hooks/use-shared-translation.ts';
-import { useCartableTranslation } from '../features/cartable/hooks/use-cartable-translation.ts';
+import { useRequestsTranslation } from '../features/requests/hooks/use-requests-translation.tsx';
+import { useDispatchTranslation } from '../features/dispatch/hooks/use-dispatch-translation.tsx';
+import { useTechniciansTranslation } from '../features/technicians/hooks/use-technicians-translation.tsx';
+import { useFinanceTranslation } from '../features/finance/hooks/use-finance-translation.tsx';
+import { usePartsTranslation } from '../features/parts/hooks/use-parts-translation.tsx';
+import { useOverviewTranslation } from '../features/overview/hooks/use-overview-translation.tsx';
+import { useReportsTranslation } from '../features/reports/hooks/use-reports-translation.tsx';
+import { useSettingsTranslation } from '../features/settings/hooks/use-settings-translation.tsx';
+import { useDashboardTranslation } from '../features/dashboard/hooks/use-dashboard-translation.tsx';
+import { useSharedTranslation } from '../shared/hooks/use-shared-translation.tsx';
+import { useCartableTranslation } from '../features/cartable/hooks/use-cartable-translation.tsx';
 
 function flatten(value: unknown, prefix = ''): Record<string, string> {
   assert.ok(value && typeof value === 'object' && !Array.isArray(value));
