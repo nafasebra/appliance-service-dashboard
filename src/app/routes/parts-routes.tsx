@@ -1,6 +1,6 @@
 import { createRoute } from '@tanstack/react-router';
-import { rootRoute } from './root-route';
-import { PartsPage } from '@/features/parts/parts-page';
+import { rootRoute } from './root-route.tsx';
+import { PartsPage } from '@/pages/parts';
 
 export const partsRoute = createRoute({
   getParentRoute: () => rootRoute,

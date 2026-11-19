@@ -1,7 +1,4 @@
 {
-  "actions": {
-    "newRequest": "درخواست جدید"
-  },
   "appliances": {
     "airConditioner": "کولر گازی",
     "dishwasher": "ظرفشویی",
@@ -37,18 +34,6 @@
     "visitDate": "تاریخ مراجعه",
     "visitDateJalali": "تاریخ مراجعه (جلالی)",
     "visitTime": "ساعت مراجعه"
-  },
-  "list": {
-    "createRequest": "ثبت درخواست",
-    "filterByStatus": "فیلتر وضعیت",
-    "followEachRequestFromTheFirstCallTo": "از اولین تماس تا پایان تعمیر، جریان کار را دنبال کنید.",
-    "lengthRequestsInThisView": "{{length}} درخواست در این نمایش",
-    "requestList": "لیست درخواست‌ها",
-    "searchCustomerApplianceOrRequestId": "جستجوی مشتری، دستگاه یا کد درخواست…",
-    "searchRequests": "جستجوی درخواست"
-  },
-  "navigation": {
-    "serviceRequests": "درخواست‌های خدمات"
   },
   "priorities": {
     "normal": "عادی",

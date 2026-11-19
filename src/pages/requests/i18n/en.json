@@ -1,0 +1,17 @@
+{
+  "actions": {
+    "newRequest": "New request"
+  },
+  "list": {
+    "createRequest": "Create request",
+    "filterByStatus": "Filter by status",
+    "followEachRequestFromTheFirstCallTo": "Follow each request from the first call to the completed repair.",
+    "lengthRequestsInThisView": "{{length}} requests in this view",
+    "requestList": "Request list",
+    "searchCustomerApplianceOrRequestId": "Search customer, appliance, or request ID…",
+    "searchRequests": "Search requests"
+  },
+  "navigation": {
+    "serviceRequests": "Service requests"
+  }
+}

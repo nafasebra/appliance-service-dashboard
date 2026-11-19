@@ -1,5 +1,8 @@
 # Codebase review — 2026-11-17
 
+This review records the 2026-11-17 state. For the subsequent FSD review and
+architecture migration, see [architecture](architecture.md).
+
 ## Coverage and standards
 
 The source scan covered 94 TypeScript files, including tests. Focused manual review

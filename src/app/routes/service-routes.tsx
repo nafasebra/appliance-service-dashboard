@@ -1,14 +1,17 @@
 import { createRoute } from '@tanstack/react-router';
-import { rootRoute } from './root-route';
-import { RequestsPage } from '@/features/requests/requests-page';
-import { DispatchPage } from '@/features/dispatch/dispatch-page';
-import { CustomersPage } from '@/features/customers/customers-page';
-import { TechnicianManagementPage } from '@/features/technicians/technician-management-page';
-import { TechnicianSpecialtiesPage } from '@/features/technicians/technician-specialties-page';
-import { TechnicianJobsPage } from '@/features/technicians/technician-jobs-page';
-import { TechnicianFinancePage } from '@/features/technicians/technician-finance-page';
-import { FinancePage } from '@/features/finance/finance-page';
-import { ReportsPage } from '@/features/reports/reports-page';
+import { rootRoute } from './root-route.tsx';
+import { RequestsPage } from '@/pages/requests';
+import { DispatchPage } from '@/pages/dispatch';
+import { CustomersPage } from '@/pages/customers';
+import {
+  TechnicianManagementPage,
+  TechnicianSpecialtiesPage,
+  TechnicianJobsPage,
+  TechnicianFinancePage,
+} from '@/pages/technicians';
+
+import { FinancePage } from '@/pages/finance';
+import { ReportsPage } from '@/pages/reports';
 
 export const requestsRoute = createRoute({
   getParentRoute: () => rootRoute,

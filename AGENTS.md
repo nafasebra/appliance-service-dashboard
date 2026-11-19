@@ -35,7 +35,8 @@ Read the relevant local skill before related work:
 - React: `.skills/react/SKILL.md`
 - Tailwind CSS v4: `.skills/tailwind/SKILL.md`
 - shadcn/ui: `.skills/shadcn/SKILL.md`
-- Frontend architecture: `.skills/frontend-architecture/SKILL.md`
+- Frontend architecture: `.skills/frontend-architecture/SKILL.md` and its `PROJECT.md`
+- FSD placement, boundaries and migrations: `.skills/fsd/SKILL.md` and `docs/architecture.md`
 - Zustand stores, selectors and persistence: `.skills/zustand/SKILL.md`
 - Localization, new UI copy, or direction changes: `.skills/i18n/SKILL.md` and
   `docs/localization.md`.
@@ -44,15 +45,12 @@ Read the relevant local skill before related work:
   `.skills/tanstack-table/react/getting-started/SKILL.md`; load the feature/state
   references needed for the change.
 
-Every feature owns its messages and bundles in `features/<feature>/i18n/` and its
-typed translation hook in `features/<feature>/hooks/`, following the customers
-reference. Shared translation hooks live in `shared/hooks/`. Compose bundles in
-`app/i18n.ts`; shared infrastructure must receive bundles rather than import features.
-Keep generic controls in `shared/i18n/locales/{fa,en}/common.json` and access them
-through `useSharedTranslation()`. Shell copy belongs in `features/dashboard/i18n/` with
-`useDashboardTranslation()`. Domain statuses, appliance labels and validation messages
-belong to feature catalogs; their compatibility maps register through feature bundles.
-Shared/entity renderers use the registered label lookup instead of importing features.
+Pages and reused features own their messages in their local `i18n/` directory
+and typed hooks in `hooks/`, following `pages/customers`. Shell messages live in
+`app/config/i18n/` with hooks in `app/hooks/`. Generic controls use
+`shared/i18n/locales/{fa,en}/common.json` and `useSharedTranslation()`.
+Compose bundles in `app/i18n.ts` through public APIs; Shared never imports slices.
+Read `docs/localization.md` before changing namespaces, hooks, or extraction.
 
 Sources and project-specific compatibility notes are in `.skills/README.md`.
 User instructions and this project's constraints take precedence over skill defaults.
@@ -65,39 +63,17 @@ Use React 19, TypeScript in strict mode, Vite, and Tailwind CSS v4 through
 alias for imports from `src`. Add dependencies only when a concrete requirement
 justifies them.
 
-Current organization and intended extension points:
+Follow FSD v2.1, pages first. Read `docs/architecture.md` for the ownership map
+and rationale. Route-specific behavior belongs in `pages/<slice>`; extract only
+responsibilities genuinely reused by several consumers. Reused request editing
+and financial controls live in `features/requests` and `features/finance`.
+Service, inventory and company rules/stores belong in `entities`. App owns routing,
+the global shell, navigation, initialization and cross-layer integration tests.
+Shared owns generic UI, helpers, i18n infrastructure and theme preference.
 
-```text
-src/
-  app/                   Application entry, providers, routing, and page composition
-  features/
-    requests/            Request pages, editor and job table
-    dashboard/           Shell components, sidebar hook, navigation and shell translations
-    cartable/            Review, assignment, active work, collection, settlement, archive
-    dispatch/            Scheduling and dispatch
-    customers/           Customer directory and history
-    technicians/         Team management, specialties, jobs and balances
-    finance/             Finance page and cash chart
-    parts/               Inventory, inquiries, procurement and allocations
-    overview/            Dashboard overview composition
-    reports/             Performance reports
-  entities/
-    service/model/       Shared demo records, types, validation and finance rules
-  shared/
-    store/               Global Zustand stores and their integration tests
-    ui/                  Local shadcn components and dashboard compositions
-    components/          Reusable language and theme controls
-    lib/                 Formatting, theme, and shared utilities such as cn()
-    api/                 Shared transport configuration and error handling
-  styles/                Tailwind entry, global styles, and design tokens
-```
-
-Create directories when they contain real code. Do not generate empty modules or
-speculative abstractions. Features own their pages and behavior. Shared service
-records retain one demo store in shared/store; parts has a separate store there.
-Keep `app/` focused on entry, providers, routing and application composition.
-Dashboard shell components, hooks and navigation belong to `features/dashboard`;
-generic controls belong to `shared/components`. The dashboard has no page footer.
+Use `ui/`, `model/`, `lib/` and other purpose-based segments as needed. Preserve
+the user's `hooks/` and `i18n/` conventions; all React hooks use `.tsx`.
+The dashboard has no page footer. Do not add empty layers or speculative slices.
 
 | URL            | Page                                                      |
 | -------------- | --------------------------------------------------------- |
@@ -109,13 +85,14 @@ generic controls belong to `shared/components`. The dashboard has no page footer
 | `/finance`     | Receipts, payouts, expenses, and CSV export               |
 | `/reports`     | Service distribution, team performance, and cash movement |
 
-Dependency direction is `app -> features -> entities -> shared`. By explicit project
-convention, `shared/store` is the composition exception: stores may import pure
-entity and parts models. Keep models independent of stores to avoid cycles.
-Other shared code must not import
-features or application composition. Avoid reaching into another feature's internals;
-expose an intentional public entry point when cross-feature use becomes necessary.
-Keep transport, business calculations, and rendering separate.
+Dependency direction is `app -> pages -> features -> entities -> shared`.
+No upward dependencies or lateral slice imports. External consumers use explicit
+`index.ts` contracts; internal code imports its own implementation files directly.
+Shared UI has component-sized public APIs; other Shared segments expose segment
+APIs. Never add a giant Shared/UI barrel or wildcard exports. Inventory's type-only
+`entities/service/@x/inventory.ts` appliance reference is the sole entity exception.
+There is no Shared business-store exception. Run `npm run architecture:check`
+after moving code or changing imports. Keep domain calculations React-independent.
 
 Routing uses TanStack Router with code-based routes. Define page routes in
 `src/app/routes/` and register them in `src/app/router.ts`. The root route owns the
@@ -133,18 +110,18 @@ primitives with TanStack Table v9. Features own typed column definitions and raw
 accessors; keep monetary and quantity accessors numeric and date accessors ISO.
 Memoize derived rows and column definitions, supply stable record IDs, and disable
 sorting for action columns. The shared component owns local sorting and accessible
-header controls; Persian text comparison lives in `shared/utils/table-sort.ts`.
+header controls; Persian text comparison lives in `shared/lib/table-sort.ts`.
 Client pagination uses the same shared feature registry: sort before slicing,
 default to 10 rows with 10/20/50 choices, reset the page on data/sort changes, and
 keep navigation controls in `shared/ui/data-table-pagination.tsx`.
 Use the public `DataTableColumn<T>` type at feature boundaries. Prefer the v9
 column helper for accessor-specific value inference. Parts table definitions live
-in `features/parts/hooks/use-parts-columns.tsx`; keep workflow actions in the page
+in `pages/parts/hooks/use-parts-columns.tsx`; keep workflow actions in the page
 and callbacks stable when column memos depend on them.
 
 ## System design
 
-The application is client-only. `shared/store/demo-store.ts` owns
+The application is client-only. `entities/service/model/service-store.ts` owns
 shared demo records through Zustand; `demo-data.ts` contains seed records,
 `types.ts` defines domain types, and `finance.ts` contains pure financial summaries.
 Demo changes persist under `hamyar-service-demo-v1` in localStorage. Reset requires
@@ -206,7 +183,7 @@ Persian RTL UI -> feature hooks/use cases -> API adapters -> backend -> database
 - Use named exports for reusable modules; the existing app entry may use a default export.
 - Name React components in PascalCase and hooks with a `use` prefix. Follow existing
   local file naming conventions consistently within each feature.
-- Use `.tsx` for React hook files in feature and shared `hooks/` folders, including
+- Use `.tsx` for React hook files in page, feature, app and shared `hooks/` folders, including
   hooks without JSX. This is the user's project convention. Tests run through `tsx`.
 - Write comments to explain intent, constraints, or tradeoffs rather than restating code.
 - Use semantic HTML, associated form labels, keyboard access, visible focus states,
@@ -260,6 +237,9 @@ For application changes, run:
 npm run format
 npm run format:check
 npm run typecheck
+npm run architecture:check
+npm test
+npm run i18n:check
 npm run build
 ```
 

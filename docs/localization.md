@@ -10,25 +10,27 @@ The Vite application is client-rendered and uses i18next/react-i18next. Previous
 all messages lived in one `translation` namespace, including feature copy, and
 `legacy-labels.ts` translated existing Persian labels at presentation boundaries.
 
-| Feature     | Responsibility                                                        | Namespace     |
-| ----------- | --------------------------------------------------------------------- | ------------- |
-| customers   | Directory, contact search, customer service history                   | `customers`   |
-| requests    | Request search, editor, job table                                     | `requests`    |
-| dispatch    | Technician schedules and assignment                                   | `dispatch`    |
-| technicians | Management, specialties, open jobs, balances                          | `technicians` |
-| finance     | Cash ledger, customer accounts, receivables, receipts, expenses       | `finance`     |
-| parts       | Inventory, availability, procurement, allocations                     | `parts`       |
-| overview    | Dashboard summary                                                     | `overview`    |
-| reports     | Operational and financial reports                                     | `reports`     |
-| settings    | Company and workflow preferences                                      | `settings`    |
-| cartable    | Order review, assignment, repairs, collection, settlement and archive | `cartable`    |
-| dashboard   | Shell, notifications, guide and navigation groups                     | `dashboard`   |
-| shared      | Generic controls, tables, date inputs and formatting                  | `common`      |
+| Feature       | Responsibility                                                        | Namespace       |
+| ------------- | --------------------------------------------------------------------- | --------------- |
+| customers     | Directory, contact search, customer service history                   | `customers`     |
+| requests      | Reusable editor and job table                                         | `requests`      |
+| dispatch      | Technician schedules and assignment                                   | `dispatch`      |
+| technicians   | Management, specialties, open jobs, balances                          | `technicians`   |
+| finance       | Reusable transaction dialog, cash chart and financial labels          | `finance`       |
+| parts         | Inventory, availability, procurement, allocations                     | `parts`         |
+| overview      | Dashboard summary                                                     | `overview`      |
+| reports       | Operational and financial reports                                     | `reports`       |
+| settings      | Company and workflow preferences                                      | `settings`      |
+| cartable      | Order review, assignment, repairs, collection, settlement and archive | `cartable`      |
+| requests page | Search and request entry screen                                       | `requests-page` |
+| finance page  | Ledger, customer accounts, receivables, receipts, expenses            | `finance-page`  |
+| dashboard     | Shell, notifications, guide and navigation groups                     | `dashboard`     |
+| shared        | Generic controls, tables, date inputs and formatting                  | `common`        |
 
 The shared service entity owns records and pure accounting rules; its domain data
 is not moved into feature catalogs. The app owns the shell, navigation, and resource
 composition. Global controls, pagination, and formatting messages remain shared.
-All features own their translations, including navigation labels, domain statuses,
+Pages and reused features own their translations, including navigation labels, domain statuses,
 appliance labels and validation messages. The app owns its shell catalog. Shared
 `common.json` contains generic controls only, grouped by purpose (`actions`,
 `fields`, `table`, `pagination`, `select`, `storage`, and formatting). Features use
@@ -40,12 +42,12 @@ they do not import another feature's translation hook.
 ```text
 src/
   app/i18n.ts                       Composes the feature bundle list
-  features/dashboard/
-    i18n/{fa,en}.json               Shell messages, namespace dashboard
-    i18n/resources.ts               Shell bundle and namespace type
+  app/
+    config/i18n/{fa,en}.json               Shell messages, namespace dashboard
+    config/i18n/resources.ts        Shell bundle and namespace type
     hooks/use-dashboard-translation.tsx
-  features/customers/
-    customers-page.tsx
+  pages/customers/
+    ui/customers-page.tsx
     i18n/
       fa.json                       Persian business messages
       en.json                       English business messages
@@ -53,28 +55,32 @@ src/
       translation.type-test.ts      Compile-time contract checks
     hooks/
       use-customers-translation.tsx Namespace-bound hook
-  features/<other-feature>/i18n/     Same JSON and bundle structure
+  {pages,features}/<slice>/i18n/     Same JSON and bundle structure
     legacy-labels.ts                Only when existing model labels need a mapping
-  features/<other-feature>/hooks/   Feature-owned translation hooks
+  {pages,features}/<slice>/hooks/   Feature-owned translation hooks
   shared/hooks/
     use-shared-translation.tsx      Typed common translation hook
   shared/i18n/
     resources.ts                    Bundle contracts, resource builder, options
     create-i18n.ts                  Isolated instance factory
     i18next.d.ts                    Shared i18next type augmentation
-    index.ts                       Existing browser singleton and compatibility API
+    index.ts                       Public types, registration and browser API
+    instance.ts                    Browser singleton and language persistence
+    server.ts                      Browser-independent factory public API
     provider.tsx                   Provider accepting an explicit instance
     locales/{fa,en}/common.json
 ```
 
 ## Registration and loading
 
-Each feature exports one bundle containing its namespace and both locales. Add it
-once to `translationBundles` in `app/i18n.ts`. Shared infrastructure receives bundles
+Each owning slice exports one bundle through its public API containing its namespace and both locales. Add it
+once to `translationBundles` in `app/i18n.ts`. The CLI derives extraction destinations
+from colocated `resources.ts` namespace declarations, including page and shell catalogs. Shared infrastructure receives bundles
 as inputs and does not import features. `buildResources` rejects duplicate or invalid
 namespaces before registration; `common` is reserved by the shared bundle and is
 the default namespace. The `dashboard` namespace is registered by application composition.
-Use the feature directory name as its namespace. Identical leaf keys in different
+Use the slice directory name as its namespace. Requests and finance page catalogs
+use `requests-page` and `finance-page` to distinguish their reusable feature catalogs. Identical leaf keys in different
 namespaces are safe. Registration can run again during HMR without duplicating listeners.
 
 Resources are statically imported, matching the current eager page imports. No HTTP
@@ -121,7 +127,7 @@ placeholder parity is verified at runtime in tests.
 - Put feature copy in that feature's `i18n/fa.json` and `i18n/en.json`. Use nested
   business concepts (`directory`, `search`, `history`) and descriptive, stable keys.
   Keep generic shared controls in `shared/i18n/locales/{fa,en}/common.json`. Shell
-  messages belong in `features/dashboard/i18n/{fa,en}.json`; business messages stay with features.
+  messages belong in `app/config/i18n/{fa,en}.json`; business messages stay with their page or feature.
 - Use the dedicated feature hook. Include `t` in memo dependencies
   when memoized columns or derived labels contain translations.
 - Translate complete sentences with interpolation. Use i18next `_one` and `_other`
@@ -129,7 +135,7 @@ placeholder parity is verified at runtime in tests.
 - Render plain counts directly. Currency and dates use shared formatters; the
   language changes their presentation without changing currency or timezone.
 - Keep customer names, addresses, descriptions, IDs, and saved business records
-  unchanged. Feature-local `legacy-labels.ts` maps existing predefined Persian labels
+  unchanged. Slice-local `legacy-labels.ts` maps existing predefined Persian labels
   and model errors to typed local keys. The bundle registers these labels with an
   instance-specific lookup; shared infrastructure never imports feature code.
   The shared mapping contains generic UI labels only. Request statuses and appliance
@@ -146,7 +152,7 @@ placeholder parity is verified at runtime in tests.
 ## Server rendering boundary
 
 There is no server entry or hydration workflow today. `createI18n(language, bundles)`
-provides a browser-independent instance with cloned resources for each request.
+from `@/shared/i18n/server` provides a browser-independent instance with cloned resources for each request.
 Pass it to `LocalizationProvider instance={instance}`; never change the browser
 singleton's language to serve a request. Server-render tests use the real provider
 and feature hook to verify independent language and resource state.

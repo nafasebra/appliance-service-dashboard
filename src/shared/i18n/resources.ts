@@ -5,9 +5,6 @@ export type Language = (typeof supportedLanguages)[number];
 export type Messages = { readonly [key: string]: string | Messages };
 export type LocaleShape<T> = { [K in keyof T]: T[K] extends string ? string : LocaleShape<T[K]> };
 
-// Features augment this interface locally; shared code never imports features.
-export interface FeatureResources {}
-
 export interface TranslationBundle {
   readonly namespace: string;
   readonly locales: Record<Language, Messages>;

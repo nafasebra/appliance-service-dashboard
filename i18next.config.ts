@@ -1,4 +1,29 @@
 import { defineConfig } from 'i18next-cli';
+import { readdirSync, readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+
+// Derive extraction destinations from the same colocated bundle declarations
+// used at runtime. Moving a slice must not send its messages back to features/.
+const catalogDirectories = [
+  'src/shared/i18n',
+  'src/app/config/i18n',
+  ...['features', 'pages'].flatMap((layer) =>
+    readdirSync(`src/${layer}`).map((slice) => `src/${layer}/${slice}/i18n`),
+  ),
+];
+const catalogNamespaces = new Map<string, string>();
+const catalogPaths = new Map<string, string>([['common', 'src/shared/i18n']]);
+for (const directory of catalogDirectories.filter((value) => value !== 'src/shared/i18n')) {
+  const source = readFileSync(`${directory}/resources.ts`, 'utf8');
+  const namespace = source.match(/namespace:\s*['"]([^'"]+)['"]/)?.[1];
+  if (!namespace || catalogPaths.has(namespace)) {
+    throw new Error(`Missing or duplicate translation namespace: ${directory}`);
+  }
+  catalogPaths.set(namespace, directory);
+}
+for (const [namespace, directory] of catalogPaths) {
+  catalogNamespaces.set(resolve(directory), namespace);
+}
 
 export default defineConfig({
   locales: ['fa', 'en'],
@@ -11,10 +36,13 @@ export default defineConfig({
       'src/**/model/**',
       'src/shared/store/**',
     ],
-    output: (language, namespace) =>
-      namespace === 'common'
-        ? `src/shared/i18n/locales/${language}/common.json`
-        : `src/features/${namespace}/i18n/${language}.json`,
+    output: (language, namespace) => {
+      const directory = catalogPaths.get(namespace);
+      if (!directory) throw new Error(`Unregistered translation namespace: ${namespace}`);
+      return namespace === 'common'
+        ? `${directory}/locales/${language}/common.json`
+        : `${directory}/${language}.json`;
+    },
     primaryLanguage: 'fa',
     defaultNS: 'common',
     functions: ['t', '*.t', 'tShared'],
@@ -44,22 +72,20 @@ export default defineConfig({
         const normalized = code.replace(
           /const (t|tShared) = use([A-Z][A-Za-z0-9]*)Translation\(\)/g,
           (_, binding: string, feature: string) =>
-            `const { ${binding === 't' ? 't' : 't: tShared'} } = useTranslation('${feature === 'Shared' ? 'common' : feature.toLowerCase()}')`,
+            `const { ${binding === 't' ? 't' : 't: tShared'} } = useTranslation('${feature === 'Shared' ? 'common' : feature.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()}')`,
         );
-        const feature = filePath
-          .replaceAll('\\', '/')
-          .match(/(?:features\/([^/]+)|(app)|(shared))\/i18n\/legacy-labels\.ts$/);
-        const namespace =
-          feature?.[1] ?? (feature?.[2] ? 'app' : feature?.[3] ? 'common' : undefined);
+        const namespace = filePath.replaceAll('\\', '/').endsWith('/legacy-labels.ts')
+          ? catalogNamespaces.get(resolve(dirname(filePath)))
+          : undefined;
         // Model errors and status labels are dynamic callers. Include their local
         // key mappings in extraction without adding runtime translation calls.
         const labels = namespace
           ? [...code.matchAll(/:\s*['"]([^'"]+)['"]/g)].map(([, key]) => `${namespace}:${key}`)
           : [];
         // Deferred feedback stores a qualified key and resolves it at render time.
-        const deferred = [...code.matchAll(/['"]([a-z]+:[A-Za-z][A-Za-z0-9_.]*)['"]/g)].map(
-          ([, key]) => key,
-        );
+        const deferred = [...code.matchAll(/['"]([a-z][a-z0-9-]*:[A-Za-z][A-Za-z0-9_.]*)['"]/g)]
+          .map(([, key]) => key)
+          .filter((key) => catalogPaths.has(key.split(':')[0]));
         return (
           normalized +
           '\n' +

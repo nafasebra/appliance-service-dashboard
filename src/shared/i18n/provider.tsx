@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Direction } from 'radix-ui';
 import { I18nextProvider, useTranslation } from 'react-i18next';
-import { i18n } from './index';
+import { i18n } from './instance.ts';
 import type { i18n as I18nInstance } from 'i18next';
 
 function LocaleDirection({ children }: { children: ReactNode }) {

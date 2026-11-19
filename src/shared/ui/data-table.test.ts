@@ -7,7 +7,7 @@ import {
   dataTableDefaults,
   dataTableFeatures,
   type DataTableFeatures,
-} from './data-table-features.ts';
+} from '@/shared/ui/data-table-features';
 
 interface RecordRow {
   id: string;

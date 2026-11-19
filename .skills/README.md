@@ -9,6 +9,7 @@ its upstream `SKILL.md` and supporting files. These are project-local copies.
 | `react/`                 | [Vercel React best practices](https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices)   |
 | `tailwind/`              | [brpaz Tailwind v4](https://github.com/brpaz/agent-skills/tree/main/skills/tailwind-v4)                            |
 | `shadcn/`                | [Official shadcn skill](https://github.com/shadcn-ui/ui/tree/main/skills/shadcn)                                   |
+| `fsd/` | [Official Feature-Sliced Design skill](https://github.com/feature-sliced/skills/tree/master/feature-sliced-design), installed 2026-11-19 |
 | `frontend-architecture/` | [Singular frontend architecture](https://github.com/we-are-singular/skills/tree/main/skills/frontend-architecture) |
 | `zustand/` | [Microsoft Zustand store skill](https://github.com/microsoft/skills/tree/main/.github/plugins/azure-sdk-typescript/skills/zustand-store-ts) |
 | `tanstack-table/` | Official skills bundled with `@tanstack/table-core@9.3.1` and `@tanstack/react-table@9.3.1`; see [local sources](tanstack-table/SOURCES.md) |
@@ -25,10 +26,15 @@ the project `AGENTS.md` take precedence over upstream defaults. In particular:
   2026-11-17. Start with `tanstack-table/core/SKILL.md` and the React
   `getting-started/SKILL.md`. Read local files in place of upstream `intent load`
   commands; no Intent CLI is needed. Preserve v9 APIs and the shared DataTable.
-- Zustand was installed on 2026-11-17. Use `src/shared/store/` and direct module
-  imports instead of the upstream example directory and barrel. Keep legacy storage
+- Zustand was installed on 2026-11-17. Business stores now live in the owning
+  entity model; generic theme state stays in Shared. Consume entity public APIs. Keep legacy storage
   formats and validation, including the existing storage-failure behavior; middleware
   is added only when it supports that contract.
 
 Installing a skill does not authorize running bundled scripts, deploying, or
 changing dependencies. Apply only the guidance needed for the user's task.
+
+Frontend architecture was checked against upstream on 2026-11-19; its upstream
+content was unchanged. Read [its project companion](frontend-architecture/PROJECT.md)
+and the official FSD skill for placement and public API decisions. FSD public
+entry points intentionally specialize the general advice against barrels.

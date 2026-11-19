@@ -1,20 +1,17 @@
 import type { ParseKeys } from 'i18next';
-
-// Compatibility labels stay with their message owner; stored records are unchanged.
+// Compatibility labels retain stored Persian values at their owning UI boundary.
 export const requestsLabelKeys = {
-  'در انتظار بررسی': 'statuses.awaitingReview',
-  'تأییدشده، در انتظار تخصیص': 'statuses.accepted',
   عادی: 'priorities.normal',
   فوری: 'priorities.urgent',
-  'درخواست‌های خدمات': 'navigation.serviceRequests',
   'نوع دستگاه': 'common.applianceType',
   'سفارش مشتری': 'common.customerOrder',
-  'درخواست جدید': 'actions.newRequest',
   'کل درخواست‌ها': 'common.totalRequests',
   مشتری: 'common.customer',
   سفارش: 'common.order',
   'مبلغ خدمت': 'common.serviceAmount',
   'بدون تخصیص': 'common.unassigned',
+  'در انتظار بررسی': 'statuses.awaitingReview',
+  'تأییدشده، در انتظار تخصیص': 'statuses.accepted',
   'در انتظار اعزام': 'statuses.awaitingDispatch',
   'در حال انجام': 'statuses.inProgress',
   یخچال: 'appliances.refrigerator',

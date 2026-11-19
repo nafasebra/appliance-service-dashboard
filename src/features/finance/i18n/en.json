@@ -1,22 +1,4 @@
 {
-  "accounts": {
-    "accountStatus": "Account status",
-    "advanceCreditBalance": "Advance / credit balance",
-    "allAccounts": "All accounts",
-    "credit": "Credit",
-    "customerAccountLedger": "Customer account ledger",
-    "customerNameOrPhone": "Customer name or phone…",
-    "detailedStatementsReceiptsAndBalancesForEachCustomer": "Detailed statements, receipts, and balances for each customer order. Receivables are calculated from completed services only.",
-    "noOutstandingBalance": "No outstanding balance",
-    "outstandingBalance": "Outstanding balance",
-    "outstandingBalanceByOrder": "Outstanding balance by order",
-    "receiptsExceedingEachOrderSFinalizedServiceAmount": "Receipts exceeding each order's finalized service amount",
-    "searchCustomerAccounts": "Search customer accounts",
-    "statement": "Statement",
-    "totalCompletedOrders": "Total completed orders",
-    "totalReceived": "Total received",
-    "viewStatement": "View statement"
-  },
   "chart": {
     "millionTomanSampleData": "Million toman · Sample data",
     "paid": "Paid",
@@ -28,54 +10,9 @@
   "common": {
     "companyCommission": "Company commission",
     "completedServiceValue": "Completed service value",
-    "customer": "Customer",
     "customerOrder": "Customer order",
     "netCashFlow": "Net cash flow",
-    "order": "Order",
-    "received2": "Received",
-    "serviceAmount": "Service amount"
-  },
-  "export": {
-    "requests": "requests"
-  },
-  "ledger": {
-    "all": "All",
-    "allDemoTransactionsNoOpeningBalance": "All demo transactions · No opening balance",
-    "amountMustBeAWholeNumberGreaterThan": "Amount must be a whole number greater than zero.",
-    "amountSampleToman": "Amount (sample toman)",
-    "clarityOnReceiptsPayoutsAndTheCompanyS": "Clarity on receipts, payouts, and the company's share of each service.",
-    "commissionOnTheseServices": "Commission on these services",
-    "companyExpense": "Company expense",
-    "customerReceipt": "Customer receipt",
-    "dateJalali": "Date (Jalali)",
-    "excludingOpeningBalance": "Excluding opening balance",
-    "expenses": "Expenses",
-    "exportCsv": "Export CSV",
-    "moneyReceivedFromCustomers": "Money received from customers",
-    "paymentObligationsForCompletedServices": "Payment obligations for completed services",
-    "payouts": "Payouts",
-    "payoutsMustBeWithinTheTechnicianSRemaining": "Payouts must be within the technician's remaining share of a completed service.",
-    "receipts": "Receipts",
-    "recordDemoTransaction": "Record demo transaction",
-    "relatedRequest": "Related request",
-    "selectRequest": "Select request",
-    "selectTheRelatedRequest": "Select the related request.",
-    "technicianBalances": "Technician balances",
-    "technicianPayout": "Technician payout",
-    "technicianPayoutsCompanyExpenses": "Technician payouts + company expenses",
-    "thisOnlyUpdatesTheBrowserSDemoLedger": "This only updates the browser's demo ledger. No bank payment is made.",
-    "tomanAndAllAmountsAreSampleValuesCommission": "Toman and all amounts are sample values. Commission is not net profit or a bank balance.",
-    "totalPaymentsAndExpenses": "Total payments and expenses",
-    "totalRecordedReceipts": "Total recorded receipts",
-    "transactionType": "Transaction type",
-    "type": "Type"
-  },
-  "navigation": {
-    "companyExpenses": "Company expenses",
-    "customerAccounts": "Customer accounts",
-    "customerReceipts": "Customer receipts",
-    "customerReceivables": "Customer receivables",
-    "transactionRegister": "Transaction register"
+    "received2": "Received"
   },
   "paymentMethods": {
     "bankTransfer": "Bank transfer",
@@ -88,48 +25,6 @@
     "overpaid": "Overpaid",
     "partiallyPaid": "Partially paid",
     "unpaid": "Unpaid"
-  },
-  "receivables": {
-    "completedOrdersWhoseFullAmountHasNotYet": "Completed orders whose full amount has not yet been collected.",
-    "customerNameOrOrderId": "Customer name or order ID…",
-    "displayedBalanceReduce": "Displayed balance: {{reduce}}",
-    "finalAmount": "Final amount",
-    "noReceivablesMatchTheseFilters": "No receivables match these filters.",
-    "ordersWithOutstandingBalances": "Orders with outstanding balances",
-    "searchReceivables": "Search receivables",
-    "serviceDate": "Service date"
-  },
-  "register": {
-    "amountToman": "Amount (toman)",
-    "clearFilters": "Clear filters",
-    "customerOrder": "Customer / order",
-    "descriptionDocumentReferenceOrCustomer": "Description, document reference, or customer…",
-    "displayedTotalReduce": "Displayed total: {{reduce}}",
-    "documentReference": "Document reference",
-    "fromDate": "From date",
-    "legacyRecord": "Legacy record",
-    "method": "Method",
-    "noTransactionsMatchTheseFilters": "No transactions match these filters.",
-    "recordCompanyOperatingExpensesAndTrackPaymentDocuments": "Record company operating expenses and track payment documents.",
-    "recordExpense": "Record expense",
-    "recordFullOrPartialReceiptsAndTrackPayment": "Record full or partial receipts and track payment methods and document references.",
-    "search": "Search",
-    "theEndDateCannotBeBeforeTheStart": "The end date cannot be before the start date.",
-    "toDate": "To date"
-  },
-  "statement": {
-    "advanceCredit": "Advance / credit",
-    "customerReceiptHistory": "Customer receipt history",
-    "exportStatementCsv": "Export statement CSV",
-    "finalizedServices": "Finalized services",
-    "noOrdersRecordedForThisCustomer": "No orders recorded for this customer.",
-    "noReceiptsRecorded": "No receipts recorded.",
-    "orderAccountDetails": "Order account details",
-    "outstandingBalance": "Outstanding balance",
-    "outstandingDebt": "Outstanding debt",
-    "recordReceipt": "Record receipt",
-    "statement": "Statement for {{name}}",
-    "summary": "Finalized services: {{charge}} · Received: {{receipts}} · Receivables: {{outstanding}} · Advance / credit: {{credit}}"
   },
   "transaction": {
     "collectibleBalance": "Collectible balance:",

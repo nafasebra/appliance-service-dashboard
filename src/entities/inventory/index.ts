@@ -1,0 +1,15 @@
+export { useParts } from './model/inventory-store.ts';
+export type { PartsState, PartsActions, PartsStore } from './model/inventory-store.ts';
+export {
+  NeedStatus,
+  PurchaseStatus,
+  needLabels,
+  purchaseLabels,
+  reservedQuantity,
+  availableQuantity,
+  transitionNeed,
+  receivePurchase,
+  initialPartsData,
+  isPartsData,
+} from './model/parts.ts';
+export type { Part, PartNeed, PartPurchase, PartsData } from './model/parts.ts';

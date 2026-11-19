@@ -1,8 +1,8 @@
-import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
-import { translateLabel } from '@/shared/i18n';
-import { statusLabels, JobStatus } from '../model/types';
+import { useSharedTranslation } from '@/shared/hooks';
+import { translateLabel } from '../../../shared/i18n/index.ts';
+import { statusLabels, JobStatus } from '../model/types.ts';
 import { Badge } from '@/shared/ui/badge';
-import { cn } from '@/shared/lib/utils';
+import { cn } from '@/shared/lib';
 
 export function JobStatusBadge({
   status,

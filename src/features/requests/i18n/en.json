@@ -1,7 +1,4 @@
 {
-  "actions": {
-    "newRequest": "New request"
-  },
   "appliances": {
     "airConditioner": "Air conditioner",
     "dishwasher": "Dishwasher",
@@ -37,18 +34,6 @@
     "visitDate": "Visit date",
     "visitDateJalali": "Visit date (Jalali)",
     "visitTime": "Visit time"
-  },
-  "list": {
-    "createRequest": "Create request",
-    "filterByStatus": "Filter by status",
-    "followEachRequestFromTheFirstCallTo": "Follow each request from the first call to the completed repair.",
-    "lengthRequestsInThisView": "{{length}} requests in this view",
-    "requestList": "Request list",
-    "searchCustomerApplianceOrRequestId": "Search customer, appliance, or request ID…",
-    "searchRequests": "Search requests"
-  },
-  "navigation": {
-    "serviceRequests": "Service requests"
   },
   "priorities": {
     "normal": "Normal",

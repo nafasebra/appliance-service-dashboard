@@ -6,6 +6,9 @@ license: MIT
 
 # Frontend Architecture
 
+Project override: for placement, imports, state ownership and architecture reviews,
+read [PROJECT.md](PROJECT.md) and the [official FSD skill](../fsd/SKILL.md) first.
+
 Use this skill for TypeScript frontend work. It is framework-aware but project-agnostic: apply it to React apps, Astro islands, Next.js pages, shared UI packages, design-system components, typed API clients, form-heavy screens, and browser-facing integration modules by mapping the same responsibilities to the local framework.
 
 ## First Move

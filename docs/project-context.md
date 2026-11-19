@@ -2,9 +2,9 @@
 
 ## ساختار پوسته
 
-کامپوننت‌ها، هوک سایدبار، تنظیمات منو و ترجمه‌های پوسته در `features/dashboard/`
-قرار دارند. کنترل زبان و پوسته در `shared/components/` قابل استفاده مجدد هستند.
-پوشه app فقط ورودی، مسیریابی، providerها و ترکیب layout را نگه می‌دارد.
+کامپوننت‌ها، هوک سایدبار، تنظیمات منو و ترجمه‌های پوسته در `app/ui/` و `app/hooks/` و `app/config/i18n/`
+قرار دارند. کنترل زبان و پوسته در `shared/ui/` قابل استفاده مجدد هستند.
+پوشه app ورودی، مسیریابی، providerها، پوسته سراسری و ترکیب layout را نگه می‌دارد.
 فوتر داشبورد حذف شده است؛ متن و دکمه راهنمای سایدبار از توکن‌های رنگ معنایی
 استفاده می‌کنند تا در پوسته تاریک نیز خوانا باشند.
 
@@ -13,7 +13,7 @@
 وضعیت سفارش با `JobStatus`، وضعیت حساب سفارش با `PaymentStatus` و وضعیت نیاز قطعه
 و خرید با `NeedStatus` و `PurchaseStatus` تعریف می‌شوند. همه enumها رشته‌ای‌اند؛
 مقادیر ذخیره‌شده قبلی تغییر نمی‌کنند. هوک‌ها طبق قرارداد پروژه پسوند `.tsx` دارند؛
-آزمون‌ها برای اجرای TypeScript و این هوک‌ها از `node --import tsx --test` استفاده می‌کنند.
+آزمون‌ها برای اجرای TypeScript و این هوک‌ها از `tsx --tsconfig tsconfig.app.json --test` استفاده می‌کنند.
 
 شش صفحه ورودی (`/cartable`)، تخصیص، مراجعه و تعمیر، دریافت مشتری، تسویه تعمیرکار و
 بایگانی در گروه مستقل منو اضافه شده‌اند. وضعیت `accepted` بین درخواست جدید و اعزام
@@ -36,18 +36,20 @@
 
 ## وضعیت مشترک برنامه
 
-هوک‌های ترجمه هر feature در پوشه `hooks/` همان feature و هوک عمومی ترجمه در
+هوک‌های ترجمه هر page یا feature در پوشه `hooks/` همان feature و هوک عمومی ترجمه در
 `shared/hooks/` قرار دارند؛ فایل‌های JSON و ثبت منابع ترجمه در `i18n/` باقی می‌مانند.
 
 کاتالوگ مشترک ترجمه فقط کنترل‌های عمومی را در `shared/i18n/locales/{fa,en}/common.json`
 نگه می‌دارد و هوک آن `useSharedTranslation` است. متن پوسته با `useDashboardTranslation`
-در `features/dashboard/i18n/` قرار دارد. نام دستگاه‌ها، وضعیت سفارش و خطاهای اختصاصی در feature
+در `app/config/i18n/` قرار دارد. نام دستگاه‌ها، وضعیت سفارش و خطاهای اختصاصی در feature
 مالک ثبت می‌شوند؛ نمایش مشترک از نگاشت bundleها استفاده می‌کند و به feature وابسته نمی‌شود.
 
 راهنمای Zustand در `.skills/zustand/SKILL.md` نگهداری می‌شود. نوع state و action جداست و storeها از `subscribeWithSelector` استفاده می‌کنند. ورودی actionها از مرجع فرم‌ها جدا می‌شود؛ عملیات قطعات روی کپی اجرا می‌شود تا شکست اعتبارسنجی state فعلی را تغییر ندهد. ذخیره‌سازی صریح برای حفظ فرمت قدیمی و قرارداد متفاوت خطای تنظیمات و داده‌های عملیاتی حفظ شده است.
 
-storeهای Zustand در `src/shared/store/` قرار دارند: `demo-store.ts` برای سفارش‌ها، مشتریان، تعمیرکاران و تراکنش‌ها؛ `parts-store.ts` برای قطعات؛ `settings-store.ts` برای تنظیمات و `theme-store.ts` برای پوسته.
-این پوشه طبق تصمیم پروژه به مدل‌های خالص entities و قطعات وابسته است؛ مدل‌ها نباید به store وابسته شوند.
+storeهای کسب‌وکار در `entities/service/model/service-store.ts`،
+`entities/inventory/model/inventory-store.ts` و `entities/company/model/company-store.ts`
+قرار دارند. فقط تنظیم پوسته در `shared/store/theme-store.ts` باقی مانده است.
+Shared دیگر به مدل‌های کسب‌وکار یا feature وابسته نیست.
 مصرف‌کننده‌ها با selector به فیلدهای موردنیاز مشترک می‌شوند و کلیدهای قبلی localStorage حفظ شده‌اند.
 فرم‌ها، فیلترها و انتخاب ردیف‌ها محلی می‌مانند. context سایدبار فقط تعامل کامپوننت‌های همان سایدبار را مدیریت می‌کند.
 
@@ -69,10 +71,14 @@ storeهای Zustand در `src/shared/store/` قرار دارند: `demo-store.ts
 
 ## مرز حوزه‌ها
 
-صفحات در `src/features/` به حوزه‌های `requests`، `dispatch`، `customers`، `technicians`، `finance`، `parts`، `overview` و `reports` تفکیک شده‌اند.
-مدل مشترک دمو در `src/entities/service/model/` و مدل قطعات در feature مربوطه قرار دارد؛ تمام storeها در `src/shared/store/` هستند.
-کامپوننت‌های عمومی رابط در `shared/ui` باقی می‌مانند. استفاده بین حوزه‌ای از ویرایشگر و جدول سفارش‌ها از `features/requests/job-components` و نمودار مالی از `features/finance/cash-chart` انجام می‌شود.
-این جابه‌جایی ساختاری کلیدهای localStorage و قرارداد داده‌ها را تغییر نمی‌دهد.
+معماری FSD نسخه ۲٫۱ با رویکرد pages-first اجرا شده است. صفحات و منطق اختصاصی
+در `src/pages/` قرار دارند؛ ویرایشگر و جدول سفارش و کنترل‌های مالی قابل استفاده مجدد
+در `src/features/` باقی می‌مانند. مدل و store قطعات در `entities/inventory` قرار دارد.
+جهت وابستگی `app -> pages -> features -> entities -> shared` است.
+مصرف‌کننده بیرونی از `index.ts` هر slice استفاده می‌کند و وارد فایل خصوصی نمی‌شود.
+تنها ارتباط هم‌لایه‌ای entityها، نوع Appliance از مسیر `service/@x/inventory.ts` است.
+جزئیات بررسی و تصمیم‌ها در `docs/architecture.md` و کنترل خودکار در
+`npm run architecture:check` نگهداری می‌شوند.
 
 ## مدیریت قطعات
 
@@ -110,7 +116,7 @@ Zustand نگهداری و با کلید `hamyar-service-demo-v1` در localStora
 - کامپوننت‌های محلی shadcn/ui در `src/shared/ui/` هستند. CLI مربوط به shadcn اجرا نمی‌شود.
 - Tailwind v4 با افزونه Vite و پیکربندی CSS-first استفاده می‌شود. utilityها مستقیماً روی
   عناصر JSX قرار می‌گیرند، `cn()` کلاس‌های شرطی را ادغام می‌کند و توکن‌های معنایی در
-  `src/styles/index.css` تعریف می‌شوند.
+  `src/app/styles/index.css` تعریف می‌شوند.
 - CSS سراسری به توکن‌های پوسته، فونت و قواعد پایه محدود است؛ دیکشنری مرکزی recipe نداریم.
 - پوسته با `data-theme` و کلید `hamyar-service-theme` ذخیره می‌شود.
 - داده localStorage پیش از استفاده در سطح رکوردها، ارجاعات و قواعد مالی اعتبارسنجی می‌شود؛

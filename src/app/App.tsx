@@ -1,5 +1,5 @@
 import { RouterProvider } from '@tanstack/react-router';
-import { router } from '@/app/router';
+import { router } from './router.ts';
 
 export default function App() {
   return <RouterProvider router={router} />;

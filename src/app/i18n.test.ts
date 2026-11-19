@@ -1,42 +1,43 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import en from '../shared/i18n/locales/en/common.json' with { type: 'json' };
-import fa from '../shared/i18n/locales/fa/common.json' with { type: 'json' };
 import {
   i18n,
   getLocale,
   languageStorageKey,
   resolveLanguage,
   translateLabel,
-} from '../shared/i18n/index.ts';
-import { legacyLabelKeys } from '../shared/i18n/legacy-labels.ts';
-import { money } from '../shared/lib/format.ts';
-import { formatJalaliDate } from '../shared/lib/date.ts';
-import { initialData } from '../entities/service/model/demo-data.ts';
-import { createElement } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
-import { I18nextProvider } from 'react-i18next';
-import { createI18n } from '../shared/i18n/create-i18n.ts';
-import {
+  sharedTranslations,
   buildResources,
   registerTranslationLabels,
   translateRegisteredLabel,
   type TranslationBundle,
-} from '../shared/i18n/resources.ts';
-import { customersTranslations } from '../features/customers/i18n/resources.ts';
-import { useCustomersTranslation } from '../features/customers/hooks/use-customers-translation.tsx';
+} from '../shared/i18n/index.ts';
+
+import { money, formatJalaliDate } from '@/shared/lib';
+
+import { initialData } from '@/entities/service';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { I18nextProvider } from 'react-i18next';
+import { createI18n } from '@/shared/i18n/server';
+
+import { customersTranslations, useCustomersTranslation } from '@/pages/customers';
+
 import { translationBundles } from './i18n.ts';
-import { useRequestsTranslation } from '../features/requests/hooks/use-requests-translation.tsx';
-import { useDispatchTranslation } from '../features/dispatch/hooks/use-dispatch-translation.tsx';
-import { useTechniciansTranslation } from '../features/technicians/hooks/use-technicians-translation.tsx';
-import { useFinanceTranslation } from '../features/finance/hooks/use-finance-translation.tsx';
-import { usePartsTranslation } from '../features/parts/hooks/use-parts-translation.tsx';
-import { useOverviewTranslation } from '../features/overview/hooks/use-overview-translation.tsx';
-import { useReportsTranslation } from '../features/reports/hooks/use-reports-translation.tsx';
-import { useSettingsTranslation } from '../features/settings/hooks/use-settings-translation.tsx';
-import { useDashboardTranslation } from '../features/dashboard/hooks/use-dashboard-translation.tsx';
-import { useSharedTranslation } from '../shared/hooks/use-shared-translation.tsx';
-import { useCartableTranslation } from '../features/cartable/hooks/use-cartable-translation.tsx';
+import { useRequestsPageTranslation } from '@/pages/requests';
+import { useDispatchTranslation } from '@/pages/dispatch';
+import { useTechniciansTranslation } from '@/pages/technicians';
+import { useFinancePageTranslation } from '@/pages/finance';
+import { usePartsTranslation } from '@/pages/parts';
+import { useOverviewTranslation } from '@/pages/overview';
+import { useReportsTranslation } from '@/pages/reports';
+import { useSettingsTranslation } from '@/pages/settings';
+import { useDashboardTranslation } from './hooks/use-dashboard-translation.tsx';
+import { useSharedTranslation } from '@/shared/hooks';
+import { useCartableTranslation } from '@/pages/cartable';
+
+const { en, fa } = sharedTranslations.locales;
+const legacyLabelKeys = sharedTranslations.labels;
 
 function flatten(value: unknown, prefix = ''): Record<string, string> {
   assert.ok(value && typeof value === 'object' && !Array.isArray(value));
@@ -198,9 +199,9 @@ test('every feature hook uses its own namespace and follows the provider locale'
       useText: () => useCartableTranslation()('queues.inbox.title'),
     },
     {
-      namespace: 'requests',
+      namespace: 'requests-page',
       key: 'list.requestList',
-      useText: () => useRequestsTranslation()('list.requestList'),
+      useText: () => useRequestsPageTranslation()('list.requestList'),
     },
     {
       namespace: 'dispatch',
@@ -213,9 +214,9 @@ test('every feature hook uses its own namespace and follows the provider locale'
       useText: () => useTechniciansTranslation()('assignments.assignedOrders'),
     },
     {
-      namespace: 'finance',
+      namespace: 'finance-page',
       key: 'ledger.receipts',
-      useText: () => useFinanceTranslation()('ledger.receipts'),
+      useText: () => useFinancePageTranslation()('ledger.receipts'),
     },
     {
       namespace: 'parts',

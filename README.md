@@ -12,7 +12,7 @@ accounting integration.
 
 Use **Node.js 22.18 or newer** for the complete development and test workflow.
 The package engine range is `^20.19.0 || >=22.12.0`. Tests use the `tsx` development
-loader (`node --import tsx --test`) to execute TypeScript enums and `.tsx` hooks.
+loader (`tsx --tsconfig tsconfig.app.json --test`) to execute TypeScript enums and `.tsx` hooks.
 
 ```sh
 npm ci
@@ -24,15 +24,16 @@ required. On Windows, use `npm.cmd` if PowerShell blocks `npm.ps1`.
 
 ## Commands
 
-| Command                | Purpose                                                   |
-| ---------------------- | --------------------------------------------------------- |
-| `npm run dev`          | Start the development server                              |
-| `npm test`             | Run domain, store, date, CSV, chart-data, and table tests |
-| `npm run typecheck`    | Check TypeScript projects                                 |
-| `npm run format`       | Format project files with Prettier                        |
-| `npm run format:check` | Check formatting without changing files                   |
-| `npm run build`        | Type-check and build into `dist/`                         |
-| `npm run preview`      | Preview the production build locally                      |
+| Command                      | Purpose                                                   |
+| ---------------------------- | --------------------------------------------------------- |
+| `npm run dev`                | Start the development server                              |
+| `npm test`                   | Run domain, store, date, CSV, chart-data, and table tests |
+| `npm run architecture:check` | Enforce FSD imports and public contracts                  |
+| `npm run typecheck`          | Check TypeScript projects                                 |
+| `npm run format`             | Format project files with Prettier                        |
+| `npm run format:check`       | Check formatting without changing files                   |
+| `npm run build`              | Type-check and build into `dist/`                         |
+| `npm run preview`            | Preview the production build locally                      |
 
 Run tests, formatting checks, type checks, and a build before handing off application
 changes. Also check RTL layouts, both themes, keyboard navigation, dialogs, and date
@@ -64,42 +65,26 @@ integrity information are recorded in `package-lock.json`.
 
 ## Architecture
 
+The project follows FSD v2.1, pages first:
+
 ```text
 src/
-  app/                    Entry point, routes, providers, and layout composition
-  features/               Business pages and workflows
-    dashboard/            Shell components, hooks, navigation, and shell translations
-    customers/
-    dispatch/
-    finance/
-    overview/
-    parts/                Inventory model, workflows, and table-column hook
-    reports/
-    requests/
-    settings/
-    technicians/
-  entities/
-    company/model/        Company settings types, defaults, and validation
-    service/model/        Records, financial rules, validation, and sample data
-    service/ui/           Reusable service-domain presentation
-  shared/
-    components/           Reusable language and theme controls
-    store/                Zustand stores and integration tests
-    ui/                   Local shadcn primitives and shared DataTable
-    lib/                  Formatting, dates, and class-name helpers
-    utils/                Shared pure utilities
-  styles/                 Tailwind entry, theme tokens, base rules, and utilities
+  app/          Routing, initialization, global shell and integration tests
+  pages/        Route-specific UI, behavior, hooks and translations
+  features/     Reused request editor/table and financial controls
+  entities/     Service, inventory and company models and business stores
+  shared/       Generic UI, helpers, localization infrastructure and theme
+
 ```
 
-The alias `@/` points to `src/`. The normal dependency direction is
-`app → features → entities → shared`. A deliberate composition exception allows
-`shared/store` to import pure entity and parts models. Those models remain
-independent of stores to avoid circular dependencies.
+Dependencies point downward: `app -> pages -> features -> entities -> shared`.
+Slices expose explicit public APIs and cannot import sibling slices. Shared UI
+uses component-sized APIs to preserve lazy calendar loading. Business stores live
+with entity models; the old Shared store exception has been removed.
 
-Features own their workflows. Shared UI receives data and callbacks rather than
-reading feature stores. Domain calculations stay outside React components.
-Cross-feature reuse uses intentional entry points such as
-`features/requests/job-components.ts`.
+Run `npm run architecture:check` to check all source imports and entry points.
+See [architecture and review](docs/architecture.md) for ownership, migration
+findings, the narrow inventory type reference, and extension rules.
 
 ## Technical decisions
 
@@ -111,7 +96,7 @@ Cross-feature reuse uses intentional entry points such as
 | Zustand for shared state; React for temporary UI state | Records, inventory, company settings, and theme are shared across screens. Forms, filters, dialogs, and table state remain local. Stores separate state/actions and consumers use selectors.              |
 | Explicit persistence with existing JSON formats        | Preserves localStorage keys and validates restored records. Operational changes remain available in memory if saving fails and expose an error; company settings apply only after successful persistence. |
 | Locally owned shadcn components                        | Gives the project control over RTL behavior, accessibility, and styling. Components live in `src/shared/ui/`; additions use official source without running the shadcn CLI.                               |
-| Tailwind v4 utilities and semantic tokens              | Layout classes stay on elements; theme values live in `src/styles/index.css`. Use `cn()` for conditional class merging and plain strings for static classes.                                              |
+| Tailwind v4 utilities and semantic tokens              | Layout classes stay on elements; theme values live in `src/app/styles/index.css`. Use `cn()` for conditional class merging and plain strings for static classes.                                          |
 | A shared DataTable                                     | Centralizes markup, sorting controls, and pagination. Features own raw accessors and typed columns. Persian text uses locale-aware comparison; amounts remain numeric and dates remain ISO for sorting.   |
 | Jalali presentation with ISO storage                   | Persian calendar inputs serve the interface while `YYYY-MM-DD` records keep validation, filtering, and sorting consistent. Date-only helpers avoid unintended timezone shifts.                            |
 | Theme initialization before React mounts               | `index.html` sets `data-theme` from the saved choice or system preference. Zustand handles subsequent changes, and semantic tokens provide both palettes.                                                 |
@@ -192,12 +177,12 @@ does not send messages or create real-world payments.
 
 Persian and English are available from the header language selector, with automatic
 RTL/LTR layout and a saved browser preference. Translations live in standard nested
-JSON files managed with i18next/react-i18next. Each feature owns its messages under
-`src/features/<feature>/i18n/{fa,en}.json` and exposes a typed hook such as
+JSON files managed with i18next/react-i18next. Each page or reused feature owns
+its messages under `src/{pages,features}/<slice>/i18n/{fa,en}.json` and exposes a typed hook such as
 `hooks/use-customers-translation.tsx`. Generic controls use `useSharedTranslation()`
 from `shared/hooks/` with
 `src/shared/i18n/locales/{fa,en}/common.json`. Shell messages use
-`useDashboardTranslation()` with `src/features/dashboard/i18n/{fa,en}.json`. The Jalali
+`useDashboardTranslation()` with `src/app/config/i18n/{fa,en}.json`. The Jalali
 calendar and existing business records are
 preserved in both languages. See [localization conventions](docs/localization.md)
 for adding messages and running extraction and validation.

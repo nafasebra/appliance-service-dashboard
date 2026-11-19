@@ -7,12 +7,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "test": "node --import tsx --test src/entities/service/model/validation.test.ts src/entities/service/model/job-workflow.test.ts src/entities/service/model/customer-account.test.ts src/shared/store/global-stores.test.ts src/features/parts/model/parts.test.ts src/shared/lib/date.test.ts src/shared/utils/csv.test.ts src/shared/ui/data-table.test.ts src/app/i18n.test.ts src/features/finance/utils/cash-chart.test.ts src/entities/company/model/settings.test.ts",
+    "test": "tsx --tsconfig tsconfig.app.json --test src/entities/service/model/validation.test.ts src/app/tests/order-workflow.test.ts src/entities/service/model/customer-account.test.ts src/app/tests/stores.test.ts src/entities/inventory/model/parts.test.ts src/shared/lib/date.test.ts src/shared/lib/csv.test.ts src/shared/ui/data-table.test.ts src/app/i18n.test.ts src/features/finance/lib/cash-chart.test.ts src/entities/company/model/settings.test.ts",
     "i18n:extract": "i18next-cli extract",
     "i18n:check": "i18next-cli status && i18next-cli lint",
     "typecheck": "tsc -b",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "architecture:check": "node scripts/check-architecture.mjs"
   },
   "dependencies": {
     "@fontsource/vazirmatn": "^5.3.0",

@@ -1,6 +1,6 @@
 import { createRoute } from '@tanstack/react-router';
-import { CartablePage } from '@/features/cartable/cartable-page';
-import { rootRoute } from './root-route';
+import { CartablePage } from '@/pages/cartable';
+import { rootRoute } from './root-route.tsx';
 
 export const cartableRoute = createRoute({
   getParentRoute: () => rootRoute,

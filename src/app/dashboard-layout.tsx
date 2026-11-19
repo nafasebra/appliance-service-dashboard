@@ -1,11 +1,11 @@
-import { useSharedTranslation } from '@/shared/hooks/use-shared-translation';
-import { useDashboardTranslation } from '@/features/dashboard/hooks/use-dashboard-translation';
+import { useSharedTranslation } from '@/shared/hooks';
+import { useDashboardTranslation } from './hooks/use-dashboard-translation.tsx';
 import { useState } from 'react';
 import { Link, Outlet } from '@tanstack/react-router';
 import { AlertTriangle } from 'lucide-react';
-import { DashboardHeader } from '@/features/dashboard/components/dashboard-header';
-import { DashboardSidebar } from '@/features/dashboard/components/dashboard-sidebar';
-import { useDemo } from '@/shared/store/demo-store';
+import { DashboardHeader } from './ui/dashboard-header.tsx';
+import { DashboardSidebar } from './ui/dashboard-sidebar.tsx';
+import { useDemo } from '@/entities/service';
 import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
 import { Modal } from '@/shared/ui/primitives';
 import { SidebarInset, SidebarProvider } from '@/shared/ui/sidebar';
