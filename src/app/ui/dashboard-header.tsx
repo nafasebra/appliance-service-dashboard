@@ -16,11 +16,9 @@ import {
   BreadcrumbSeparator,
 } from '@/shared/ui/breadcrumb';
 import { SidebarTrigger } from '@/shared/ui/sidebar';
-import { useCompanySettings } from '@/entities/company';
 
 export function DashboardHeader() {
   const t = useDashboardTranslation();
-  const settings = useCompanySettings((state) => state.settings);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const currentPage =
     navigation.find((item) => item.to === pathname)?.label ?? t('navigation.dashboard');
@@ -56,11 +54,6 @@ export function DashboardHeader() {
               )}
             </BreadcrumbList>
           </Breadcrumb>
-          <span className="h-6.25 w-px bg-border" />
-          <span className="flex items-center gap-1.75 text-caption text-muted-foreground max-desktop:hidden [&_i]:h-1.5 [&_i]:w-1.5 [&_i]:rounded-full [&_i]:bg-primary">
-            <i />
-            {translateLabel(settings.branchName)}
-          </span>
         </div>
 
         <div className="flex shrink-0 items-center gap-5 max-mobile:gap-1.5">
