@@ -1,4 +1,9 @@
 {
+  "search": {
+    "title": "Search",
+    "placeholder": "Search dashboard pages…",
+    "empty": "No matching pages."
+  },
   "accessibility": {
     "skipToMainContent": "Skip to main content"
   },

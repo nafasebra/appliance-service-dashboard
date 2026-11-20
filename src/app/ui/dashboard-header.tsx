@@ -3,6 +3,7 @@ import { translateLabel } from '../../shared/i18n/index.ts';
 import { Link, useRouterState } from '@tanstack/react-router';
 import { navigation } from '../config/navigation.ts';
 import { NotificationButton } from './notification-button.tsx';
+import { DashboardSearch } from './dashboard-search.tsx';
 import { LanguageSwitcher } from '@/shared/ui/language-switcher';
 import { ThemeToggleButton } from '@/shared/ui/theme-toggle-button';
 import { NoticAlert } from './notic-alert.tsx';
@@ -63,6 +64,7 @@ export function DashboardHeader() {
         </div>
 
         <div className="flex shrink-0 items-center gap-5 max-mobile:gap-1.5">
+          <DashboardSearch />
           <LanguageSwitcher />
           <NotificationButton />
           <ThemeToggleButton />

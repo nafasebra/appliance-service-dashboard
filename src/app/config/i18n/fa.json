@@ -1,4 +1,9 @@
 {
+  "search": {
+    "title": "جست‌وجو",
+    "placeholder": "جست‌وجو در صفحات داشبورد…",
+    "empty": "صفحه‌ای مطابق جست‌وجو پیدا نشد."
+  },
   "accessibility": {
     "skipToMainContent": "رفتن به محتوای اصلی"
   },
