@@ -31,7 +31,7 @@
     "all": "All",
     "allDemoTransactionsNoOpeningBalance": "All demo transactions · No opening balance",
     "amountMustBeAWholeNumberGreaterThan": "Amount must be a whole number greater than zero.",
-    "amountSampleToman": "Amount (sample toman)",
+    "amountSampleToman": "Amount (sample USD)",
     "clarityOnReceiptsPayoutsAndTheCompanyS": "Clarity on receipts, payouts, and the company's share of each service.",
     "commissionOnTheseServices": "Commission on these services",
     "companyExpense": "Company expense",
@@ -53,7 +53,7 @@
     "technicianPayout": "Technician payout",
     "technicianPayoutsCompanyExpenses": "Technician payouts + company expenses",
     "thisOnlyUpdatesTheBrowserSDemoLedger": "This only updates the browser's demo ledger. No bank payment is made.",
-    "tomanAndAllAmountsAreSampleValuesCommission": "Toman and all amounts are sample values. Commission is not net profit or a bank balance.",
+    "tomanAndAllAmountsAreSampleValuesCommission": "All amounts are sample values shown in USD. Commission is not net profit or a bank balance.",
     "totalPaymentsAndExpenses": "Total payments and expenses",
     "totalRecordedReceipts": "Total recorded receipts",
     "transactionType": "Transaction type",
@@ -77,7 +77,7 @@
     "serviceDate": "Service date"
   },
   "register": {
-    "amountToman": "Amount (toman)",
+    "amountToman": "Amount (USD)",
     "clearFilters": "Clear filters",
     "customerOrder": "Customer / order",
     "descriptionDocumentReferenceOrCustomer": "Description, document reference, or customer…",

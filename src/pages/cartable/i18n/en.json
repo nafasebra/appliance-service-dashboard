@@ -24,9 +24,9 @@
   "count_other": "{{count}} orders in this queue",
   "dialog": {
     "address": "Customer address",
-    "amount": "Amount (toman)",
+    "amount": "Amount (USD)",
     "cancelNote": "Cancel this request? Requests with recorded receipts require financial correction first.",
-    "commission": "Company commission (toman)",
+    "commission": "Company commission (USD)",
     "completeNote": "Confirm the final service amount and commission. This creates customer receivables and the technician's share; it does not move cash.",
     "date": "Visit date (Jalali)",
     "description": "Payment description",
@@ -42,7 +42,7 @@
     "technician": "Technician",
     "time": "Visit time",
     "title": "{{action}} · {{id}}",
-    "total": "Final service amount (toman)"
+    "total": "Final service amount (USD)"
   },
   "empty": "No orders in this queue. Orders appear here as their workflow progresses.",
   "errors": {

@@ -10,11 +10,11 @@
     }
   },
   "chart": {
-    "millionTomanSampleData": "Million toman · Sample data",
+    "millionTomanSampleData": "Sample amounts · USD",
     "paid": "Paid",
-    "paidOutgoingToman": "Paid {{outgoing}} toman",
-    "point": "{{date}}: received {{incoming}}, paid {{outgoing}} toman",
-    "receivedIncomingToman": "Received {{incoming}} toman",
+    "paidOutgoingToman": "Paid ${{outgoing}}",
+    "point": "{{date}}: received ${{incoming}}, paid ${{outgoing}}",
+    "receivedIncomingToman": "Received ${{incoming}}",
     "viewChartValues": "View chart values"
   },
   "common": {

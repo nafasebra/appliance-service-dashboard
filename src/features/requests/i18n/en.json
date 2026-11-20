@@ -40,7 +40,7 @@
     "amountsMustBeNonNegativeWholeNumbersCommission": "Amounts must be non-negative whole numbers. Commission cannot exceed the service amount.",
     "applianceBrand": "Appliance brand",
     "changingStatusDoesNotMeanPaymentWasCollected": "Changing status does not mean payment was collected. Record receipts and payouts in Finance.",
-    "companyShareSampleToman": "Company share (sample toman)",
+    "companyShareSampleToman": "Company share (sample USD)",
     "createNewRequest": "Create new request",
     "describeTheApplianceProblem": "Describe the appliance problem…",
     "enterTheServiceAmountBeforeCompletingTheRequest": "Enter the service amount before completing the request.",
@@ -50,7 +50,7 @@
     "requestDetailsId": "Request details: {{id}}",
     "saveRequest": "Save request",
     "selectATechnicianForThisStatus": "Select a technician for this status.",
-    "serviceAmountSampleToman": "Service amount (sample toman)",
+    "serviceAmountSampleToman": "Service amount (sample USD)",
     "visitDate": "Visit date",
     "visitDateJalali": "Visit date (Jalali)",
     "visitTime": "Visit time"

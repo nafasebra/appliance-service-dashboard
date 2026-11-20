@@ -14,7 +14,10 @@ export const localizeDigits = (value: string) => {
     return formatter.format(latinDigit);
   });
 };
-export const money = (value: number) => i18next.t('format.valueToman', { value: number(value) });
+export const money = (value: number) =>
+  getLocale() === 'en'
+    ? `$${new Intl.NumberFormat('en-US').format(value)}`
+    : i18next.t('format.valueToman', { value: number(value) });
 export const dateLabel = (value: string) =>
   new Intl.DateTimeFormat(`${getLocale()}-u-ca-persian`, {
     month: 'long',

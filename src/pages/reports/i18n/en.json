@@ -8,7 +8,7 @@
     "completed2": "Completed",
     "count_one": "{{count}} request",
     "count_other": "{{count}} requests",
-    "daysWithTransactionsMillionToman": "Days with transactions · Million toman",
+    "daysWithTransactionsMillionToman": "Days with transactions · USD",
     "performanceReports": "Performance reports",
     "receiptsAndPayments": "Receipts and payments",
     "requestsByAppliance": "Requests by appliance",

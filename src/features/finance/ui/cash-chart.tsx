@@ -1,7 +1,8 @@
 import { useFinanceTranslation } from '../hooks/use-finance-translation.tsx';
 import { useDemo } from '@/entities/service';
 import { getCashChartData } from '../lib/cash-chart.ts';
-import { dateLabel } from '@/shared/lib';
+import { dateLabel, number } from '@/shared/lib';
+import { getLocale } from '@/shared/i18n';
 
 export function CashChart() {
   const t = useFinanceTranslation();
@@ -24,7 +25,10 @@ export function CashChart() {
       <div className="flex gap-3.5 mt-1.25 mx-6 mb-0 direction-ltr h-42.5">
         <div className="flex flex-col justify-between text-muted-foreground text-caption pb-6.25 w-3.75">
           {[1, 0.75, 0.5, 0.25, 0].map((factor) => (
-            <span key={factor}>{Math.round((max * factor) / 100000) / 10}</span>
+            <span key={factor}>
+              {getLocale() === 'en' ? '$' : ''}
+              {number(Math.round((max * factor) / 100000) / 10)}
+            </span>
           ))}
         </div>
         <div className="bg-chart-grid flex flex-1 justify-around">

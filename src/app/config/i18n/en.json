@@ -15,7 +15,7 @@
     "demoVersionSampleDataIsStoredInThis": "Demo version · Sample data is stored in this browser.",
     "howToUseTheDemo": "How to use the demo",
     "stayOneStepAhead": "Stay one step ahead",
-    "thisDemoHasNoBackendDataStaysIn": "This demo has no backend. Data stays in this browser. Toman, statuses, and payment workflows are provisional demo choices."
+    "thisDemoHasNoBackendDataStaysIn": "This demo has no backend. Data stays in this browser. Dollar amounts, statuses, and payment workflows are provisional demo choices."
   },
   "navigation": {
     "accountingAndFinance": "Accounting and finance",

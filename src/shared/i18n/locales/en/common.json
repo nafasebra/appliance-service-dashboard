@@ -19,7 +19,7 @@
   "fields": {
     "actions": "Actions",
     "amount": "Amount",
-    "amountToman2": "Amount (toman)",
+    "amountToman2": "Amount (USD)",
     "balance": "Balance",
     "date": "Date",
     "description": "Description",
@@ -31,7 +31,7 @@
     "allStatuses": "All statuses"
   },
   "format": {
-    "valueToman": "{{value}} toman"
+    "valueToman": "${{value}}"
   },
   "language": "Language",
   "languages": {

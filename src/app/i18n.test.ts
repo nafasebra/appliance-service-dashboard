@@ -112,7 +112,7 @@ test('live language changes update direction and persistence while preserving re
     assert.equal(description.content, en.appDescription);
     assert.equal(saved.get(languageStorageKey), 'en');
     assert.deepEqual([...saved.keys()], [languageStorageKey]);
-    assert.equal(money(1234), '1,234 toman');
+    assert.equal(money(1234), '$1,234');
     assert.match(formatJalaliDate('2026-11-17'), /1405/);
     assert.equal(translateLabel('همه وضعیت‌ها'), 'All statuses');
     assert.equal(translateLabel('یخچال'), 'Refrigerator');
@@ -289,7 +289,7 @@ test('every feature hook uses its own namespace and follows the provider locale'
       incoming: 100,
       outgoing: 50,
     }),
-    'Today: received 100, paid 50 toman',
+    'Today: received $100, paid $50',
   );
 });
 
