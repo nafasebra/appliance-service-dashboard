@@ -8,7 +8,7 @@ import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
-import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
+import { DatePicker } from '@/shared/ui/date-time-picker';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money, dateLabel, downloadCsv } from '@/shared/lib';
@@ -153,15 +153,11 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
         </div>
         <div className="flex flex-col gap-2">
           <Label>{t('register.fromDate')}</Label>
-          <JalaliDatePicker
-            value={from}
-            onValueChange={setFrom}
-            aria-label={t('register.fromDate')}
-          />
+          <DatePicker value={from} onValueChange={setFrom} aria-label={t('register.fromDate')} />
         </div>
         <div className="flex flex-col gap-2">
           <Label>{t('register.toDate')}</Label>
-          <JalaliDatePicker value={to} onValueChange={setTo} aria-label={t('register.toDate')} />
+          <DatePicker value={to} onValueChange={setTo} aria-label={t('register.toDate')} />
         </div>
         <Button
           variant="outline"

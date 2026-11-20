@@ -1,1 +1,1 @@
-export { JalaliDatePicker, TimePicker } from './date-time-picker.tsx';
+export { DatePicker, TimePicker } from './date-time-picker.tsx';

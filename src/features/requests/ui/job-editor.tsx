@@ -25,7 +25,7 @@ import {
   SelectItem,
 } from '@/shared/ui/select';
 import { Textarea } from '@/shared/ui/textarea';
-import { JalaliDatePicker, TimePicker } from '@/shared/ui/date-time-picker';
+import { DatePicker, TimePicker } from '@/shared/ui/date-time-picker';
 
 export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) {
   const t = useRequestsTranslation();
@@ -149,7 +149,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
         </Label>
         <Label className="flex flex-col gap-2">
           {t('editor.visitDateJalali')}
-          <JalaliDatePicker
+          <DatePicker
             name="date"
             value={date}
             onValueChange={setDate}

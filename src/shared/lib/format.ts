@@ -19,7 +19,8 @@ export const money = (value: number) =>
     ? `$${new Intl.NumberFormat('en-US').format(value)}`
     : i18next.t('format.valueToman', { value: number(value) });
 export const dateLabel = (value: string) =>
-  new Intl.DateTimeFormat(`${getLocale()}-u-ca-persian`, {
+  new Intl.DateTimeFormat(getLocale() === 'en-US' ? 'en-US' : 'fa-IR-u-ca-persian', {
+    year: 'numeric',
     month: 'long',
     day: 'numeric',
     timeZone: 'Asia/Tehran',

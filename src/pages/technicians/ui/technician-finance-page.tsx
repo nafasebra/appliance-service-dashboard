@@ -19,7 +19,7 @@ import {
   SelectItem,
 } from '@/shared/ui/select';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
-import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
+import { DatePicker } from '@/shared/ui/date-time-picker';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { money, dateLabel, toIsoDate } from '@/shared/lib';
 
@@ -347,7 +347,7 @@ export function TechnicianFinancePage() {
             </Label>
             <Label className="flex flex-col gap-2">
               {t('finance.payoutDate')}
-              <JalaliDatePicker name="date" value={date} onValueChange={setDate} required />
+              <DatePicker name="date" value={date} onValueChange={setDate} required />
             </Label>
             <Label className="flex flex-col gap-2">
               {tShared('fields.description')}

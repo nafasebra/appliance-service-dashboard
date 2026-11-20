@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from '@/shared/ui/select';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
-import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
+import { DatePicker } from '@/shared/ui/date-time-picker';
 import { toIsoDate, money, getFormText } from '@/shared/lib';
 
 export function TransactionDialog({
@@ -132,7 +132,7 @@ export function TransactionDialog({
         </div>
         <div className="flex flex-col gap-2">
           <Label>{tShared('fields.date')}</Label>
-          <JalaliDatePicker
+          <DatePicker
             value={date}
             onValueChange={setDate}
             required

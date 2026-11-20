@@ -15,7 +15,7 @@ import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { Modal } from '@/shared/ui/primitives';
-import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
+import { DatePicker } from '@/shared/ui/date-time-picker';
 import {
   Select,
   SelectContent,
@@ -102,7 +102,7 @@ export function WorkflowPaymentDialog({
         </div>
         <div className="flex flex-col gap-2">
           <Label>{t('dialog.paymentDate')}</Label>
-          <JalaliDatePicker
+          <DatePicker
             value={date}
             onValueChange={setDate}
             aria-label={t('dialog.paymentDate')}

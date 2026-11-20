@@ -11,7 +11,7 @@ const JalaliCalendar = lazy(() =>
   import('@/shared/ui/calendar').then((module) => ({ default: module.Calendar })),
 );
 
-type JalaliDatePickerProps = {
+type DatePickerProps = {
   name?: string;
   value: string;
   onValueChange: (value: string) => void;
@@ -19,16 +19,33 @@ type JalaliDatePickerProps = {
   'aria-label'?: string;
 };
 
-function JalaliDatePicker({
+function DatePicker({
   name,
   value,
   onValueChange,
   required,
   'aria-label': ariaLabel = i18next.t('select.selectDate'),
-}: JalaliDatePickerProps) {
+}: DatePickerProps) {
   const t = useSharedTranslation();
   const [open, setOpen] = useState(false);
   const selected = parseIsoDate(value);
+  const isEnglish = i18next.resolvedLanguage?.startsWith('en') ?? true;
+
+  if (isEnglish) {
+    return (
+      <Input
+        type="date"
+        name={name}
+        value={value}
+        onChange={(event) => onValueChange(event.target.value)}
+        required={required}
+        aria-label={ariaLabel}
+        dir="ltr"
+        lang="en-US"
+        className="direction-ltr font-latin"
+      />
+    );
+  }
 
   return (
     <>
@@ -76,4 +93,4 @@ function TimePicker(props: Omit<ComponentProps<typeof Input>, 'type'>) {
   return <Input type="time" dir="ltr" {...props} />;
 }
 
-export { JalaliDatePicker, TimePicker };
+export { DatePicker, TimePicker };

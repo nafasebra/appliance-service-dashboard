@@ -13,7 +13,7 @@ import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';
 import { Label } from '@/shared/ui/label';
-import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
+import { DatePicker } from '@/shared/ui/date-time-picker';
 
 export function DispatchPage() {
   const t = useDispatchTranslation();
@@ -33,7 +33,7 @@ export function DispatchPage() {
         action={
           <Label className="flex flex-col gap-1.75 text-muted-foreground">
             {t('schedule.scheduleDate')}
-            <JalaliDatePicker
+            <DatePicker
               aria-label={t('schedule.dispatchScheduleDate')}
               value={date}
               onValueChange={setDate}

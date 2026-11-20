@@ -28,7 +28,7 @@ import {
   SelectItem,
 } from '@/shared/ui/select';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
-import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
+import { DatePicker } from '@/shared/ui/date-time-picker';
 
 const kindLabels = {
   receipt: 'دریافت از مشتری',
@@ -302,7 +302,7 @@ export function FinancePage() {
             )}
             <Label className="flex flex-col gap-2">
               {t('ledger.dateJalali')}
-              <JalaliDatePicker
+              <DatePicker
                 name="date"
                 value={transactionDate}
                 onValueChange={setTransactionDate}
