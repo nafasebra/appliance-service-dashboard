@@ -15,6 +15,26 @@
     "selectTechnician": "Select technician",
     "technician": "Technician"
   },
+  "demo": {
+    "technicians": {
+      "t1": {
+        "area": "West Tehran",
+        "name": "Mohammad Hosseini",
+        "specialty": "Refrigerator and freezer repair"
+      },
+      "t2": {
+        "area": "Northwest Tehran",
+        "name": "Amir Mohammadi",
+        "specialty": "Washing machine and dishwasher repair"
+      },
+      "t3": { "area": "Central Tehran", "name": "Ali Kazemi" },
+      "t4": {
+        "area": "West Tehran",
+        "name": "Mehdi Rostami",
+        "specialty": "Gas stove and oven repair"
+      }
+    }
+  },
   "finance": {
     "allTechnicians": "All technicians",
     "amountPayable": "Amount payable",

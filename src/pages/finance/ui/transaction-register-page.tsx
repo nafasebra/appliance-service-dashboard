@@ -39,7 +39,7 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
             !invalidRange &&
             (!from || item.date >= from) &&
             (!to || item.date <= to) &&
-            `${item.description} ${item.reference ?? ''} ${item.jobId} ${customer?.name ?? ''}`.includes(
+            `${translateLabel(item.description)} ${item.reference ?? ''} ${item.jobId} ${translateLabel(customer?.name ?? '')}`.includes(
               query.trim(),
             ),
         )
@@ -63,7 +63,8 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
             {
               id: 'مشتری / سفارش',
               header: t('register.customerOrder'),
-              accessorFn: ({ customer }: (typeof rows)[number]) => customer?.name,
+              accessorFn: ({ customer }: (typeof rows)[number]) =>
+                translateLabel(customer?.name ?? ''),
               cell: ({
                 row: {
                   original: { item, customer },
@@ -72,7 +73,7 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
                 row: { original: (typeof rows)[number] };
               }) => (
                 <>
-                  {customer?.name}
+                  {translateLabel(customer?.name ?? '')}
                   <div>
                     <bdi>{item.jobId}</bdi>
                   </div>
@@ -84,7 +85,12 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
       {
         id: 'شرح',
         header: 'شرح',
-        accessorFn: ({ item }) => item.description,
+        accessorFn: ({ item }) => translateLabel(item.description),
+        cell: ({
+          row: {
+            original: { item },
+          },
+        }) => translateLabel(item.description),
       },
       {
         id: 'روش',
@@ -196,9 +202,9 @@ export function TransactionRegisterPage({ kind }: { kind: 'receipt' | 'expense' 
                   ],
                   ...rows.map(({ item, customer }) => [
                     item.date,
-                    customer?.name ?? '',
+                    translateLabel(customer?.name ?? ''),
                     item.jobId,
-                    item.description,
+                    translateLabel(item.description),
                     item.method ? translateLabel(paymentMethodLabels[item.method]) : '',
                     item.reference ?? '',
                     String(item.amount),

@@ -7,7 +7,7 @@ import {
 } from '@/entities/service';
 
 import { translateLabel } from '../../../shared/i18n/index.ts';
-import { money } from '@/shared/lib';
+import { localizeDigits, money } from '@/shared/lib';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
@@ -76,13 +76,15 @@ export function WorkflowDialog({
       <form onSubmit={submit} className="grid gap-4 p-6 sm:grid-cols-2">
         <dl className="col-span-full grid gap-2 rounded-lg bg-muted p-4 text-body">
           <dt className="font-medium">
-            {customer?.name} · <bdi>{customer?.phone}</bdi>
+            {translateLabel(customer?.name ?? '')} ·{' '}
+            <bdi>{localizeDigits(customer?.phone ?? '')}</bdi>
           </dt>
           <dt className="text-muted-foreground">{t('dialog.address')}</dt>
-          <dd>{customer?.address}</dd>
+          <dd>{translateLabel(customer?.address ?? '')}</dd>
           <dt className="text-muted-foreground">{t('dialog.issue')}</dt>
           <dd>
-            {translateLabel(job.appliance)} · {job.brand} · {job.issue}
+            {translateLabel(job.appliance)} · {translateLabel(job.brand)} ·{' '}
+            {translateLabel(job.issue)}
           </dd>
           <dt className="text-muted-foreground">{t('dialog.total')}</dt>
           <dd>{money(job.total)}</dd>
@@ -101,7 +103,8 @@ export function WorkflowDialog({
                   <SelectGroup>
                     {technicians.map((technician) => (
                       <SelectItem key={technician.id} value={technician.id}>
-                        {technician.name} · {technician.specialty} · {technician.area}
+                        {translateLabel(technician.name)} · {translateLabel(technician.specialty)} ·{' '}
+                        {translateLabel(technician.area)}
                       </SelectItem>
                     ))}
                   </SelectGroup>

@@ -2,6 +2,7 @@ import { useSharedTranslation } from '@/shared/hooks';
 import { JobStatus, type Job, useDemo } from '@/entities/service';
 import { useTechniciansTranslation } from '../hooks/use-technicians-translation.tsx';
 import { useState } from 'react';
+import { translateLabel } from '../../../shared/i18n/index.ts';
 
 import { JobTable, JobEditor } from '@/features/requests';
 import { PageHeading, Panel } from '@/shared/ui/primitives';
@@ -47,7 +48,7 @@ export function TechnicianJobsPage() {
               <SelectItem value="all">{t('finance.allTechnicians')}</SelectItem>
               {technicians.map((tech) => (
                 <SelectItem value={tech.id} key={tech.id}>
-                  {tech.name}
+                  {translateLabel(tech.name)}
                 </SelectItem>
               ))}
             </SelectGroup>

@@ -16,6 +16,26 @@
     "totalRequests": "Total requests",
     "unassigned": "Unassigned"
   },
+  "demo": {
+    "brands": {
+      "daewoo": "Daewoo",
+      "gree": "Gree",
+      "lg": "LG",
+      "samsung": "Samsung",
+      "snowa": "Snowa",
+      "bosch": "Bosch"
+    },
+    "issues": {
+      "sr1041": "Level the appliance and reduce vibration",
+      "sr1042": "Replace the drain pump",
+      "sr1043": "Service and clean the indoor unit",
+      "sr1044": "Replace the thermostat",
+      "sr1045": "Burner will not ignite; ignition switch is faulty",
+      "sr1046": "E15 error is displayed",
+      "sr1047": "Water remains after the wash cycle",
+      "sr1048": "Cabinet is not cooling and the motor is unusually noisy"
+    }
+  },
   "editor": {
     "amountsMustBeNonNegativeWholeNumbersCommission": "Amounts must be non-negative whole numbers. Commission cannot exceed the service amount.",
     "applianceBrand": "Appliance brand",

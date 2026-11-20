@@ -10,6 +10,8 @@ import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { useCustomersTranslation } from '../hooks/use-customers-translation.tsx';
+import { translateLabel } from '@/shared/i18n';
+import { localizeDigits } from '@/shared/lib';
 
 export function CustomersPage() {
   const t = useCustomersTranslation();
@@ -21,7 +23,9 @@ export function CustomersPage() {
   const filtered = useMemo(
     () =>
       customers.filter((customer) =>
-        `${customer.name} ${customer.phone} ${customer.address}`.includes(query.trim()),
+        `${translateLabel(customer.name)} ${localizeDigits(customer.phone)} ${translateLabel(customer.address)}`.includes(
+          query.trim(),
+        ),
       ),
     [customers, query],
   );
@@ -30,19 +34,20 @@ export function CustomersPage() {
       {
         id: 'نام مشتری',
         header: t('columns.name'),
-        accessorFn: (customer) => customer.name,
-        cell: ({ row: { original: customer } }) => <strong>{customer.name}</strong>,
+        accessorFn: (customer) => translateLabel(customer.name),
+        cell: ({ row: { original: customer } }) => <strong>{translateLabel(customer.name)}</strong>,
       },
       {
         id: 'تلفن',
         header: t('columns.phone'),
-        accessorFn: (customer) => customer.phone,
-        cell: ({ row: { original: customer } }) => <bdi>{customer.phone}</bdi>,
+        accessorFn: (customer) => localizeDigits(customer.phone),
+        cell: ({ row: { original: customer } }) => <bdi>{localizeDigits(customer.phone)}</bdi>,
       },
       {
         id: 'آدرس',
         header: t('columns.address'),
-        accessorFn: (customer) => customer.address,
+        accessorFn: (customer) => translateLabel(customer.address),
+        cell: ({ row: { original: customer } }) => translateLabel(customer.address),
       },
       {
         id: 'تعداد درخواست',
@@ -61,7 +66,7 @@ export function CustomersPage() {
             size="icon-sm"
             className="grid place-items-center h-7.75 w-7.75 border border-transparent rounded-md text-muted-foreground bg-transparent shrink-0 [&:hover]:bg-accent [&:hover]:border-border dark:[&:hover]:bg-accent dark:[&:hover]:border-border"
             onClick={() => setSelected(customer.id)}
-            aria-label={t('history.open', { name: customer.name })}
+            aria-label={t('history.open', { name: translateLabel(customer.name) })}
           >
             <ArrowUpLeft size={18} />
           </Button>
@@ -103,7 +108,7 @@ export function CustomersPage() {
       {selected && (
         <Modal
           title={t('history.title', {
-            name: customers.find((item) => item.id === selected)?.name ?? '',
+            name: translateLabel(customers.find((item) => item.id === selected)?.name ?? ''),
           })}
           onClose={() => setSelected(null)}
         >

@@ -93,7 +93,12 @@ export function TechnicianFinancePage() {
       {
         id: 'تعمیرکار',
         header: 'تعمیرکار',
-        accessorFn: ({ tech }) => tech.name,
+        accessorFn: ({ tech }) => translateLabel(tech.name),
+        cell: ({
+          row: {
+            original: { tech },
+          },
+        }) => translateLabel(tech.name),
       },
       {
         id: 'ارزش خدمات',
@@ -172,7 +177,10 @@ export function TechnicianFinancePage() {
       {
         id: 'تعمیرکار',
         header: 'تعمیرکار',
-        accessorFn: (job) => technicians.find((tech) => tech.id === job.technicianId)?.name,
+        accessorFn: (job) =>
+          translateLabel(technicians.find((tech) => tech.id === job.technicianId)?.name ?? ''),
+        cell: ({ row: { original: job } }) =>
+          translateLabel(technicians.find((tech) => tech.id === job.technicianId)?.name ?? ''),
       },
       {
         id: 'مانده',
@@ -219,14 +227,23 @@ export function TechnicianFinancePage() {
         id: 'تعمیرکار',
         header: 'تعمیرکار',
         accessorFn: (item) =>
-          technicians.find(
-            (tech) => tech.id === jobs.find((job) => job.id === item.jobId)?.technicianId,
-          )?.name,
+          translateLabel(
+            technicians.find(
+              (tech) => tech.id === jobs.find((job) => job.id === item.jobId)?.technicianId,
+            )?.name ?? '',
+          ),
+        cell: ({ row: { original: item } }) =>
+          translateLabel(
+            technicians.find(
+              (tech) => tech.id === jobs.find((job) => job.id === item.jobId)?.technicianId,
+            )?.name ?? '',
+          ),
       },
       {
         id: 'شرح',
         header: 'شرح',
-        accessorFn: (item) => item.description,
+        accessorFn: (item) => translateLabel(item.description),
+        cell: ({ row: { original: item } }) => translateLabel(item.description),
       },
       {
         id: 'مبلغ',
@@ -252,7 +269,7 @@ export function TechnicianFinancePage() {
             <SelectItem value="all">{t('finance.allTechnicians')}</SelectItem>
             {technicians.map((tech) => (
               <SelectItem key={tech.id} value={tech.id}>
-                {tech.name}
+                {translateLabel(tech.name)}
               </SelectItem>
             ))}
           </SelectGroup>

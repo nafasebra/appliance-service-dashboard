@@ -15,6 +15,14 @@
     "selectTechnician": "انتخاب تعمیرکار",
     "technician": "تعمیرکار"
   },
+  "demo": {
+    "technicians": {
+      "t1": { "area": "غرب تهران", "name": "محمد حسینی", "specialty": "یخچال و فریزر" },
+      "t2": { "area": "شمال غرب تهران", "name": "امیر محمدی", "specialty": "لباسشویی و ظرفشویی" },
+      "t3": { "area": "مرکز تهران", "name": "علی کاظمی" },
+      "t4": { "area": "غرب تهران", "name": "مهدی رستمی", "specialty": "اجاق گاز و فر" }
+    }
+  },
   "finance": {
     "allTechnicians": "همه تعمیرکاران",
     "amountPayable": "مانده قابل پرداخت",

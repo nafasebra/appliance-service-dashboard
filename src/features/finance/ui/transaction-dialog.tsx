@@ -101,8 +101,10 @@ export function TransactionDialog({
                   {eligible.map((job) => (
                     <SelectItem key={job.id} value={job.id}>
                       {job.id} ·{' '}
-                      {customers.find((customer) => customer.id === job.customerId)?.name} ·{' '}
-                      {translateLabel(job.appliance)}
+                      {translateLabel(
+                        customers.find((customer) => customer.id === job.customerId)?.name ?? '',
+                      )}{' '}
+                      · {translateLabel(job.appliance)}
                     </SelectItem>
                   ))}
                 </SelectGroup>

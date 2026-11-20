@@ -1,4 +1,10 @@
 {
+  "demo": {
+    "company": {
+      "branchName": "شعبه تهران",
+      "companyName": "همیار سرویس"
+    }
+  },
   "common": {
     "normal": "عادی",
     "urgent": "فوری"

@@ -1,4 +1,33 @@
 {
+  "demo": {
+    "parts": {
+      "part-1": {
+        "compatibility": "سامسونگ — بررسی مدل پیش از نصب",
+        "location": "قفسه A-1",
+        "name": "پمپ تخلیه لباسشویی"
+      },
+      "part-2": {
+        "compatibility": "مدل‌های مکانیکی سازگار",
+        "location": "قفسه B-2",
+        "name": "ترموستات یخچال"
+      },
+      "part-3": {
+        "compatibility": "بوش — بررسی کد فنی",
+        "location": "قفسه C-1",
+        "name": "المنت ظرفشویی"
+      },
+      "part-4": {
+        "compatibility": "۴۵ میکروفاراد",
+        "location": "قفسه D-1",
+        "name": "خازن کولر گازی"
+      },
+      "part-5": {
+        "compatibility": "یونیورسال — بررسی اتصال",
+        "location": "قفسه E-1",
+        "name": "جرقه‌زن اجاق گاز"
+      }
+    }
+  },
   "common": {
     "applianceType": "نوع دستگاه",
     "customerOrder": "سفارش مشتری",

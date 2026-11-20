@@ -89,7 +89,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
               <SelectGroup>
                 {customers.map((item) => (
                   <SelectItem key={item.id} value={item.id}>
-                    {item.name}
+                    {translateLabel(item.name)}
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -117,7 +117,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           {t('editor.applianceBrand')}
           <Input
             name="brand"
-            defaultValue={job?.brand}
+            defaultValue={job ? translateLabel(job.brand) : undefined}
             required
             maxLength={50}
             placeholder={t('editor.forExampleSamsung')}
@@ -141,7 +141,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
           {t('editor.problemDescription')}
           <Textarea
             name="issue"
-            defaultValue={job?.issue}
+            defaultValue={job ? translateLabel(job.issue) : undefined}
             required
             maxLength={500}
             placeholder={t('editor.describeTheApplianceProblem')}
@@ -173,7 +173,7 @@ export function JobEditor({ job, onClose }: { job?: Job; onClose: () => void }) 
 
                 {technicians.map((item) => (
                   <SelectItem key={item.id} value={item.id}>
-                    {item.name}
+                    {translateLabel(item.name)}
                   </SelectItem>
                 ))}
               </SelectGroup>

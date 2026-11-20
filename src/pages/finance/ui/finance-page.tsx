@@ -93,7 +93,7 @@ export function FinancePage() {
         id: 'شرح تراکنش',
         header: t('transaction.transactionDescription'),
         accessorFn: (item) => item.description,
-        cell: ({ row: { original: item } }) => <strong>{item.description}</strong>,
+        cell: ({ row: { original: item } }) => <strong>{translateLabel(item.description)}</strong>,
       },
       {
         id: 'نوع',
@@ -292,7 +292,7 @@ export function FinancePage() {
                         )
                         .map((job) => (
                           <SelectItem key={job.id} value={job.id}>
-                            {job.id} · {translateLabel(job.appliance)} {job.brand}
+                            {job.id} · {translateLabel(job.appliance)} {translateLabel(job.brand)}
                           </SelectItem>
                         ))}
                     </SelectGroup>

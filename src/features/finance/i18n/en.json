@@ -1,4 +1,14 @@
 {
+  "demo": {
+    "transactions": {
+      "tr1": "Washing machine repair payment received",
+      "tr2": "Settlement with Amir Mohammadi",
+      "tr3": "Drain pump replacement payment received",
+      "tr5": "Air conditioner service payment received",
+      "tr6": "Travel and support expenses",
+      "tr7": "Refrigerator repair payment received"
+    }
+  },
   "chart": {
     "millionTomanSampleData": "Million toman · Sample data",
     "paid": "Paid",

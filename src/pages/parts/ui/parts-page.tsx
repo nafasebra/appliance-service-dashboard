@@ -397,7 +397,12 @@ export function PartsPage({ section }: { section: Section }) {
               <>
                 <Label className="flex flex-col gap-2">
                   {t('inventory.partName')}
-                  <Input name="name" defaultValue={editing?.name} required maxLength={100} />
+                  <Input
+                    name="name"
+                    defaultValue={editing ? translateLabel(editing.name) : undefined}
+                    required
+                    maxLength={100}
+                  />
                 </Label>
                 <Label className="flex flex-col gap-2">
                   {t('inventory.uniqueCode')}
@@ -422,11 +427,19 @@ export function PartsPage({ section }: { section: Section }) {
                 </Label>
                 <Label className="flex flex-col gap-2">
                   {t('inventory.compatibleBrandsAndModels')}
-                  <Input name="compatibility" defaultValue={editing?.compatibility} required />
+                  <Input
+                    name="compatibility"
+                    defaultValue={editing ? translateLabel(editing.compatibility) : undefined}
+                    required
+                  />
                 </Label>
                 <Label className="flex flex-col gap-2">
                   {t('inventory.storageLocation')}
-                  <Input name="location" defaultValue={editing?.location} required />
+                  <Input
+                    name="location"
+                    defaultValue={editing ? translateLabel(editing.location) : undefined}
+                    required
+                  />
                 </Label>
                 <Label className="flex flex-col gap-2">
                   {t('inventory.minimumStock')}
@@ -460,7 +473,7 @@ export function PartsPage({ section }: { section: Section }) {
                           .filter((p) => p.active)
                           .map((part) => (
                             <SelectItem key={part.id} value={part.id}>
-                              {part.name} · {translateLabel(part.appliance)}
+                              {translateLabel(part.name)} · {translateLabel(part.appliance)}
                             </SelectItem>
                           ))}
                       </SelectGroup>

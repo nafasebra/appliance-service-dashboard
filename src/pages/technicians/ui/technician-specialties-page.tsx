@@ -41,7 +41,9 @@ export function TechnicianSpecialtiesPage() {
     const specialty = String(form.get('specialty') ?? '').trim();
     const failure = saveTechnician({ ...tech, specialty });
     setError(failure ?? '');
-    setMessage(failure ? '' : t('specialties.specialtyUpdatedForName', { name: tech.name }));
+    setMessage(
+      failure ? '' : t('specialties.specialtyUpdatedForName', { name: translateLabel(tech.name) }),
+    );
   }
   const specialtyRows = useMemo(
     () =>
@@ -56,7 +58,12 @@ export function TechnicianSpecialtiesPage() {
       {
         id: 'تخصص',
         header: t('management.specialty'),
-        accessorFn: ({ name }) => name,
+        accessorFn: ({ name }) => translateLabel(name),
+        cell: ({
+          row: {
+            original: { name },
+          },
+        }) => translateLabel(name),
       },
       {
         id: 'تعداد تعمیرکار',
@@ -71,7 +78,12 @@ export function TechnicianSpecialtiesPage() {
       {
         id: 'اعضای تیم',
         header: t('management.teamMembers'),
-        accessorFn: ({ members }) => members.map((tech) => tech.name).join('، '),
+        accessorFn: ({ members }) => members.map((tech) => translateLabel(tech.name)).join(', '),
+        cell: ({
+          row: {
+            original: { members },
+          },
+        }) => members.map((tech) => translateLabel(tech.name)).join(', '),
       },
     ],
     [t],
@@ -99,7 +111,7 @@ export function TechnicianSpecialtiesPage() {
                 <SelectGroup>
                   {technicians.map((tech) => (
                     <SelectItem value={tech.id} key={tech.id}>
-                      {tech.name}
+                      {translateLabel(tech.name)}
                     </SelectItem>
                   ))}
                 </SelectGroup>

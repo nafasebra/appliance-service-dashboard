@@ -9,7 +9,7 @@ import {
 import { useMemo } from 'react';
 
 import { translateLabel } from '../../../shared/i18n/index.ts';
-import { dateLabel, money } from '@/shared/lib';
+import { dateLabel, localizeDigits, money } from '@/shared/lib';
 import { Button } from '@/shared/ui/button';
 import type { DataTableColumn } from '@/shared/ui/data-table';
 import { useCartableTranslation } from './use-cartable-translation.tsx';
@@ -47,7 +47,7 @@ export function useCartableColumns(
               <bdi>{job.id}</bdi>
             </strong>
             <span>
-              {translateLabel(job.appliance)} · {job.brand}
+              {translateLabel(job.appliance)} · {translateLabel(job.brand)}
             </span>
           </div>
         ),
@@ -55,15 +55,15 @@ export function useCartableColumns(
       {
         id: 'customer',
         header: t('columns.customer'),
-        accessorFn: ({ customer }) => customer?.name ?? '',
+        accessorFn: ({ customer }) => translateLabel(customer?.name ?? ''),
         cell: ({
           row: {
             original: { customer },
           },
         }) => (
           <div className="flex flex-col gap-1">
-            <span>{customer?.name}</span>
-            <bdi className="text-muted-foreground">{customer?.phone}</bdi>
+            <span>{translateLabel(customer?.name ?? '')}</span>
+            <bdi className="text-muted-foreground">{localizeDigits(customer?.phone ?? '')}</bdi>
           </div>
         ),
       },
@@ -77,7 +77,7 @@ export function useCartableColumns(
           },
         }) => (
           <div className="flex flex-col gap-1">
-            <span>{technician?.name ?? '—'}</span>
+            <span>{translateLabel(technician?.name ?? '—')}</span>
             {job.status === JobStatus.Scheduled ||
             job.status === JobStatus.Working ||
             job.status === JobStatus.Completed ? (

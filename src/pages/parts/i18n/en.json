@@ -1,4 +1,33 @@
 {
+  "demo": {
+    "parts": {
+      "part-1": {
+        "compatibility": "Samsung — check model before installation",
+        "location": "Shelf A-1",
+        "name": "Washing machine drain pump"
+      },
+      "part-2": {
+        "compatibility": "Compatible with mechanical models",
+        "location": "Shelf B-2",
+        "name": "Refrigerator thermostat"
+      },
+      "part-3": {
+        "compatibility": "Bosch — check part number",
+        "location": "Shelf C-1",
+        "name": "Dishwasher heating element"
+      },
+      "part-4": {
+        "compatibility": "45 microfarads",
+        "location": "Shelf D-1",
+        "name": "Air conditioner capacitor"
+      },
+      "part-5": {
+        "compatibility": "Universal — check connection",
+        "location": "Shelf E-1",
+        "name": "Gas stove igniter"
+      }
+    }
+  },
   "common": {
     "applianceType": "Appliance type",
     "customerOrder": "Customer order",

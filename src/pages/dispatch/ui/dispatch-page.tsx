@@ -67,8 +67,8 @@ export function DispatchPage() {
           return (
             <Panel
               key={tech.id}
-              title={tech.name}
-              subtitle={tech.specialty}
+              title={translateLabel(tech.name)}
+              subtitle={translateLabel(tech.specialty)}
               action={
                 <Badge
                   variant="secondary"
@@ -98,15 +98,21 @@ export function DispatchPage() {
                         <JobStatusBadge status={job.status} />
                       </div>
                       <h3>
-                        {translateLabel(job.appliance)} {job.brand}
+                        {translateLabel(job.appliance)} {translateLabel(job.brand)}
                       </h3>
-                      <p>{customers.find((item) => item.id === job.customerId)?.name}</p>
+                      <p>
+                        {translateLabel(
+                          customers.find((item) => item.id === job.customerId)?.name ?? '',
+                        )}
+                      </p>
                       <small>
                         <MapPin size={14} />
-                        {customers.find((item) => item.id === job.customerId)?.address}
+                        {translateLabel(
+                          customers.find((item) => item.id === job.customerId)?.address ?? '',
+                        )}
                       </small>
                       <div className="text-caption text-muted-foreground mt-3.5 pt-2.75 border-t border-dashed border-t-border dark:border-border">
-                        {job.issue}
+                        {translateLabel(job.issue)}
                       </div>
                     </Button>
                   ))

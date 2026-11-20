@@ -210,10 +210,12 @@ export function OverviewPage() {
                   </span>
                   <div>
                     <strong>
-                      {translateLabel(job.appliance)} {job.brand} ·{' '}
-                      {customers.find((item) => item.id === job.customerId)?.name}
+                      {translateLabel(job.appliance)} {translateLabel(job.brand)} ·{' '}
+                      {translateLabel(
+                        customers.find((item) => item.id === job.customerId)?.name ?? '',
+                      )}
                     </strong>
-                    <small>{job.issue}</small>
+                    <small>{translateLabel(job.issue)}</small>
                   </div>
                   <Badge
                     className={cn(

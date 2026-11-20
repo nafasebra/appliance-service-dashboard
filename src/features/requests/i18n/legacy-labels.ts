@@ -33,4 +33,18 @@ export const requestsLabelKeys = {
   'سفارش دارای دریافت وجه را بدون اصلاح مالی نمی‌توان لغو کرد یا مبلغ آن را کمتر از دریافت ثبت‌شده قرار داد.':
     'validation.anOrderWithReceiptsCannotBeCancelledOr',
   'اطلاعات سفارش معتبر نیست.': 'validation.orderDetailsAreInvalid',
+  سامسونگ: 'demo.brands.samsung',
+  ال‌جی: 'demo.brands.lg',
+  بوش: 'demo.brands.bosch',
+  اسنوا: 'demo.brands.snowa',
+  دوو: 'demo.brands.daewoo',
+  گری: 'demo.brands.gree',
+  'خنک نکردن کابین و صدای غیرعادی موتور': 'demo.issues.sr1048',
+  'تخلیه نشدن آب در پایان شست‌وشو': 'demo.issues.sr1047',
+  'نمایش خطای E15': 'demo.issues.sr1046',
+  'روشن نشدن شعله و خرابی فندک': 'demo.issues.sr1045',
+  'تعویض ترموستات': 'demo.issues.sr1044',
+  'سرویس و شست‌وشوی پنل': 'demo.issues.sr1043',
+  'تعویض پمپ تخلیه': 'demo.issues.sr1042',
+  'تراز و رفع لرزش دستگاه': 'demo.issues.sr1041',
 } as const satisfies Readonly<Record<string, ParseKeys<'requests'>>>;

@@ -1,4 +1,10 @@
 {
+  "demo": {
+    "company": {
+      "branchName": "Tehran Branch",
+      "companyName": "Hamyar Service"
+    }
+  },
   "common": {
     "normal": "Normal",
     "urgent": "Urgent"

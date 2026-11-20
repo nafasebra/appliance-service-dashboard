@@ -32,7 +32,7 @@ export function ReceivablesPage() {
         .filter(
           (row) =>
             row.account.outstanding > 0 &&
-            `${row.job.id} ${row.customer?.name ?? ''}`.includes(query.trim()),
+            `${row.job.id} ${translateLabel(row.customer?.name ?? '')}`.includes(query.trim()),
         ),
     [jobs, customers, transactions, query, t],
   );
@@ -51,7 +51,12 @@ export function ReceivablesPage() {
       {
         id: 'مشتری',
         header: 'مشتری',
-        accessorFn: ({ customer }) => customer?.name,
+        accessorFn: ({ customer }) => translateLabel(customer?.name ?? ''),
+        cell: ({
+          row: {
+            original: { customer },
+          },
+        }) => translateLabel(customer?.name ?? ''),
       },
       {
         id: 'تاریخ خدمت',
@@ -136,7 +141,7 @@ export function ReceivablesPage() {
                   ['سفارش', 'مشتری', t('common.serviceAmount'), 'دریافت', 'مانده'],
                   ...rows.map((row) => [
                     row.job.id,
-                    row.customer?.name ?? '',
+                    translateLabel(row.customer?.name ?? ''),
                     String(row.account.charge),
                     String(row.account.receipts),
                     String(row.account.outstanding),

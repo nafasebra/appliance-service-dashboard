@@ -3,7 +3,7 @@ import { JobStatus, type Technician, useDemo } from '@/entities/service';
 import { useTechniciansTranslation } from '../hooks/use-technicians-translation.tsx';
 import { translateLabel } from '../../../shared/i18n/index.ts';
 import { useMemo, useState, type FormEvent } from 'react';
-import { getFormText } from '@/shared/lib';
+import { getFormText, localizeDigits } from '@/shared/lib';
 import { Plus } from 'lucide-react';
 
 import { PageHeading, Panel, Modal, EmptyState } from '@/shared/ui/primitives';
@@ -25,7 +25,9 @@ export function TechnicianManagementPage() {
   const filtered = useMemo(
     () =>
       technicians.filter((tech) =>
-        `${tech.name} ${tech.phone} ${tech.specialty} ${tech.area}`.includes(query.trim()),
+        `${translateLabel(tech.name)} ${localizeDigits(tech.phone)} ${translateLabel(tech.specialty)} ${translateLabel(tech.area)}`.includes(
+          query.trim(),
+        ),
       ),
     [technicians, query, t, tShared],
   );
@@ -50,23 +52,26 @@ export function TechnicianManagementPage() {
       {
         id: 'نام تعمیرکار',
         header: t('management.technicianName'),
-        accessorFn: (tech) => tech.name,
+        accessorFn: (tech) => translateLabel(tech.name),
+        cell: ({ row: { original: tech } }) => translateLabel(tech.name),
       },
       {
         id: 'تلفن',
         header: 'تلفن',
         accessorFn: (tech) => tech.phone,
-        cell: ({ row: { original: tech } }) => <bdi>{tech.phone}</bdi>,
+        cell: ({ row: { original: tech } }) => <bdi>{localizeDigits(tech.phone)}</bdi>,
       },
       {
         id: 'تخصص',
         header: t('management.specialty'),
-        accessorFn: (tech) => tech.specialty,
+        accessorFn: (tech) => translateLabel(tech.specialty),
+        cell: ({ row: { original: tech } }) => translateLabel(tech.specialty),
       },
       {
         id: 'محدوده',
         header: t('management.serviceArea'),
-        accessorFn: (tech) => tech.area,
+        accessorFn: (tech) => translateLabel(tech.area),
+        cell: ({ row: { original: tech } }) => translateLabel(tech.area),
       },
       {
         id: 'سفارش باز',
@@ -148,7 +153,12 @@ export function TechnicianManagementPage() {
           <form onSubmit={submit} className="grid gap-4 p-6 sm:grid-cols-2">
             <Label className="flex flex-col gap-2">
               {t('management.fullName')}
-              <Input name="name" required maxLength={100} defaultValue={editing?.name} />
+              <Input
+                name="name"
+                required
+                maxLength={100}
+                defaultValue={editing ? translateLabel(editing.name) : undefined}
+              />
             </Label>
             <Label className="flex flex-col gap-2">
               {tShared('fields.phone')}
@@ -167,13 +177,18 @@ export function TechnicianManagementPage() {
                 name="specialty"
                 required
                 maxLength={150}
-                defaultValue={editing?.specialty}
+                defaultValue={editing ? translateLabel(editing.specialty) : undefined}
                 placeholder={t('management.forExampleRefrigeratorAndFreezerRepairs')}
               />
             </Label>
             <Label className="flex flex-col gap-2">
               {t('management.serviceArea')}
-              <Input name="area" required maxLength={150} defaultValue={editing?.area} />
+              <Input
+                name="area"
+                required
+                maxLength={150}
+                defaultValue={editing ? translateLabel(editing.area) : undefined}
+              />
             </Label>
             {error ? (
               <Alert variant="destructive" className="col-span-full">

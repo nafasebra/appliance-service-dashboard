@@ -62,7 +62,7 @@ export function NotificationButton() {
                     })}
                   </strong>
                   <span className="mt-1 block truncate text-caption text-muted-foreground">
-                    {job.issue}
+                    {translateLabel(job.issue)}
                   </span>
                   <span className="mt-1.5 block text-caption text-muted-foreground">
                     {dateLabel(job.date)} · {job.time}

@@ -33,12 +33,12 @@ export function ReportsPage() {
       {
         id: 'تعمیرکار',
         header: 'تعمیرکار',
-        accessorFn: ({ tech }) => tech.name,
+        accessorFn: ({ tech }) => translateLabel(tech.name),
         cell: ({
           row: {
             original: { tech },
           },
-        }) => <strong>{tech.name}</strong>,
+        }) => <strong>{translateLabel(tech.name)}</strong>,
       },
       {
         id: 'کل درخواست‌ها',

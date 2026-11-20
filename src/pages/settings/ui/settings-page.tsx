@@ -52,7 +52,11 @@ export function SettingsPage() {
   const saveSettings = useCompanySettings((state) => state.saveSettings);
   const theme = useTheme((state) => state.theme);
   const toggleTheme = useTheme((state) => state.toggleTheme);
-  const [draft, setDraft] = useState<CompanySettings>(() => ({ ...settings }));
+  const [draft, setDraft] = useState<CompanySettings>(() => ({
+    ...settings,
+    companyName: translateLabel(settings.companyName),
+    branchName: translateLabel(settings.branchName),
+  }));
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
   const dirty = Object.keys(draft).some(

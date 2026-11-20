@@ -6,4 +6,6 @@ export const settingsLabelKeys = {
   'ذخیره‌سازی مرورگر در دسترس نیست؛ تنظیمات ذخیره نشد.':
     'validation.browserStorageIsUnavailableSettingsWereNotSaved',
   تنظیمات: 'navigation.settings',
+  'همیار سرویس': 'demo.company.companyName',
+  'شعبه تهران': 'demo.company.branchName',
 } as const satisfies Readonly<Record<string, ParseKeys<'settings'>>>;

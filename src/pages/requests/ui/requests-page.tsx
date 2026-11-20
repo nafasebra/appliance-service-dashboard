@@ -32,7 +32,7 @@ export function RequestsPage() {
   const filtered = jobs.filter(
     (job) =>
       (status === 'all' || job.status === status) &&
-      `${job.id} ${job.appliance} ${translateLabel(job.appliance)} ${job.brand} ${customers.find((customer) => customer.id === job.customerId)?.name}`
+      `${job.id} ${translateLabel(job.appliance)} ${translateLabel(job.brand)} ${translateLabel(job.issue)} ${translateLabel(customers.find((customer) => customer.id === job.customerId)?.name ?? '')}`
         .toLowerCase()
         .includes(query.trim().toLowerCase()),
   );

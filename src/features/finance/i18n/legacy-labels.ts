@@ -23,4 +23,10 @@ export const financeLabelKeys = {
   کارت‌خوان: 'paymentMethods.cardTerminal',
   'واریز بانکی': 'paymentMethods.bankTransfer',
   'ثبت تراکنش انجام نشد.': 'validation.theTransactionCouldNotBeRecorded',
+  'دریافت هزینه تعمیر لباسشویی': 'demo.transactions.tr1',
+  'تسویه با امیر محمدی': 'demo.transactions.tr2',
+  'دریافت هزینه تعویض پمپ': 'demo.transactions.tr3',
+  'دریافت هزینه سرویس کولر': 'demo.transactions.tr5',
+  'هزینه رفت‌وآمد و پشتیبانی': 'demo.transactions.tr6',
+  'دریافت هزینه تعمیر یخچال': 'demo.transactions.tr7',
 } as const satisfies Readonly<Record<string, ParseKeys<'finance'>>>;

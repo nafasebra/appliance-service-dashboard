@@ -144,7 +144,8 @@ export function CustomerStatement({
       {
         id: 'شرح',
         header: 'شرح',
-        accessorFn: (item) => item.description,
+        accessorFn: (item) => translateLabel(item.description),
+        cell: ({ row: { original: item } }) => translateLabel(item.description),
       },
       {
         id: 'مبلغ',
@@ -156,7 +157,10 @@ export function CustomerStatement({
     [t],
   );
   return (
-    <Modal title={t('statement.statement', { name: customer?.name ?? '' })} onClose={onClose}>
+    <Modal
+      title={t('statement.statement', { name: translateLabel(customer?.name ?? '') })}
+      onClose={onClose}
+    >
       <div className="flex flex-col gap-5 p-6">
         <p className="text-body">
           {t('statement.summary', {

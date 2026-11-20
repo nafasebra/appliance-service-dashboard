@@ -12,6 +12,16 @@
     "count_other": "{{count}} sample customers",
     "title": "Customer directory"
   },
+  "demo": {
+    "customers": {
+      "c1": { "address": "Tehran, Sa'adat Abad, Sarv Street", "name": "Maryam Ahmadi" },
+      "c2": { "address": "Tehran, Poonak, Hamila Street", "name": "Ali Rezaei" },
+      "c3": { "address": "Tehran, Shahrak-e Gharb, Dadman Boulevard", "name": "Sara Mohammadi" },
+      "c4": { "address": "Tehran, Janat Abad, Bahar Street", "name": "Hossein Karimi" },
+      "c5": { "address": "Tehran, Marzdaran, Alvand Street", "name": "Negar Mousavi" },
+      "c6": { "address": "Tehran, Vanak, Molla Sadra Street", "name": "Reza Naderi" }
+    }
+  },
   "history": {
     "open": "History for {{name}}",
     "title": "History for {{name}}"

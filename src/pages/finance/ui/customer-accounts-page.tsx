@@ -15,7 +15,8 @@ import {
   SelectValue,
 } from '@/shared/ui/select';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
-import { money } from '@/shared/lib';
+import { localizeDigits, money } from '@/shared/lib';
+import { translateLabel } from '../../../shared/i18n/index.ts';
 import { CustomerStatement } from './customer-statement.tsx';
 import { TransactionDialog } from '@/features/finance';
 
@@ -41,7 +42,9 @@ export function CustomerAccountsPage() {
     () =>
       accounts.filter(
         (row) =>
-          `${row.customer.name} ${row.customer.phone}`.includes(query.trim()) &&
+          `${translateLabel(row.customer.name)} ${localizeDigits(row.customer.phone)}`.includes(
+            query.trim(),
+          ) &&
           (status === 'all' ||
             (status === 'debtor'
               ? row.outstanding > 0
@@ -56,13 +59,14 @@ export function CustomerAccountsPage() {
       {
         id: 'مشتری',
         header: 'مشتری',
-        accessorFn: (row) => row.customer.name,
+        accessorFn: (row) => translateLabel(row.customer.name),
+        cell: ({ row: { original: row } }) => translateLabel(row.customer.name),
       },
       {
         id: 'تلفن',
         header: 'تلفن',
         accessorFn: (row) => row.customer.phone,
-        cell: ({ row: { original: row } }) => <bdi>{row.customer.phone}</bdi>,
+        cell: ({ row: { original: row } }) => <bdi>{localizeDigits(row.customer.phone)}</bdi>,
       },
       {
         id: 'خدمات قطعی',

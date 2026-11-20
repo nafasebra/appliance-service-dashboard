@@ -6,6 +6,7 @@ import { type Job, type WorkflowFailure, useDemo } from '@/entities/service';
 import { JobEditor } from '@/features/requests';
 
 import { translateLabel } from '../../../shared/i18n/index.ts';
+import { localizeDigits } from '@/shared/lib';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';
 import { Input } from '@/shared/ui/input';
@@ -80,7 +81,7 @@ export function CartablePage({ queue }: { queue: WorkflowQueue }) {
     return entries.filter(
       (row) =>
         row.queue === queue &&
-        `${row.job.id} ${row.customer?.name ?? ''} ${row.customer?.phone ?? ''} ${row.job.appliance} ${translateLabel(row.job.appliance)} ${row.technician?.name ?? ''}`
+        `${row.job.id} ${translateLabel(row.customer?.name ?? '')} ${localizeDigits(row.customer?.phone ?? '')} ${row.job.appliance} ${translateLabel(row.job.appliance)} ${translateLabel(row.job.brand)} ${translateLabel(row.job.issue)} ${translateLabel(row.technician?.name ?? '')}`
           .toLocaleLowerCase()
           .includes(search),
     );

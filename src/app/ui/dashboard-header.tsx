@@ -59,7 +59,7 @@ export function DashboardHeader() {
           <span className="h-6.25 w-px bg-border" />
           <span className="flex items-center gap-1.75 text-caption text-muted-foreground max-desktop:hidden [&_i]:h-1.5 [&_i]:w-1.5 [&_i]:rounded-full [&_i]:bg-primary">
             <i />
-            {settings.branchName}
+            {translateLabel(settings.branchName)}
           </span>
         </div>
 

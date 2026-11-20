@@ -56,12 +56,12 @@ export function usePartsColumns({
   const inventoryColumns = useMemo(
     () =>
       inventoryColumn.columns([
-        inventoryColumn.accessor((part) => part.name, {
+        inventoryColumn.accessor((part) => translateLabel(part.name), {
           id: 'قطعه / کد',
           header: t('tables.partCode'),
           cell: ({ row: { original: part } }) => (
             <>
-              <strong>{part.name}</strong>
+              <strong>{translateLabel(part.name)}</strong>
               <div>
                 <bdi>{part.code}</bdi>
               </div>
@@ -74,11 +74,13 @@ export function usePartsColumns({
           cell: ({ row: { original: part } }) => (
             <>
               {translateLabel(part.appliance)}
-              <p className="text-caption text-muted-foreground">{part.compatibility}</p>
+              <p className="text-caption text-muted-foreground">
+                {translateLabel(part.compatibility)}
+              </p>
             </>
           ),
         }),
-        inventoryColumn.accessor((part) => part.location, {
+        inventoryColumn.accessor((part) => translateLabel(part.location), {
           id: 'محل',
           header: t('tables.location'),
         }),
@@ -152,7 +154,8 @@ export function usePartsColumns({
     () =>
       purchaseColumn.columns([
         purchaseColumn.accessor(
-          (purchase) => data.parts.find((p) => p.id === purchase.partId)?.name,
+          (purchase) =>
+            translateLabel(data.parts.find((p) => p.id === purchase.partId)?.name ?? ''),
           { id: 'قطعه', header: t('tables.part') },
         ),
         purchaseColumn.accessor(
@@ -253,10 +256,13 @@ export function usePartsColumns({
   const needColumns = useMemo(
     () =>
       needColumn.columns([
-        needColumn.accessor((need) => data.parts.find((p) => p.id === need.partId)?.name, {
-          id: 'قطعه',
-          header: t('tables.part'),
-        }),
+        needColumn.accessor(
+          (need) => translateLabel(data.parts.find((p) => p.id === need.partId)?.name ?? ''),
+          {
+            id: 'قطعه',
+            header: t('tables.part'),
+          },
+        ),
         needColumn.accessor((need) => getPartJobLabel(need.jobId, jobs, customers), {
           id: 'سفارش مشتری',
           header: 'سفارش مشتری',
@@ -277,7 +283,8 @@ export function usePartsColumns({
           cell: ({ cell }) => <Badge variant="secondary">{cell.getValue()}</Badge>,
         }),
         needColumn.accessor(
-          (need) => technicians.find((t) => t.id === need.technicianId)?.name ?? '—',
+          (need) =>
+            translateLabel(technicians.find((t) => t.id === need.technicianId)?.name ?? '—'),
           { id: 'تحویل‌گیرنده', header: t('tables.recipient') },
         ),
         needColumn.display({

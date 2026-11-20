@@ -32,7 +32,8 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
       {
         id: 'درخواست / دستگاه',
         header: t('table.requestAppliance'),
-        accessorFn: (job) => `${job.appliance} ${job.brand} ${job.id}`,
+        accessorFn: (job) =>
+          `${translateLabel(job.appliance)} ${translateLabel(job.brand)} ${job.id}`,
         cell: ({ row: { original: job } }) => (
           <div className="flex gap-2.5 items-center min-w-33.75">
             <span className="w-8.5 h-9 border border-border rounded-md bg-muted grid place-items-center text-muted-foreground shrink-0 dark:bg-muted dark:border-border dark:text-muted-foreground">
@@ -40,7 +41,7 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
             </span>
             <div>
               <strong>
-                {translateLabel(job.appliance)} {job.brand}
+                {translateLabel(job.appliance)} {translateLabel(job.brand)}
               </strong>
               <small className="direction-ltr text-start font-latin tracking-normal">
                 {job.id}
@@ -58,12 +59,19 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
       {
         id: 'مشتری',
         header: 'مشتری',
-        accessorFn: (job) => customers.find((item) => item.id === job.customerId)?.name,
+        accessorFn: (job) =>
+          translateLabel(customers.find((item) => item.id === job.customerId)?.name ?? ''),
         cell: ({ row: { original: job } }) => (
           <>
-            <strong>{customers.find((item) => item.id === job.customerId)?.name}</strong>
+            <strong>
+              {translateLabel(customers.find((item) => item.id === job.customerId)?.name ?? '')}
+            </strong>
             <small>
-              {customers.find((item) => item.id === job.customerId)?.address.split('،')[1]}
+              {
+                translateLabel(
+                  customers.find((item) => item.id === job.customerId)?.address ?? '',
+                ).split(',')[1]
+              }
             </small>
           </>
         ),
@@ -71,9 +79,10 @@ export function JobTable({ jobs, onSelect }: { jobs: Job[]; onSelect: (job: Job)
       {
         id: 'تعمیرکار',
         header: 'تعمیرکار',
-        accessorFn: (job) => technicians.find((item) => item.id === job.technicianId)?.name,
+        accessorFn: (job) =>
+          translateLabel(technicians.find((item) => item.id === job.technicianId)?.name ?? ''),
         cell: ({ row: { original: job } }) =>
-          technicians.find((item) => item.id === job.technicianId)?.name ?? (
+          translateLabel(technicians.find((item) => item.id === job.technicianId)?.name ?? '') || (
             <span className="text-muted-foreground">{t('table.notAssigned')}</span>
           ),
       },
