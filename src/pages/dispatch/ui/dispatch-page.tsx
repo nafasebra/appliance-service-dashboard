@@ -53,7 +53,7 @@ export function DispatchPage() {
           {t('common.newRequest')}
         </Button>
       </div>
-      <div className="grid grid-cols-3 gap-4.5 items-start max-desktop:grid-cols-2 max-mobile:grid-cols-1">
+      <div className="grid grid-cols-2 gap-4.5 items-start max-mobile:grid-cols-1">
         {[
           {
             id: '',
