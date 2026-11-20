@@ -44,6 +44,7 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
   const resetDemo = useDemo((state) => state.resetDemo);
   const { closeSidebar, closeSidebarOnMobile, isIconOnly, isMobile } = useDashboardSidebar();
   const newJobCount = jobs.filter((job) => job.status === JobStatus.New).length;
+  const companyLabel = i18n.dir() === 'ltr' ? settings.brandName : settings.companyName;
 
   return (
     <Sidebar
@@ -57,22 +58,21 @@ export function DashboardSidebar({ onOpenHelp }: { onOpenHelp: () => void }) {
         <Link
           to="/"
           onClick={closeSidebarOnMobile}
-          aria-label={settings.companyName}
-          title={isIconOnly ? settings.companyName : undefined}
+          aria-label={companyLabel}
+          title={isIconOnly ? companyLabel : undefined}
           className="flex min-w-0 items-center gap-3"
         >
           <span className="grid size-10 shrink-0 -rotate-7 place-items-center rounded-lg bg-primary text-primary-foreground">
             <Wrench size={24} aria-hidden="true" />
           </span>
           {!isIconOnly && (
-            <strong
-              className="min-w-0 truncate text-section tracking-tight"
-              title={settings.companyName}
-            >
-              {settings.companyName}
-              <span className="mt-1 block text-body font-normal text-muted-foreground">
-                {settings.brandName}
-              </span>
+            <strong className="min-w-0 truncate text-section tracking-tight" title={companyLabel}>
+              {companyLabel}
+              {i18n.dir() === 'rtl' ? (
+                <span className="mt-1 block text-body font-normal text-muted-foreground">
+                  {settings.brandName}
+                </span>
+              ) : null}
             </strong>
           )}
         </Link>
