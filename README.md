@@ -151,16 +151,30 @@ to rewrite application routes to `index.html` so direct links and refreshes work
 The application does not provide authentication, authorization, audit history,
 transaction reversals, synchronization between users, or bank integration.
 Browser validation cannot replace backend enforcement when real data is introduced.
-The build currently reports a bundle-size warning; route-level code splitting
-remains future work.
+The build currently reports a bundle-size warning. Route components and the finance
+chart are split into on-demand chunks.
 
 ## Project guidance
 
 - [AGENTS.md](AGENTS.md): coding conventions, architecture, and business scenario.
-- [Project context](docs/project-context.md): requirements and demo behavior in Persian.
-- [Codebase review](docs/codebase-review.md): source-review findings and limitations.
 - [Project skills](.skills/README.md): local React, Tailwind, shadcn, architecture,
   Zustand, and TanStack Table guidance.
+
+## Documentation
+
+- [Project context](docs/project-context.md): requirements and demo behavior.
+- [Architecture](docs/architecture.md): Feature-Sliced Design layers, slice APIs,
+  dependency rules, and codebase review notes.
+- [Order workflow](docs/order-workflow.md): queues, order transitions, customer
+  collection, and technician settlement.
+- [Localization](docs/localization.md): feature-owned translation catalogs,
+  typed hooks, registration, and validation.
+- [Design system](docs/design-system.md): typography, spacing, themes, tables,
+  and responsive layout conventions.
+- [Comparable products](docs/comparable-products.md): workflow references and
+  product research for service dashboards.
+- [Deployment](docs/deployment.md): Docker and static hosting instructions,
+  SPA route fallback, and browser-local data limitations.
 
 Source files use UTF-8, LF line endings, two-space indentation, and a final newline.
 Prettier is the formatting authority. Preserve both languages, RTL/LTR behavior,
