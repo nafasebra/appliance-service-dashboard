@@ -12,6 +12,7 @@
     "switchToLightTheme": "Switch to light theme"
   },
   "appTitle": "Appliance Repair Service Dashboard",
+  "appDescription": "Manage appliance repair requests, technician visits, parts, customer payments, and company finances.",
   "dialog": {
     "titleDialog": "{{title}} dialog"
   },

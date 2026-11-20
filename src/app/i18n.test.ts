@@ -77,7 +77,18 @@ test('live language changes update direction and persistence while preserving re
       Object.getOwnPropertyDescriptor(globalThis, key),
     ]),
   );
-  const documentStub = { documentElement: { lang: '', dir: '' }, title: '' };
+  const description = {
+    content: '',
+    setAttribute: (name: string, value: string) => {
+      if (name === 'content') description.content = value;
+    },
+  };
+  const documentStub = {
+    documentElement: { lang: '', dir: '' },
+    title: '',
+    querySelector: (selector: string) =>
+      selector === 'meta[name="description"]' ? description : null,
+  };
   const saved = new Map<string, string>();
   let blocked = false;
   Object.defineProperty(globalThis, 'window', { configurable: true, value: {} });
@@ -98,6 +109,7 @@ test('live language changes update direction and persistence while preserving re
     assert.equal(documentStub.documentElement.lang, 'en');
     assert.equal(documentStub.documentElement.dir, 'ltr');
     assert.equal(documentStub.title, en.appTitle);
+    assert.equal(description.content, en.appDescription);
     assert.equal(saved.get(languageStorageKey), 'en');
     assert.deepEqual([...saved.keys()], [languageStorageKey]);
     assert.equal(money(1234), '1,234 toman');
@@ -112,6 +124,8 @@ test('live language changes update direction and persistence while preserving re
     await i18n.changeLanguage('fa');
     assert.equal(documentStub.documentElement.lang, 'fa');
     assert.equal(documentStub.documentElement.dir, 'rtl');
+    assert.equal(documentStub.title, fa.appTitle);
+    assert.equal(description.content, fa.appDescription);
     assert.equal(translateLabel('یخچال'), 'یخچال');
     assert.equal(translateLabel('__proto__'), '__proto__');
   } finally {

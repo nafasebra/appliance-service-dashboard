@@ -46,7 +46,7 @@ export default defineConfig({
     primaryLanguage: 'fa',
     defaultNS: 'common',
     functions: ['t', '*.t', 'tShared'],
-    preservePatterns: ['appTitle'],
+    preservePatterns: ['appTitle', 'appDescription'],
     acceptedTags: 'all',
     instrumentScorer: (content) => (/[\u0600-\u06ff]/.test(content) ? 1 : null),
     acceptedAttributes: [

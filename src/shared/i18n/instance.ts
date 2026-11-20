@@ -44,6 +44,9 @@ function applyLanguage(language: string) {
     document.documentElement.lang = supported;
     document.documentElement.dir = supported === 'fa' ? 'rtl' : 'ltr';
     document.title = i18n.t('appTitle');
+    document
+      .querySelector<HTMLMetaElement>('meta[name="description"]')
+      ?.setAttribute('content', i18n.t('appDescription'));
   }
   if (typeof window === 'undefined') return;
   try {
