@@ -86,6 +86,9 @@ Run `npm run architecture:check` to check all source imports and entry points.
 See [architecture and review](docs/architecture.md) for ownership, migration
 findings, the narrow inventory type reference, and extension rules.
 
+See the [deployment guide](docs/deployment.md) for Docker and static hosting
+instructions, SPA route fallback, and browser-local data limitations.
+
 ## Technical decisions
 
 | Decision                                               | Rationale and consequence                                                                                                                                                                                 |
