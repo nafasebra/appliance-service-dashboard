@@ -1,13 +1,7 @@
 import { useSharedTranslation } from '@/shared/hooks';
 import { useTranslation } from 'react-i18next';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/ui/select';
+import { Languages } from 'lucide-react';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger } from '@/shared/ui/select';
 
 export function LanguageSwitcher() {
   const tShared = useSharedTranslation();
@@ -21,8 +15,13 @@ export function LanguageSwitcher() {
         void i18n.changeLanguage(language);
       }}
     >
-      <SelectTrigger size="sm" aria-label={tShared('language')}>
-        <SelectValue />
+      <SelectTrigger
+        size="sm"
+        aria-label={tShared('language')}
+        title={tShared('language')}
+        className="h-9 w-9 justify-center p-0 [&>svg:last-child]:hidden"
+      >
+        <Languages aria-hidden="true" className="size-4" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
