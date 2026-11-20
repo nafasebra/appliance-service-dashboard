@@ -1,34 +1,46 @@
 import { createRoute } from '@tanstack/react-router';
-import { CartablePage } from '@/pages/cartable';
 import { rootRoute } from './root-route.tsx';
+import { lazyRouteComponent } from '@tanstack/react-router';
 
 export const cartableRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/cartable',
-  component: () => <CartablePage queue="inbox" />,
+  component: lazyRouteComponent(() =>
+    import('@/pages/cartable').then((page) => () => <page.CartablePage queue="inbox" />),
+  ),
 });
 export const cartableAssignmentRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/cartable/assignment',
-  component: () => <CartablePage queue="assignment" />,
+  component: lazyRouteComponent(() =>
+    import('@/pages/cartable').then((page) => () => <page.CartablePage queue="assignment" />),
+  ),
 });
 export const cartableActiveRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/cartable/active',
-  component: () => <CartablePage queue="active" />,
+  component: lazyRouteComponent(() =>
+    import('@/pages/cartable').then((page) => () => <page.CartablePage queue="active" />),
+  ),
 });
 export const cartableCollectionRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/cartable/collection',
-  component: () => <CartablePage queue="collection" />,
+  component: lazyRouteComponent(() =>
+    import('@/pages/cartable').then((page) => () => <page.CartablePage queue="collection" />),
+  ),
 });
 export const cartableSettlementRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/cartable/settlement',
-  component: () => <CartablePage queue="settlement" />,
+  component: lazyRouteComponent(() =>
+    import('@/pages/cartable').then((page) => () => <page.CartablePage queue="settlement" />),
+  ),
 });
 export const cartableArchiveRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/cartable/archive',
-  component: () => <CartablePage queue="archive" />,
+  component: lazyRouteComponent(() =>
+    import('@/pages/cartable').then((page) => () => <page.CartablePage queue="archive" />),
+  ),
 });
