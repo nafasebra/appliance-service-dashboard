@@ -1,6 +1,6 @@
 import { JobStatus, statusLabels, type Job, useDemo, summarizeFinance } from '@/entities/service';
-import { useOverviewTranslation } from '../hooks/use-overview-translation.tsx';
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { useOverviewTranslation } from '../hooks/use-overview-translation';
+import { translateLabel } from '../../../shared/i18n/index';
 import { cn, money } from '@/shared/lib';
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';

@@ -1,8 +1,8 @@
-import { JobStatus } from './types.ts';
+import { JobStatus } from './types';
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { initialData } from './demo-data.ts';
-import { isDemoData, validateJobUpdate } from './validation.ts';
+import { initialData } from './demo-data';
+import { isDemoData, validateJobUpdate } from './validation';
 
 test('accepts the complete demo seed', () => {
   assert.equal(isDemoData(structuredClone(initialData)), true);

@@ -1,7 +1,7 @@
 import type { Customer, Job } from '@/entities/service';
 import type { Part } from '@/entities/inventory';
 import i18next from 'i18next';
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { translateLabel } from '../../../shared/i18n/index';
 
 export function getPartJobLabel(id: string, jobs: Job[], customers: Customer[]): string {
   const job = jobs.find((item) => item.id === id);

@@ -4,7 +4,7 @@ import {
   registerTranslationLabels,
   type Language,
   type TranslationBundle,
-} from './resources.ts';
+} from './resources';
 
 // No singleton, browser APIs, or React plugin globals: safe for one instance per request.
 export async function createI18n(language: Language, bundles: readonly TranslationBundle[]) {

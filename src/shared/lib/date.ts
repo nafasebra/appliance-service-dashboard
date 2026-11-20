@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import { getLocale } from '../i18n/index.ts';
+import { getLocale } from '../i18n/index';
 
 export function parseIsoDate(value: string): Date | undefined {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);

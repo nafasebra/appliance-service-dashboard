@@ -1,6 +1,6 @@
 import type { Transaction } from '@/entities/service';
 import { downloadCsv } from '@/shared/lib';
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { translateLabel } from '../../../shared/i18n/index';
 import i18next from 'i18next';
 
 export function downloadTransactionsCsv(

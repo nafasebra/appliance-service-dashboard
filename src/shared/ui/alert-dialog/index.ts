@@ -8,4 +8,4 @@ export {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from './alert-dialog.tsx';
+} from './alert-dialog';

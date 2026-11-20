@@ -1,4 +1,4 @@
-import type { Appliance } from '../../service/@x/inventory.ts';
+import type { Appliance } from '../../service/@x/inventory';
 
 export interface Part {
   id: string;

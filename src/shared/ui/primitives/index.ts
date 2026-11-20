@@ -1,1 +1,1 @@
-export { PageHeading, Panel, StatCard, EmptyState, Modal } from './primitives.tsx';
+export { PageHeading, Panel, StatCard, EmptyState, Modal } from './primitives';

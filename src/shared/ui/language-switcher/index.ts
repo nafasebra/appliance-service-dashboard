@@ -1,1 +1,1 @@
-export { LanguageSwitcher } from './language-switcher.tsx';
+export { LanguageSwitcher } from './language-switcher';

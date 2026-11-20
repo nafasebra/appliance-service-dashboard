@@ -5,4 +5,4 @@ export {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from './select.tsx';
+} from './select';

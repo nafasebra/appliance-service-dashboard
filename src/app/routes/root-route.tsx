@@ -1,6 +1,6 @@
-import { useDashboardTranslation } from '../hooks/use-dashboard-translation.tsx';
+import { useDashboardTranslation } from '../hooks/use-dashboard-translation';
 import { createRootRoute, Link } from '@tanstack/react-router';
-import { DashboardLayout } from '../dashboard-layout.tsx';
+import { DashboardLayout } from '../dashboard-layout';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
 

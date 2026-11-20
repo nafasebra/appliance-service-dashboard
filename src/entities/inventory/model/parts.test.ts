@@ -6,7 +6,7 @@ import {
   transitionNeed,
   receivePurchase,
   isPartsData,
-} from './parts.ts';
+} from './parts';
 
 import test from 'node:test';
 import assert from 'node:assert/strict';

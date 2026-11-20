@@ -11,11 +11,11 @@ import {
   useParts,
 } from '@/entities/inventory';
 import { JobStatus, appliances, useDemo } from '@/entities/service';
-import { usePartsTranslation } from '../hooks/use-parts-translation.tsx';
-import { translateLabel } from '../../../shared/i18n/index.ts';
-import { usePartsColumns } from '../hooks/use-parts-columns.tsx';
+import { usePartsTranslation } from '../hooks/use-parts-translation';
+import { translateLabel } from '../../../shared/i18n/index';
+import { usePartsColumns } from '../hooks/use-parts-columns';
 import { useCallback, useMemo, useState, type FormEvent } from 'react';
-import { getPartJobLabel, matchesPart } from '../lib/part-filters.ts';
+import { getPartJobLabel, matchesPart } from '../lib/part-filters';
 import { getFormText } from '@/shared/lib';
 import { Package, Plus } from 'lucide-react';
 

@@ -1,5 +1,5 @@
 ﻿import { createRoute } from '@tanstack/react-router';
-import { rootRoute } from './root-route.tsx';
+import { rootRoute } from './root-route';
 import { lazyRouteComponent } from '@tanstack/react-router';
 
 export const indexRoute = createRoute({

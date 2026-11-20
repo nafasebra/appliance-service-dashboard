@@ -6,22 +6,22 @@ import {
   cartableCollectionRoute,
   cartableSettlementRoute,
   cartableArchiveRoute,
-} from './routes/cartable-routes.tsx';
-import { indexRoute } from './routes/index-route.tsx';
+} from './routes/cartable-routes';
+import { indexRoute } from './routes/index-route';
 import {
   customerAccountsRoute,
   receivablesRoute,
   receiptsRoute,
   expensesRoute,
-} from './routes/accounting-routes.tsx';
-import { settingsRoute } from './routes/settings-route.tsx';
-import { rootRoute } from './routes/root-route.tsx';
+} from './routes/accounting-routes';
+import { settingsRoute } from './routes/settings-route';
+import { rootRoute } from './routes/root-route';
 import {
   partsRoute,
   partNeedsRoute,
   partPurchasesRoute,
   partAllocationsRoute,
-} from './routes/parts-routes.tsx';
+} from './routes/parts-routes';
 import {
   requestsRoute,
   dispatchRoute,
@@ -32,7 +32,7 @@ import {
   customersRoute,
   financeRoute,
   reportsRoute,
-} from './routes/service-routes.tsx';
+} from './routes/service-routes';
 
 const routeTree = rootRoute.addChildren([
   cartableRoute,

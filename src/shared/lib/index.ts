@@ -1,6 +1,6 @@
-export { escapeCsvCell, downloadCsv } from './csv.ts';
-export { parseIsoDate, toIsoDate, formatJalaliDate } from './date.ts';
-export { getFormText } from './form.ts';
-export { number, localizeDigits, money, dateLabel } from './format.ts';
-export { compareTableValues } from './table-sort.ts';
-export { cn } from './utils.ts';
+export { escapeCsvCell, downloadCsv } from './csv';
+export { parseIsoDate, toIsoDate, formatJalaliDate } from './date';
+export { getFormText } from './form';
+export { number, localizeDigits, money, dateLabel } from './format';
+export { compareTableValues } from './table-sort';
+export { cn } from './utils';

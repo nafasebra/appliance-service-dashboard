@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { cn } from './utils.ts';
+import { cn } from './utils';
 
 test('typography roles survive shadcn color overrides in either class order', () => {
   for (const role of ['caption', 'body', 'section', 'page-title', 'metric', 'editable']) {

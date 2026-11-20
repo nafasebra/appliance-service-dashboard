@@ -1,6 +1,6 @@
-import { type DemoData, type Job, JobStatus } from './types.ts';
-import { isDemoData, validateJobUpdate } from './validation.ts';
-import { validateAmounts } from './finance.ts';
+import { type DemoData, type Job, JobStatus } from './types';
+import { isDemoData, validateJobUpdate } from './validation';
+import { validateAmounts } from './finance';
 
 export type JobWorkflowAction =
   | { type: 'accept' }

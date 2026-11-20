@@ -5,7 +5,7 @@ import { type Job, type WorkflowFailure, useDemo } from '@/entities/service';
 
 import { JobEditor } from '@/features/requests';
 
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { translateLabel } from '../../../shared/i18n/index';
 import { localizeDigits } from '@/shared/lib';
 import { Button } from '@/shared/ui/button';
 import { Card, CardContent } from '@/shared/ui/card';
@@ -13,20 +13,20 @@ import { Input } from '@/shared/ui/input';
 import { Alert, AlertDescription } from '@/shared/ui/alert';
 import { DataTable } from '@/shared/ui/data-table';
 import { PageHeading, Panel } from '@/shared/ui/primitives';
-import { WorkflowDialog } from './workflow-dialog.tsx';
-import { WorkflowPaymentDialog } from './workflow-payment-dialog.tsx';
-import { useCartableColumns, type CartableDialogMode } from '../hooks/use-cartable-columns.tsx';
+import { WorkflowDialog } from './workflow-dialog';
+import { WorkflowPaymentDialog } from './workflow-payment-dialog';
+import { useCartableColumns, type CartableDialogMode } from '../hooks/use-cartable-columns';
 import {
   getWorkflowAccount,
   getWorkflowQueue,
   workflowQueues,
   type WorkflowQueue,
-} from '../model/workflow-queues.ts';
+} from '../model/workflow-queues';
 import {
   useCartableTranslation,
   useCartableQueueDescription,
   useWorkflowFailureMessage,
-} from '../hooks/use-cartable-translation.tsx';
+} from '../hooks/use-cartable-translation';
 
 const queuePaths = {
   inbox: '/cartable',

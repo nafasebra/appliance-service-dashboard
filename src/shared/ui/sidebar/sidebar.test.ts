@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { Sidebar, SidebarProvider, SidebarTrigger } from './sidebar.tsx';
-import { getSidebarMode, getSidebarViewport, sidebarMedia } from './sidebar-state.ts';
+import { Sidebar, SidebarProvider, SidebarTrigger } from './sidebar';
+import { getSidebarMode, getSidebarViewport, sidebarMedia } from './sidebar-state';
 
 test('tablet stays icon-only regardless of desktop and mobile preferences', () => {
   for (const open of [false, true]) {

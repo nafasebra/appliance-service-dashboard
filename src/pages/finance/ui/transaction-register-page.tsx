@@ -1,5 +1,5 @@
-import { useFinancePageTranslation } from '../hooks/use-finance-page-translation.tsx';
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { useFinancePageTranslation } from '../hooks/use-finance-page-translation';
+import { translateLabel } from '../../../shared/i18n/index';
 import { useMemo, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useDemo, paymentMethodLabels } from '@/entities/service';

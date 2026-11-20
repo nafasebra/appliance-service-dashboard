@@ -2,16 +2,16 @@ import instance from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import en from './locales/en/common.json' with { type: 'json' };
 import fa from './locales/fa/common.json' with { type: 'json' };
-import { legacyLabelKeys } from './legacy-labels.ts';
+import { legacyLabelKeys } from './legacy-labels';
 import {
   translationOptions,
   registerTranslationLabels,
   translateRegisteredLabel,
   type TranslationBundle,
   type Language,
-} from './resources.ts';
+} from './resources';
 
-export type { Language } from './resources.ts';
+export type { Language } from './resources';
 
 export const languageStorageKey = 'hamyar-service-language';
 

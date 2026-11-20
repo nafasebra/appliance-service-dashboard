@@ -7,7 +7,7 @@ import {
 } from '@/entities/service';
 import { useRef, useState, type FormEvent } from 'react';
 
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { translateLabel } from '../../../shared/i18n/index';
 import { money, toIsoDate } from '@/shared/lib';
 
 import { Button } from '@/shared/ui/button';
@@ -24,8 +24,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/ui/select';
-import { getWorkflowAccount } from '../model/workflow-queues.ts';
-import { useCartableTranslation } from '../hooks/use-cartable-translation.tsx';
+import { getWorkflowAccount } from '../model/workflow-queues';
+import { useCartableTranslation } from '../hooks/use-cartable-translation';
 
 export function WorkflowPaymentDialog({
   job,

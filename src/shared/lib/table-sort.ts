@@ -1,4 +1,4 @@
-import { getLocale } from '../i18n/index.ts';
+import { getLocale } from '../i18n/index';
 const collators = new Map<string, Intl.Collator>();
 
 export function compareTableValues(left: unknown, right: unknown): number {

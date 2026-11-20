@@ -1,12 +1,12 @@
 import { useSharedTranslation } from '@/shared/hooks';
-import { useDashboardTranslation } from '../hooks/use-dashboard-translation.tsx';
+import { useDashboardTranslation } from '../hooks/use-dashboard-translation';
 import { JobStatus, useDemo } from '@/entities/service';
 import { translateLabel } from '@/shared/i18n';
 import { Link } from '@tanstack/react-router';
 import { ArrowUpLeft, LifeBuoy, RotateCcw, Wrench, X } from 'lucide-react';
-import { navigationGroups } from '../lib/navigation.ts';
+import { navigationGroups } from '../lib/navigation';
 import { useCompanySettings } from '@/entities/company';
-import { useDashboardSidebar } from '../hooks/use-dashboard-sidebar.tsx';
+import { useDashboardSidebar } from '../hooks/use-dashboard-sidebar';
 import { cn } from '@/shared/lib';
 import {
   AlertDialog,

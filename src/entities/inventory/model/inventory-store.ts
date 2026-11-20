@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
-import { initialPartsData, isPartsData, type PartsData } from './parts.ts';
+import { initialPartsData, isPartsData, type PartsData } from './parts';
 
 const storageKey = 'hamyar-parts-v1';
 export interface PartsState {

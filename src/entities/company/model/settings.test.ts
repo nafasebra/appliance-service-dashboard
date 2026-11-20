@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { defaultCompanySettings, isCompanySettings } from './settings.ts';
+import { defaultCompanySettings, isCompanySettings } from './settings';
 
 test('accepts defaults and custom company settings', () => {
   assert.equal(isCompanySettings(defaultCompanySettings), true);

@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import { getLocale } from '../i18n/index.ts';
+import { getLocale } from '../i18n/index';
 export const number = (value: number) => new Intl.NumberFormat(getLocale()).format(value);
 export const localizeDigits = (value: string) => {
   const formatter = new Intl.NumberFormat(getLocale(), { useGrouping: false });

@@ -90,6 +90,10 @@ External consumers import `@/pages/customers`, `@/features/requests`, or
 in `index.ts`; no wildcard exports. Inside a slice, import implementation files
 directly rather than importing its own barrel.
 
+TypeScript source filenames keep `.ts` and `.tsx` extensions, while import
+specifiers omit those suffixes. TypeScript Bundler resolution and Vite resolve
+extensionless imports; this keeps call sites concise without changing file names.
+
 Shared exports public segment APIs (`@/shared/lib`, `@/shared/hooks`,
 `@/shared/store`, `@/shared/i18n`). UI uses component-sized APIs, for example
 `@/shared/ui/button` and `@/shared/ui/data-table`. This avoids a library-wide UI

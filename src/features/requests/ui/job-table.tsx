@@ -1,6 +1,6 @@
 import { useSharedTranslation } from '@/shared/hooks';
-import { useRequestsTranslation } from '../hooks/use-requests-translation.tsx';
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { useRequestsTranslation } from '../hooks/use-requests-translation';
+import { translateLabel } from '../../../shared/i18n/index';
 import { JobStatusBadge, useDemo, statusLabels, type Job } from '@/entities/service';
 import { useMemo } from 'react';
 import { ArrowUpLeft, WashingMachine, Refrigerator, Wind, CookingPot } from 'lucide-react';

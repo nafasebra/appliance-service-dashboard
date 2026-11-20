@@ -1,4 +1,4 @@
-import { JobStatus, type Job, type Transaction } from './types.ts';
+import { JobStatus, type Job, type Transaction } from './types';
 
 export function summarizeFinance(jobs: Job[], transactions: Transaction[]) {
   const completed = jobs.filter((job) => job.status === JobStatus.Completed);

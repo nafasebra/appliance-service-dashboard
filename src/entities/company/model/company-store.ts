@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
-import { defaultCompanySettings, isCompanySettings, type CompanySettings } from './settings.ts';
+import { defaultCompanySettings, isCompanySettings, type CompanySettings } from './settings';
 
 const storageKey = 'hamyar-company-settings-v1';
 export interface CompanySettingsState {

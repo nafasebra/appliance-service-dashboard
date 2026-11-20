@@ -1,3 +1,3 @@
-export { financeTranslations } from './i18n/resources.ts';
-export { CashChart } from './ui/cash-chart-lazy.tsx';
-export { TransactionDialog } from './ui/transaction-dialog.tsx';
+export { financeTranslations } from './i18n/resources';
+export { CashChart } from './ui/cash-chart-lazy';
+export { TransactionDialog } from './ui/transaction-dialog';

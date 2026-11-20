@@ -1,1 +1,1 @@
-export { DataTablePagination } from './data-table-pagination.tsx';
+export { DataTablePagination } from './data-table-pagination';

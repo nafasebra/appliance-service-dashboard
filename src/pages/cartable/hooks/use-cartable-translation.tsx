@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
 import type { WorkflowFailure } from '@/entities/service';
-import { translateLabel } from '../../../shared/i18n/index.ts';
-import type { WorkflowQueue } from '../model/workflow-queues.ts';
+import { translateLabel } from '../../../shared/i18n/index';
+import type { WorkflowQueue } from '../model/workflow-queues';
 
 export function useCartableTranslation(): TFunction<'cartable'> {
   return useTranslation('cartable').t;

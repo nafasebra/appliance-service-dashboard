@@ -1,7 +1,7 @@
 import en from './en.json' with { type: 'json' };
 import fa from './fa.json' with { type: 'json' };
-import { dashboardLabelKeys } from './legacy-labels.ts';
-import type { LocaleShape, TranslationBundle } from '../../../shared/i18n/index.ts';
+import { dashboardLabelKeys } from './legacy-labels';
+import type { LocaleShape, TranslationBundle } from '../../../shared/i18n/index';
 
 export const dashboardTranslations = {
   namespace: 'dashboard',
@@ -9,7 +9,7 @@ export const dashboardTranslations = {
   labels: dashboardLabelKeys,
 } as const satisfies TranslationBundle;
 
-declare module '../../../shared/i18n/index.ts' {
+declare module '../../../shared/i18n/index' {
   interface FeatureResources {
     dashboard: typeof en;
   }

@@ -6,7 +6,7 @@ import {
   useDemo,
 } from '@/entities/service';
 
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { translateLabel } from '../../../shared/i18n/index';
 import { localizeDigits, money } from '@/shared/lib';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
@@ -25,7 +25,7 @@ import {
 import {
   useCartableTranslation,
   useWorkflowFailureMessage,
-} from '../hooks/use-cartable-translation.tsx';
+} from '../hooks/use-cartable-translation';
 
 export type WorkflowDialogMode = 'assign' | 'start' | 'complete' | 'cancel' | 'details';
 

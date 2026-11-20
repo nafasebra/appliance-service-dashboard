@@ -5,8 +5,8 @@ import {
   getOrderAccount,
   paymentStatusLabels,
 } from '@/entities/service';
-import { useFinancePageTranslation } from '../hooks/use-finance-page-translation.tsx';
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { useFinancePageTranslation } from '../hooks/use-finance-page-translation';
+import { translateLabel } from '../../../shared/i18n/index';
 import { useMemo } from 'react';
 
 import { Modal, EmptyState } from '@/shared/ui/primitives';

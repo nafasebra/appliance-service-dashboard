@@ -1,1 +1,1 @@
-export type { Appliance } from '../model/types.ts';
+export type { Appliance } from '../model/types';

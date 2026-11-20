@@ -1,1 +1,1 @@
-export { Alert, AlertAction, AlertDescription, AlertTitle } from './alert.tsx';
+export { Alert, AlertAction, AlertDescription, AlertTitle } from './alert';

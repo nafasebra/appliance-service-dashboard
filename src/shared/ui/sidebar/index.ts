@@ -14,4 +14,4 @@ export {
   SidebarProvider,
   SidebarTrigger,
   useSidebar,
-} from './sidebar.tsx';
+} from './sidebar';

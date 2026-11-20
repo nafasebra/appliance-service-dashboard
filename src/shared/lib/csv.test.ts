@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { escapeCsvCell } from './csv.ts';
+import { escapeCsvCell } from './csv';
 
 test('escapes CSV quotes and neutralizes spreadsheet formulas', () => {
   assert.equal(escapeCsvCell('a"b'), '"a""b"');

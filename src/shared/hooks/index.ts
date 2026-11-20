@@ -1,1 +1,1 @@
-export { useSharedTranslation } from './use-shared-translation.tsx';
+export { useSharedTranslation } from './use-shared-translation';

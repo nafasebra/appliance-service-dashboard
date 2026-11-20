@@ -1,4 +1,4 @@
-import { useDashboardTranslation } from '../hooks/use-dashboard-translation.tsx';
+import { useDashboardTranslation } from '../hooks/use-dashboard-translation';
 import { JobStatus, useDemo } from '@/entities/service';
 import { Link } from '@tanstack/react-router';
 import { Bell } from 'lucide-react';
@@ -7,7 +7,7 @@ import { Button } from '@/shared/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
 
 import { dateLabel } from '@/shared/lib';
-import { translateLabel } from '../../shared/i18n/index.ts';
+import { translateLabel } from '../../shared/i18n/index';
 
 export function NotificationButton() {
   const t = useDashboardTranslation();

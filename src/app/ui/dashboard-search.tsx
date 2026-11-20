@@ -5,8 +5,8 @@ import { translateLabel } from '@/shared/i18n';
 import { Button } from '@/shared/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/shared/ui/dialog';
 import { Input } from '@/shared/ui/input';
-import { navigation } from '../config/navigation.ts';
-import { useDashboardTranslation } from '../hooks/use-dashboard-translation.tsx';
+import { navigation } from '../config/navigation';
+import { useDashboardTranslation } from '../hooks/use-dashboard-translation';
 
 function normalizeSearch(value: string) {
   return value

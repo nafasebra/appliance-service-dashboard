@@ -1,1 +1,1 @@
-export { Calendar, CalendarDayButton } from './calendar.tsx';
+export { Calendar, CalendarDayButton } from './calendar';

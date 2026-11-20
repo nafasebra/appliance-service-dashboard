@@ -1,4 +1,4 @@
-import { JobStatus, type DemoData } from './types.ts';
+import { JobStatus, type DemoData } from './types';
 
 export const initialData: DemoData = {
   customers: [

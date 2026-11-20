@@ -1,7 +1,7 @@
 import { useSharedTranslation } from '@/shared/hooks';
 import { JobStatus, appliances, useDemo, summarizeFinance } from '@/entities/service';
-import { useReportsTranslation } from '../hooks/use-reports-translation.tsx';
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { useReportsTranslation } from '../hooks/use-reports-translation';
+import { translateLabel } from '../../../shared/i18n/index';
 import { useMemo } from 'react';
 
 import { CashChart } from '@/features/finance';

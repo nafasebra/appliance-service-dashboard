@@ -1,8 +1,8 @@
 import { useSharedTranslation } from '@/shared/hooks';
 import { JobStatus, type Job, useDemo } from '@/entities/service';
-import { useTechniciansTranslation } from '../hooks/use-technicians-translation.tsx';
+import { useTechniciansTranslation } from '../hooks/use-technicians-translation';
 import { useState } from 'react';
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { translateLabel } from '../../../shared/i18n/index';
 
 import { JobTable, JobEditor } from '@/features/requests';
 import { PageHeading, Panel } from '@/shared/ui/primitives';

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { getCashChartData } from './cash-chart.ts';
+import { getCashChartData } from './cash-chart';
 
 test('groups receipts and outgoing payments by date and handles empty data', () => {
   const base = { jobId: 'job', date: '2026-11-16', description: 'test' };

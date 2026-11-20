@@ -1,6 +1,6 @@
 import { useSharedTranslation } from '@/shared/hooks';
-import { translateLabel } from '../../../shared/i18n/index.ts';
-import { statusLabels, JobStatus } from '../model/types.ts';
+import { translateLabel } from '../../../shared/i18n/index';
+import { statusLabels, JobStatus } from '../model/types';
 import { Badge } from '@/shared/ui/badge';
 import { cn } from '@/shared/lib';
 

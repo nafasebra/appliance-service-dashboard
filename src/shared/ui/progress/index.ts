@@ -1,1 +1,1 @@
-export { Progress } from './progress.tsx';
+export { Progress } from './progress';

@@ -6,8 +6,8 @@ import {
   paymentMethodLabels,
   getOrderAccount,
 } from '@/entities/service';
-import { useFinanceTranslation } from '../hooks/use-finance-translation.tsx';
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { useFinanceTranslation } from '../hooks/use-finance-translation';
+import { translateLabel } from '../../../shared/i18n/index';
 import { useRef, useState, type FormEvent } from 'react';
 
 import { Modal } from '@/shared/ui/primitives';

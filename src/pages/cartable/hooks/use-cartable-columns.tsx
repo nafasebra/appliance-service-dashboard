@@ -8,13 +8,13 @@ import {
 } from '@/entities/service';
 import { useMemo } from 'react';
 
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { translateLabel } from '../../../shared/i18n/index';
 import { dateLabel, localizeDigits, money } from '@/shared/lib';
 import { Button } from '@/shared/ui/button';
 import type { DataTableColumn } from '@/shared/ui/data-table';
-import { useCartableTranslation } from './use-cartable-translation.tsx';
-import type { WorkflowQueue } from '../model/workflow-queues.ts';
-import type { WorkflowDialogMode } from '../ui/workflow-dialog.tsx';
+import { useCartableTranslation } from './use-cartable-translation';
+import type { WorkflowQueue } from '../model/workflow-queues';
+import type { WorkflowDialogMode } from '../ui/workflow-dialog';
 
 export type CartableDialogMode = WorkflowDialogMode | 'receipt' | 'payout';
 export interface CartableRow {

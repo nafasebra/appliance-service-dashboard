@@ -1,9 +1,9 @@
 import { useSharedTranslation } from '@/shared/hooks';
-import { useTechniciansTranslation } from '../hooks/use-technicians-translation.tsx';
+import { useTechniciansTranslation } from '../hooks/use-technicians-translation';
 import { getOrderAccount, useDemo, summarizeFinance } from '@/entities/service';
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { translateLabel } from '../../../shared/i18n/index';
 import { useMemo, useState, type FormEvent } from 'react';
-import { getJobPayable } from '../lib/technician-finance.ts';
+import { getJobPayable } from '../lib/technician-finance';
 import { Wallet } from 'lucide-react';
 
 import { PageHeading, Panel, StatCard, Modal, EmptyState } from '@/shared/ui/primitives';

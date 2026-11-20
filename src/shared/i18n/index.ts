@@ -5,13 +5,9 @@ export {
   getLocale,
   languageStorageKey,
   resolveLanguage,
-} from './instance.ts';
+} from './instance';
 export interface FeatureResources {}
-export type { Language, LocaleShape, TranslationBundle } from './resources.ts';
-export {
-  buildResources,
-  registerTranslationLabels,
-  translateRegisteredLabel,
-} from './resources.ts';
-export { createI18n } from './create-i18n.ts';
-export { LocalizationProvider } from './provider.tsx';
+export type { Language, LocaleShape, TranslationBundle } from './resources';
+export { buildResources, registerTranslationLabels, translateRegisteredLabel } from './resources';
+export { createI18n } from './create-i18n';
+export { LocalizationProvider } from './provider';

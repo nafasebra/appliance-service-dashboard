@@ -1,3 +1,3 @@
-export { useCustomersTranslation } from './hooks/use-customers-translation.tsx';
-export { customersTranslations } from './i18n/resources.ts';
-export { CustomersPage } from './ui/customers-page.tsx';
+export { useCustomersTranslation } from './hooks/use-customers-translation';
+export { customersTranslations } from './i18n/resources';
+export { CustomersPage } from './ui/customers-page';

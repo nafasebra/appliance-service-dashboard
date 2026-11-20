@@ -1,5 +1,5 @@
 import type { TFunction } from 'i18next';
-import type { LocaleShape } from '../../../shared/i18n/index.ts';
+import type { LocaleShape } from '../../../shared/i18n/index';
 import type en from './en.json';
 
 // Compiled by typecheck; never imported into the application bundle.

@@ -11,7 +11,7 @@ import {
   registerTranslationLabels,
   translateRegisteredLabel,
   type TranslationBundle,
-} from '../shared/i18n/index.ts';
+} from '../shared/i18n/index';
 
 import { money, formatJalaliDate } from '@/shared/lib';
 
@@ -23,7 +23,7 @@ import { createI18n } from '@/shared/i18n/server';
 
 import { customersTranslations, useCustomersTranslation } from '@/pages/customers';
 
-import { translationBundles } from './i18n.ts';
+import { translationBundles } from './i18n';
 import { useRequestsPageTranslation } from '@/pages/requests';
 import { useDispatchTranslation } from '@/pages/dispatch';
 import { useTechniciansTranslation } from '@/pages/technicians';
@@ -32,7 +32,7 @@ import { usePartsTranslation } from '@/pages/parts';
 import { useOverviewTranslation } from '@/pages/overview';
 import { useReportsTranslation } from '@/pages/reports';
 import { useSettingsTranslation } from '@/pages/settings';
-import { useDashboardTranslation } from './hooks/use-dashboard-translation.tsx';
+import { useDashboardTranslation } from './hooks/use-dashboard-translation';
 import { useSharedTranslation } from '@/shared/hooks';
 import { useCartableTranslation } from '@/pages/cartable';
 

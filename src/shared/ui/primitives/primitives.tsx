@@ -1,5 +1,5 @@
 import { useSharedTranslation } from '@/shared/hooks';
-import { translateLabel } from '../../i18n/index.ts';
+import { translateLabel } from '../../i18n/index';
 import { cn } from '@/shared/lib';
 import type { ReactNode } from 'react';
 import { Inbox } from 'lucide-react';

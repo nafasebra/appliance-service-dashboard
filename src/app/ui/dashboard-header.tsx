@@ -1,8 +1,8 @@
-import { useDashboardTranslation } from '../hooks/use-dashboard-translation.tsx';
-import { translateLabel } from '../../shared/i18n/index.ts';
+import { useDashboardTranslation } from '../hooks/use-dashboard-translation';
+import { translateLabel } from '../../shared/i18n/index';
 import { Link, useRouterState } from '@tanstack/react-router';
-import { navigation } from '../config/navigation.ts';
-import { NotificationButton } from './notification-button.tsx';
+import { navigation } from '../config/navigation';
+import { NotificationButton } from './notification-button';
 import { DashboardSearch } from './dashboard-search';
 import { LanguageSwitcher } from '@/shared/ui/language-switcher';
 import { ThemeToggleButton } from '@/shared/ui/theme-toggle-button';

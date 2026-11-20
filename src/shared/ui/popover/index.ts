@@ -1,1 +1,1 @@
-export { Popover, PopoverContent, PopoverTrigger } from './popover.tsx';
+export { Popover, PopoverContent, PopoverTrigger } from './popover';

@@ -1,6 +1,6 @@
-import { useFinanceTranslation } from '../hooks/use-finance-translation.tsx';
+import { useFinanceTranslation } from '../hooks/use-finance-translation';
 import { useDemo } from '@/entities/service';
-import { getCashChartData } from '../lib/cash-chart.ts';
+import { getCashChartData } from '../lib/cash-chart';
 import { dateLabel, number } from '@/shared/lib';
 import { getLocale } from '@/shared/i18n';
 

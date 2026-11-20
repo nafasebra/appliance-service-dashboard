@@ -1,12 +1,12 @@
 import { StrictMode } from 'react';
-import './app/i18n.ts';
+import './app/i18n';
 import { createRoot } from 'react-dom/client';
 import '@fontsource/vazirmatn/400.css';
 import '@fontsource/vazirmatn/500.css';
 import '@fontsource/vazirmatn/600.css';
 import '@fontsource/vazirmatn/700.css';
 import '@fontsource-variable/open-sans';
-import App from './app/App.tsx';
+import App from './app/App';
 import { LocalizationProvider } from '@/shared/i18n';
 import './app/styles/index.css';
 

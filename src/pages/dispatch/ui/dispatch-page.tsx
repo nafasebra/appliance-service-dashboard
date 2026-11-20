@@ -1,6 +1,6 @@
 import { JobStatus, type Job, JobStatusBadge, useDemo } from '@/entities/service';
-import { useDispatchTranslation } from '../hooks/use-dispatch-translation.tsx';
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { useDispatchTranslation } from '../hooks/use-dispatch-translation';
+import { translateLabel } from '../../../shared/i18n/index';
 
 import { cn } from '@/shared/lib';
 import { useState } from 'react';

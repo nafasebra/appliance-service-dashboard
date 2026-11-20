@@ -1,4 +1,4 @@
-import { useFinancePageTranslation } from '../hooks/use-finance-page-translation.tsx';
+import { useFinancePageTranslation } from '../hooks/use-finance-page-translation';
 import { useMemo, useState } from 'react';
 import { Wallet } from 'lucide-react';
 import { useDemo, getCustomerAccount } from '@/entities/service';
@@ -16,8 +16,8 @@ import {
 } from '@/shared/ui/select';
 import { DataTable, type DataTableColumn } from '@/shared/ui/data-table';
 import { localizeDigits, money } from '@/shared/lib';
-import { translateLabel } from '../../../shared/i18n/index.ts';
-import { CustomerStatement } from './customer-statement.tsx';
+import { translateLabel } from '../../../shared/i18n/index';
+import { CustomerStatement } from './customer-statement';
 import { TransactionDialog } from '@/features/finance';
 
 export function CustomerAccountsPage() {

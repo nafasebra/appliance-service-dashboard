@@ -1,5 +1,5 @@
-import { useTechniciansTranslation } from '../hooks/use-technicians-translation.tsx';
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { useTechniciansTranslation } from '../hooks/use-technicians-translation';
+import { translateLabel } from '../../../shared/i18n/index';
 import { useMemo, useState, type FormEvent } from 'react';
 import { useDemo } from '@/entities/service';
 import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';

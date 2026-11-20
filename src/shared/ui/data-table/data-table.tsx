@@ -11,7 +11,7 @@ import { Button } from '@/shared/ui/button';
 import { DataTablePagination } from '@/shared/ui/data-table-pagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
 import i18next from 'i18next';
-import { translateLabel } from '../../i18n/index.ts';
+import { translateLabel } from '../../i18n/index';
 
 export type DataTableColumn<TData extends RowData> = ColumnDef<DataTableFeatures, TData>;
 

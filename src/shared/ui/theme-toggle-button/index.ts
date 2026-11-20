@@ -1,1 +1,1 @@
-export { ThemeToggleButton } from './theme-toggle-button.tsx';
+export { ThemeToggleButton } from './theme-toggle-button';

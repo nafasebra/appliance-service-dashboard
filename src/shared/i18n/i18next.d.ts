@@ -1,6 +1,6 @@
 import 'i18next';
 import type en from './locales/en/common.json';
-import type { FeatureResources } from './index.ts';
+import type { FeatureResources } from './index';
 
 declare module 'i18next' {
   interface CustomTypeOptions {

@@ -10,7 +10,7 @@ import {
   getSidebarViewport,
   sidebarMedia,
   type SidebarMode,
-} from './sidebar-state.ts';
+} from './sidebar-state';
 
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b';
 

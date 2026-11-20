@@ -6,7 +6,7 @@ import {
   type Job,
   type Technician,
   type Transaction,
-} from './types.ts';
+} from './types';
 
 const jobStatuses = new Set<string>(Object.values(JobStatus));
 const priorities = new Set(['normal', 'urgent']);

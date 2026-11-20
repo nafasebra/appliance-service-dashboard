@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react';
 
 const CashChartContent = lazy(() =>
-  import('./cash-chart.tsx').then((module) => ({ default: module.CashChart })),
+  import('./cash-chart').then((module) => ({ default: module.CashChart })),
 );
 
 export function CashChart() {

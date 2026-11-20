@@ -1,16 +1,16 @@
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
-import { appendTransaction } from './customer-account.ts';
-import { initialData } from './demo-data.ts';
+import { appendTransaction } from './customer-account';
+import { initialData } from './demo-data';
 import {
   type DemoData,
   type Job,
   type Transaction,
   type Technician,
   type JobStatus,
-} from './types.ts';
-import { isDemoData, validateJobUpdate } from './validation.ts';
-import { applyJobWorkflow, type JobWorkflowAction, type WorkflowFailure } from './job-workflow.ts';
+} from './types';
+import { isDemoData, validateJobUpdate } from './validation';
+import { applyJobWorkflow, type JobWorkflowAction, type WorkflowFailure } from './job-workflow';
 
 const storageKey = 'hamyar-service-demo-v1';
 export interface DemoState extends DemoData {

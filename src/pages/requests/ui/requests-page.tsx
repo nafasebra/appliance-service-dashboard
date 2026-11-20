@@ -1,6 +1,6 @@
 import { useSharedTranslation } from '@/shared/hooks';
-import { useRequestsPageTranslation } from '../hooks/use-requests-page-translation.tsx';
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { useRequestsPageTranslation } from '../hooks/use-requests-page-translation';
+import { translateLabel } from '../../../shared/i18n/index';
 import { useState } from 'react';
 import { Plus, Search, SlidersHorizontal } from 'lucide-react';
 import { useDemo, statusLabels, type Job } from '@/entities/service';

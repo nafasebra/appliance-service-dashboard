@@ -1,6 +1,6 @@
-import { JobStatus, type Job, type Transaction, type DemoData } from './types.ts';
+import { JobStatus, type Job, type Transaction, type DemoData } from './types';
 
-import { isDemoData } from './validation.ts';
+import { isDemoData } from './validation';
 
 export enum PaymentStatus {
   Unfinalized = 'unfinalized',

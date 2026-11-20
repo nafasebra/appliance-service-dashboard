@@ -10,6 +10,10 @@ Project override: for placement, imports, state ownership and architecture revie
 read [the project architecture](../../docs/architecture.md) and the
 [official FSD skill](../fsd/SKILL.md) first.
 
+Project import convention: omit `.ts` and `.tsx` suffixes from static and dynamic
+TypeScript import specifiers. Keep those suffixes on the source filenames; TypeScript
+Bundler resolution and Vite resolve extensionless imports.
+
 Use this skill for TypeScript frontend work. It is framework-aware but project-agnostic: apply it to React apps, Astro islands, Next.js pages, shared UI packages, design-system components, typed API clients, form-heavy screens, and browser-facing integration modules by mapping the same responsibilities to the local framework.
 
 ## First Move

@@ -11,12 +11,12 @@ import {
   type PartsData,
   NeedStatus,
 } from '@/entities/inventory';
-import { usePartsTranslation } from './use-parts-translation.tsx';
-import { translateLabel } from '../../../shared/i18n/index.ts';
+import { usePartsTranslation } from './use-parts-translation';
+import { translateLabel } from '../../../shared/i18n/index';
 import { useMemo } from 'react';
 import type { Customer, Job, Technician } from '@/entities/service';
 
-import { getPartJobLabel } from '../lib/part-filters.ts';
+import { getPartJobLabel } from '../lib/part-filters';
 import { createColumnHelper } from '@tanstack/react-table';
 import type { DataTableFeatures } from '@/shared/ui/data-table-features';
 import { Badge } from '@/shared/ui/badge';

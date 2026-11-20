@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { formatJalaliDate, parseIsoDate, toIsoDate } from './date.ts';
+import { formatJalaliDate, parseIsoDate, toIsoDate } from './date';
 
 test('round-trips an ISO calendar date without a timezone shift', () => {
   const date = parseIsoDate('2026-11-16');

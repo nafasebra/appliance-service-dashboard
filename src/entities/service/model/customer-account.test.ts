@@ -1,15 +1,15 @@
-import { JobStatus } from './types.ts';
+import { JobStatus } from './types';
 import {
   PaymentStatus,
   appendTransaction,
   getCustomerAccount,
   getOrderAccount,
-} from './customer-account.ts';
+} from './customer-account';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { initialData } from './demo-data.ts';
+import { initialData } from './demo-data';
 
-import { validateJobUpdate } from './validation.ts';
+import { validateJobUpdate } from './validation';
 
 test('customer account keeps receivables separate from advances on another job', () => {
   const data = structuredClone(initialData);
