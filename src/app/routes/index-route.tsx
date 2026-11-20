@@ -5,5 +5,5 @@ import { lazyRouteComponent } from '@tanstack/react-router';
 export const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  component: lazyRouteComponent(() => import('@/pages/overview').then((page) => page.OverviewPage)),
+  component: lazyRouteComponent(() => import('@/pages/overview'), 'OverviewPage'),
 });

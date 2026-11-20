@@ -5,5 +5,5 @@ import { lazyRouteComponent } from '@tanstack/react-router';
 export const settingsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/settings',
-  component: lazyRouteComponent(() => import('@/pages/settings').then((page) => page.SettingsPage)),
+  component: lazyRouteComponent(() => import('@/pages/settings'), 'SettingsPage'),
 });
