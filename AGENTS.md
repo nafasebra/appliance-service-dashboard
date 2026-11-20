@@ -66,9 +66,10 @@ Follow FSD v2.1, pages first: `app -> pages -> features -> entities -> shared`.
   and semantic tokens. Use `cn()` when classes need merging or conditions, rather
   than for every static class string; reserve `cva` for real component variants.
   Global CSS owns tokens, base rules and shared utilities.
-- Preserve Vazirmatn, both themes, RTL/LTR behavior, logical spacing, keyboard
-  access and accessible labels. Jalali calendars remain Jalali in both languages;
-  records store ISO calendar dates. Display language does not change currency.
+- Preserve Vazirmatn for Persian and Open Sans for English, both themes, RTL/LTR
+  behavior, logical spacing, keyboard access and accessible labels. Jalali
+  calendars remain Jalali in both languages; records store ISO calendar dates.
+  Display language does not change currency.
 - The dashboard has no footer. Keep the removed sidebar copy `فضای آزمایشی شما`
   absent and the guide control readable in dark mode.
 - Keep messages in the owning page/feature's `i18n/` and typed hooks in `hooks/`.

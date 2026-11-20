@@ -13,7 +13,7 @@
 
 @theme {
   --font-sans: 'Vazirmatn', Tahoma, Arial, sans-serif;
-  --font-latin: Arial, sans-serif;
+  --font-latin: 'Open Sans Variable', 'Open Sans', Arial, sans-serif;
   --background-image-chart-grid: repeating-linear-gradient(
     to top,
     transparent 0,
@@ -136,6 +136,10 @@
   --status-completed-foreground: #4f815a;
   --status-cancelled: #faeeee;
   --status-cancelled-foreground: #9c5c5c;
+}
+
+:root:lang(en) {
+  --font-sans: 'Open Sans Variable', 'Open Sans', 'Vazirmatn', Tahoma, Arial, sans-serif;
 }
 
 [data-theme='dark'] {

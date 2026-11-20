@@ -42,8 +42,9 @@ Keep numeric token tables there rather than copying them into this skill.
   Check line height before setting fixed heights. Preserve meaningful financial
   digits; do not hide them with truncation or shrink the app to make them fit.
 - Use existing spacing utilities and semantic foreground/background pairs.
-  Keep the same hierarchy in both themes, preserve Vazirmatn, and use logical
-  spacing for RTL/LTR. Direction does not change the calendar or currency.
+  Keep the same hierarchy in both themes, use Vazirmatn for Persian and Open Sans
+  for English, and use logical spacing for RTL/LTR. Direction does not change the
+  calendar or currency.
 - Reuse Table/DataTable defaults. Row spacing belongs on header/body cells;
   retain horizontal scrolling and the sort controls' typography. Change the
   shared primitive only when every table should receive the new density.

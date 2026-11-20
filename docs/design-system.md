@@ -1,8 +1,9 @@
 # Typography and table density
 
 This dashboard uses a compact product typography hierarchy inspired by Carbon's
-productive type set, adapted to the existing Vazirmatn font and shadcn components.
-It is an application-specific adaptation, not a full Carbon implementation.
+productive type set, using Vazirmatn for Persian and Open Sans for English with
+shadcn components. It is an application-specific adaptation, not a full Carbon
+implementation.
 
 For new UI and reviews, use the local
 [design-system skill](../.skills/design-system/SKILL.md). The source of truth for
@@ -46,7 +47,8 @@ Shared primitives own their control typography. Input/Textarea retain the 16px
 mobile input role, then switch to the 14px body role at the medium breakpoint.
 Avoid parent selectors that change descendants' font sizes. Use layout wrapping
 for longer labels, not smaller control text. Both themes and interface languages
-use identical type roles; retain Vazirmatn and meaningful financial digits.
+use identical type roles; retain Vazirmatn in Persian, Open Sans in English, and
+meaningful financial digits.
 
 Shared Table applies `px-4 py-3` to header cells and `px-4 py-4` to body cells.
 Cell padding creates row spacing in native tables; padding on `tr` does not.

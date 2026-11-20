@@ -2,7 +2,13 @@
 
 ## Typography and table spacing
 
-Font sizes and weights come from the standard Tailwind v4 variables in `app/styles/index.css`. Custom sizes from 8 to 11 pixels have been removed. Main text is 16 pixels, controls and tables use 14 pixels, and supporting text uses 12 pixels. Locally bundled font weights 400, 500, 600, and 700 are used. Table row spacing is applied to cells in the shared Table component. The meanings and roles of the type scale are documented in `docs/design-system.md`.
+Font sizes and weights come from the standard Tailwind v4 variables in
+`app/styles/index.css`. Custom sizes from 8 to 11 pixels have been removed. Main
+text is 16 pixels, controls and tables use 14 pixels, and supporting text uses 12
+pixels. Vazirmatn is used for Persian; Open Sans is used for English. Locally
+bundled font weights 400, 500, 600, and 700 are used. Table row spacing is applied
+to cells in the shared Table component. The meanings and roles of the type scale
+are documented in `docs/design-system.md`.
 
 ## Application shell
 
@@ -74,7 +80,8 @@ Parts data is stored separately from operational data under `hamyar-parts-v1` an
 - The company dispatches technicians to customers' homes and earns commission on completed services.
 - The financial area must show receipts, technician payouts, expenses, and cash flow.
 - The stack is React 19, TypeScript, Vite, Tailwind CSS v4, TanStack Router, and shadcn/ui.
-- The interface uses Vazirmatn and supports light and dark themes.
+- The interface uses Vazirmatn for Persian and Open Sans for English, and supports
+  light and dark themes.
 
 ## Current state
 
