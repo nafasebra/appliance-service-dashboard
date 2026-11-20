@@ -1,168 +1,113 @@
-# زمینه و محدوده پروژه
+# Project Context and Scope
 
-## تایپوگرافی و فاصله جدول‌ها
+## Typography and table spacing
 
-اندازه‌ها و وزن فونت از متغیرهای استاندارد Tailwind v4 در `app/styles/index.css`
-می‌آیند؛ اندازه‌های سفارشی ۸ تا ۱۱ پیکسل حذف شده‌اند. متن اصلی ۱۶، کنترل‌ها و
-جدول‌ها ۱۴ و متن کمکی ۱۲ پیکسل است. وزن‌های ۴۰۰، ۵۰۰، ۶۰۰ و ۷۰۰ از فونت محلی
-استفاده می‌کنند. فاصله ردیف‌ها روی سلول‌های کامپوننت مشترک Table اعمال می‌شود.
-جزئیات و نقش هر اندازه در `docs/design-system.md` نگهداری می‌شود.
+Font sizes and weights come from the standard Tailwind v4 variables in `app/styles/index.css`. Custom sizes from 8 to 11 pixels have been removed. Main text is 16 pixels, controls and tables use 14 pixels, and supporting text uses 12 pixels. Locally bundled font weights 400, 500, 600, and 700 are used. Table row spacing is applied to cells in the shared Table component. The meanings and roles of the type scale are documented in `docs/design-system.md`.
 
-## ساختار پوسته
+## Application shell
 
-کامپوننت‌ها، هوک سایدبار، تنظیمات منو و ترجمه‌های پوسته در `app/ui/` و `app/hooks/` و `app/config/i18n/`
-قرار دارند. کنترل زبان و پوسته در `shared/ui/` قابل استفاده مجدد هستند.
-پوشه app ورودی، مسیریابی، providerها، پوسته سراسری و ترکیب layout را نگه می‌دارد.
-فوتر داشبورد حذف شده است؛ متن و دکمه راهنمای سایدبار از توکن‌های رنگ معنایی
-استفاده می‌کنند تا در پوسته تاریک نیز خوانا باشند.
+Shell components, the sidebar hook, menu configuration, and shell translations live in `app/ui/`, `app/hooks/`, and `app/config/i18n/`. Language and theme controls in `shared/ui/` are reusable. The `app` layer owns the entry point, routing, providers, global shell, and layout composition.
 
-رفتار منوی کناری: دسکتاپ بین حالت کامل و آیکون تغییر می‌کند؛ تبلت همیشه حالت
-آیکون دارد؛ موبایل بین حالت پنهان و منوی کامل modal جابه‌جا می‌شود. دکمه هدر
-در دسکتاپ و موبایل فعال است. جزئیات در `docs/design-system.md` نگهداری می‌شود.
+The dashboard footer has been removed. The sidebar guide text and button use semantic color tokens so they remain readable in dark mode.
 
-## کارتابل سفارش‌ها
+Sidebar behavior: on desktop it toggles between full and icon-only modes; on tablet it is always icon-only; on mobile it toggles between hidden and a full modal drawer. The header toggle is active on desktop and mobile. See `docs/design-system.md` for details.
 
-وضعیت سفارش با `JobStatus`، وضعیت حساب سفارش با `PaymentStatus` و وضعیت نیاز قطعه
-و خرید با `NeedStatus` و `PurchaseStatus` تعریف می‌شوند. همه enumها رشته‌ای‌اند؛
-مقادیر ذخیره‌شده قبلی تغییر نمی‌کنند. هوک‌ها طبق قرارداد پروژه پسوند `.tsx` دارند؛
-آزمون‌ها برای اجرای TypeScript و این هوک‌ها از `tsx --tsconfig tsconfig.app.json --test` استفاده می‌کنند.
+## Order cartable
 
-شش صفحه ورودی (`/cartable`)، تخصیص، مراجعه و تعمیر، دریافت مشتری، تسویه تعمیرکار و
-بایگانی در گروه مستقل منو اضافه شده‌اند. وضعیت `accepted` بین درخواست جدید و اعزام
-قرار می‌گیرد؛ تخصیص شامل تعمیرکار و تاریخ و ساعت جلالی است. تکمیل تعمیر مبلغ خدمت و
-کمیسیون را نهایی می‌کند و تراکنش خودکار ندارد.
+Order status is defined by `JobStatus`, order account status by `PaymentStatus`, and part need and purchase statuses by `NeedStatus` and `PurchaseStatus`. All enums use string values, and previously stored values remain unchanged. Project hooks use the `.tsx` extension by convention. Tests use `tsx --tsconfig tsconfig.app.json --test` to run TypeScript and these hooks.
 
-طبق تصمیم کاربر، شرکت وجه مشتری را دریافت می‌کند و پس از کسر کمیسیون سهم تعمیرکار
-را می‌پردازد. ثبت پرداخت جدید تعمیرکار در تمام مسیرهای مالی به دریافت کامل همان
-سفارش وابسته است. دریافت و پرداخت جزئی ثبت می‌شوند؛ سفارش تا صفر شدن هر دو مانده
-در پیگیری مالی باقی می‌ماند. داده‌های قدیمی حفظ می‌شوند. جزئیات در `docs/order-workflow.md` است.
+Six pages have been added in a separate menu group: incoming requests (`/cartable`), assignment, visits and repairs, customer collection, technician settlement, and archive. The `accepted` status sits between a new request and dispatch. Assignment includes a technician and a Jalali date and time. Completing a repair finalizes the service amount and commission and does not create a transaction automatically.
 
-## جدول‌های مشترک
+By user decision, the company collects payment from the customer and then pays the technician's share after deducting the commission. New technician payouts in all financial workflows require full collection for that order. Partial receipts and payouts are recorded; an order remains in financial follow-up until both balances reach zero. Existing data is preserved. See `docs/order-workflow.md` for details.
 
-صفحه‌بندی مشترک سمت مرورگر با اندازه‌های ۱۰، ۲۰ و ۵۰ ردیف انجام می‌شود؛ اندازه پیش‌فرض ۱۰ است. کنترل‌های اولین، قبلی، بعدی و آخرین صفحه در جهت راست‌به‌چپ نمایش داده می‌شوند. مرتب‌سازی روی کل داده فیلترشده و پیش از برش صفحه اجرا می‌شود؛ تغییر داده یا مرتب‌سازی شماره صفحه را به ابتدا برمی‌گرداند. جدول خالی صفر صفحه دارد و کنترل جابه‌جایی آن غیرفعال است.
+## Shared tables
 
-مهارت‌های رسمی مطابق نسخه نصب‌شده ۹٫۳٫۱ در `.skills/tanstack-table/` موجودند. نوع عمومی ستون‌ها `DataTableColumn<T>` است؛ جزئیات featureهای TanStack در لایه مشترک باقی می‌مانند. ستون‌های قطعات در hook مستقل قرار دارند و callbackهای وابسته پایدارند.
-وضعیت سفارش در جدول و برنامه اعزام از `entities/service/ui/job-status-badge.tsx` نمایش داده می‌شود. اعتبارسنجی داده بازیابی‌شده نیز دریافت بیش از مبلغ سفارش، دریافت برای سفارش لغوشده یا بدون مبلغ، و نوع نادرست روش پرداخت یا وضعیت قطعه را رد می‌کند.
+Shared browser-side pagination supports 10, 20, and 50 rows, with 10 as the default. First, previous, next, and last page controls follow right-to-left direction. Sorting applies to the entire filtered dataset before pagination. Data or sorting changes return to the first page. An empty table has zero pages and disabled navigation controls.
 
-تمام جدول‌ها از `src/shared/ui/data-table.tsx` استفاده می‌کنند؛ این کامپوننت Table محلی shadcn را با TanStack Table نسخه ۹ ترکیب می‌کند. ستون‌های داده با کلیک یا صفحه‌کلید بین صعودی، نزولی و ترتیب اولیه تغییر می‌کنند؛ ستون عملیات مرتب‌سازی ندارد. متن‌ها با ترتیب فارسی، مبلغ و تعداد با عدد خام و تاریخ با مقدار ISO مرتب می‌شوند. تعریف ستون و داده‌های مشتق‌شده در feature مربوطه memo می‌شوند و وضعیت مرتب‌سازی محلی است.
+The official skills matching installed TanStack Table version 9.3.1 are in `.skills/tanstack-table/`. The shared column type is `DataTableColumn<T>`; TanStack feature details remain inside the shared layer. Parts columns live in a separate hook, and dependent callbacks are stable. Order status in tables and the dispatch schedule is shown by `entities/service/ui/job-status-badge.tsx`. Restored-data validation also rejects receipts above the order amount, receipts for cancelled or unpriced orders, and invalid payment method or part status types.
 
-## وضعیت مشترک برنامه
+All tables use `src/shared/ui/data-table.tsx`, which combines the locally owned shadcn Table with TanStack Table v9. Data columns cycle between ascending, descending, and original order through clicks or keyboard input; action columns are not sortable. Text sorts with Persian collation, amounts and counts as raw numbers, and dates by ISO value. Column definitions and derived data are memoized in their owning feature, and sorting state remains local.
 
-هوک‌های ترجمه هر page یا feature در پوشه `hooks/` همان feature و هوک عمومی ترجمه در
-`shared/hooks/` قرار دارند؛ فایل‌های JSON و ثبت منابع ترجمه در `i18n/` باقی می‌مانند.
+## Shared application state
 
-کاتالوگ مشترک ترجمه فقط کنترل‌های عمومی را در `shared/i18n/locales/{fa,en}/common.json`
-نگه می‌دارد و هوک آن `useSharedTranslation` است. متن پوسته با `useDashboardTranslation`
-در `app/config/i18n/` قرار دارد. نام دستگاه‌ها، وضعیت سفارش و خطاهای اختصاصی در feature
-مالک ثبت می‌شوند؛ نمایش مشترک از نگاشت bundleها استفاده می‌کند و به feature وابسته نمی‌شود.
+Translation hooks for each page or feature live in that slice's `hooks/` directory. The generic translation hook lives in `shared/hooks/`. Translation JSON files and resource registration remain in `i18n/`.
 
-راهنمای Zustand در `.skills/zustand/SKILL.md` نگهداری می‌شود. نوع state و action جداست و storeها از `subscribeWithSelector` استفاده می‌کنند. ورودی actionها از مرجع فرم‌ها جدا می‌شود؛ عملیات قطعات روی کپی اجرا می‌شود تا شکست اعتبارسنجی state فعلی را تغییر ندهد. ذخیره‌سازی صریح برای حفظ فرمت قدیمی و قرارداد متفاوت خطای تنظیمات و داده‌های عملیاتی حفظ شده است.
+The shared translation catalog contains only generic controls in `shared/i18n/locales/{fa,en}/common.json`, and its hook is `useSharedTranslation`. Shell text lives in `app/config/i18n/` and uses `useDashboardTranslation`. Appliance names, order statuses, and feature-specific errors belong to their owning feature. Shared display uses registered bundle mappings without depending on features.
 
-storeهای کسب‌وکار در `entities/service/model/service-store.ts`،
-`entities/inventory/model/inventory-store.ts` و `entities/company/model/company-store.ts`
-قرار دارند. فقط تنظیم پوسته در `shared/store/theme-store.ts` باقی مانده است.
-Shared دیگر به مدل‌های کسب‌وکار یا feature وابسته نیست.
-مصرف‌کننده‌ها با selector به فیلدهای موردنیاز مشترک می‌شوند و کلیدهای قبلی localStorage حفظ شده‌اند.
-فرم‌ها، فیلترها و انتخاب ردیف‌ها محلی می‌مانند. context سایدبار فقط تعامل کامپوننت‌های همان سایدبار را مدیریت می‌کند.
+Zustand guidance is in `.skills/zustand/SKILL.md`. State and actions have separate types, and stores use `subscribeWithSelector`. Action inputs are isolated from form references. Parts operations run on a copy so a validation failure cannot mutate current state. Explicit persistence preserves old formats and the distinct error behavior for settings and operational data.
 
-## حساب مشتری و دفتر مالی
+Business stores live in `entities/service/model/service-store.ts`, `entities/inventory/model/inventory-store.ts`, and `entities/company/model/company-store.ts`. Only the theme preference remains in `shared/store/theme-store.ts`. Shared no longer depends on business models or features. Consumers select only the fields they need, and existing localStorage keys are preserved. Forms, filters, and row selection remain local. Sidebar context handles interactions within the sidebar.
 
-صفحات `/customer-accounts`، `/receivables`، `/receipts` و `/expenses` برای صورت‌حساب مشتری، مطالبات، دریافت وجه و هزینه شرکت اضافه شده‌اند؛ `/finance` دفتر گردش مشترک است.
-مطالبات فقط از مبلغ خدمات تکمیل‌شده منهای دریافت همان سفارش محاسبه می‌شوند. پیش‌دریافت سفارش باز و بستانکاری با بدهی سفارش دیگر خودکار تهاتر نمی‌شوند.
-روش دریافت/پرداخت و شماره سند اختیاری همراه تراکنش ثبت می‌شوند؛ رکوردهای قدیمی بدون این فیلدها معتبر می‌مانند.
-ثبت مالی در store مشترک اعتبارسنجی می‌شود: شناسه تکراری، مبلغ/تاریخ نامعتبر، دریافت بیش از مبلغ سفارش و تسویه بیش از سهم تعمیرکار رد می‌شوند.
-سفارش دارای دریافت وجه بدون اصلاح مالی قابل لغو، انتقال به مشتری دیگر یا کاهش مبلغ زیر دریافت ثبت‌شده نیست.
-بازپرداخت، اصلاح و ابطال سند، دریافت توسط تعمیرکار، مانده افتتاحیه و اتصال بانکی هنوز پیاده نشده‌اند. این نسخه دفتر عملیاتی محلی است و سیستم حسابداری رسمی یا چندکاربره نیست.
+## Customer accounts and financial ledger
 
-## تنظیمات شرکت
+Pages `/customer-accounts`, `/receivables`, `/receipts`, and `/expenses` cover customer statements, receivables, incoming payments, and company expenses. `/finance` is the shared transaction ledger.
 
-صفحه `/settings` مشخصات شرکت و شعبه، ساعت و اولویت پیش‌فرض سفارش جدید و انتخاب پوسته را ارائه می‌دهد.
-نام شرکت و برند در سایدبار و نام شعبه در هدر استفاده می‌شوند.
-تنظیمات شرکت در `hamyar-company-settings-v1` با اعتبارسنجی مستقل ذخیره می‌شوند؛ پوسته از store مستقل استفاده می‌کند.
-بازیابی پیش‌فرض‌ها فقط فرم تنظیمات را تغییر می‌دهد و برای اعمال به ذخیره نیاز دارد. سفارش‌ها و تراکنش‌های قبلی تغییر نمی‌کنند.
+Receivables are calculated only from completed service amounts minus receipts for the same order. Deposits for open orders and credits against one order are not automatically offset against debt on another order. Optional payment method and document reference are stored with transactions; older records without these fields remain valid.
 
-## مرز حوزه‌ها
+The shared store validates financial entries. Duplicate IDs, invalid amounts or dates, receipts above an order's amount, and payouts above the technician's entitlement are rejected. An order with a receipt cannot be cancelled, moved to another customer, or reduced below the amount already received without a financial adjustment.
 
-معماری FSD نسخه ۲٫۱ با رویکرد pages-first اجرا شده است. صفحات و منطق اختصاصی
-در `src/pages/` قرار دارند؛ ویرایشگر و جدول سفارش و کنترل‌های مالی قابل استفاده مجدد
-در `src/features/` باقی می‌مانند. مدل و store قطعات در `entities/inventory` قرار دارد.
-جهت وابستگی `app -> pages -> features -> entities -> shared` است.
-مصرف‌کننده بیرونی از `index.ts` هر slice استفاده می‌کند و وارد فایل خصوصی نمی‌شود.
-تنها ارتباط هم‌لایه‌ای entityها، نوع Appliance از مسیر `service/@x/inventory.ts` است.
-جزئیات بررسی و تصمیم‌ها در `docs/architecture.md` و کنترل خودکار در
-`npm run architecture:check` نگهداری می‌شوند.
+Refunds, adjustments and voids, technician-collected payments, opening balances, and bank integration are not implemented. This is a local operational ledger, not formal accounting software or a multi-user system.
 
-## مدیریت قطعات
+## Company settings
 
-چهار صفحه مدیریت تعمیرکاران (`/technicians`)، تخصص‌ها (`/technician-specialties`)، سفارش‌های باز تخصیص‌یافته (`/technician-jobs`) و امور مالی (`/technician-finance`) در گروه مستقل منو قرار دارند.
-اطلاعات تعمیرکار و عنوان تخصص در همان demo store ذخیره می‌شوند. حساب مالی از خدمات تکمیل‌شده و تراکنش‌های موجود محاسبه می‌شود؛ پرداخت جدید حداکثر تا مانده همان سفارش ثبت می‌شود.
+The `/settings` page provides company and branch details, default hours and priority for new orders, and theme selection. The company name and brand appear in the sidebar, and the branch name appears in the header.
 
-چهار صفحه برای موجودی قطعه، نیاز سفارش و استعلام موجودی، درخواست تأمین و خرید، و تخصیص و تحویل اضافه شده‌اند.
-قطعات براساس نوع دستگاه، کد و مدل سازگار دسته‌بندی می‌شوند. درخواست قطعه به سفارش مشتری متصل است.
-رزرو از موجودی قابل تخصیص کم می‌کند؛ تحویل از موجودی فیزیکی کم می‌کند و برگشت سالم آن را افزایش می‌دهد.
-تأمین از ثبت درخواست تا تأیید، سفارش خرید و دریافت جزئی یا کامل پیگیری می‌شود.
-داده‌های این بخش در `hamyar-parts-v1` جدا از داده‌های عملیات ذخیره و هنگام بارگذاری اعتبارسنجی می‌شوند.
-خرید قطعه به‌طور خودکار تراکنش مالی ایجاد نمی‌کند. برگشت معیوب و قیمت‌گذاری قطعه هنوز پیاده نشده‌اند.
+Company settings are stored separately with validation under `hamyar-company-settings-v1`; the theme uses its own store. Restoring defaults changes only the settings form and requires saving to take effect. Existing orders and transactions are not changed.
 
-## سناریوی تأییدشده
+## Domain boundaries
 
-- محصول یک داشبورد فارسی و راست‌به‌چپ برای شرکت خدمات تعمیر لوازم خانگی است.
-- شرکت تعمیرکاران را به منزل مشتری می‌فرستد و از خدمات انجام‌شده کمیسیون می‌گیرد.
-- بخش مالی باید دریافت‌ها، پرداخت به تعمیرکاران، هزینه‌ها و گردش نقدی را نمایش دهد.
-- فناوری‌ها React 19، TypeScript، Vite، Tailwind CSS v4، TanStack Router و shadcn/ui هستند.
-- فونت رابط Vazirmatn است و پوسته روشن و تاریک پشتیبانی می‌شود.
+The project follows Feature-Sliced Design v2.1 with a pages-first approach. Pages and page-specific logic live in `src/pages/`; reusable request editors and tables, and financial controls, live in `src/features/`. The parts model and store live in `entities/inventory`. Dependencies flow in this direction: `app -> pages -> features -> entities -> shared`.
 
-## وضعیت فعلی
+External consumers use each slice's `index.ts` and do not import private files. The only cross-entity type reference is Appliance through `service/@x/inventory.ts`. Architecture decisions and review details are in `docs/architecture.md`, and the automated check runs with `npm run architecture:check`.
 
-این نسخه یک دموی تعاملی و فقط فرانت‌اند است. هفت صفحه متصل برای نمای کلی، درخواست‌ها،
-اعزام، تعمیرکاران، مشتریان، امور مالی و گزارش‌ها پیاده‌سازی شده‌اند. داده‌های نمونه در
-Zustand نگهداری و با کلید `hamyar-service-demo-v1` در localStorage ذخیره می‌شوند.
+## Technician and parts management
 
-بک‌اند، احراز هویت، پایگاه داده، اتصال بانکی و حسابداری واقعی هنوز وجود ندارند. مبالغ،
-تاریخ نمونه، وضعیت‌ها و قواعد مالی فعلی صرفاً رفتار دموی پیاده‌سازی‌شده‌اند.
+Four technician pages are in a separate menu group: management (`/technicians`), specialties (`/technician-specialties`), assigned open orders (`/technician-jobs`), and finance (`/technician-finance`). Technician details and specialty names are stored in the demo store. Financial accounts are calculated from completed services and existing transactions; a new payout cannot exceed the balance for its order.
 
-## تصمیم‌های فنی
+Four parts pages cover inventory, order needs and availability inquiries, procurement requests and purchasing, and allocation and delivery. Parts are categorized by appliance type, code, and compatible model. A part request is linked to a customer order. Reservations reduce allocatable stock; delivery reduces physical stock, and a good-condition return increases it. Procurement is tracked from request through approval and purchase order to partial or complete receipt.
 
-- مسیرها در `src/app/routes/` تعریف و در `src/app/router.ts` ثبت می‌شوند.
-- وابستگی لایه‌ها `app -> features -> entities -> shared` است و منطق مالی خالص در model قرار دارد.
-- کامپوننت‌های محلی shadcn/ui در `src/shared/ui/` هستند. CLI مربوط به shadcn اجرا نمی‌شود.
-- Tailwind v4 با افزونه Vite و پیکربندی CSS-first استفاده می‌شود. utilityها مستقیماً روی
-  عناصر JSX قرار می‌گیرند، `cn()` کلاس‌های شرطی را ادغام می‌کند و توکن‌های معنایی در
-  `src/app/styles/index.css` تعریف می‌شوند.
-- CSS سراسری به توکن‌های پوسته، فونت و قواعد پایه محدود است؛ دیکشنری مرکزی recipe نداریم.
-- پوسته با `data-theme` و کلید `hamyar-service-theme` ذخیره می‌شود.
-- داده localStorage پیش از استفاده در سطح رکوردها، ارجاعات و قواعد مالی اعتبارسنجی می‌شود؛
-  نسخه خراب یا ناسازگار کنار گذاشته شده و داده نمونه سالم بارگذاری می‌شود.
+Parts data is stored separately from operational data under `hamyar-parts-v1` and validated on load. A parts purchase does not automatically create a financial transaction. Defective returns and parts pricing are not implemented.
 
-## قواعد مالی دموی فعلی
+## Confirmed scenario
 
-- وضعیت‌ها `new`، `scheduled`، `working`، `completed` و `cancelled` هستند.
-- کمیسیون مبلغ صحیح صریح است و درصد محاسباتی نیست.
-- فقط خدمات تکمیل‌شده در ارزش خدمات و کمیسیون محاسبه می‌شوند.
-- دریافت و پرداخت تراکنش مستقل هستند و تکمیل خدمت خودکار دریافت وجه ایجاد نمی‌کند.
-- مانده تعمیرکار برابر ارزش خدمت منهای کمیسیون و پرداخت‌های همان درخواست است.
-- گردش نقدی برابر دریافت‌ها منهای پرداخت‌ها و هزینه‌هاست و مانده افتتاحیه ندارد.
-- پس از ثبت تراکنش برای خدمت تکمیل‌شده، تغییر وضعیت به حالت غیرتکمیل مسدود است. پس از
-  پرداخت به تعمیرکار نیز تغییر تعمیرکار یا کاهش سهم او به کمتر از پرداخت ثبت‌شده مجاز نیست.
+- The product is a Persian, right-to-left dashboard for a home appliance repair service company.
+- The company dispatches technicians to customers' homes and earns commission on completed services.
+- The financial area must show receipts, technician payouts, expenses, and cash flow.
+- The stack is React 19, TypeScript, Vite, Tailwind CSS v4, TanStack Router, and shadcn/ui.
+- The interface uses Vazirmatn and supports light and dark themes.
 
-## موارد باز برای تصمیم آینده
+## Current state
 
-نقش‌ها و دسترسی‌ها، گردش نهایی سفارش و اعزام، فرمول قطعی کمیسیون، مسئول دریافت وجه،
-ابطال و برگشت تراکنش، تسویه تعمیرکار، واحد پول نهایی، قرارداد API و مدل داده تولیدی هنوز
-باید با کاربر مشخص شوند. قواعد نمونه بدون تأیید به الزام تولید تبدیل نمی‌شوند.
+This is an interactive, frontend-only demo. Connected pages cover the overview, requests, dispatch, technicians, customers, finance, and reports. Sample data is held in Zustand and stored in localStorage under `hamyar-service-demo-v1`.
 
-## زبان رابط کاربری
+There is no backend, authentication, database, bank connection, or real accounting integration. Amounts, sample dates, statuses, and financial rules currently represent implemented demo behavior only.
 
-ترجمه‌های همه featureها طبق الگوی customers به پوشه `i18n/` همان feature منتقل
-شده‌اند: فایل‌های `fa.json` و `en.json`، namespace مستقل و هوک تایپ‌شده اختصاصی.
-ثبت bundleها در `app/i18n.ts` انجام می‌شود؛ زیرساخت مشترک به feature وابسته نیست.
-فقط کنترل‌های عمومی، منوها، نام دستگاه‌ها و پیام‌های مشترک دامنه در shared می‌مانند.
-نگاشت خطاها و وضعیت‌های اختصاصی مدل در bundle همان feature ثبت می‌شود تا داده‌های
-ذخیره‌شده و منطق کسب‌وکار تغییر نکنند. بررسی یکسان بودن کلیدها برای تمام bundleها اجرا می‌شود.
-factory مستقل برای استفاده احتمالی SSR وجود دارد؛ خود داشبورد همچنان client-only است.
+## Technical decisions
 
-رابط از فارسی با جهت RTL و انگلیسی با جهت LTR پشتیبانی می‌کند؛ فارسی پیش‌فرض است.
-ترجمه‌ها با i18next و react-i18next در فایل‌های JSON داخل مخزن نگهداری می‌شوند و
-سرویس خارجی ندارند. انتخاب زبان با کلید `hamyar-service-language` ذخیره می‌شود.
-تقویم در هر دو زبان جلالی است؛ تغییر زبان، داده‌های مشتری، سفارش‌ها و محاسبات مالی
-را تغییر نمی‌دهد. راهنمای نگهداری ترجمه‌ها در `docs/localization.md` است.
+- Routes are defined in `src/app/routes/` and registered in `src/app/router.ts`.
+- Layer dependencies follow `app -> features -> entities -> shared`, and pure financial logic belongs in models.
+- Locally owned shadcn/ui components live in `src/shared/ui/`. The shadcn CLI is not used.
+- Tailwind v4 uses the Vite plugin and CSS-first configuration. Utilities are placed directly on JSX elements, `cn()` merges conditional classes, and semantic tokens are defined in `src/app/styles/index.css`.
+- Global CSS is limited to theme tokens, fonts, and base rules. There is no central recipe dictionary.
+- The theme uses `data-theme` and is stored under `hamyar-service-theme`.
+- localStorage data is validated before use, including records, references, and financial rules. Corrupted or incompatible data is discarded and valid sample data is loaded.
+
+## Current demo financial rules
+
+- Statuses are `new`, `scheduled`, `working`, `completed`, and `cancelled`.
+- Commission is an explicit integer amount, not a calculated percentage.
+- Only completed services count toward service value and commission.
+- Receipts and payouts are separate transactions. Completing a service does not automatically create a receipt.
+- Technician balance equals service value minus commission and payouts for the same order.
+- Cash flow equals receipts minus payouts and expenses, with no opening balance.
+- After a transaction is recorded for a completed service, changing its status to a non-completed status is blocked. After a technician payout, changing the technician or reducing their share below the recorded payout is also blocked.
+
+## Open decisions
+
+Roles and permissions, the final order and dispatch workflow, the commission formula, who collects payment, transaction voids and refunds, technician settlement, final currency, API contract, and production data model still require confirmation. Demo choices do not become production requirements without approval.
+
+## Interface language
+
+All feature translations follow the customers pattern and live in each feature's `i18n/` directory: `fa.json`, `en.json`, a separate namespace, and a dedicated typed hook. Bundles are registered in `app/i18n.ts`; shared infrastructure does not depend on features. Only generic controls, menus, appliance names, and shared domain messages remain in Shared. Feature-specific model errors and statuses are registered in the owning feature's bundle so stored data and business logic remain unchanged. Key consistency is checked across all bundles. An independent factory exists for potential SSR use; the dashboard itself remains client-only.
+
+The interface supports Persian RTL and English LTR, with Persian as the default. Translations are maintained in repository JSON files using i18next and react-i18next, with no external service. The language choice is stored under `hamyar-service-language`. The calendar remains Jalali in both languages. Changing the display language does not change customer data, orders, or financial calculations. See `docs/localization.md` for translation maintenance.
