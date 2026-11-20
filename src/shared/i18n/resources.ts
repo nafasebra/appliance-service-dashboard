@@ -58,7 +58,7 @@ export function translationOptions(
   return {
     resources: buildResources(bundles),
     lng: language,
-    fallbackLng: 'fa',
+    fallbackLng: 'en',
     supportedLngs: [...supportedLanguages],
     load: 'languageOnly',
     defaultNS: 'common',

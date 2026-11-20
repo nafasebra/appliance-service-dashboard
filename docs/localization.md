@@ -1,7 +1,7 @@
 # Localization
 
 The dashboard uses i18next and react-i18next with repository-managed JSON resources.
-Persian (`fa`) is the default and fallback language; English (`en`) is selectable
+English (`en`) is the default and fallback language; Persian (`fa`) is selectable
 from the header. No external translation service is required.
 
 ## Analysis and ownership
@@ -166,7 +166,7 @@ proves the feature infrastructure's server isolation, not SSR for the whole app.
 ## Direction and persistence
 
 The language is persisted separately under `hamyar-service-language`. Initialization
-defaults to Persian when storage is unavailable or unsupported. Language changes
+defaults to English when storage is unavailable or unsupported. Language changes
 update the document title, `lang`, `dir`, and the Radix direction provider. Use
 logical Tailwind spacing and alignment; directional icons can use `rtl:`/`ltr:`.
 The sidebar changes sides with the document direction.

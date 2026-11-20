@@ -16,15 +16,15 @@ export type { Language } from './resources.ts';
 export const languageStorageKey = 'hamyar-service-language';
 
 export function resolveLanguage(value: string | null | undefined): Language {
-  return value?.split('-')[0] === 'en' ? 'en' : 'fa';
+  return value?.split('-')[0] === 'fa' ? 'fa' : 'en';
 }
 
 function readLanguage(): Language {
-  if (typeof window === 'undefined') return 'fa';
+  if (typeof window === 'undefined') return 'en';
   try {
     return resolveLanguage(localStorage.getItem(languageStorageKey));
   } catch {
-    return 'fa';
+    return 'en';
   }
 }
 

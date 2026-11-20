@@ -137,11 +137,11 @@ test('live language changes update direction and persistence while preserving re
   }
 });
 
-test('unsupported saved language falls back to Persian', () => {
+test('unsupported saved language falls back to English', () => {
   assert.equal(resolveLanguage('en-US'), 'en');
   assert.equal(resolveLanguage('fa-IR'), 'fa');
-  assert.equal(resolveLanguage('unsupported'), 'fa');
-  assert.equal(resolveLanguage(null), 'fa');
+  assert.equal(resolveLanguage('unsupported'), 'en');
+  assert.equal(resolveLanguage(null), 'en');
 });
 
 test('feature catalogs keep matching keys and placeholders', () => {

@@ -4,7 +4,7 @@
 
 This is a browser-local frontend demo for a home appliance repair company.
 The company dispatches technicians, collects customer payments, retains commission
-and pays technicians. Persian RTL is the default; English LTR is supported.
+and pays technicians. English LTR is the default; Persian RTL is supported.
 Production policies and backend contracts remain undecided.
 
 Read `docs/project-context.md` before implementation. Consult these references
