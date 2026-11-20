@@ -11,6 +11,7 @@ import { PageHeading, Panel, EmptyState } from '@/shared/ui/primitives';
 
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
+import { Card, CardContent } from '@/shared/ui/card';
 import { Label } from '@/shared/ui/label';
 import { JalaliDatePicker } from '@/shared/ui/date-time-picker';
 
@@ -81,40 +82,46 @@ export function DispatchPage() {
               <div className="pt-0 px-3.75 pb-3.75 min-h-37.5">
                 {assigned.length ? (
                   assigned.map((job) => (
-                    <Button
-                      variant="outline"
+                    <Card
                       key={job.id}
                       className={cn(
-                        'mt-3 block h-auto w-full rounded-md border border-border bg-muted p-4 text-start whitespace-normal hover:bg-accent [&_h3]:mt-4.25 [&_h3]:mx-0 [&_h3]:mb-2 [&_h3]:text-body [&_h3]:text-primary [&_p]:text-body [&_p]:text-muted-foreground [&_small]:mt-3 [&_small]:flex [&_small]:items-start [&_small]:gap-1.25 [&_small]:text-caption [&_small]:leading-loose [&_small]:text-muted-foreground [&_small_svg]:mt-0.5 [&_small_svg]:shrink-0 dark:border-border dark:bg-muted dark:text-primary-foreground dark:hover:bg-accent dark:[&_h3]:text-primary',
-                        job.priority === 'urgent' && 'border-s-0.75 border-s-border',
+                        'mt-3 gap-0 overflow-hidden rounded-md border-border bg-muted py-0 shadow-none transition-colors hover:bg-accent dark:border-border dark:bg-muted dark:hover:bg-accent',
+                        job.priority === 'urgent' && 'border-s-2 border-s-destructive',
                       )}
-                      onClick={() => setEditor(job)}
                     >
-                      <div className="flex items-center gap-1.75 text-body text-muted-foreground [&_.badge]:ms-auto [&_.badge]:text-caption">
-                        <Clock3 size={15} />
-                        <span className="direction-ltr text-start font-latin tracking-normal">
-                          {job.time}
-                        </span>
-                        <JobStatusBadge status={job.status} />
-                      </div>
-                      <h3>
-                        {translateLabel(job.appliance)} {translateLabel(job.brand)}
-                      </h3>
-                      <p>
-                        {translateLabel(
-                          customers.find((item) => item.id === job.customerId)?.name ?? '',
-                        )}
-                      </p>
-                      <small>
-                        <MapPin size={14} />
-                        {translateLabel(
-                          customers.find((item) => item.id === job.customerId)?.address ?? '',
-                        )}
-                      </small>
-                      <div className="text-caption text-muted-foreground mt-3.5 pt-2.75 border-t border-dashed border-t-border dark:border-border">
-                        {translateLabel(job.issue)}
-                      </div>
-                    </Button>
+                      <CardContent className="p-0">
+                        <Button
+                          variant="ghost"
+                          className="h-auto w-full flex-col items-stretch gap-0 rounded-none p-4 text-start whitespace-normal hover:bg-transparent hover:text-foreground"
+                          onClick={() => setEditor(job)}
+                        >
+                          <div className="flex items-center gap-1.75 text-body text-muted-foreground [&_.badge]:ms-auto [&_.badge]:text-caption">
+                            <Clock3 size={15} />
+                            <span className="direction-ltr text-start font-latin tracking-normal">
+                              {job.time}
+                            </span>
+                            <JobStatusBadge status={job.status} />
+                          </div>
+                          <h3 className="mt-4.25 mb-2 text-body font-semibold text-primary">
+                            {translateLabel(job.appliance)} {translateLabel(job.brand)}
+                          </h3>
+                          <p className="text-body text-muted-foreground">
+                            {translateLabel(
+                              customers.find((item) => item.id === job.customerId)?.name ?? '',
+                            )}
+                          </p>
+                          <small className="mt-3 flex items-start gap-1.25 text-caption leading-loose text-muted-foreground">
+                            <MapPin size={14} className="mt-0.5 shrink-0" />
+                            {translateLabel(
+                              customers.find((item) => item.id === job.customerId)?.address ?? '',
+                            )}
+                          </small>
+                          <div className="mt-3.5 w-full border-t border-dashed border-border pt-2.75 text-caption text-muted-foreground">
+                            {translateLabel(job.issue)}
+                          </div>
+                        </Button>
+                      </CardContent>
+                    </Card>
                   ))
                 ) : (
                   <EmptyState text={t('schedule.noVisitsScheduledForThisDay')} />
