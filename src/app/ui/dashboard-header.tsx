@@ -3,10 +3,9 @@ import { translateLabel } from '../../shared/i18n/index.ts';
 import { Link, useRouterState } from '@tanstack/react-router';
 import { navigation } from '../config/navigation.ts';
 import { NotificationButton } from './notification-button.tsx';
-import { DashboardSearch } from './dashboard-search.tsx';
+import { DashboardSearch } from './dashboard-search';
 import { LanguageSwitcher } from '@/shared/ui/language-switcher';
 import { ThemeToggleButton } from '@/shared/ui/theme-toggle-button';
-import { NoticAlert } from './notic-alert.tsx';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -63,8 +62,6 @@ export function DashboardHeader() {
           <ThemeToggleButton />
         </div>
       </header>
-
-      <NoticAlert />
     </>
   );
 }
